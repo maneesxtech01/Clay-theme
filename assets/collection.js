@@ -525,7 +525,7 @@ class MobileColumnSwitch extends HTMLElement {
   
   connectedCallback() {
     const cols = this.getAttribute('data-columns');
-    const savedCols = sessionStorage.getItem('mobile-columns') || '2';
+    const savedCols = sessionStorage.getItem('mobile-columns') || '1';
     
     // Set active class accordingly
     if (cols === savedCols) {
