@@ -1,0 +1,558 @@
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign color_scheme = section_st.color_scheme
+  if section_st.reset_spacing
+    assign reset_spacing = ' remove_spacing'
+  endif
+  assign value_blocks = section.blocks | where: "type", "value_card"
+  assign blocks_size = value_blocks.size
+  assign mid_point = blocks_size | divided_by: 2.0 | ceil
+-%}
+
+{%- capture style -%}
+  --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};
+{%- endcapture -%}
+
+<!-- Link Remix Icon Library for standard icons -->
+<link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet" media="print" onload="this.media='all'">
+
+{%- style -%}
+  #custom-brand-values-{{ section.id }} {
+    {%- if section_st.bg_color != blank -%}
+      background-color: {{ section_st.bg_color }};
+    {%- endif -%}
+    {%- if section_st.show_border_bottom -%}
+      border-bottom: 1px solid {{ section_st.border_bottom_color }};
+    {%- endif -%}
+  }
+
+  #custom-brand-values-{{ section.id }} .brand-values__container {
+    {%- unless section_width == 'stretch_width' or section_width == 'full_width' -%}
+      max-width: {{ section_st.max_width }}px;
+    {%- endunless -%}
+    margin: 0 auto;
+    padding: 0 24px;
+    font-family: var(--font-body-family), "Poppins", sans-serif;
+  }
+
+  #custom-brand-values-{{ section.id }} .brand-values__heading-wrapper {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  @media screen and (min-width: 768px) {
+    #custom-brand-values-{{ section.id }} .brand-values__heading-wrapper {
+      margin-bottom: 65px;
+    }
+  }
+
+  #custom-brand-values-{{ section.id }} .brand-values__tag {
+    display: inline-block;
+    color: {{ section_st.tag_color }};
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  @media screen and (min-width: 768px) {
+    #custom-brand-values-{{ section.id }} .brand-values__tag {
+      font-size: 16px;
+      margin-bottom: 18px;
+    }
+  }
+
+  #custom-brand-values-{{ section.id }} .brand-values__title {
+    color: {{ section_st.heading_color }};
+    font-family: var(--font-heading-family), inherit;
+    font-size: clamp(28px, 4.5vw, 35px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0 0 16px 0;
+    text-transform: uppercase;
+  }
+
+  @media screen and (min-width: 768px) {
+    #custom-brand-values-{{ section.id }} .brand-values__title {
+      margin-bottom: 20px;
+    }
+  }
+
+  #custom-brand-values-{{ section.id }} .brand-values__description {
+    color: {{ section_st.paragraph_color }};
+    max-width: 700px;
+    margin: 0 auto;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+
+  #custom-brand-values-{{ section.id }} .brand-values__wrapper {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: center;
+  }
+
+  @media screen and (min-width: 992px) {
+    #custom-brand-values-{{ section.id }} .brand-values__wrapper {
+      grid-template-columns: 1fr 420px 1fr;
+      gap: 30px;
+    }
+  }
+
+  #custom-brand-values-{{ section.id }} .brand-values__column {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+  }
+
+  #custom-brand-values-{{ section.id }} .brand-values__card {
+    text-align: center;
+  }
+
+  #custom-brand-values-{{ section.id }} .brand-values__icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: {{ section_st.icon_bg_color }};
+    color: {{ section_st.icon_text_color }};
+    font-size: 20px;
+    border: 3px solid {{ section_st.icon_border_color }};
+  }
+
+  #custom-brand-values-{{ section.id }} .brand-values__icon svg {
+    width: 20px;
+    height: 20px;
+    fill: currentColor;
+    display: block;
+  }
+
+  #custom-brand-values-{{ section.id }} .brand-values__card-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    color: {{ section_st.card_title_color }};
+  }
+
+  @media screen and (min-width: 768px) {
+    #custom-brand-values-{{ section.id }} .brand-values__card-title {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+  }
+
+  #custom-brand-values-{{ section.id }} .brand-values__card-desc {
+    font-size: 14px;
+    line-height: 1.5;
+    color: {{ section_st.card_desc_color }};
+    margin: 0;
+  }
+
+  @media screen and (min-width: 768px) {
+    #custom-brand-values-{{ section.id }} .brand-values__card-desc {
+      font-size: 15px;
+    }
+  }
+
+  #custom-brand-values-{{ section.id }} .brand-values__center-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #custom-brand-values-{{ section.id }} .brand-values__img {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    border: 1px solid {{ section_st.image_border_color }};
+    border-radius: 8px;
+    transition: transform 0.35s ease;
+    object-fit: cover;
+  }
+
+  #custom-brand-values-{{ section.id }} .brand-values__img:hover {
+    transform: scale(1.03);
+  }
+
+  /* Specific mobile-tablet order mapping */
+  @media screen and (max-width: 991px) {
+    #custom-brand-values-{{ section.id }} .brand-values__center-image {
+      order: 1;
+    }
+    #custom-brand-values-{{ section.id }} .brand-values__column--left {
+      order: 2;
+    }
+    #custom-brand-values-{{ section.id }} .brand-values__column--right {
+      order: 3;
+    }
+    #custom-brand-values-{{ section.id }} .brand-values__img {
+      max-width: 320px;
+    }
+    #custom-brand-values-{{ section.id }} .brand-values__icon {
+      width: 54px;
+      height: 54px;
+      font-size: 24px;
+    }
+  }
+{%- endstyle -%}
+
+<section 
+  id="custom-brand-values-{{ section.id }}" 
+  class="section {% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} brand-values color-{{ color_scheme }} gradient{{ reset_spacing }}"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ section_width }} brand-values__container">
+    
+    <!-- Heading Container -->
+    <div class="brand-values__heading-wrapper">
+      {%- if section_st.tag_text != blank -%}
+        <span class="brand-values__tag">{{ section_st.tag_text }}</span>
+      {%- endif -%}
+      
+      {%- if section_st.heading_text != blank -%}
+        <h2 class="brand-values__title">{{ section_st.heading_text }}</h2>
+      {%- endif -%}
+      
+      {%- if section_st.paragraph_text != blank -%}
+        <div class="brand-values__description">
+          {{ section_st.paragraph_text }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- Main Content Wrapper -->
+    <div class="brand-values__wrapper">
+      
+      {%- if blocks_size > 0 -%}
+        <!-- Left Column -->
+        <div class="brand-values__column brand-values__column--left">
+          {%- for block in value_blocks limit: mid_point -%}
+            <div class="brand-values__card" {{ block.shopify_attributes }}>
+              <div class="brand-values__icon">
+                {%- if block.settings.icon_svg != blank -%}
+                  {{ block.settings.icon_svg }}
+                {%- else -%}
+                  <i class="{{ block.settings.icon_class | default: 'ri-check-line' }}"></i>
+                {%- endif -%}
+              </div>
+              <h3 class="brand-values__card-title">{{ block.settings.title }}</h3>
+              <p class="brand-values__card-desc">{{ block.settings.description }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      <!-- Center Showcase Image -->
+      <div class="brand-values__center-image">
+        {%- if section_st.center_image != blank -%}
+          {{ section_st.center_image | image_url: width: 600 | image_tag: 
+            class: 'brand-values__img', 
+            loading: 'lazy', 
+            alt: section_st.heading_text | default: 'Product Showcase' 
+          }}
+        {%- else -%}
+          <img 
+            src="https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=600&auto=format&fit=crop" 
+            class="brand-values__img" 
+            loading="lazy" 
+            alt="Product Showcase Placeholder"
+            width="420"
+            height="420"
+          >
+        {%- endif -%}
+      </div>
+
+      {%- if blocks_size > 1 -%}
+        <!-- Right Column -->
+        <div class="brand-values__column brand-values__column--right">
+          {%- for block in value_blocks offset: mid_point -%}
+            <div class="brand-values__card" {{ block.shopify_attributes }}>
+              <div class="brand-values__icon">
+                {%- if block.settings.icon_svg != blank -%}
+                  {{ block.settings.icon_svg }}
+                {%- else -%}
+                  <i class="{{ block.settings.icon_class | default: 'ri-check-line' }}"></i>
+                {%- endif -%}
+              </div>
+              <h3 class="brand-values__card-title">{{ block.settings.title }}</h3>
+              <p class="brand-values__card-desc">{{ block.settings.description }}</p>
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom Brand Values",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:sections.all.section_width.label",
+      "default": "container",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Max Container Width",
+      "default": 1200
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Override",
+      "default": "#F8F4EC",
+      "info": "Use this color to override the selected Color Scheme background."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border_bottom",
+      "label": "Show Border Bottom",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "border_bottom_color",
+      "label": "Border Bottom Color",
+      "default": "#2c2609"
+    },
+    {
+      "type": "header",
+      "content": "Heading Settings"
+    },
+    {
+      "type": "text",
+      "id": "tag_text",
+      "label": "Subheading / Tag Text",
+      "default": "SKIN DEEP VALUES"
+    },
+    {
+      "type": "color",
+      "id": "tag_color",
+      "label": "Subheading / Tag Color",
+      "default": "#ff5a1f"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading Text",
+      "default": "OUR UNWAVERING COMMITMENTS"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1e2530"
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph_text",
+      "label": "Paragraph Text",
+      "default": "We built Evil Goods on four foundational promises that guide every decision we make, from sourcing ingredients to customer care."
+    },
+    {
+      "type": "color",
+      "id": "paragraph_color",
+      "label": "Paragraph Color",
+      "default": "#333333"
+    },
+    {
+      "type": "header",
+      "content": "Center Showcase Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "center_image",
+      "label": "Center Image"
+    },
+    {
+      "type": "color",
+      "id": "image_border_color",
+      "label": "Image Border Color",
+      "default": "#d8d8d8"
+    },
+    {
+      "type": "header",
+      "content": "Cards & Icon Styling"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Card Title Color",
+      "default": "#1b1b1b"
+    },
+    {
+      "type": "color",
+      "id": "card_desc_color",
+      "label": "Card Description Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "icon_bg_color",
+      "label": "Icon Background Color",
+      "default": "#FFD23F"
+    },
+    {
+      "type": "color",
+      "id": "icon_text_color",
+      "label": "Icon Color",
+      "default": "#222222"
+    },
+    {
+      "type": "color",
+      "id": "icon_border_color",
+      "label": "Icon Border Color",
+      "default": "#222222"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 100
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_spacing",
+      "label": "t:sections.all.section_padding.reset_spacing.label",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value_card",
+      "name": "Value Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "icon_class",
+          "label": "Icon Class Name (Remix Icon)",
+          "default": "ri-check-line",
+          "info": "Example: ri-search-line, ri-plant-line, ri-recycle-line, ri-heart-3-line"
+        },
+        {
+          "type": "textarea",
+          "id": "icon_svg",
+          "label": "Custom SVG Icon Code",
+          "info": "Optional: Paste raw SVG code here to override the icon class name."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Value Title",
+          "default": "Value Commitment"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Value Description",
+          "default": "Add a short description explaining this brand value to your customers."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Brand Values",
+      "blocks": [
+        {
+          "type": "value_card",
+          "settings": {
+            "icon_class": "ri-search-line",
+            "title": "Absolute Transparency",
+            "description": "Every ingredient is clearly listed, ethically sourced, and serves a purpose. No hidden fillers, no marketing gimmicks."
+          }
+        },
+        {
+          "type": "value_card",
+          "settings": {
+            "icon_class": "ri-plant-line",
+            "title": "Nature's Wisdom First",
+            "description": "Ancient skincare traditions and naturally-derived ingredients take precedence over laboratory-created compounds."
+          }
+        },
+        {
+          "type": "value_card",
+          "settings": {
+            "icon_class": "ri-recycle-line",
+            "title": "Sustainable Practices",
+            "description": "We partner with regenerative American farms, use minimal packaging, and ensure our process respects both animals and land."
+          }
+        },
+        {
+          "type": "value_card",
+          "settings": {
+            "icon_class": "ri-heart-3-line",
+            "title": "Customer Satisfaction",
+            "description": "Our 30-day guarantee and 4.9/5 rating from 285,000+ customers reflect our dedication to complete satisfaction."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

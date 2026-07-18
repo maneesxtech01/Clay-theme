@@ -1,0 +1,656 @@
+<!-- Load Swiper assets dynamically -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" media="print" onload="this.media='all'">
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign color_scheme = section_st.color_scheme
+  if section_st.reset_spacing
+    assign reset_spacing = ' remove_spacing'
+  endif
+  assign step_blocks = section.blocks | where: "type", "step"
+  assign steps_size = step_blocks.size
+-%}
+
+{%- capture style -%}
+  --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};
+{%- endcapture -%}
+
+{%- style -%}
+  #custom-journey-steps-{{ section.id }} {
+    {%- if section_st.bg_color != blank -%}
+      background-color: {{ section_st.bg_color }};
+    {%- endif -%}
+    {%- if section_st.show_border_bottom -%}
+      border-bottom: 1px solid {{ section_st.border_bottom_color }};
+    {%- endif -%}
+  }
+
+  #custom-journey-steps-{{ section.id }} .journey__container {
+    {%- unless section_width == 'stretch_width' or section_width == 'full_width' -%}
+      max-width: {{ section_st.max_width }}px;
+    {%- endunless -%}
+    margin: 0 auto;
+    padding: 0 24px;
+    font-family: var(--font-body-family), "Poppins", sans-serif;
+  }
+
+  #custom-journey-steps-{{ section.id }} .journey__heading-wrapper {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  @media screen and (min-width: 768px) {
+    #custom-journey-steps-{{ section.id }} .journey__heading-wrapper {
+      margin-bottom: 65px;
+    }
+  }
+
+  #custom-journey-steps-{{ section.id }} .journey__tag {
+    display: block;
+    color: {{ section_st.tag_color }};
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    letter-spacing: 0.05em;
+  }
+
+  @media screen and (min-width: 768px) {
+    #custom-journey-steps-{{ section.id }} .journey__tag {
+      font-size: 16px;
+      margin-bottom: 18px;
+    }
+  }
+
+  #custom-journey-steps-{{ section.id }} .journey__title {
+    color: {{ section_st.heading_color }};
+    font-family: var(--font-heading-family), inherit;
+    font-size: clamp(28px, 4.5vw, 38px);
+    font-weight: 800;
+    line-height: 1.1;
+    margin: 0 0 16px 0;
+    text-transform: uppercase;
+  }
+
+  @media screen and (min-width: 768px) {
+    #custom-journey-steps-{{ section.id }} .journey__title {
+      margin-bottom: 20px;
+    }
+  }
+
+  #custom-journey-steps-{{ section.id }} .journey__description {
+    color: {{ section_st.paragraph_color }};
+    max-width: 720px;
+    margin: 0 auto;
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  @media screen and (min-width: 768px) {
+    #custom-journey-steps-{{ section.id }} .journey__description {
+      font-size: 18px;
+      line-height: 1.8;
+    }
+  }
+
+  /* Desktop Layout Styles */
+  #custom-journey-steps-{{ section.id }} .journey-desktop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+  }
+
+  @media screen and (min-width: 1200px) {
+    #custom-journey-steps-{{ section.id }} .journey-desktop {
+      gap: 18px;
+    }
+  }
+
+  #custom-journey-steps-{{ section.id }} .journey__card {
+    width: 275px;
+    transition: transform 0.35s ease;
+  }
+
+  #custom-journey-steps-{{ section.id }} .journey__card:hover {
+    transform: translateY(-8px);
+  }
+
+  #custom-journey-steps-{{ section.id }} .journey__card-head {
+    height: 44px;
+    background-color: {{ section_st.step_bg_color }};
+    color: {{ section_st.step_text_color }};
+    display: flex;
+    align-items: center;
+    padding: 0 14px;
+    font-size: 17px;
+    font-weight: 700;
+  }
+
+  #custom-journey-steps-{{ section.id }} .journey__card-img {
+    border: 2px dashed {{ section_st.card_border_color }};
+    border-top: none;
+    background-color: {{ section_st.card_bg_color }};
+    padding: 16px;
+    overflow: hidden;
+  }
+
+  #custom-journey-steps-{{ section.id }} .journey__card-img img {
+    width: 100%;
+    height: 175px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.35s ease;
+  }
+
+  #custom-journey-steps-{{ section.id }} .journey__card:hover .journey__card-img img {
+    transform: scale(1.05);
+  }
+
+  #custom-journey-steps-{{ section.id }} .journey__arrow {
+    font-size: 36px;
+    color: {{ section_st.arrow_color }};
+    font-weight: 700;
+    user-select: none;
+  }
+
+  @media screen and (min-width: 1200px) {
+    #custom-journey-steps-{{ section.id }} .journey__arrow {
+      font-size: 48px;
+    }
+  }
+
+  /* Mobile Slider Default Hide */
+  #custom-journey-steps-{{ section.id }} .journey-slider {
+    display: none;
+  }
+
+  /* Tablet / Mobile Layout Styles */
+  @media screen and (max-width: 991px) {
+    #custom-journey-steps-{{ section.id }} .journey-desktop {
+      display: none;
+    }
+
+    #custom-journey-steps-{{ section.id }} .journey-slider {
+      display: block;
+      width: 100%;
+      max-width: 380px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    #custom-journey-steps-{{ section.id }} .journey-slider .swiper-slide {
+      display: flex;
+      justify-content: center;
+      padding-bottom: 40px; /* Space for pagination */
+    }
+
+    #custom-journey-steps-{{ section.id }} .journey-slider .journey__card {
+      width: 100%;
+    }
+
+    #custom-journey-steps-{{ section.id }} .journey-slider .journey__card-img img {
+      height: 220px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    #custom-journey-steps-{{ section.id }} .journey-slider {
+      max-width: 340px;
+    }
+
+    #custom-journey-steps-{{ section.id }} .journey-slider .journey__card-head {
+      height: 48px;
+      font-size: 18px;
+    }
+
+    #custom-journey-steps-{{ section.id }} .journey-slider .journey__card-img {
+      padding: 14px;
+    }
+
+    #custom-journey-steps-{{ section.id }} .journey-slider .journey__card-img img {
+      height: 190px;
+    }
+  }
+
+  @media screen and (max-width: 480px) {
+    #custom-journey-steps-{{ section.id }} .journey-slider {
+      max-width: 300px;
+    }
+
+    #custom-journey-steps-{{ section.id }} .journey-slider .journey__card-head {
+      font-size: 16px;
+      padding: 0 12px;
+    }
+
+    #custom-journey-steps-{{ section.id }} .journey-slider .journey__card-img {
+      padding: 12px;
+    }
+
+    #custom-journey-steps-{{ section.id }} .journey-slider .journey__card-img img {
+      height: 170px;
+    }
+
+    /* Swiper Pagination */
+    #custom-journey-steps-{{ section.id }} .swiper-pagination {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    #custom-journey-steps-{{ section.id }} .swiper-pagination-bullet {
+      width: 10px;
+      height: 10px;
+      opacity: 1;
+      background-color: #cfcfcf;
+      border-radius: 50%;
+      cursor: pointer;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+    }
+
+    #custom-journey-steps-{{ section.id }} .swiper-pagination-bullet-active {
+      background-color: {{ section_st.step_bg_color }};
+    }
+  }
+{%- endstyle -%}
+
+<section 
+  id="custom-journey-steps-{{ section.id }}" 
+  class="section {% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} journey-section color-{{ color_scheme }} gradient{{ reset_spacing }}"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ section_width }} journey__container">
+    
+    <!-- Heading -->
+    <div class="journey__heading-wrapper">
+      {%- if section_st.tag_text != blank -%}
+        <span class="journey__tag">{{ section_st.tag_text }}</span>
+      {%- endif -%}
+      
+      {%- if section_st.heading_text != blank -%}
+        <h2 class="journey__title">{{ section_st.heading_text }}</h2>
+      {%- endif -%}
+      
+      {%- if section_st.paragraph_text != blank -%}
+        <div class="journey__description">
+          {{ section_st.paragraph_text }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- if steps_size > 0 -%}
+      
+      <!-- Desktop layout row -->
+      <div class="journey-desktop">
+        {%- assign fallbacks_str = "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?q=80&w=600&auto=format&fit=crop,https://images.unsplash.com/photo-1464226184884-fa280b87c399?q=80&w=600&auto=format&fit=crop,https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=600&auto=format&fit=crop,https://images.unsplash.com/photo-1556228720-195a672e8a03?q=80&w=600&auto=format&fit=crop" -%}
+        {%- assign fallbacks = fallbacks_str | split: "," -%}
+
+        {%- for block in step_blocks -%}
+          {%- if forloop.index0 > 0 -%}
+            <div class="journey__arrow">➜</div>
+          {%- endif -%}
+          
+          <div class="journey__card" {{ block.shopify_attributes }}>
+            <div class="journey__card-head">
+              {%- if block.settings.show_checkmark -%}✓ {% endif -%}
+              {{ block.settings.title }}
+            </div>
+            <div class="journey__card-img">
+              {%- if block.settings.image != blank -%}
+                {{ block.settings.image | image_url: width: 600 | image_tag: 
+                  loading: 'lazy', 
+                  alt: block.settings.title 
+                }}
+              {%- else -%}
+                {%- assign fallback_index = forloop.index0 | modulo: 4 -%}
+                <img 
+                  src="{{ fallbacks[fallback_index] }}" 
+                  loading="lazy" 
+                  alt="{{ block.settings.title }} Placeholder"
+                  width="240"
+                  height="175"
+                >
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <!-- Mobile Swiper Slider -->
+      <div class="swiper journey-slider journey-slider-{{ section.id }}">
+        <div class="swiper-wrapper">
+          {%- for block in step_blocks -%}
+            <div class="swiper-slide">
+              <div class="journey__card">
+                <div class="journey__card-head">
+                  {%- if block.settings.show_checkmark -%}✓ {% endif -%}
+                  {{ block.settings.title }}
+                </div>
+                <div class="journey__card-img">
+                  {%- if block.settings.image != blank -%}
+                    {{ block.settings.image | image_url: width: 600 | image_tag: 
+                      loading: 'lazy', 
+                      alt: block.settings.title 
+                    }}
+                  {%- else -%}
+                    {%- assign fallback_index = forloop.index0 | modulo: 4 -%}
+                    <img 
+                      src="{{ fallbacks[fallback_index] }}" 
+                      loading="lazy" 
+                      alt="{{ block.settings.title }} Placeholder"
+                      width="340"
+                      height="220"
+                    >
+                  {%- endif -%}
+                </div>
+              </div>
+            </div>
+          {%- endfor -%}
+        </div>
+        <div class="swiper-pagination"></div>
+      </div>
+
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    initJourneySlider_{{ section.id | replace: '-', '_' }}();
+  });
+
+  document.addEventListener('shopify:section:load', function(event) {
+    if (event.detail.sectionId === '{{ section.id }}') {
+      initJourneySlider_{{ section.id | replace: '-', '_' }}();
+    }
+  });
+
+  function initJourneySlider_{{ section.id | replace: '-', '_' }}() {
+    const sliderEl = document.querySelector(".journey-slider-{{ section.id }}");
+    if (sliderEl) {
+      const checkSwiper = setInterval(function() {
+        if (typeof Swiper !== 'undefined') {
+          clearInterval(checkSwiper);
+          
+          if (sliderEl.swiper) {
+            sliderEl.swiper.destroy(true, true);
+          }
+
+          new Swiper(sliderEl, {
+            slidesPerView: 1,
+            spaceBetween: 20,
+            loop: true,
+            pagination: {
+              el: sliderEl.querySelector(".swiper-pagination"),
+              clickable: true
+            },
+            autoplay: {
+              delay: {{ section_st.autoplay_delay | default: 2500 }},
+              disableOnInteraction: false
+            }
+          });
+        }
+      }, 100);
+    }
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Custom Journey Steps",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:sections.all.section_width.label",
+      "default": "container",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Max Container Width",
+      "default": 1300
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Override",
+      "default": "#FAF7EF",
+      "info": "Use this color to override the selected Color Scheme background."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border_bottom",
+      "label": "Show Border Bottom",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "border_bottom_color",
+      "label": "Border Bottom Color",
+      "default": "#2c2609"
+    },
+    {
+      "type": "header",
+      "content": "Heading Settings"
+    },
+    {
+      "type": "text",
+      "id": "tag_text",
+      "label": "Subheading / Tag Text",
+      "default": "FROM PASTURE TO PRODUCT"
+    },
+    {
+      "type": "color",
+      "id": "tag_color",
+      "label": "Subheading / Tag Color",
+      "default": "#ff4d1c"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading Text",
+      "default": "THE COMPLETE JOURNEY"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#1f2530"
+    },
+    {
+      "type": "textarea",
+      "id": "paragraph_text",
+      "label": "Paragraph Text",
+      "default": "Our commitment to transparency means sharing every step of how your skincare is created, from the ethical farms where it begins to your doorstep."
+    },
+    {
+      "type": "color",
+      "id": "paragraph_color",
+      "label": "Paragraph Color",
+      "default": "#444444"
+    },
+    {
+      "type": "header",
+      "content": "Card & Arrow Customizations"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Image Area Background",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Image Area Dashed Border",
+      "default": "#888888"
+    },
+    {
+      "type": "color",
+      "id": "step_bg_color",
+      "label": "Step Header Background Color",
+      "default": "#FFD63D"
+    },
+    {
+      "type": "color",
+      "id": "step_text_color",
+      "label": "Step Header Text Color",
+      "default": "#1b1b1b"
+    },
+    {
+      "type": "color",
+      "id": "arrow_color",
+      "label": "Arrow Separator Color",
+      "default": "#F0BF00"
+    },
+    {
+      "type": "header",
+      "content": "Slider Settings (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "autoplay_delay",
+      "min": 1000,
+      "max": 6000,
+      "step": 500,
+      "unit": "ms",
+      "label": "Autoplay Slide Delay",
+      "default": 2500
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 100
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_spacing",
+      "label": "t:sections.all.section_padding.reset_spacing.label",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Journey Step",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Step Name",
+          "default": "Step Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Step Image"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_checkmark",
+          "label": "Show Checkmark Prefix",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Journey Steps",
+      "blocks": [
+        {
+          "type": "step",
+          "settings": {
+            "title": "The Pasture",
+            "show_checkmark": true
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Ethical Sourcing",
+            "show_checkmark": true
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Artisanal Crafting",
+            "show_checkmark": true
+          }
+        },
+        {
+          "type": "step",
+          "settings": {
+            "title": "Direct To You",
+            "show_checkmark": true
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

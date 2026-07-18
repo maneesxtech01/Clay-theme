@@ -1,0 +1,627 @@
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign color_scheme = section_st.color_scheme
+  if section_st.reset_spacing
+    assign reset_spacing = ' remove_spacing'
+  endif
+-%}
+
+{%- capture style -%}
+  --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};
+{%- endcapture -%}
+
+{%- style -%}
+  #custom-our-story-{{ section.id }} {
+    {%- if section_st.bg_color != blank -%}
+      background-color: {{ section_st.bg_color }};
+    {%- endif -%}
+    {%- if section_st.show_border_bottom -%}
+      border-bottom: 1px solid {{ section_st.border_bottom_color }};
+    {%- endif -%}
+  }
+
+  #custom-our-story-{{ section.id }} .story__container {
+    {%- unless section_width == 'stretch_width' or section_width == 'full_width' -%}
+      max-width: {{ section_st.max_width }}px;
+    {%- endunless -%}
+    margin: 0 auto;
+    padding: 0 24px;
+    font-family: var(--font-body-family), "Poppins", sans-serif;
+  }
+
+  #custom-our-story-{{ section.id }} .story__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    align-items: center;
+  }
+
+  @media screen and (min-width: 992px) {
+    #custom-our-story-{{ section.id }} .story__wrapper {
+      flex-direction: {% if section_st.layout_desktop == 'image_left' %}row{% else %}row-reverse{% endif %};
+      gap: 60px;
+    }
+  }
+
+  #custom-our-story-{{ section.id }} .story__image-column {
+    width: 100%;
+    flex: 1;
+  }
+
+  @media screen and (max-width: 991px) {
+    #custom-our-story-{{ section.id }} .story__image-column {
+      order: 1;
+    }
+    #custom-our-story-{{ section.id }} .story__content-column {
+      order: 2;
+    }
+  }
+
+  #custom-our-story-{{ section.id }} .story__content-column {
+    width: 100%;
+    flex: 1.1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  #custom-our-story-{{ section.id }} .story__img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: {{ section_st.image_border_radius }}px;
+    {%- case section_st.image_aspect_ratio -%}
+      {%- when 'square' -%}
+        aspect-ratio: 1 / 1;
+      {%- when 'portrait' -%}
+        aspect-ratio: 4 / 5;
+      {%- when 'landscape' -%}
+        aspect-ratio: 16 / 9;
+      {%- else -%}
+        aspect-ratio: auto;
+    {%- endcase -%}
+  }
+
+  /* Block Specific Scoped Styles */
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'subheading' -%}
+        #custom-our-story-{{ section.id }} .block-{{ block.id }} {
+          color: {{ block.settings.color }};
+          font-size: 14px;
+          font-weight: 700;
+          line-height: 1.5;
+          text-transform: uppercase;
+          letter-spacing: 0.05em;
+          display: inline-block;
+        }
+      {%- when 'heading' -%}
+        #custom-our-story-{{ section.id }} .block-{{ block.id }} {
+          color: {{ block.settings.color }};
+          font-family: var(--font-heading-family), inherit;
+          font-size: clamp(28px, 4vw, 42px);
+          font-weight: 800;
+          line-height: 1.1;
+          margin: 0;
+          text-transform: uppercase;
+        }
+      {%- when 'quote_box' -%}
+        #custom-our-story-{{ section.id }} .block-{{ block.id }} {
+          background-color: {{ block.settings.bg_color }};
+          border: 1px solid {{ block.settings.border_color }};
+          color: {{ block.settings.text_color }};
+          padding: 16px 20px;
+          border-radius: 4px;
+          font-weight: 600;
+          font-size: 15px;
+          line-height: 1.4;
+          width: 100%;
+          margin: 8px 0;
+          box-sizing: border-box;
+        }
+      {%- when 'text' -%}
+        #custom-our-story-{{ section.id }} .block-{{ block.id }} {
+          color: {{ block.settings.color }};
+          font-size: 15px;
+          line-height: 1.6;
+          margin: 0;
+        }
+        #custom-our-story-{{ section.id }} .block-{{ block.id }} p {
+          margin: 0 0 16px 0;
+        }
+        #custom-our-story-{{ section.id }} .block-{{ block.id }} p:last-child {
+          margin-bottom: 0;
+        }
+      {%- when 'bullet_point' -%}
+        #custom-our-story-{{ section.id }} .block-{{ block.id }} {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+          margin: 4px 0;
+        }
+        #custom-our-story-{{ section.id }} .block-{{ block.id }} .story__bullet-icon {
+          color: {{ block.settings.icon_color }};
+          font-size: 18px;
+          font-weight: 700;
+          line-height: 1;
+        }
+        #custom-our-story-{{ section.id }} .block-{{ block.id }} .story__bullet-text {
+          color: {{ block.settings.text_color }};
+          font-size: 15px;
+          line-height: 1.4;
+        }
+      {%- when 'html_widget' -%}
+        #custom-our-story-{{ section.id }} .block-{{ block.id }} {
+          width: 100%;
+        }
+      {%- when 'button' -%}
+        #custom-our-story-{{ section.id }} .block-{{ block.id }} {
+          display: inline-block;
+          padding: 14px 28px;
+          font-size: 16px;
+          font-weight: 700;
+          line-height: 1.5;
+          color: {{ block.settings.button_text_color }};
+          text-decoration: none;
+          border-radius: 12px;
+          border: 1.5px solid {{ block.settings.button_border_color }};
+          background-color: {{ block.settings.button_bg_color }};
+          box-shadow: 0px 4px 0px 0px {{ block.settings.button_shadow_color }};
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
+          margin-top: 8px;
+          cursor: pointer;
+          position: relative;
+          top: 0;
+        }
+        #custom-our-story-{{ section.id }} .block-{{ block.id }}:hover {
+          transform: translateY(2px);
+          box-shadow: 0px 2px 0px 0px {{ block.settings.button_shadow_color }};
+        }
+        #custom-our-story-{{ section.id }} .block-{{ block.id }}:active {
+          transform: translateY(4px);
+          box-shadow: 0px 0px 0px 0px {{ block.settings.button_shadow_color }};
+        }
+    {%- endcase -%}
+  {%- endfor -%}
+{%- endstyle -%}
+
+<section 
+  id="custom-our-story-{{ section.id }}" 
+  class="section {% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} story-section color-{{ color_scheme }} gradient{{ reset_spacing }}"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ section_width }} story__container">
+    <div class="story__wrapper">
+      
+      <!-- Image Column -->
+      <div class="story__image-column">
+        {%- if section_st.image != blank -%}
+          {{ section_st.image | image_url: width: 800 | image_tag: 
+            class: 'story__img', 
+            loading: 'lazy', 
+            alt: section_st.image.alt | default: 'Our Story Image' 
+          }}
+        {%- else -%}
+          <img 
+            src="https://images.unsplash.com/photo-1608248597279-f99d160bfcbc?q=80&w=800&auto=format&fit=crop" 
+            class="story__img" 
+            loading="lazy" 
+            alt="Our Story Product Showcase Placeholder"
+            width="600"
+            height="600"
+          >
+        {%- endif -%}
+      </div>
+
+      <!-- Content Column -->
+      <div class="story__content-column">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            
+            {%- when 'subheading' -%}
+              <span class="story__subheading block-{{ block.id }}" {{ block.shopify_attributes }}>
+                {{ block.settings.text }}
+              </span>
+            
+            {%- when 'heading' -%}
+              <h2 class="story__heading block-{{ block.id }}" {{ block.shopify_attributes }}>
+                {{ block.settings.text }}
+              </h2>
+            
+            {%- when 'quote_box' -%}
+              <div class="story__quote-box block-{{ block.id }}" {{ block.shopify_attributes }}>
+                {{ block.settings.text }}
+              </div>
+            
+            {%- when 'text' -%}
+              <div class="story__text block-{{ block.id }}" {{ block.shopify_attributes }}>
+                {{ block.settings.text }}
+              </div>
+            
+            {%- when 'bullet_point' -%}
+              <div class="story__bullet-point block-{{ block.id }}" {{ block.shopify_attributes }}>
+                <span class="story__bullet-icon">✓</span>
+                <span class="story__bullet-text">{{ block.settings.text }}</span>
+              </div>
+            
+            {%- when 'html_widget' -%}
+              <div class="story__html-widget block-{{ block.id }}" {{ block.shopify_attributes }}>
+                {{ block.settings.html_code }}
+              </div>
+            
+            {%- when 'button' -%}
+              <a href="{{ block.settings.button_link | default: '#' }}" class="story__button block-{{ block.id }}" {{ block.shopify_attributes }}>
+                {{ block.settings.button_text }}
+              </a>
+
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Custom Our Story",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:sections.all.section_width.label",
+      "default": "container",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "select",
+      "id": "layout_desktop",
+      "label": "Desktop Image Alignment",
+      "options": [
+        {
+          "value": "image_left",
+          "label": "Image Left"
+        },
+        {
+          "value": "image_right",
+          "label": "Image Right"
+        }
+      ],
+      "default": "image_left"
+    },
+    {
+      "type": "range",
+      "id": "max_width",
+      "min": 800,
+      "max": 1600,
+      "step": 50,
+      "unit": "px",
+      "label": "Max Container Width",
+      "default": 1200
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Section Background Override",
+      "default": "#ffffff",
+      "info": "Use this color to override the selected Color Scheme background."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_border_bottom",
+      "label": "Show Border Bottom",
+      "default": false
+    },
+    {
+      "type": "color",
+      "id": "border_bottom_color",
+      "label": "Border Bottom Color",
+      "default": "#2c2609"
+    },
+    {
+      "type": "header",
+      "content": "Story Image settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Story Image"
+    },
+    {
+      "type": "select",
+      "id": "image_aspect_ratio",
+      "label": "Image Aspect Ratio",
+      "options": [
+        {
+          "value": "auto",
+          "label": "Auto / Original"
+        },
+        {
+          "value": "square",
+          "label": "Square (1:1)"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait (4:5)"
+        },
+        {
+          "value": "landscape",
+          "label": "Landscape (16:9)"
+        }
+      ],
+      "default": "square"
+    },
+    {
+      "type": "range",
+      "id": "image_border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "label": "Image Border Radius",
+      "default": 8
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 60
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_spacing",
+      "label": "t:sections.all.section_padding.reset_spacing.label",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "subheading",
+      "name": "Subheading / Label",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Subheading Text",
+          "default": "FOUNDER'S STORY"
+        },
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Text Color",
+          "default": "#f63208"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Heading Text",
+          "default": "FROM INDUSTRY INSIDERS TO NATURAL REBELS"
+        },
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Text Color",
+          "default": "#1d211e"
+        }
+      ]
+    },
+    {
+      "type": "quote_box",
+      "name": "Highlight Quote Box",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Quote Text",
+          "default": "\"We couldn't find skincare that met our standards, so we created it ourselves\""
+        },
+        {
+          "type": "color",
+          "id": "bg_color",
+          "label": "Background Color",
+          "default": "#fffbe8"
+        },
+        {
+          "type": "color",
+          "id": "border_color",
+          "label": "Border Color",
+          "default": "#2c2609"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#2c2609"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Paragraph Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Paragraph content",
+          "default": "<p>After spending over a decade in the commercial skincare industry, we witnessed firsthand the disturbing reality behind premium products. What consumers didn't see were the cheap fillers, synthetic additives, and harmful preservatives hidden behind scientific-sounding names and clever marketing.</p>"
+        },
+        {
+          "type": "color",
+          "id": "color",
+          "label": "Text Color",
+          "default": "#121212"
+        }
+      ]
+    },
+    {
+      "type": "bullet_point",
+      "name": "Check Checklist Bullet",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Bullet Point Text",
+          "default": "Ethically Sourced & Handcrafted in small batches"
+        },
+        {
+          "type": "color",
+          "id": "icon_color",
+          "label": "Checkmark Icon Color",
+          "default": "#f63208"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text Color",
+          "default": "#121212"
+        }
+      ]
+    },
+    {
+      "type": "html_widget",
+      "name": "Custom HTML Widget",
+      "settings": [
+        {
+          "type": "html",
+          "id": "html_code",
+          "label": "HTML Code",
+          "default": "<!-- Add custom HTML code here -->"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "CTA Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Label",
+          "default": "Discover Our Story"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "color",
+          "id": "button_bg_color",
+          "label": "Button Background",
+          "default": "#fcfcfd"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button Text",
+          "default": "#2c2609"
+        },
+        {
+          "type": "color",
+          "id": "button_border_color",
+          "label": "Button Border",
+          "default": "#2c2609"
+        },
+        {
+          "type": "color",
+          "id": "button_shadow_color",
+          "label": "Button Shadow Color",
+          "default": "#2c2609"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Our Story",
+      "blocks": [
+        {
+          "type": "subheading",
+          "settings": {
+            "text": "FOUNDER'S STORY",
+            "color": "#f63208"
+          }
+        },
+        {
+          "type": "heading",
+          "settings": {
+            "text": "FROM INDUSTRY INSIDERS TO NATURAL REBELS",
+            "color": "#1d211e"
+          }
+        },
+        {
+          "type": "quote_box",
+          "settings": {
+            "text": "\"We couldn't find skincare that met our standards, so we created it ourselves\"",
+            "bg_color": "#fbf7e6",
+            "border_color": "#2c2609",
+            "text_color": "#2c2609"
+          }
+        },
+        {
+          "type": "text",
+          "settings": {
+            "text": "<p>After spending over a decade in the commercial skincare industry, we witnessed firsthand the disturbing reality behind \"premium\" products. What consumers didn't see were the cheap fillers, synthetic additives, and harmful preservatives hidden behind scientific-sounding names and clever marketing.</p><p>Our breaking point came when we realized that even \"natural\" brands were cutting corners. We began researching truly natural alternatives and discovered something our ancestors knew for centuries—tallow from grass-fed cattle contains bioidentical nutrients that human skin recognizes and absorbs effortlessly.</p><p>The \"aha moment\" happened during a countryside retreat when we experienced the remarkable healing properties of homemade tallow balm on our chronically dry skin. What started as a personal solution evolved into a mission: to create skincare with integrity, using only ingredients we could proudly list on our labels.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
