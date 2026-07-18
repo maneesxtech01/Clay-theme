@@ -535,3 +535,30 @@ mobile-column-switch {
 mobile-column-switch.active {
   color: var(--color-heading, #000) !important;
 }
+
+/* Align desktop toolbar elements: Left, Center, Right */
+@media screen and (min-width: 1025px) {
+  .toolbar-products {
+    display: grid !important;
+    grid-template-columns: 1fr auto 1fr !important;
+    align-items: center !important;
+    gap: 0 !important;
+    width: 100% !important;
+  }
+  .toolbar-products .toolbar-left {
+    display: flex !important;
+    justify-content: flex-start !important;
+    flex: none !important;
+  }
+  .toolbar-products .show-type-products {
+    display: flex !important;
+    justify-content: center !important;
+    flex: none !important;
+    margin: 0 auto !important;
+  }
+  .toolbar-products .toolbar-sorter {
+    display: flex !important;
+    justify-content: flex-end !important;
+    flex: none !important;
+  }
+}
