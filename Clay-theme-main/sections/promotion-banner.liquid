@@ -1,0 +1,400 @@
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign color_scheme = section_st.color_scheme
+  if section_st.reset_spacing
+    assign reset_spacing = ' remove_spacing'
+  endif
+  assign scroll_animation = settings.scroll_animation
+-%}
+{%- capture style -%}
+    --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};
+  {%- endcapture -%}
+<div
+  class="section{% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} sec__rich-text rich-text-{{ section.id }} color-{{ color_scheme }} gradient{{ reset_spacing }}"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ section_width }}">
+    <div class="relative mh-120 flex justify-content-center flex-column">
+      {%-liquid 
+        assign image = section_st.background_image | default: section_st.image_mobile
+        assign image_mobile = section_st.image_mobile | default: image  
+        assign alt = image.alt | default: image_mobile.alt
+        assign ratio_dk = image.aspect_ratio
+        assign ratio_mb = image_mobile.aspect_ratio
+       %}
+      {% if image != blank or  image_mobile != blank %}
+        <div class="background_image absolute inset-0 rounded" style="--aspect-ratio: {{ ratio_dk }};--aspect-ratio-mb: {{ ratio_mb }};--point:{{ image.presentation.focal_point }};">
+          {% render 'responsive-image',
+            type: 'banner',
+            container: section_width,
+            image: section_st.background_image,
+            image_mobile: image_mobile,
+            image_alt: alt
+          %}
+        </div>
+        {% else %}
+        <div class="background_image absolute inset-0 rounded" style="--aspect-ratio: 9.5;--aspect-ratio-mb: 16/9">
+          {%- render 'placeholder-render', class: 'absolute inset-0 w-full h-full object-fit-cover' -%}
+        </div>
+      {% endif %}
+
+      <div
+        class="sec__content-inner relative flex flex-lg-row flex-column align-lg-center justify-center justify-between-1025 gap-10  p-20 px-30"
+      >
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign block_st = block.settings
+            assign font_weight = block_st.font_weight
+            assign uppercase = ''
+            if block_st.uppercase
+              assign uppercase = 'uppercase'
+            endif
+            assign fs_custom = ''
+            if block_st.font_size > 41
+              assign fs_custom = 'fs-big'
+            elsif block_st.font_size > 24
+              assign fs_custom = 'fs-medium'
+            else
+              assign fs_custom = 'fs-custom'
+            endif
+            assign fs_custom_des = ''
+            if block_st.font_size_des > 41
+              assign fs_custom_des = 'fs-big'
+            elsif block_st.font_size_des > 24
+              assign fs_custom_des = 'fs-medium'
+            else
+              assign fs_custom_des = 'fs-custom'
+            endif
+          %}
+          {% case block.type %}
+            {% when 'button' %}
+              {% if block_st.button_label != blank or block_st.copy_button_label != blank %}
+                <motion-element
+                  data-motion="fade-up-lg"
+                    {% if scroll_animation != 'slide_in' %}
+                      hold
+                    {% endif %}
+                    data-motion-delay="{{ forloop.index0 | times: 50 }}"
+                  class="sec__content-btn flex flex-wrap  flex-xl-nowrap {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %} gap-15 justify-content-xl-end"
+                  style="
+                    {%- if scroll_animation != 'none' -%}
+                      --animation-order: {{  forloop.index }}
+                    {% endif %}
+                  "
+                >
+                  {% if block_st.copy_button_label != blank %}
+                    <copy-button
+                    data-content="{{ block_st.copy_button_label }}"
+                     id="Share-{{ block.id }}"
+                      class="inline-flex gap-5 align-center btn-copied no-underline btn-{{ block_st.copy_button_type }}"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="17" height="14" class="active-hide" viewBox="0 0 17 14" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M14.7857 4.66691V12.2499H5.07146V4.66691H14.7857ZM16.5 4.37526C16.5 3.56989 15.8604 2.91699 15.0714 2.91699H4.78575C3.99678 2.91699 3.35718 3.56989 3.35718 4.37526V12.5416C3.35718 13.3469 3.99678 13.9998 4.78575 13.9998H15.0714C15.8604 13.9998 16.5 13.3469 16.5 12.5416V4.37526Z" fill="white"/>
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M13.9277 0.874961C13.9277 0.391732 13.544 0 13.0706 0H1.92777C1.54892 0 1.18555 0.153637 0.917603 0.427115C0.649718 0.700599 0.499205 1.07151 0.499205 1.45827V10.4995C0.499205 10.9827 0.882975 11.3745 1.35634 11.3745C1.82971 11.3745 2.21348 10.9827 2.21348 10.4995V1.74992H13.0706C13.544 1.74992 13.9277 1.35819 13.9277 0.874961Z" fill="white"/>
+                      </svg> 
+                      <svg
+                        width="16"
+                        height="12"
+                        viewBox="0 0 16 12"
+                        fill="none"
+                        class="active-show hidden"
+                      >
+                        <path d="M5.5 9.17578L14.3281 0.308594L15.5 1.48047L5.5 11.4805L0.851562 6.83203L1.98438 5.66016L5.5 9.17578Z" fill="#fff"></path>
+                      </svg>
+                      {{ block_st.copy_button_label }}
+                    </copy-button>
+                  {% endif %}
+                  {% if block_st.button_label != blank %}
+                    <a
+                      {% if block_st.button_link == blank %}
+                        role="link" aria-disabled="true"
+                      {% else %}
+                        href="{{ block_st.button_link | default: "#" }}"
+                      {% endif %}
+                      aria-label="{{ block_st.button_label }}"
+                      class="inline-flex copy_button no-underline btn-{{ block_st.button_type }}"
+                    >
+                      {{ block_st.button_label }}
+                    </a>
+                  {% endif %}
+                </motion-element>
+              {% endif %}
+            {% when 'content' %}
+              <div class="flex gap-custom flex-wrap flex-xl-nowrap col-md-w-custom gap-20 align-center" style="--col-width: 50%; ">
+                {% if block_st.heading != blank %}
+                  <motion-element
+                    data-motion="fade-up-lg"
+                    {% if scroll_animation != 'slide_in' %}
+                      hold
+                    {% endif %}
+                    data-motion-delay="{{ forloop.index0 | times: 50 }}"
+                    class="block  {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}"
+                    style="
+                      {%- if scroll_animation != 'none' -%}
+                        --animation-order: 0;
+                      {% endif %}
+                    "
+                  >
+                  <h2
+                    class="m-0 sec__content-heading heading-letter-spacing   {{ uppercase }} {{ fs_custom }} {{ font_weight }}"
+                    style="
+                      --font-size: {{ block_st.font_size }};
+                    "
+                    {{ block.shopify_attributes }}
+                  >
+                    {{ block_st.heading }}
+                  </h2>
+                </motion-element>
+                  {% if block_st.description != blank %}
+                    <motion-element
+                      data-motion="fade-up-lg"
+                    {% if scroll_animation != 'slide_in' %}
+                      hold
+                    {% endif %}
+                    data-motion-delay="{{ forloop.index | times:  150  }}"
+                      class="sec__content-des rich__text-m0 block  {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}  {{ fs_custom_des }}"
+                      style="
+                        --font-size: {{ block_st.font_size_des }}; {%- if scroll_animation != 'none' -%}
+                          --animation-order: {{  forloop.index }}
+                        {% endif %}
+                      "
+                      {{ block.shopify_attributes }}
+                    >
+                      {{ block_st.description }}
+                    </motion-element>
+                  {% endif %}
+                {% endif %}
+              </div>
+          {% endcase %}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "t:sections.promotion_banner.name",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:sections.all.section_width.label",
+      "default": "container",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "t:sections.promotion_banner.settings.background_image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "t:sections.all.image.mobile_image.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_spacing",
+      "label": "t:sections.all.section_padding.reset_spacing.label",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "content",
+      "name": "t:sections.promotion_banner.block.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "t:sections.all.contents.heading.label",
+          "default": "Talk about your brand"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "label": "t:sections.all.content_settings.font_size.label",
+          "default": 24,
+          "min": 24,
+          "max": 100,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "t:sections.all.content_settings.font_weight.label",
+          "default": "heading_weight",
+          "options": [
+            {
+              "value": "body_weight",
+              "label": "t:sections.all.content_settings.font_weight.body_weight.label"
+            },
+            {
+              "value": "subheading_weight",
+              "label": "t:sections.all.content_settings.font_weight.subheading_weight.label"
+            },
+            {
+              "value": "heading_weight",
+              "label": "t:sections.all.content_settings.font_weight.heading_weight.label"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "uppercase",
+          "label": "t:sections.all.text_transform.uppercase.label"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "default": "<p>Share information about your brand with your customers. Describe a product, make announcements</p>",
+          "label": "t:sections.all.contents.description.label"
+        },
+        {
+          "type": "range",
+          "id": "font_size_des",
+          "label": "t:sections.all.content_settings.font_size.label",
+          "default": 14,
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "unit": "px"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "t:sections.all.contents.button.label",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "copy_button_label",
+          "default": "Button label",
+          "label": "t:sections.promotion_banner.block.button_copy.settings.button_label",
+          "info": "t:sections.all.contents.button.first_button_label.info"
+        },
+        {
+          "type": "select",
+          "id": "copy_button_type",
+          "label": "t:sections.promotion_banner.block.button_copy.settings.button_type",
+          "default": "primary",
+          "options": [
+            {
+              "value": "primary",
+              "label": "t:sections.all.contents.button.button_type.primary.label"
+            },
+            {
+              "value": "outline",
+              "label": "t:sections.all.contents.button.button_type.outline.label"
+            },
+            {
+              "value": "link",
+              "label": "t:sections.all.contents.button.button_type.link.label"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "Button label",
+          "label": "t:sections.promotion_banner.block.button.settings.button_label",
+          "info": "t:sections.all.contents.button.first_button_label.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.promotion_banner.block.button.settings.button_link"
+        },
+        {
+          "type": "select",
+          "id": "button_type",
+          "label": "t:sections.promotion_banner.block.button.settings.button_type",
+          "default": "primary",
+          "options": [
+            {
+              "value": "primary",
+              "label": "t:sections.all.contents.button.button_type.primary.label"
+            },
+            {
+              "value": "outline",
+              "label": "t:sections.all.contents.button.button_type.outline.label"
+            },
+            {
+              "value": "link",
+              "label": "t:sections.all.contents.button.button_type.link.label"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.promotion_banner.name",
+      "blocks": [
+         {
+            "type": "content"
+        },
+        {
+          "type": "button"
+      }
+      ]
+    }
+  ]
+}
+{% endschema %}

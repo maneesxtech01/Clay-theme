@@ -1,0 +1,134 @@
+<script src="{{ 'recently-viewed.js' | asset_url }}" defer="defer"></script>
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign scroll_animation = settings.scroll_animation
+
+-%}
+{%- capture style -%}
+  --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};--col-gap-desktop: 30px;--col-desktop: 4;--col-number: 2;--col-desktop-small: 3;--col-tablet: 3;--col-gap: 15px;
+{%- endcapture -%}
+<section
+  class="section product rv-page-section"
+  data-section-type="page-rv"
+  data-section-id="{{ section.id }}"
+  data-view="{{ template.name }}"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <skeleton-page></skeleton-page>
+  <div class="rv-page-section-inner hidden">
+    <div class="{{ section_width }} section-full rv-page-main mt-60">
+      {%- if search.results != blank -%}
+        {% paginate search.results by 50 %}
+          <div
+            class="rv-results grid grid-cols gap fadeIn row-gap-30"
+            style="
+              --row-gap: 3rem;
+              --col-desktop: 4;
+              --col-tablet: 3;
+              --col-desktop-small: 3;
+              --col-number: 2;
+              --col-gap: 15px;
+              --col-gap-desktop: 30px;
+            "
+          >
+            {%- for product in search.results -%}
+              <div
+                class="col-6 col-md-4 col-lg-3 product-load product-preload-js"
+                data-product-handle="{{ product.handle }}"
+              >
+                {% render 'product-item',
+                  card_product: product,
+                  section_id: section.id,
+                  template_enable_action: true,
+                  template_enable_price: true,
+                  template_enable_product_vendor: true,
+                  template_enable_rate: true,
+                  template_enable_add_cart: true,
+                  template_enable_product_short_description: false,
+                  template_enable_color_swatches: true,
+                  type: 'gird',
+                  template_enable_product_badges: true,
+                  scroll_animation: scroll_animation,
+                  indexFor: forloop.index
+                %}
+              </div>
+            {%- endfor -%}
+          </div>
+        {% endpaginate %}
+      {%- endif -%}
+      <div class="text-center mt-50 fadeIn">
+        <button class="clear-all-rvp btn-primary{% if search.results == blank %} hidden{% endif %}">
+          {{ 'collections.sidebar.clear_all' | t }}
+        </button>
+      </div>
+      <div class="rv-no-product-js hidden fadeIn text-center empty-hidden-heading">
+        <p class="rvp-no-product-text my-0">
+          {{ 'templates.rvp.no_product' | t }}
+        </p>
+        <a
+          class="rvp-no-product-url btn-primary no-underline inline-block mt-20"
+          href="{{ routes.all_products_collection_url }}"
+        >
+          {{- 'templates.rvp.redirect' | t -}}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.page-recently.name",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ],
+      "default": "fluid_container",
+      "label": "t:sections.all.section_width.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    }
+  ]
+}
+{% endschema %}

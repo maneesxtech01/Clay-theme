@@ -1,0 +1,24 @@
+<ul class="categories-list categories-list-menu-mobile list-unstyled px-30 px-1025-0 pb-30" style="display: none;">
+  {% if section_st.collection_list %}
+    {%- for collection in section_st.collection_list -%}
+      <li class="categories-list-menu-items level0 border-bottom border-bottom-1025-0 header-color">
+        <a
+          aria-label="{{ collection.title }}"
+          href="{% if collection == blank %}#{% else %}{{ collection.url }}{% endif %}"
+          class="categories-menu-items-link no-underline py-10 relative lh-normal inline-flex min-h-55 align-center heading-style gap-10"
+        >
+          {% if collection.metafields.custom.categories_menu_icon.value %}
+            <span class="icon-list-menu w-40 h-40 rounded-50 overflow-hidden">
+              {{-
+                collection.metafields.custom.categories_menu_icon.value
+                | image_url: width: 80
+                | image_tag: loading: 'lazy', class: 'w-full h-full object-fit-cover'
+              -}}
+            </span>
+          {% endif %}
+          <span>{{ collection.title }}</span>
+        </a>
+      </li>
+    {%- endfor -%}
+  {% endif %}
+</ul>

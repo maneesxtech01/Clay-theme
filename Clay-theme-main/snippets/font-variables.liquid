@@ -1,0 +1,142 @@
+{% liquid
+  assign font_family_body = 'Instrument Sans'
+  assign font_family_heading = 'Instrument Sans'
+
+  assign theme_st = settings
+  assign font_type_body = theme_st.font_type_body
+  assign font_body_shopify = theme_st.font_body_system
+  assign font_body_google = theme_st.font_body_google
+  assign font_body_google_embed = theme_st.font_body_google_embed
+
+  assign font_type_heading = theme_st.font_type_heading
+  assign font_heading_shopify = theme_st.font_heading_system
+  assign font_heading_google = theme_st.font_heading_google
+  assign font_body_heading_embed = theme_st.font_body_heading_embed
+%}
+
+{% comment %} Start check setting font {% endcomment %}
+{% if font_type_body == 'default_font' %}
+  {{
+    'InstrumentSans-Regular.woff2'
+    | asset_url
+    | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous'
+  }}
+  {% style %}
+    @font-face {
+      font-family: "Instrument Sans";
+      src: url({{ 'InstrumentSans-SemiBold.woff2' | asset_url }}) format("woff2");
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Instrument Sans";
+      src: url({{ 'InstrumentSans-Bold.ttf' | asset_url }});
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Instrument Sans";
+      src: url({{ 'InstrumentSans-Medium.woff2' | asset_url }}) format("woff2");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Instrument Sans";
+      src: url({{ 'InstrumentSans-Regular.woff2' | asset_url }}) format("woff2");
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+  {% endstyle %}
+{% elsif font_type_body == 'google' %}
+  {% assign font_family_body = font_body_google %}
+  {{ font_body_google_embed }}
+{% else %}
+  {% # theme-check-disable AssetPreload %}
+  <link rel="preload" as="font" href="{{ font_body_shopify | font_url }}" type="font/woff2" crossorigin>
+  {% # theme-check-disable AssetPreload %}
+  {%- capture font_family_body -%}{{ font_body_shopify.family }}, {{ font_body_shopify.fallback_families }};{%- endcapture -%}
+  {%- style -%}
+    {%- for variant in font_body_shopify.variants -%}{{ variant | font_face: font_display: 'swap' }}{%- endfor -%}
+  {%- endstyle -%}
+{% endif %}
+
+{% if font_type_heading == 'default_font' %}
+  {{
+    'InstrumentSans-Regular.woff2'
+    | asset_url
+    | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous'
+  }}
+  {% style %}
+    @font-face {
+      font-family: "Instrument Sans";
+      src: url({{ 'InstrumentSans-SemiBold.woff2' | asset_url }}) format("woff2");
+      font-weight: 600;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Instrument Sans";
+      src: url({{ 'InstrumentSans-Bold.ttf' | asset_url }});
+      font-weight: 700;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Instrument Sans";
+      src: url({{ 'InstrumentSans-Medium.woff2' | asset_url }}) format("woff2");
+      font-weight: 500;
+      font-style: normal;
+      font-display: swap;
+    }
+    @font-face {
+      font-family: "Instrument Sans";
+      src: url({{ 'InstrumentSans-Regular.woff2' | asset_url }}) format("woff2");
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+  {% endstyle %}
+{% elsif font_type_heading == 'google' %}
+  {% assign font_family_heading = font_heading_google %}
+  {{ font_body_heading_embed }}
+{% else %}
+  {% # theme-check-disable AssetPreload %}
+  <link rel="preload" as="font" href="{{ font_heading_shopify | font_url }}" type="font/woff2" crossorigin>
+  {% # theme-check-disable AssetPreload %}
+  {%- capture font_family_heading -%}{{ font_heading_shopify.family }}, {{ font_heading_shopify.fallback_families }};{%- endcapture -%}
+  {%- style -%}
+    {%- for variant in font_heading_shopify.variants -%}{{ variant | font_face: font_display: 'swap' }}{%- endfor -%}
+  {%- endstyle -%}
+{% endif %}
+
+{% liquid
+  assign font_menu_family = font_family_body
+  assign font_menu_type = theme_st.menu_font
+  if font_menu_type == 'body_font'
+    assign font_menu_family = font_family_body
+  else
+    assign font_menu_family = font_family_heading
+  endif
+
+  assign font_button_family = font_family_body
+  assign font_button_type = theme_st.button_font
+  if font_button_type == 'body_font'
+    assign font_button_family = font_family_body
+  else
+    assign font_button_family = font_family_heading
+  endif
+%}
+{% comment %} End check setting font {% endcomment %}
+
+{% style %}
+  :root {
+    --body-font: {{ font_family_body }}, sans-serif;
+    --heading-font: {{ font_family_heading }}, sans-serif;
+    --menu-font: {{ font_menu_family }}, sans-serif;
+    --btn-font: {{ font_button_family }}, sans-serif;
+  }
+{% endstyle %}

@@ -1,0 +1,29 @@
+before-you-leave .product-item__wrapper {
+  --col-width: 80px;
+}
+before-you-leave .product-before-items:not(:last-child) {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px dashed var(--color-border);
+}
+.open-byl .close-before::after {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  z-index: 16;
+}
+.before-you-leave{
+  z-index: 17 !important;
+}
+.product-before-items .product__color-swatches{
+  display: none !important;
+}
+@media screen and (max-width: 767.98px) {
+  .before-product-content .product-item__name{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;   
+    -webkit-line-clamp: 1;
+  }
+}

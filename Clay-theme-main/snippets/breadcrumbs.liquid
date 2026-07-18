@@ -1,0 +1,235 @@
+{% liquid
+  assign theme_st = settings
+  assign section_st = section.settings
+  assign hidden_price = theme_st.hidden_price
+%}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+  assign next_product = false
+%}
+{%- unless template == 'index' or template == '404' -%}
+  {%- assign t = template | split: '.' | first -%}
+  {%- if t == 'product' and next_prev -%}
+    {% liquid
+       assign next_product = true 
+    %}
+    <div class="flex gap-10 align-center justify-between">
+  {% endif %}
+  <ul
+    class="breadcrumb-list list-none my-0 px-0 fs-small-1 flex {% if next_product == false %}flex-wrap{% endif %} justify-content-{{ section_st.alignment }} {{ class }}"
+    role="navigation"
+    aria-label="breadcrumbs"
+  >
+    <li class="breadcrumb-item dot-between inline-flex align-center light-dark-grey">
+      <a class="breadcrumb-link no-underline breadcrumb-link no-underline light-dark-grey" href="{{ routes.root_url }}">
+        {{- 'general.breadcrumb.home' | t -}}
+      </a>
+    </li>
+    {%- case t -%}
+      {%- when 'page' -%}
+        <li class="breadcrumb-item dot-between inline-flex align-center">
+          <span class="breadcrumb-link no-underline heading-color" aria-current="page">{{ page.title }}</span>
+        </li>
+      {%- when 'product' -%}
+        {%- if collection.url -%}
+          <li class="breadcrumb-item dot-between inline-flex align-center light-dark-grey">
+            {{ collection.title | link_to: collection.url }}
+          </li>
+        {%- endif -%}
+        <li class="breadcrumb-item dot-between inline-flex align-center {% if next_product %}breadcrumb-truncate{% endif %}">
+          <span class="breadcrumb-link no-underline heading-color" aria-current="page">{{ product.title }}</span>
+        </li>
+      {%- when 'collection' and collection.handle -%}
+        {%- if current_tags -%}
+          <li class="breadcrumb-item dot-between inline-flex align-center light-dark-grey">
+            {{ collection.title | link_to: collection.url }}
+          </li>
+          <li class="breadcrumb-item dot-between inline-flex align-center">
+            <span class="breadcrumb-link no-underline heading-color" aria-current="page">
+              {{- current_tags | join: ' + ' -}}
+            </span>
+          </li>
+        {%- else -%}
+          <li class="breadcrumb-item dot-between inline-flex align-center">
+            <span class="breadcrumb-link no-underline heading-color" aria-current="page">
+              {{- collection.title -}}
+            </span>
+          </li>
+        {%- endif -%}
+      {%- when 'blog' -%}
+        {%- if current_tags -%}
+          <li class="breadcrumb-item dot-between inline-flex align-center light-dark-grey">
+            {{ blog.title | link_to: blog.url }}
+          </li>
+          <li class="breadcrumb-item dot-between inline-flex align-center">
+            <span class="breadcrumb-link no-underline heading-color" aria-current="page">
+              {{- current_tags | join: ' + ' -}}
+            </span>
+          </li>
+        {%- else -%}
+          <li class="breadcrumb-item dot-between inline-flex align-center">
+            <span class="breadcrumb-link no-underline heading-color" aria-current="page">{{ blog.title }}</span>
+          </li>
+        {%- endif -%}
+      {%- when 'article' -%}
+        <li class="breadcrumb-item dot-between inline-flex align-center light-dark-grey">
+          {{ blog.title | link_to: blog.url }}
+        </li>
+        <li class="breadcrumb-item dot-between inline-flex align-center">
+          <span class="breadcrumb-link no-underline heading-color" aria-current="page">{{ article.title }}</span>
+        </li>
+      {%- else -%}
+        <li class="breadcrumb-item dot-between inline-flex align-center">
+          <span class="breadcrumb-link no-underline heading-color" aria-current="page">{{ page_title }}</span>
+        </li>
+    {%- endcase -%}
+  </ul>
+  {%- if t == 'product' and next_prev -%}
+    <div
+      class="next-prev inline-flex gap-custom relative align-center{% if enable_rtl %} ltr{% endif %}"
+      style="--gap: 7;"
+    >
+      {%- liquid
+        assign previous_product = collection.previous_product
+        assign next_product = collection.next_product
+        assign collection_list = collection
+        if previous_product or next_product
+        else
+          assign collection_list = product.collections[0]
+          assign collection_list_product = collection_list.handle
+          assign previous_product = null
+          assign next_product = null
+          assign last = collections[collection_list_product].products_count
+          for p in collections[collection_list_product].products
+            if p.handle == product.handle
+              assign prev = forloop.index | minus: 2
+              assign next = forloop.index
+              if prev >= 0
+                assign previous_product = collections[collection_list_product].products[prev]
+              endif
+              if last >= next
+                assign next_product = collections[collection_list_product].products[next]
+              endif
+              break
+            endif
+          endfor
+        endif
+      -%}
+      {%- if previous_product -%}
+        <div class="hover-event lh-1">
+          <a
+            href="{{ previous_product.url }}"
+            class="nav-pr previous-product lh-1 text-color w-custom h-40 inline-flex light-dark-grey hover-heading-color align-center flex-start"
+            style="--custom-width: 2rem;"
+          >
+            <svg width="6" height="11" fill="none">
+              <use href="#icon-back" />
+            </svg>
+          </a>
+          <div class="product-item flex gap-10 shadow p-10 rounded-5 absolute z-3 bg-white invisible transition-short{% if enable_rtl %} left-0{% else %} right-0{% endif %}">
+            <div class="product-img w-custom rounded-5 overflow-hidden" style="--custom-width: 5rem">
+              <a href="{{ previous_product.url | within: collection }}">
+                {%- if previous_product.featured_image != blank -%}
+                  {%- assign image_alt = previous_product.featured_image.alt | default: 'product' | escape -%}
+                  {% render 'responsive-image',
+                    type: 'product',
+                    image: previous_product.featured_image,
+                    image_alt: image_alt,
+                    class: 'rounded-5'
+                  %}
+                {%- else -%}
+                  {%- render 'placeholder-render', class: 'rounded-5' -%}
+                {%- endif -%}
+              </a>
+            </div>
+            <div class="product-details flex-1">
+              <a
+                href="{{ previous_product.url | within: collection }}"
+                class="no-underline heading-color fs-small-1 subheading_weight lh-normal"
+                aria-label="{{ previous_product.title }}"
+              >
+                {{ previous_product.title }}
+              </a>
+              {% if hidden_price != true %}
+                <div
+                  class="product-item__price flex gap-custom lh-normal"
+                  style=" --gap: 3px;"
+                >
+                  {%- render 'price', scope: 'item', product: previous_product, show_badges: false -%}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+      <a href="{{ collection_list.url }}" class="nav-back lh-1 text-color tooltip relative">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.8019 7.43638H10.7669C9.27167 7.43638 8.54639 6.76644 8.54639 5.40422V2.03217C8.54639 0.669945 9.27167 0 10.7669 0H13.7684C15.2636 0 15.9889 0.669945 15.9889 2.03217V5.41539C15.9889 6.07416 15.8215 6.56546 15.4756 6.90043C15.1074 7.2689 14.5718 7.43638 13.8019 7.43638ZM10.7669 1.11657C9.77379 1.11657 9.66221 1.40688 9.66221 2.03217V5.40422C9.66221 6.04067 9.76263 6.31981 10.7669 6.31981H13.7684C14.2482 6.33098 14.5495 6.25282 14.6946 6.10766C14.8173 5.98484 14.8731 5.75036 14.8731 5.41539V2.03217C14.8731 1.40688 14.7615 1.11657 13.7684 1.11657H10.7669Z" fill="#111111"/>
+          <path d="M13.7794 16.0003H10.7779C9.28266 16.0003 8.55737 15.2745 8.55737 13.7783V10.7747C8.55737 9.27851 9.28266 8.55273 10.7779 8.55273H13.7794C15.2746 8.55273 15.9999 9.27851 15.9999 10.7747V13.7783C15.9999 15.2745 15.2746 16.0003 13.7794 16.0003ZM10.7779 9.66931C9.90751 9.66931 9.67319 9.89262 9.67319 10.7747V13.7783C9.67319 14.6492 9.89636 14.8837 10.7779 14.8837H13.7794C14.6498 14.8837 14.8841 14.6604 14.8841 13.7783V10.7747C14.8841 9.90379 14.6609 9.66931 13.7794 9.66931H10.7779Z" fill="#111111"/>
+          <path d="M5.25478 7.43638H2.21975C0.72455 7.43638 -0.000732422 6.76644 -0.000732422 5.40422V2.03217C-0.000732422 0.669945 0.72455 0 2.21975 0H5.2213C6.7165 0 7.44179 0.669945 7.44179 2.03217V5.41539C7.44179 6.07416 7.27441 6.56546 6.92851 6.90043C6.56029 7.2689 6.0247 7.43638 5.25478 7.43638ZM2.21975 1.11657C1.22667 1.11657 1.11509 1.40688 1.11509 2.03217V5.40422C1.11509 6.04067 1.21551 6.31981 2.21975 6.31981H5.2213C5.68995 6.33098 6.00238 6.25282 6.13628 6.10766C6.25902 5.98484 6.31481 5.75036 6.31481 5.41539V2.03217C6.31481 1.40688 6.20323 1.11657 5.21015 1.11657H2.21975Z" fill="#111111"/>
+          <path d="M5.2213 16.0003H2.21975C0.72455 16.0003 -0.000732422 15.2745 -0.000732422 13.7783V10.7747C-0.000732422 9.27851 0.72455 8.55273 2.21975 8.55273H5.2213C6.7165 8.55273 7.44179 9.27851 7.44179 10.7747V13.7783C7.44179 15.2745 6.7165 16.0003 5.2213 16.0003ZM2.21975 9.66931C1.34941 9.66931 1.11509 9.89262 1.11509 10.7747V13.7783C1.11509 14.6492 1.33825 14.8837 2.21975 14.8837H5.2213C6.09164 14.8837 6.32597 14.6604 6.32597 13.7783V10.7747C6.32597 9.90379 6.1028 9.66931 5.2213 9.66931H2.21975Z" fill="#111111"/>
+        </svg>
+        <span class="tooltip-content tool-tip-top invisible hidden block-md rounded-3 absolute pointer-none z-20">
+          {{- 'products.product.back_to_product' | t -}}
+        </span>
+      </a>
+      {%- if next_product -%}
+        <div class="hover-event lh-1">
+          <a
+            href="{{ next_product.url }}"
+            class="nav-pr next-product lh-1 text-color w-custom h-40 inline-flex light-dark-grey hover-heading-color align-center flex-end"
+            style="--custom-width: 2rem;"
+          >
+            <svg width="6" height="11" fill="none">
+              <use href="#icon-next" />
+            </svg>
+          </a>
+          <div class="product-item flex gap-10 shadow p-10 rounded-5 absolute z-3 bg-white invisible transition-short{% if enable_rtl %} left-0{% else %} right-0{% endif %}">
+            <div class="product-img w-custom rounded-5 overflow-hidden" style="--custom-width: 5rem">
+              <a href="{{ next_product.url | within: collection }}" arial-label="{{ next_product.title }}">
+                {%- if next_product.featured_image != blank -%}
+                  {%- assign image_alt = next_product.featured_image.alt | default: 'product' | escape -%}
+                  {% render 'responsive-image',
+                    type: 'product',
+                    image: next_product.featured_image,
+                    image_alt: image_alt,
+                    class: 'rounded-5'
+                  %}
+                {%- else -%}
+                  {%- render 'placeholder-render', class: 'rounded-5' -%}
+                {%- endif -%}
+              </a>
+            </div>
+            <div class="product-details flex-1">
+              <a
+                href="{{ next_product.url | within: collection }}"
+                class="no-underline heading-color fs-small-1 subheading_weight lh-normal"
+                arial-label="{{ next_product.title }}"
+              >
+                {{ next_product.title }}
+              </a>
+              {% if hidden_price != true %}
+                <div
+                  class="product-item__price flex gap-custom lh-normal"
+                  style=" --gap: 3px;"
+                >
+                  {%- render 'price', scope: 'item', product: next_product, show_badges: false -%}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+  {%- if t == 'product' and next_prev -%}</div>{% endif %}
+{%- endunless -%}

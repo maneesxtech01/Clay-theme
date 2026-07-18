@@ -1,0 +1,28 @@
+<div class="product-form__error-message-wrapper" role="alert" hidden>
+  <div class="form__message error inline-flex align-center">
+    {%- render 'icon-error' -%}
+    <span class="product-form__error-message ml-5"></span>
+  </div>
+</div>
+
+<div class="newsletter-form__success-message-wrapper" role="alert" hidden>
+  <div
+    class="mt-10 newsletter-form__message--success success form__message inline-flex align-center"
+    id="ContactFooter-success"
+    tabindex="-1"
+  >
+    {%- render 'icon-success' -%}
+    <span class="newsletter-form__message ml-5">{{- 'newsletter.success' | t }}</span>
+  </div>
+</div>
+
+<div class="newsletter-form__error-message-wrapper" role="alert" hidden>
+  <div
+    class="mt-10 newsletter-form__message--error error form__message inline-flex align-center"
+    id="ContactFooter-success"
+    tabindex="-1"
+  >
+    {%- render 'icon-error' -%}
+    <span class="newsletter-form__message ml-5">{{- 'newsletter.error' | t }}</span>
+  </div>
+</div>

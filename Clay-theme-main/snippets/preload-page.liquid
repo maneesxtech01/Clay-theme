@@ -1,0 +1,44 @@
+{% liquid
+  assign theme_st = settings
+  assign enable_preload = theme_st.enable_preload
+  assign preload_page = theme_st.preload_page
+%}
+{% if enable_preload %}
+  <preload-page
+    {% if preload_page == 'background' %}
+      style="background-color: #fff"
+    {% endif %}
+    class="preload-page fixed bg-white pointer-none inset-0 flex content-center"
+  >
+    {% if preload_page == 'dot' %}
+      <span class="preload-screen-spinner"></span>
+    {% elsif preload_page == 'spin' %}
+      <span class="preload-screen-loading-bar"></span>
+    {% endif %}
+  </preload-page>
+{% endif %}
+<style>
+  url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200"><circle fill="%23FF156D" stroke="%23FF156D" stroke-width="15" r="15" cx="40" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.4"></animate></circle><circle fill="%23FF156D" stroke="%23FF156D" stroke-width="15" r="15" cx="100" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="-.2"></animate></circle><circle fill="%23FF156D" stroke="%23FF156D" stroke-width="15" r="15" cx="160" cy="100"><animate attributeName="opacity" calcMode="spline" dur="2" values="1;0;1;" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite" begin="0"></animate></circle></svg>')
+</style>
+
+<script>
+  function PreloadPage() {
+    const preload = document.querySelector('preload-page');
+    window.addEventListener('DOMContentLoaded', () => {
+      if (preload) {
+        Motion.animate(
+          preload,
+          {
+            opacity: [1, 0],
+            visibility: ['visible', 'hidden'],
+          },
+          {
+            ease: [0.7, 0, 0.2, 1],
+            duration: 1,
+          }
+        );
+      }
+    });
+  }
+  PreloadPage();
+</script>

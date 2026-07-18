@@ -1,0 +1,22 @@
+{%- if product.metafields.judgeme.badge -%}
+  <div
+    style="{{ jm_style }}"
+    class="jdgm-widget jdgm-preview-badge product-reviews {{ class }}"
+    data-id="{{ product.id }}"
+    {%- if block -%}
+      {{ block.shopify_attributes }}
+    {%- endif -%}
+  >
+    {{ product.metafields.judgeme.badge }}
+  </div>
+{% endif %}
+{%- if product.metafields.spr.reviews -%}
+  <div
+    class="product-reviews {{ class }}"
+    {%- if block -%}
+      {{ block.shopify_attributes }}
+    {%- endif -%}
+  >
+    <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+  </div>
+{%- endif -%}

@@ -1,0 +1,124 @@
+{%- liquid
+    assign theme_st = settings
+    assign show_add_cart = theme_st.show_add_cart
+    assign hidden_price = theme_st.hidden_price
+    assign show_quantity = theme_st.show_quantity_input
+    assign selected_variant_id = request.params.variant
+    assign selected_variant = product.selected_variant
+    if selected_variant_id
+        for variant in product.variants
+            if variant.id == selected_variant_id
+                assign selected_variant = variant
+                break
+            endif
+        endfor
+    endif
+-%}
+<div class="bundle-image">
+    {%- if selected_variant.featured_media != blank -%}
+        {%- assign image_alt = selected_variant.featured_media.alt | default: product.title | escape -%}
+        {% render 'responsive-image',
+            type: 'product',
+            image: selected_variant.featured_media,
+            image_alt: image_alt,
+            class: 'rounded-5',
+            custom_widths: '550, 480, 360, 160, 90',
+            no_animate: true
+        %}
+    {%- elsif product.featured_media != blank -%}
+      {%- assign image_alt = product.featured_media.alt | default: product.title | escape -%}
+      {% render 'responsive-image',
+          type: 'product',
+          image: product.featured_media,
+          image_alt: image_alt,
+          class: 'rounded-5',
+          custom_widths: '550, 480, 360, 160, 90',
+          no_animate: true
+      %}
+    {%- else -%}
+        {% render 'placeholder-render', class: 'rounded-5' %}
+    {%- endif -%}
+</div>
+<div class="bundle-content">
+  <a class="no-underline product-title__truncate  heading-style heading-color" href="{{- product.url -}}" aria-label="{{ product.title | escape }}">
+    {{- product.title | escape -}}
+  </a>
+  {% if selected_variant.title != 'Default Title' %}
+    <span class="text-muted">{{- selected_variant.title -}}</span>
+  {% endif %}
+  {% if hidden_price != true %}
+    <div class="product-item__price text-start flex gap-custom lh-normal fs-custom mt-0 mb-5"
+    style="--font-size: {{ settings.price_size }}; --gap: 3px;">
+    <div class="price__regular">
+      <span class="price-item price-item--regular heading-style" data-price="{{ selected_variant.price }}">
+        {{ selected_variant.price | money }}
+      </span>
+    </div>
+    </div>
+  {% endif %}
+  <div class="bundle-action flex align-center justify-between">
+      {% if show_add_cart == true and theme_st.enable_catalog_mode == false and show_quantity %}
+        <quantity-input-bundle class="quantity rounded-3 border inline-flex text-center grey-bg">
+            <button
+              class="quantity__button pointer border-0 no-js-hidden w-custom grey-bg inline-flex content-center ps-15 pe-5"
+              name="minus"
+              type="button"
+              data-id="{{- product.key -}}"
+              style="--custom-width: 3rem"
+              arial-label="minus"
+            >
+              <svg width="9" height="1" fill="none">
+                <path fill="#111" d="M9 0v1H0V0h9Z"/>
+              </svg>
+            </button>
+            <label class="visually-hidden" for="{{- product.key -}}">
+              {{ 'general.cart.headings.quantity' | t }}
+            </label>
+            <input
+              class="quantity-input bg-unset text-center appearance-none p-0-important w-custom"
+              type="number"
+              id="{{ section.id }}-{{- product.id -}}"
+              name="updates[]"
+              data-id="{{ section.id }}-{{- product.id -}}"
+              value="1"
+              data-value="1"
+              min="1"
+              style="--input-padding: 0;--inputs-border-width: 0;--input-height: 33px;--custom-width: 3.8rem;--input-border-radius: 0;--input-bg: transparent"
+            >
+            <button
+              class="quantity__button pointer border-0 no-js-hidden w-custom grey-bg pe-12"
+              name="plus"
+              type="button"
+              data-id="{{- product.key -}}"
+              style="--custom-width: 3rem"
+              arial-label="plus"
+            >
+              <svg width="9" height="9" fill="none">
+                <path fill="#111" fill-rule="evenodd" d="M4 9h1V5h4V4H5V0H4v4H0v1h4v4Z" clip-rule="evenodd"/>
+              </svg>
+            </button>
+        </quantity-input-bundle>
+      {% endif %}
+      <svg hidden>
+        <symbol id="icon-trash">
+          <path fill="currentColor" d="M10.5 4.25h-7v7.588c0 .073.014.146.041.219a.727.727 0 0 0 .137.191.416.416 0 0 0 .177.123c.073.027.15.041.233.041h5.824c.082 0 .16-.014.232-.04a.416.416 0 0 0 .178-.124.53.53 0 0 0 .123-.191.485.485 0 0 0 .055-.22V4.25Zm-.588-1.162h2.338c.164 0 .3.06.41.178a.52.52 0 0 1 .178.396c0 .164-.06.305-.178.424a.557.557 0 0 1-.41.164h-.588v7.588c0 .237-.046.465-.137.684-.09.21-.214.391-.369.546a1.615 1.615 0 0 1-.56.383c-.21.091-.438.137-.684.137H4.088c-.246 0-.474-.05-.684-.15a1.931 1.931 0 0 1-.56-.37 1.755 1.755 0 0 1-.37-.546 1.76 1.76 0 0 1-.136-.684V4.25H1.75a.603.603 0 0 1-.424-.164.603.603 0 0 1-.164-.424.54.54 0 0 1 .164-.396.579.579 0 0 1 .424-.178h2.338V2.5c0-.237.045-.46.137-.67.09-.219.214-.406.369-.56.155-.165.337-.292.547-.383.218-.091.45-.137.697-.137h2.324c.246 0 .474.046.684.137.21.09.396.218.56.383.155.154.278.341.37.56.09.21.136.433.136.67v.588Zm-4.662 0h3.5V2.5a.433.433 0 0 0-.055-.219.531.531 0 0 0-.123-.191.416.416 0 0 0-.177-.123.513.513 0 0 0-.233-.055H5.838a.513.513 0 0 0-.233.055.416.416 0 0 0-.177.123.73.73 0 0 0-.137.191.55.55 0 0 0-.041.219v.588Zm0 3.5c0-.164.055-.3.164-.41A.579.579 0 0 1 5.838 6a.52.52 0 0 1 .396.178c.119.11.178.246.178.41v3.5c0 .155-.06.292-.178.41a.54.54 0 0 1-.396.164.603.603 0 0 1-.424-.164.587.587 0 0 1-.164-.41v-3.5Zm2.338 0c0-.164.055-.3.164-.41a.563.563 0 0 1 .82 0c.119.11.178.246.178.41v3.5c0 .155-.06.292-.178.41a.556.556 0 0 1-.41.164.587.587 0 0 1-.41-.164.587.587 0 0 1-.164-.41v-3.5Z"/>
+        </symbol>
+      </svg>
+      <bundle-cart-remove-button
+          data-variant-id="{{ selected_variant.id }}"
+          class="bundle__item-remove"
+          data-index="{{- product.key -}}"
+        >
+          <button
+            role="button"
+            class="cart-remove button--tertiary relative"
+            arial-label="{{- 'general.cart.remove' | t -}}"
+            name="{{- 'general.cart.remove' | t -}}"
+          >
+            <svg width="14" height="14" class="dark-grey remove-icon hover-heading-color transition">
+                <use href="#icon-trash" />
+              </svg> 
+          </button>
+        </bundle-cart-remove-button>
+  </div>
+</div>

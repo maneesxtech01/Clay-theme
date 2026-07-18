@@ -1,0 +1,57 @@
+{% capture colors %}
+    <style>
+        {%- for block in section.blocks -%}
+          {% assign block_st = block.settings %}
+            {%- if block_st.heading != blank -%}
+             {% assign color_name = block_st.heading | downcase | replace: ' ', '-' %}
+                .custom__color-swatches--{{ color_name }}{
+                    {% if block_st.color_image == blank %}
+                        background-color:{{ block_st.color_code }} !important;
+                        background-image: initial !important;
+                    {% else  %}
+                        background:{{ block_st.color_code }} url({{ block_st.color_image | image_url: width: 80 }}) no-repeat 50% 50%/cover !important;
+                    {% endif %}
+                }
+            {% endif %}
+        {%- endfor -%} 
+    </style>
+{% endcapture %}
+{{ colors | strip_newlines | remove: '  ' | remove: '	' }}
+{% schema %}
+{
+  "name": "t:sections.custom-colors.name",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.custom-colors.settings.paragraph.content__1"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.custom-colors.settings.paragraph.content__2"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "color",
+      "name": "t:sections.custom-colors.blocks.color.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.custom-colors.blocks.color.custom_color_name.label"
+        },
+        {
+          "type": "color",
+          "id": "color_code",
+          "label": "t:sections.custom-colors.blocks.color.custom_color_code.label"
+        },
+        {
+          "type": "image_picker",
+          "id": "color_image",
+          "label": "t:sections.custom-colors.blocks.color.custom_color_image.label"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

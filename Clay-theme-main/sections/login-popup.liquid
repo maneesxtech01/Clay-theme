@@ -1,0 +1,231 @@
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+<div id="login-popup" class="pt-6 px-10 pb-10">
+  <div class="login__header text-center">
+    <h4 class="login-heading my-0 fs-22">
+      {{ 'customer.login_page.sign_in' | t }}
+    </h4>
+  </div>
+  <div class="login_tab-wrapper">
+    <div
+      id="tab_login"
+      class="bls-login bls-login-popup"
+      data-title-default="{{ 'customer.login_page.title' | t }}"
+      data-login-hidden="{{ 'customer.login_page.title' | t }}"
+      aria-hidden="false"
+    >
+      <p class="mt-8 mb-22 mx-0 text-center">{{ 'customer.login_page.sign_in_info' | t }}</p>
+      <form accept-charset="UTF-8" action="{{ routes.account_login_url }}" method="post" class="auth-form auth-form-2">
+        <input name="form_type" type="hidden" value="customer_login">
+        <input name="utf8" type="hidden" value="✓">
+        <div class="form-field form-group  mb-10 form-floating">
+          <input
+            id="customer_email"
+            class="form-input form-input-placeholder w-full form-control"
+            type="email"
+            value=""
+            name="customer[email]"
+            required
+            placeholder="{{ 'customer.login_page.placeholder_email' | t }}"
+          >
+          <label class="field__label" for="customer_email">
+            {{ 'customer.login_page.placeholder_email' | t }}
+          </label>
+        </div>
+        <div class="form-field form-group mb-10 relative form-floating">
+          <input
+            id="customer_password"
+            class="form-input form-input-placeholder w-full form-control"
+            type="password"
+            value=""
+            required
+            placeholder="{{ 'customer.login_page.placeholder_pass' | t }}"
+            name="customer[password]"
+          >
+          <show-pass-word class="show-pass-word pointer transition absolute inset-y-0 w-30 inline-flex content-center light-dark-grey hover-heading-color{% if enable_rtl %} left-15{% else %}  right-15{% endif %}">
+            <svg width="14" height="15" fill="none" class="icon-hide">
+              <path fill="currentColor" d="M5.906 3.21a.568.568 0 0 1-.437-.067.594.594 0 0 1-.26-.37.568.568 0 0 1 .068-.437.55.55 0 0 1 .37-.26 5.982 5.982 0 0 1 1.367-.164c.629 0 1.221.096 1.777.287a7.337 7.337 0 0 1 1.531.697 7.07 7.07 0 0 1 1.053.793c.328.283.624.566.889.848.21.228.396.456.56.684.173.218.328.424.465.615.21.3.37.556.479.766l.164.3A.634.634 0 0 1 14 7.19a.455.455 0 0 1-.068.247c-.2.373-.415.729-.643 1.066a9.007 9.007 0 0 1-.684.902.562.562 0 0 1-.41.205.609.609 0 0 1-.424-.136.624.624 0 0 1-.205-.397.555.555 0 0 1 .15-.424c.183-.21.36-.437.534-.683.173-.255.342-.524.506-.807l-.191-.287a3.318 3.318 0 0 0-.247-.383c-.118-.173-.255-.36-.41-.56a9.822 9.822 0 0 0-1.285-1.368 6.746 6.746 0 0 0-.916-.67 5.575 5.575 0 0 0-1.271-.587 4.643 4.643 0 0 0-1.45-.22 2.55 2.55 0 0 0-.52.028c-.181.018-.368.05-.56.096Zm-.054 3.638v-.014a.961.961 0 0 0-.055.219.771.771 0 0 0 0 .205 1.084 1.084 0 0 0 .369.806c.119.11.246.192.383.247.146.045.296.068.451.068.055 0 .11-.005.164-.014a1.08 1.08 0 0 1 .164-.04L5.852 6.847ZM3.486 4.482A9.588 9.588 0 0 0 2.27 5.7c-.374.447-.716.939-1.026 1.477.055.073.114.168.178.287.073.118.16.246.26.383.118.173.255.36.41.56.155.2.323.401.506.602.237.255.496.506.779.752.283.246.588.474.916.683.392.237.811.433 1.258.588.456.146.939.219 1.449.219.428-.01.857-.068 1.285-.178a5.313 5.313 0 0 0 1.272-.533L8.203 9.186a2.71 2.71 0 0 1-.574.26 2.555 2.555 0 0 1-.588.095c-.3.01-.597-.036-.889-.137a2.407 2.407 0 0 1-.793-.492 2.409 2.409 0 0 1-.533-.752 2.248 2.248 0 0 1-.205-.861 2.49 2.49 0 0 1 .068-.684c.064-.228.16-.442.288-.642l-1.49-1.49ZM.178 1.16A.535.535 0 0 1 0 .75C0 .586.06.45.178.34A.52.52 0 0 1 .574.162c.164 0 .306.06.424.178L6.18 5.52v.014h.013l2.448 2.447.013.014 5.168 5.182a.52.52 0 0 1 .178.396c0 .164-.06.306-.178.424a.557.557 0 0 1-.41.164.586.586 0 0 1-.41-.164l-2.598-2.611a6.558 6.558 0 0 1-1.668.765 5.939 5.939 0 0 1-1.722.26 5.76 5.76 0 0 1-1.805-.273 6.928 6.928 0 0 1-1.531-.711 8.42 8.42 0 0 1-1.067-.78c-.319-.282-.61-.565-.875-.847-.21-.228-.4-.451-.574-.67l-.451-.629c-.21-.31-.37-.565-.479-.766l-.164-.314a.553.553 0 0 1 0-.533c.347-.638.739-1.226 1.176-1.764.438-.547.912-1.04 1.422-1.477L.178 1.16Z"/>
+            </svg>
+            <svg width="14" height="12" viewBox="0 0 14 12" fill="none" class="icon-view hidden">
+              <path d="M0.0683594 5.90234C0.0683594 5.90234 0.123047 5.80208 0.232422 5.60156C0.341797 5.39193 0.501302 5.13672 0.710938 4.83594C0.847656 4.64453 0.998047 4.43945 1.16211 4.2207C1.33529 3.99284 1.52669 3.76497 1.73633 3.53711C2.00065 3.25456 2.29232 2.97201 2.61133 2.68945C2.93945 2.4069 3.29492 2.14714 3.67773 1.91016C4.14258 1.61849 4.65299 1.38151 5.20898 1.19922C5.76497 1.00781 6.36198 0.912109 7 0.912109C7.63802 0.912109 8.23503 1.00781 8.79102 1.19922C9.34701 1.38151 9.85742 1.61849 10.3223 1.91016C10.7051 2.14714 11.056 2.4069 11.375 2.68945C11.7031 2.97201 11.9993 3.25456 12.2637 3.53711C12.4733 3.76497 12.6602 3.99284 12.8242 4.2207C12.9974 4.43945 13.1523 4.64453 13.2891 4.83594C13.4987 5.13672 13.6582 5.39193 13.7676 5.60156C13.877 5.80208 13.9316 5.90234 13.9316 5.90234C13.9772 5.99349 14 6.08464 14 6.17578C14 6.26693 13.9772 6.34896 13.9316 6.42188C13.9316 6.42188 13.877 6.52669 13.7676 6.73633C13.6582 6.93685 13.4987 7.19206 13.2891 7.50195C13.1523 7.69336 12.9974 7.90299 12.8242 8.13086C12.6602 8.34961 12.4733 8.57292 12.2637 8.80078C11.9993 9.08333 11.7031 9.36589 11.375 9.64844C11.056 9.93099 10.7051 10.1908 10.3223 10.4277C9.85742 10.7194 9.34701 10.9564 8.79102 11.1387C8.23503 11.321 7.63802 11.4121 7 11.4121C6.36198 11.4121 5.76497 11.321 5.20898 11.1387C4.65299 10.9564 4.14258 10.7194 3.67773 10.4277C3.29492 10.1908 2.93945 9.93099 2.61133 9.64844C2.29232 9.36589 2.00065 9.08333 1.73633 8.80078C1.52669 8.57292 1.33529 8.34961 1.16211 8.13086C0.998047 7.90299 0.847656 7.69336 0.710938 7.50195C0.501302 7.19206 0.341797 6.93685 0.232422 6.73633C0.123047 6.52669 0.0683594 6.42188 0.0683594 6.42188C0.0227865 6.33984 0 6.25326 0 6.16211C0 6.07096 0.0227865 5.98438 0.0683594 5.90234ZM1.24414 6.16211C1.29883 6.24414 1.35807 6.3444 1.42188 6.46289C1.49479 6.57227 1.58138 6.69987 1.68164 6.8457C1.80013 7.01888 1.93685 7.20573 2.0918 7.40625C2.24674 7.60677 2.41536 7.80729 2.59766 8.00781C2.83464 8.26302 3.0944 8.51367 3.37695 8.75977C3.65951 9.00586 3.96484 9.23372 4.29297 9.44336C4.6849 9.68034 5.10417 9.8763 5.55078 10.0312C6.00651 10.1771 6.48958 10.25 7 10.25C7.51042 10.25 7.98893 10.1771 8.43555 10.0312C8.89128 9.8763 9.3151 9.68034 9.70703 9.44336C10.0352 9.23372 10.3405 9.00586 10.623 8.75977C10.9056 8.51367 11.1654 8.26302 11.4023 8.00781C11.5846 7.80729 11.7533 7.60677 11.9082 7.40625C12.0632 7.20573 12.1999 7.01888 12.3184 6.8457C12.4186 6.69987 12.5007 6.57227 12.5645 6.46289C12.6374 6.3444 12.7012 6.24414 12.7559 6.16211C12.7012 6.08008 12.6374 5.98438 12.5645 5.875C12.5007 5.75651 12.4186 5.62891 12.3184 5.49219C12.1999 5.31901 12.0632 5.13216 11.9082 4.93164C11.7533 4.73112 11.5846 4.5306 11.4023 4.33008C11.1654 4.06576 10.9056 3.81055 10.623 3.56445C10.3405 3.31836 10.0352 3.09505 9.70703 2.89453C9.3151 2.64844 8.89128 2.45247 8.43555 2.30664C7.98893 2.16081 7.51042 2.08789 7 2.08789C6.48958 2.08789 6.00651 2.16081 5.55078 2.30664C5.10417 2.45247 4.6849 2.64844 4.29297 2.89453C3.96484 3.09505 3.65951 3.31836 3.37695 3.56445C3.0944 3.81055 2.83464 4.06576 2.59766 4.33008C2.41536 4.5306 2.24674 4.73112 2.0918 4.93164C1.93685 5.13216 1.80013 5.31901 1.68164 5.49219C1.58138 5.62891 1.49479 5.75651 1.42188 5.875C1.35807 5.98438 1.29883 6.08008 1.24414 6.16211ZM9.33789 6.16211C9.33789 6.49023 9.27409 6.79557 9.14648 7.07812C9.02799 7.36068 8.86393 7.60677 8.6543 7.81641C8.44466 8.02604 8.19401 8.19466 7.90234 8.32227C7.61979 8.44076 7.31901 8.5 7 8.5C6.68099 8.5 6.37565 8.44076 6.08398 8.32227C5.80143 8.19466 5.55534 8.02604 5.3457 7.81641C5.13607 7.60677 4.96745 7.36068 4.83984 7.07812C4.72135 6.79557 4.66211 6.49023 4.66211 6.16211C4.66211 5.8431 4.72135 5.54232 4.83984 5.25977C4.96745 4.97721 5.13607 4.73112 5.3457 4.52148C5.55534 4.31185 5.80143 4.14779 6.08398 4.0293C6.37565 3.90169 6.68099 3.83789 7 3.83789C7.31901 3.83789 7.61979 3.90169 7.90234 4.0293C8.19401 4.14779 8.44466 4.31185 8.6543 4.52148C8.86393 4.73112 9.02799 4.97721 9.14648 5.25977C9.27409 5.54232 9.33789 5.8431 9.33789 6.16211ZM8.16211 6.16211C8.16211 6.00716 8.13021 5.86133 8.06641 5.72461C8.01172 5.57878 7.92969 5.45117 7.82031 5.3418C7.72005 5.23242 7.59701 5.15039 7.45117 5.0957C7.31445 5.0319 7.16406 5 7 5C6.83594 5 6.68099 5.0319 6.53516 5.0957C6.39844 5.15039 6.27995 5.23242 6.17969 5.3418C6.07031 5.45117 5.98372 5.57878 5.91992 5.72461C5.86523 5.86133 5.83789 6.00716 5.83789 6.16211C5.83789 6.32617 5.86523 6.48112 5.91992 6.62695C5.98372 6.76367 6.07031 6.88672 6.17969 6.99609C6.27995 7.09635 6.39844 7.17839 6.53516 7.24219C6.68099 7.30599 6.83594 7.33789 7 7.33789C7.16406 7.33789 7.31445 7.30599 7.45117 7.24219C7.59701 7.17839 7.72005 7.09635 7.82031 6.99609C7.92969 6.88672 8.01172 6.76367 8.06641 6.62695C8.13021 6.48112 8.16211 6.32617 8.16211 6.16211Z" fill="currentColor"/>
+            </svg>
+          </show-pass-word>
+          <label class="field__label " for="customer_password">
+            {{ 'customer.login_page.placeholder_pass' | t }}
+          </label>
+        </div>
+        <a
+          class="block mt-25 link-forgot no-underline heading-color"
+          href=""
+          data-login-show="{{ 'customer.recover_password.title' | t }}"
+          arial-label="{{ 'customer.recover_password.title' | t }}"
+        >
+          <span class="text">{{ 'customer.login_page.forgot_password' | t }}</span>
+        </a>
+        <div class="form-actions auth-actions mt-20 text-center">
+          <button
+            type="submit"
+            class="button button-login btn btn-primary w-full"
+            value="{{ 'customer.login_page.title' | t }}"
+            name="{{ 'customer.login_page.title' | t }}"
+          >
+            {{ 'customer.login_page.title' | t }}
+          </button>
+          <a
+            class="button button-account block btn btn-outline mt-10 w-full text-center"
+            data-login-show="{{ 'customer.register.title' | t }}"
+            arial-label="{{ 'customer.register.title' | t }}"
+          >
+            {{- 'customer.register.title' | t -}}
+          </a>
+        </div>
+      </form>
+    </div>
+    <div
+      id="tab_register"
+      class="bls-register bls-login-popup"
+      data-login-hidden="{{ 'customer.register.title' | t }}"
+      aria-hidden="true"
+    >
+      <p class="mt-8 mb-22 mx-0 text-center">{{ 'customer.login_page.create_account_info' | t }}</p>
+      {% form 'create_customer' %}
+        {{ form.errors | default_errors }}
+        <div class="first-name form-group mb-10 form-floating">
+          <input
+            type="text"
+            placeholder="{{ 'customer.register.first_name' | t }}"
+            name="customer[first_name]"
+            class="w-full form-control"
+          >
+          <label class="field__label" for="first_name">
+            {{ 'customer.register.first_name' | t }}
+          </label>
+        </div>
+
+        <div class="last-name form-group mb-10 form-floating">
+          <input
+            type="text"
+            placeholder="{{ 'customer.register.last_name' | t }}"
+            name="customer[last_name]"
+            class="w-full form-control"
+          >
+          <label class="field__label" for="last_name">
+            {{ 'customer.register.last_name' | t }}
+          </label>
+        </div>
+
+        <div class="email form-group mb-10 form-floating">
+          <input
+            type="email"
+            placeholder="{{ 'customer.login_page.placeholder_email' | t }}"
+            name="customer[email]"
+            class="w-full form-control"
+          >
+          <label class="field__label" for="placeholder_email">
+            {{ 'customer.login_page.placeholder_email' | t }}
+          </label>
+        </div>
+
+        <div class="form-field password form-group mb-10 relative form-floating">
+          <input
+            type="password"
+            placeholder="{{ 'customer.login_page.placeholder_pass' | t }}"
+            name="customer[password]"
+            class="w-full form-control"
+          >
+          <show-pass-word class="show-pass-word pointer transition absolute inset-y-0 right-15 w-30 inline-flex content-center light-dark-grey hover-heading-color">
+            <svg width="14" height="15" fill="none">
+              <path fill="currentColor" d="M5.906 3.21a.568.568 0 0 1-.437-.067.594.594 0 0 1-.26-.37.568.568 0 0 1 .068-.437.55.55 0 0 1 .37-.26 5.982 5.982 0 0 1 1.367-.164c.629 0 1.221.096 1.777.287a7.337 7.337 0 0 1 1.531.697 7.07 7.07 0 0 1 1.053.793c.328.283.624.566.889.848.21.228.396.456.56.684.173.218.328.424.465.615.21.3.37.556.479.766l.164.3A.634.634 0 0 1 14 7.19a.455.455 0 0 1-.068.247c-.2.373-.415.729-.643 1.066a9.007 9.007 0 0 1-.684.902.562.562 0 0 1-.41.205.609.609 0 0 1-.424-.136.624.624 0 0 1-.205-.397.555.555 0 0 1 .15-.424c.183-.21.36-.437.534-.683.173-.255.342-.524.506-.807l-.191-.287a3.318 3.318 0 0 0-.247-.383c-.118-.173-.255-.36-.41-.56a9.822 9.822 0 0 0-1.285-1.368 6.746 6.746 0 0 0-.916-.67 5.575 5.575 0 0 0-1.271-.587 4.643 4.643 0 0 0-1.45-.22 2.55 2.55 0 0 0-.52.028c-.181.018-.368.05-.56.096Zm-.054 3.638v-.014a.961.961 0 0 0-.055.219.771.771 0 0 0 0 .205 1.084 1.084 0 0 0 .369.806c.119.11.246.192.383.247.146.045.296.068.451.068.055 0 .11-.005.164-.014a1.08 1.08 0 0 1 .164-.04L5.852 6.847ZM3.486 4.482A9.588 9.588 0 0 0 2.27 5.7c-.374.447-.716.939-1.026 1.477.055.073.114.168.178.287.073.118.16.246.26.383.118.173.255.36.41.56.155.2.323.401.506.602.237.255.496.506.779.752.283.246.588.474.916.683.392.237.811.433 1.258.588.456.146.939.219 1.449.219.428-.01.857-.068 1.285-.178a5.313 5.313 0 0 0 1.272-.533L8.203 9.186a2.71 2.71 0 0 1-.574.26 2.555 2.555 0 0 1-.588.095c-.3.01-.597-.036-.889-.137a2.407 2.407 0 0 1-.793-.492 2.409 2.409 0 0 1-.533-.752 2.248 2.248 0 0 1-.205-.861 2.49 2.49 0 0 1 .068-.684c.064-.228.16-.442.288-.642l-1.49-1.49ZM.178 1.16A.535.535 0 0 1 0 .75C0 .586.06.45.178.34A.52.52 0 0 1 .574.162c.164 0 .306.06.424.178L6.18 5.52v.014h.013l2.448 2.447.013.014 5.168 5.182a.52.52 0 0 1 .178.396c0 .164-.06.306-.178.424a.557.557 0 0 1-.41.164.586.586 0 0 1-.41-.164l-2.598-2.611a6.558 6.558 0 0 1-1.668.765 5.939 5.939 0 0 1-1.722.26 5.76 5.76 0 0 1-1.805-.273 6.928 6.928 0 0 1-1.531-.711 8.42 8.42 0 0 1-1.067-.78c-.319-.282-.61-.565-.875-.847-.21-.228-.4-.451-.574-.67l-.451-.629c-.21-.31-.37-.565-.479-.766l-.164-.314a.553.553 0 0 1 0-.533c.347-.638.739-1.226 1.176-1.764.438-.547.912-1.04 1.422-1.477L.178 1.16Z"/>
+            </svg>
+          </show-pass-word>
+          <label class="field__label" for="password">
+            {{ 'customer.login_page.placeholder_pass' | t }}
+          </label>
+        </div>
+        <p class="lable-policy mt-25 lh-small">
+          {{ 'customer.register.content_form_html' | t: link: shop.privacy_policy.url }}
+        </p>
+        <div class="submit mt-25">
+          <button
+            class="button btn btn-primary w-full"
+            type="submit"
+            arial-label="{{ 'customer.register.submit' | t }}"
+            value="{{ 'customer.register.submit' | t }}"
+            name="{{ 'customer.register.submit' | t }}"
+          >
+            {{ 'customer.register.submit' | t }}
+          </button>
+          <a
+            class="button button-login btn btn-outline w-full block text-center mt-10"
+            data-login-show="{{ 'customer.login_page.title' | t }}"
+            arial-label="{{ 'customer.login_page.title' | t }}"
+          >
+            {{- 'customer.login_page.title' | t -}}
+          </a>
+        </div>
+      {% endform %}
+    </div>
+    <div
+      id="forgot-password"
+      data-login-hidden="{{ 'customer.recover_password.title' | t: link: shop.shipping_policy.url }}"
+      aria-hidden="true"
+      class="bls-forgot-password bls-login-popup"
+    >
+      <p class="mt-8 mb-22 mx-0 text-center">{{ 'customer.login_page.forgot_password_info' | t }}</p>
+      {%- form 'recover_customer_password' -%}
+        {%- if form.errors -%}
+          {%- assign message = form.errors | default_errors | strip_html -%}
+          <p class="message">
+            {{ message }}
+          </p>
+        {% endif %}
+        <div class="email form-group mb-10 form-floating">
+          <input
+            type="email"
+            value=""
+            name="email"
+            id="RecoverEmail"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            placeholder="{{ 'customer.login_page.placeholder_email' | t }}"
+            aria-required="true"
+            aria-invalid="true"
+            required
+            class="w-full form-control"
+          >
+          <label class="field__label" for="RecoverEmail">
+            {{ 'customer.login_page.placeholder_email' | t }}
+          </label>
+        </div>
+        <div class="form-actions mt-20">
+          <button
+            type="submit"
+            class="button btn btn-primary w-full"
+            arial-label="{{ 'customer.recover_password.submit' | t }}"
+            value="{{ 'customer.recover_password.submit' | t }}"
+          >
+            {{ 'customer.recover_password.submit' | t }}
+          </button>
+          <a
+            class="button button-login btn btn-outline mt-10 w-full block text-center"
+            data-login-show="{{ 'customer.login_page.title' | t }}"
+            arial-label="{{ 'customer.login_page.title' | t }}"
+          >
+            {{- 'customer.login_page.title' | t -}}
+          </a>
+        </div>
+      {%- endform -%}
+    </div>
+  </div>
+</div>

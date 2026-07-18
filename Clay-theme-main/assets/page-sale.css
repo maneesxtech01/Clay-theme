@@ -1,0 +1,61 @@
+/* bls-sales-banner-page */
+
+.banner-sale-content {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  border-radius: 15px;
+  border-color: rgba(255, 255, 255, 0.2);
+  margin-bottom: 2.5px;
+}
+
+.banner-sale-content h4 {
+  --size: 26px;
+}
+.banner-sale-desc {
+  margin: 0;
+}
+.banner-sale-code {
+  border-radius: 15px;
+}
+.bls-sales-banner-page .bls__section-header {
+  --bls__section-header-margin: 6rem;
+}
+
+.banner-sale-items .banner-sale-label.sale-blink {
+  -webkit-animation: sale-blink 1s infinite;
+  -moz-animation: sale-blink 1s infinite;
+  -o-animation: sale-blink 1s infinite;
+  animation: sale-blink 1s infinite;
+}
+
+@-webkit-keyframes sale-blink {
+  0%,
+  49% {
+    background-color: transparent;
+    color: #ffffff;
+  }
+
+  50%,
+  100% {
+    background-color: #ffffff;
+  }
+}
+video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  pointer-events: none;
+  object-fit: cover;
+}
+.video-sale::after {
+  content: "";
+  opacity: var(--overlay-opacity, 30%);
+  background: #a91717;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}

@@ -1,0 +1,61 @@
+{{ 'skeleton.css' | asset_url | stylesheet_tag }}
+<div slot="loading" class="{% if  type != 'popup' %} px-30 {% endif %} {{ type }}" style="opacity: 1; transform: translateY(0px);">
+  <div class="v-stack  gap-custom">
+    <span class="skeleton skeleton--tab heading"></span>
+    <div class="h-stack gap-custom" style="--gap: 10">
+      <span class="skeleton skeleton--tab"></span><span class="skeleton skeleton--tab"></span
+      ><span class="skeleton skeleton--tab"></span>
+    </div>
+
+    <div
+      class=" {% if  type == 'popup' %} grid grid-cols gap-15 gap-lg-20 {% else %} v-stack gap-custom {% endif %} "
+      style="{% if  type != 'popup' %}--gap: 10 {% endif %} ;--col-number: 1;--col-tablet: 1;--col-desktop-small:3;--col-desktop: 5;"
+    >
+      <div class=" h-stack {% if type == 'popup' %} flex-column {% endif %}  align-center gap-10">
+        <span class="skeleton skeleton--thumbnail"></span>
+
+        <div class="v-stack product_infor gap-10 w-full">
+          <span class="skeleton skeleton--text" style="--skeleton-text-width: 20%"></span>
+          <span class="skeleton skeleton--text" style="--skeleton-text-width: 80%"></span>
+          <span class="skeleton skeleton--text" style="--skeleton-text-width: 40%"></span>
+        </div>
+      </div>
+      <div class="h-stack {% if type == 'popup' %} flex-column {% endif %}  align-center gap-10">
+        <span class="skeleton skeleton--thumbnail"></span>
+
+        <div class="v-stack product_infor gap-10 w-full">
+          <span class="skeleton skeleton--text" style="--skeleton-text-width: 20%"></span>
+          <span class="skeleton skeleton--text" style="--skeleton-text-width: 80%"></span>
+          <span class="skeleton skeleton--text" style="--skeleton-text-width: 40%"></span>
+        </div>
+      </div>
+      <div class="h-stack {% if type == 'popup' %} flex-column {% endif %} align-center gap-10">
+        <span class="skeleton skeleton--thumbnail"></span>
+
+        <div class="v-stack product_infor gap-10 w-full">
+          <span class="skeleton skeleton--text" style="--skeleton-text-width: 20%"></span>
+          <span class="skeleton skeleton--text" style="--skeleton-text-width: 80%"></span>
+          <span class="skeleton skeleton--text" style="--skeleton-text-width: 40%"></span>
+        </div>
+      </div>
+      <div class="h-stack {% if type == 'popup' %} flex-column {% endif %} align-center gap-10">
+        <span class="skeleton skeleton--thumbnail"></span>
+
+        <div class="v-stack product_infor gap-10 w-full">
+          <span class="skeleton skeleton--text" style="--skeleton-text-width: 20%"></span>
+          <span class="skeleton skeleton--text" style="--skeleton-text-width: 80%"></span>
+          <span class="skeleton skeleton--text" style="--skeleton-text-width: 40%"></span>
+        </div>
+      </div>
+      <div class="h-stack {% if type == 'popup' %} flex-column {% endif %} align-center gap-10">
+        <span class="skeleton skeleton--thumbnail"></span>
+
+        <div class="v-stack product_infor gap-10 w-full">
+          <span class="skeleton skeleton--text" style="--skeleton-text-width: 20%"></span>
+          <span class="skeleton skeleton--text" style="--skeleton-text-width: 80%"></span>
+          <span class="skeleton skeleton--text" style="--skeleton-text-width: 40%"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

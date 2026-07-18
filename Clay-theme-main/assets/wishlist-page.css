@@ -1,0 +1,17 @@
+.wishlist-page-section-inner .product-item__button-action button-wishlist {
+  display: none;
+}
+@media screen and (min-width: 1025px) {
+  .wishlist-page-section-inner
+    .product-item__button-action:not(.morden-style, .action__morden-style) {
+    top: 65px;
+  }
+}
+.wishlist-page-section-inner button-wishlist.product-item__button.active {
+  color: var(--color-heading);
+  background-color: var(--color-white);
+  border-color: var(--color-white);
+}
+.wishlist-page-section-inner .product__badges {
+  flex-direction: column;
+}

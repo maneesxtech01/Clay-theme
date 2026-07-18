@@ -1,0 +1,157 @@
+{{ 'my-account.css' | asset_url | stylesheet_tag }}
+<div class="customer-forgot" id="recover">
+  <div class="container">
+    <div
+      class="flex gap-custom-big flex-cols flex-wrap"
+      style="
+        --col-gap-desktop: 60px;
+        --col-gap: 40px;
+        --col-desktop: 2;
+        --col-number: 1;
+      "
+    >
+      <div class="recover-form customer-form">
+        <h3 class="title-customer mt-0">{{ 'customer.recover_password.title' | t }}</h3>
+        <p class="subtext mb-20">
+          {{ 'customer.recover_password.subtext' | t }}
+        </p>
+        {%- form 'recover_customer_password' -%}
+          {%- assign recover_success = form.posted_successfully? -%}
+          {%- if form.errors -%}
+            {%- assign message = form.errors | default_errors | strip_html -%}
+            <p class="error lh-normal flex gap-10">
+              {%- render 'icon-error' -%}
+              {{ message }}
+            </p>
+          {% endif %}
+          <div class="form-field form-group  mb-15 flex flex-column form-floating">
+            <input
+              type="email"
+              value=""
+              name="email"
+              id="RecoverEmail"
+              class="form-control"
+              autocomplete="email"
+              autocorrect="off"
+              autocapitalize="off"
+              placeholder="{{ 'customer.login_page.placeholder_email' | t }}"
+              aria-required="true"
+              aria-invalid="true"
+              required
+            >
+            <label class="form-label mb-3" for="RecoverEmail">
+              {{ 'customer.recover_password.email' | t }}
+              <span class="required">*</span>
+            </label>
+          </div>
+          <div class="form-actions mt-30">
+            <input
+              type="submit"
+              class="btn-primary text-center w-full"
+              value="{{ 'customer.recover_password.submit' | t }}"
+            >
+          </div>
+        {%- endform -%}
+      </div>
+      <div class="content-register">
+        <h3 class="title-customer mt-0">
+          {{ 'customer.register.title_content' | t }}
+        </h3>
+        <p class="mb-30">
+          {{ 'customer.register.content' | t }}
+        </p>
+        <a
+          href="{{ routes.account_register_url }}"
+          class="btn btn-primary block no-underline text-center"
+        >
+          {{- 'customer.register.submit' | t -}}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="customer-login">
+  <div class="container">
+    <div
+      class="flex gap-custom-big flex-cols flex-wrap"
+      style="--col-gap-desktop: 60px; --col-gap: 40px; --col-desktop: 2; --col-number: 1;"
+    >
+      <div class="login-form customer-form">
+        <h3 class="title-customer mt-0">
+          {{ 'customer.login_page.title' | t }}
+        </h3>
+        {%- if recover_success == true -%}
+          <p class="success flex gap-5">
+            {%- render 'icon-success' -%}
+            {{ 'customer.recover_password.success' | t }}
+          </p>
+        {% endif %}
+        {%- form 'customer_login', class: 'customer-login-form' -%}
+          {%- if form.errors -%}
+            {%- assign message = form.errors.messages.form -%}
+            <p class="error lh-normal flex gap-10">
+              {%- render 'icon-error' -%}
+              {{ message }}
+            </p>
+          {% endif %}
+          <div class="form-group mb-15 flex flex-column form-field form-floating">
+            
+            <input
+              type="email"
+              name="customer[email]"
+              id="CustomerEmail"
+              class="form-control"
+              placeholder="{{ 'customer.login_page.placeholder_email' | t }}"
+              required
+            >
+            <label class="form-label mb-3" for="CustomerEmail">
+              {{ 'customer.login_page.email' | t }}
+              <span class="required">*</span>
+            </label>
+          </div>
+          {%- if form.password_needed -%}
+            <div class="form-group mb-20 flex flex-column  form-field form-floating">
+              
+              <input
+                type="password"
+                name="customer[password]"
+                id="CustomerPassword"
+                class="form-control"
+                placeholder="{{ 'customer.login_page.placeholder_pass' | t }}"
+                required
+              >
+              <label class="form-label mb-3" for="CustomerPassword">
+                {{ 'customer.login_page.password' | t }}
+                <span class="required">*</span>
+              </label>
+            </div>
+          {% endif %}
+          <div class="form-actions mt-20">
+            <a href="#recover" class="forget-password no-underline">
+              <span class="text">{{ 'customer.login_page.forgot_password' | t }}</span>
+            </a>
+            <input
+              type="submit"
+              class="btn-primary block no-underline mt-30 w-full"
+              value="{{ 'customer.login_page.submit' | t }}"
+            >
+          </div>
+        {%- endform -%}
+      </div>
+      <div class="content-register">
+        <h3 class="title-customer mt-0">
+          {{ 'customer.register.title_content' | t }}
+        </h3>
+        <p class="mb-30">
+          {{ 'customer.register.content' | t }}
+        </p>
+        <a
+          href="{{ routes.account_register_url }}"
+          class="btn btn-primary inline-block no-underline text-center w-full"
+        >
+          {{- 'customer.register.submit' | t -}}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign border_height = section_st.border_height
+  assign border_color = section_st.border_color
+  if section_st.reset_spacing
+    assign reset_spacing = ' remove_spacing'
+  endif
+-%}
+{%- style -%}
+  .sec__divider-inner {
+    border-bottom: var(--border-height) solid var(--border-color);
+  }
+{%- endstyle -%}
+<div class="section sec__divider{{ reset_spacing }}">
+  <div class="{{ section_width }}">
+    <div
+      class="sec__divider-inner"
+      style="--border-height: {{ border_height }}px; --border-color: {{ border_color }}"
+    ></div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.divider.name",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:sections.all.section_width.label",
+      "default": "container",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "border_height",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "default": 1,
+      "label": "t:sections.divider.settings.height.label"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "t:sections.divider.settings.color.label",
+      "default": "#ebebeb"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_spacing",
+      "label": "t:sections.all.section_padding.reset_spacing.label",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.divider.name"
+    }
+  ]
+}
+{% endschema %}

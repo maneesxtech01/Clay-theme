@@ -1,0 +1,596 @@
+{% liquid
+  assign theme_st = settings
+  assign color_swatch_trigger = theme_st.color_swatch_trigger
+  assign swatch_item_type = theme_st.swatch_item_type
+  if color_swatch_trigger != blank and enable_color_swatches != false
+    assign option_name = color_swatch_trigger | split: ','
+  else
+    assign option_name = 'Color'
+  endif
+  assign size_trigger = theme_st.size_trigger
+  if size_trigger != blank
+    assign option_size = size_trigger | replace: ' ', '' | split: ','
+  else
+    assign option_size = 'Size'
+  endif
+  assign limit_color = theme_st.limit_color
+  assign has_color = false
+  for opt in product.options_with_values
+    for color_trigger_name in option_name
+      if opt.name == color_trigger_name
+        assign has_color = true
+      endif
+    endfor
+  endfor
+  assign variant_type = block.settings.variant_type
+%}
+{%- if type == 'item' -%}
+  {% comment %} Case color swatches for product item {% endcomment %}
+  {% if product.has_only_default_variant == false and has_color == true -%}
+    {% if is_compare == true %}
+      <compare-radios
+        class="product__color-swatches flex flex-wrap gap-10 mt-15 {{ class }}"
+        style="--col-gap: 12px;"
+      >
+    {% else %}
+      <variant-radios
+        class="product__color-swatches flex flex-wrap gap-10 mt-15 {{ class }} justify-content-{{ settings.product_alignment }}"
+        style="--col-gap: 12px;"
+      >
+    {% endif %}
+    {%- for option in product.options_with_values -%}
+      {%- liquid
+        assign is_color_option = false
+        for cl in option_name
+          if option.name == cl
+            assign is_color_option = true
+          endif
+        endfor
+      -%}
+      {%- if is_color_option == true -%}
+        {% comment %} Check this option is color option, if not, do nothing {% endcomment %}
+        {% if limit_color != 'default' %}
+          {% assign limit_color = limit_color | plus: 0 %}
+        {% endif %}
+        {% assign color_left = option.values | size | minus: limit_color %}
+        {%- for value in option.values -%}
+          {%- liquid
+            assign active = ''
+            if forloop.first == true
+              assign active = 'active'
+            endif
+            assign op = 'option' | append: option.position
+            assign variant = product.variants | where: op, value
+            assign img = ''
+            for i in variant
+              if i.featured_image.src
+                assign img = i.featured_image.src
+                break
+              endif
+            endfor
+
+            if value.swatch.image
+              assign image_url = value.swatch.image | image_url
+              assign swatch_value = 'url(' | append: image_url | append: ')'
+            elsif value.swatch.color
+              assign swatch_value = 'rgb(' | append: value.swatch.color.rgb | append: ')'
+            else
+              assign swatch_value = null
+            endif
+          -%}
+
+          <div
+            class="product__color-swatches--js {% if limit_color != "default" and  forloop.index > limit_color and is_compare != true    %} opacity-0 hidden {% endif %} relative tooltip product__color-swatch {{ theme_st.swatch_item_type }} rounded-50 pointer {{ active }}"
+            data-value="{{ value | replace: '"', "'" }}"
+            data-color="{{ value | downcase | replace: ' ', '-' | replace: '"', "'" }}"
+            data-custom-value="custom__color-swatches--{{ value | downcase | replace: ' ', '-' | replace: '"', "'" }}"
+            data-swatch-type="{{ swatch_item_type }}"
+            data-position="{{ option.position }}"
+            {% if img != blank %}
+              data-image="{{ img | image_url: width: 50 }}"
+            {% endif %}
+            data-option-swatch-value="{{ swatch_value }}"
+          >
+            <span class="tooltip-content invisible rounded-3 absolute pointer-none">{{ value }}</span>
+          </div>
+        {%- endfor -%}
+        {% if limit_color != "default" and color_left > 0 and is_compare != true  %}
+          <span class="show_color_swatch pointer"> + {{ color_left }} </span>
+        {% endif %}
+      {%- endif -%}
+    {%- endfor -%}
+
+    <script type="application/json">
+      {{ product.variants | json }}
+    </script>
+    {% if is_compare == true %}
+      </compare-radios>
+    {% else %}
+      </variant-radios>
+    {% endif %}
+  {% endif %}
+{%- elsif type == 'detail' or type == 'group' -%}
+  {% comment %} Case color swatches for product detail {% endcomment %}
+  {%- unless product.has_only_default_variant -%}
+    {% if product.metafields.custom.use_variants_image_group != blank %}
+      {% if product.metafields.custom.use_variants_image_group %}
+        {% # theme-check-disable UnclosedHTMLElement %}
+        <variant-group-detail
+          data-product-handle="{{ product.handle }}"
+          data-section="{{ section.id }}"
+          data-url="{{ product.url }}"
+          {% if update_url == false %}
+            data-update-url="false"
+          {% endif %}
+        >
+      {% else %}
+        <variant-radios-detail
+          class="block"
+          data-section="{{ section.id }}"
+          data-url="{{ product.url }}"
+          {% if update_url == false %}
+            data-update-url="false"
+          {% endif %}
+        >
+          {% # theme-check-disable UnclosedHTMLElement %}
+      {% endif %}
+    {% else %}
+      <variant-radios-detail
+        class="block"
+        data-section="{{ section.id }}"
+        data-url="{{ product.url }}"
+        {% if update_url == false %}
+          data-update-url="false"
+        {% endif %}
+      >
+    {% endif %}
+    {%- if variant_type == 'dropdown' -%}
+      {%- for option in product.options_with_values -%}
+        {%- liquid
+          assign is_color_option = false
+          for cl in option_name
+            if option.name == cl
+              assign is_color_option = true
+            endif
+          endfor
+          assign op = 'option' | append: option.position
+          assign op_value = product.selected_or_first_available_variant[op]
+          assign option_name_nospace = option.name | replace: ' ' , ''
+        -%}
+        <fieldset class="product-form__input product-form__input--dropdown flex flex-wrap gap-15 row-gap-0 mb-22 relative p-0 border-0 m-0">
+          <div class="flex align-center gap-15 flex-wrap w-full justify-between row-gap-0">
+            <div
+              class="form__label lh-normal option_drop_value"
+              for="Option-{{ section.id }}-{{ forloop.index0 }}"
+            >
+              {{ option.name }}:
+              <span data-option-name="{{ option.name }}" class="option_value heading-style capitalize">
+                {{- op_value -}}
+              </span>
+            </div>
+
+            {%- if option_size contains option_name_nospace -%}
+              {%- if block.settings.show_size_guide -%}
+                {%- liquid
+                  assign product_collections = product.collections
+                  assign collection_size_chart = ''
+                  for productCollection in product_collections
+                    if productCollection.metafields.custom.size_chart != blank
+                      assign collection_size_chart = productCollection.metafields.custom.size_chart
+                    endif
+                  endfor
+                -%}
+                {% if block.settings.size_guide_page != blank
+                  or product.metafields.custom.size_chart != blank
+                  or collection_size_chart != ''
+                %}
+                  <product-addons
+                    data-text-header="{{ 'general.product.size_guide' | t }}"
+                    data-custom-class="size_chart"
+                    class="product-addons__ask-question pointer underline hover-heading-color transition skeleton-loading"
+                  >
+                    {{ block.settings.size_guide_label }}
+                    <div class="product-addons__content ask-question__content hidden">
+                      {% if product.metafields.custom.size_chart != blank %}
+                        {% assign size_chart_html = product.metafields.custom.size_chart %}
+                        {{ pages[size_chart_html].content }}
+                      {%- else -%}
+                        {{ pages[block.settings.size_guide_page].content }}
+                      {% endif %}
+                    </div>
+                  </product-addons>
+                {% endif %}
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+          <swatch-dropdown
+            data-span-for="Option-{{ section.id }}-{{ forloop.index0 }}"
+            class="select-custom mt-12 pointer user-select-none w-full border transition rounded-3 h-45 px-20 flex align-center skeleton-loading"
+          >
+            <swatch-dropdown-select-value class="uppercase-first-letter select-selected user-select-none w-full py-10 inline-flex justify-between align-center gap-10 gap-lg-20 lh-normal pointer overlay">
+              <span
+                data-option-name="{{ option.name }}"
+                class="option_value heading-color subheading_weight uppercase-first-letter"
+              >
+                {{ op_value }}
+              </span>
+              <svg width="9" height="7" fill="none" class="icon-down transition-short active-rotated">
+                <path fill="#111" d="M.196 2.018A.573.573 0 0 1 0 1.582c0-.18.065-.336.196-.467.12-.12.27-.18.451-.18.18 0 .331.06.452.18L4.5 4.517l3.401-3.402c.12-.12.271-.18.452-.18.18 0 .33.06.451.18.13.13.196.286.196.467 0 .17-.065.316-.196.436L4.952 5.871a.589.589 0 0 1-.452.196.589.589 0 0 1-.452-.196L.196 2.018Z"/>
+              </svg>
+            </swatch-dropdown-select-value>
+            <div
+              class="w-full select-custom__content facet-filters__sort invisible transition-short select__select absolute shadow list-none z-2 p-5 border rounded-3 color-default{% if enable_rtl %} left-0{% else %} right-0{% endif %}"
+              id="Option-{{ section.id }}-{{ forloop.index0 }}"
+              aria-describedby="a11y-refresh-page-message"
+              style="--color-border: var(--color-dark);"
+            >
+              <div class="h-full overflow-auto">
+                {% render 'product-variant-options',
+                  product: product,
+                  option: option,
+                  isColorOption: is_color_option,
+                  option_name: option_name,
+                  swatch_item_type: swatch_item_type,
+                  variant_type: 'dropdown'
+                %}
+              </div>
+            </div>
+          </swatch-dropdown>
+        </fieldset>
+      {%- endfor -%}
+      <script type="application/json">
+        {{ product.variants | json }}
+      </script>
+    {%- else -%}
+      {%- for option in product.options_with_values -%}
+        {%- liquid
+          assign is_color_option = false
+          for cl in option_name
+            if option.name == cl
+              assign is_color_option = true
+            endif
+          endfor
+          assign op = 'option' | append: option.position
+          assign op_value = product.selected_or_first_available_variant[op]
+          assign option_name_nospace = option.name | replace: ' ' , ''
+        -%}
+        <fieldset class="js product-form__input flex flex-wrap mb-25 mx-0 p-0 border-0{% if is_color_option == true %} product-form__input_color{% if settings.enable_color_swatches %} gap-20{% else %} gap-10{% endif %}{% else %} gap-10{% endif %}{% if option_size contains option_name_nospace %} product-form__input_size{% endif %}">
+          <div class="form__label gap-10 w-full lh-normal flex gap-15 justify-between">
+            <span>
+              {{- option.name }}: <span class="option_value heading-style capitalize">{{ op_value }}</span></span
+            >
+
+            {%- if option_size contains option_name_nospace -%}
+              {%- if block.settings.show_size_guide -%}
+                {%- liquid
+                  assign product_collections = product.collections
+                  assign collection_size_chart = ''
+                  for productCollection in product_collections
+                    if productCollection.metafields.custom.size_chart != blank
+                      assign collection_size_chart = productCollection.metafields.custom.size_chart
+                    endif
+                  endfor
+                -%}
+                {% if block.settings.size_guide_page != blank
+                  or product.metafields.custom.size_chart != blank
+                  or collection_size_chart != ''
+                %}
+                  <product-addons
+                    data-text-header="{{ 'general.product.size_guide' | t }}"
+                    data-custom-class="size_chart"
+                    class="product-addons__ask-question pointer underline hover-heading-color transition skeleton-loading"
+                  >
+                    {{ block.settings.size_guide_label }}
+                    <div class="product-addons__content ask-question__content hidden">
+                      {% if product.metafields.custom.size_chart != blank %}
+                        {% assign size_chart_html = product.metafields.custom.size_chart %}
+                        {{ pages[size_chart_html].content }}
+                      {%- else -%}
+                        {{ pages[block.settings.size_guide_page].content }}
+                      {% endif %}
+                    </div>
+                  </product-addons>
+                {% endif %}
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+          {% render 'product-variant-options',
+            product: product,
+            option: option,
+            isColorOption: is_color_option,
+            option_name: option_name,
+            swatch_item_type: swatch_item_type,
+            variant_type: 'swatches'
+          %}
+        </fieldset>
+      {%- endfor -%}
+      <script type="application/json">
+        {{ product.variants | json }}
+      </script>
+    {%- endif -%}
+    {% if product.metafields.custom.use_variants_image_group != blank %}
+      {% if product.metafields.custom.use_variants_image_group %}
+        </variant-group-detail>
+      {% else %}
+        </variant-radios-detail>
+      {% endif %}
+    {% else %}
+      </variant-radios-detail>
+    {% endif %}
+  {%- endunless -%}
+{% elsif type == 'single' %}
+  {% comment %} Case color swatches for section single detail {% endcomment %}
+  {%- unless product.has_only_default_variant -%}
+    <variant-radios-single
+      data-section="{{ section.id }}"
+      data-url="{{ product.url }}"
+      {% if update_url == false %}
+        data-update-url="false"
+      {% endif %}
+    >
+      {%- for option in product.options_with_values -%}
+        {%- liquid
+          assign is_color_option = false
+          for cl in option_name
+            if option.name == cl
+              assign is_color_option = true
+            endif
+          endfor
+          assign op = 'option' | append: option.position
+          assign op_value = product.selected_or_first_available_variant[op]
+          assign option_name_nospace = option.name | replace: ' ' , ''
+        -%}
+        <fieldset class="js product-form__input flex flex-wrap mb-20 mx-0 p-0 border-0{% if is_color_option == true %} product-form__input_color gap-20{% else %} gap-10{% endif %}{% if option_size contains option_name_nospace %} product-form__input_size{% endif %}">
+          <div class="form__label gap-10 w-full lh-normal flex gap-15 justify-between">
+            <span>
+              {{- option.name }}: <span class="option_value heading-style capitalize">{{ op_value }}</span></span
+            >
+            {%- if option_size contains option_name_nospace -%}
+              {%- if block.settings.show_size_guide -%}
+                {%- liquid
+                  assign product_collections = product.collections
+                  assign collection_size_chart = ''
+                  for productCollection in product_collections
+                    if productCollection.metafields.custom.size_chart != blank
+                      assign collection_size_chart = productCollection.metafields.custom.size_chart
+                    endif
+                  endfor
+                -%}
+                {% if block.settings.size_guide_page != blank
+                  or product.metafields.custom.size_chart != blank
+                  or collection_size_chart != ''
+                %}
+                  <product-addons
+                    data-text-header="{{ 'general.product.size_guide' | t }}"
+                    data-custom-class="size_chart"
+                    class="product-addons__ask-question pointer underline hover-heading-color transition skeleton-loading"
+                  >
+                    {{ block.settings.size_guide_label }}
+                    <div class="product-addons__content ask-question__content hidden">
+                      {% if product.metafields.custom.size_chart != blank %}
+                        {% assign size_chart_html = product.metafields.custom.size_chart %}
+                        {{ pages[size_chart_html].content }}
+                      {%- else -%}
+                        {{ pages[block.settings.size_guide_page].content }}
+                      {% endif %}
+                    </div>
+                  </product-addons>
+                {% endif %}
+              {%- endif -%}
+            {%- endif -%}
+          </div>
+          {% render 'product-variant-options',
+            product: product,
+            option: option,
+            isColorOption: is_color_option,
+            option_name: option_name,
+            swatch_item_type: swatch_item_type,
+            variant_type: 'swatches'
+          %}
+        </fieldset>
+      {%- endfor -%}
+      <script type="application/json">
+        {{ product.variants | json }}
+      </script>
+    </variant-radios-single>
+  {%- endunless -%}
+{%- elsif type == 'sticky' or type == 'sticky_group' -%}
+  {% comment %} Case color swatches for product sticky add to cart {% endcomment %}
+  {% if type == 'sticky' %}
+    <variant-radios-sticky
+      data-section="{{ section.id }}"
+      data-url="{{ product.url }}"
+      {% if update_url == false %}
+        data-update-url="false"
+      {% endif %}
+    >
+  {% else %}
+    <variant-group-sticky
+      data-product-handle="{{ product.handle }}"
+      data-section="{{ section.id }}"
+      data-url="{{ product.url }}"
+      {% if update_url == false %}
+        data-update-url="false"
+      {% endif %}
+    >
+  {% endif %}
+  <select>
+    {% liquid
+      assign color_option = ''
+      for option in product.options
+        if option contains 'Color' or option contains 'Colour'
+          assign color_option = option
+        endif
+      endfor
+    %}
+    {% for variant in product.variants %}
+      {% liquid
+        assign color_value = ''
+        if color_option == product.options[0]
+          assign color_value = variant.option1
+        elsif color_option == product.options[1]
+          assign color_value = variant.option2
+        elsif color_option == product.options[2]
+          assign color_value = variant.option3
+        endif
+      %}
+      {% assign color_option = '' %}
+      {% for option in product.options_with_values %}
+        {% assign color_option = option.name %}
+      {% endfor %}
+      <option
+        class="color product-sticky-js"
+        data-variant-id="{{ variant.id }}"
+        data-name="{{ color_option }}"
+        data-color-value="{{ color_value }}"
+        data-value="{{ variant.title }}"
+        value="{{ variant.title }}"
+        {% if variant.id == product.selected_or_first_available_variant.id %}
+          selected="true"
+        {% endif %}
+      >
+        {% liquid
+          assign show_title = true
+          if variant.title contains 'Default Title'
+            assign show_title = false
+          endif
+        %}
+        {% if show_title %}
+          {{ variant.title }} -
+        {% endif %}
+        {% if settings.currency_code_enabled %}
+          {{ variant.price | money_with_currency }}
+        {% else %}
+          {{ variant.price | money }}
+        {% endif %}
+      </option>
+    {% endfor %}
+  </select>
+  <script type="application/json">
+    {{ product.variants | json }}
+  </script>
+  {% if type == 'sticky' %}
+    </variant-radios-sticky>
+  {% else %}
+    </variant-group-sticky>
+  {% endif %}
+{%- elsif type == 'bundle' -%}
+  {%- liquid
+    assign variants_available_arr = product.variants | map: 'available'
+    assign variants_option_1_arr = product.variants | map: 'option1'
+    assign variants_option_2_arr = product.variants | map: 'option2'
+    assign variants_option_3_arr = product.variants | map: 'option3'
+  -%}
+  {%- unless product.has_only_default_variant -%}
+    <variant-radios-bundle
+      data-section="{{ section.id | append: product.id }}"
+      data-url="{{ product.url }}"
+      {% if update_url == false %}
+        data-update-url="false"
+      {% endif %}
+    >
+      {%- for option in product.options_with_values -%}
+        {%- liquid
+          assign is_color_option = false
+          for colorItem in option_name
+            if option.name == colorItem
+              assign is_color_option = true
+            endif
+          endfor
+        -%}
+        <fieldset class="js product-form__input flex flex-wrap mb-20 last-0 mx-0 p-0 border-0{% if is_color_option %} color gap-15{% else %} gap-15{% endif %}">
+          <legend class="form__label gap-10 w-full mb-12 lh-normal">
+            <span class="swatch-attribute-label">{{ option.name }}:</span>
+            <span class="swatch-selected-value heading-style uppercase-first-letter inline-block">
+              {{ option.selected_value }}
+            </span>
+          </legend>
+          {%- for value in option.values -%}
+            {%- liquid
+              assign option_disabled = true
+              for option1_name in variants_option_1_arr
+                case option.position
+                  when 1
+                    if variants_option_1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                      assign option_disabled = false
+                    endif
+                  when 2
+                    if option1_name == product.selected_or_first_available_variant.option1 and variants_option_2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                      assign option_disabled = false
+                    endif
+                  when 3
+                    if option1_name == product.selected_or_first_available_variant.option1 and variants_option_2_arr[forloop.index0] == product.selected_or_first_available_variant.option2 and variants_option_3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                      assign option_disabled = false
+                    endif
+                endcase
+              endfor
+              assign op = 'option' | append: option.position
+              assign variant = product.variants | where: op, value
+              assign img = ''
+              for i in variant
+                if i.featured_image.src
+                  assign img = i.featured_image.src
+                  break
+                endif
+              endfor
+              if value.swatch.image
+                assign image_url = value.swatch.image | image_url
+                assign swatch_value = 'url(' | append: image_url | append: ')'
+              elsif value.swatch.color
+                assign swatch_value = 'rgb(' | append: value.swatch.color.rgb | append: ')'
+              else
+                assign swatch_value = null
+              endif
+            -%}
+            <div
+              class="{% if is_color_option %}product__color-swatches--js product__color-swatch inline-flex align-center rounded-50 swatch-large pointer {% endif %}relative tooltip option-swatch-js{% if option.selected_value == value %} active{% endif %}{% if option_disabled %} option-disabled{% endif %}"
+              data-value="{% if is_color_option %}{{ value }}{% else %}{{ value | escape }}{% endif %}"
+              data-color="{{ value | downcase }}"
+              data-custom-value="custom__color-swatches--{{ value | downcase | replace: ' ', '-' | replace: '"', "'" }}"
+              data-image="{{ img | image_url: width: 100, height: 100 }}"
+              {% if is_color_option %}
+                data-swatch-type="{{ swatch_item_type }}"
+              {% endif %}
+              data-option-swatch-value="{{ swatch_value }}"
+            >
+              {% if is_color_option %}
+                <label
+                  class="product-swatches"
+                >
+                  <span class="tooltip-content invisible rounded-3 absolute pointer-none">{{ value }}</span>
+                </label>
+              {% else %}
+                <label
+                  class="product-swatches tooltip pointer product__item-option inline-flex align-center border rounded-3 subheading_weight btn-hover lh-normal px-20 py-8 transition relative {{ value | escape }}"
+                >
+                  <span class="swatche-item">{{ value | escape }}</span>
+                </label>
+              {% endif %}
+            </div>
+          {%- endfor -%}
+        </fieldset>
+      {%- endfor -%}
+      <script type="application/json">
+        {{ product.variants | json }}
+      </script>
+      <script type="application/json" class="productVariantsQty">
+        [
+          {%- for variant in product.variants -%}
+            {%- assign op = variant.option1 | replace: '"', '\"' -%}
+            {%- liquid
+                assign id = '"id":' | append: variant.id
+                assign option = '"option":"' | append: op | append: '"'
+                assign quantity = '"qty":' | append: variant.inventory_quantity
+                assign available = '"available":' | append: variant.available
+                assign mamagement = '"mamagement":"' | append: variant.inventory_management | append: '"'
+                assign incoming = '"incoming":"' | append: variant.incoming | append: '"'
+                assign incoming_date = '"incoming_date":"' | append: variant.next_incoming_date | append: '"'
+            -%}
+            { {{ id }},{{ option }},{{ quantity }},{{ available }},{{ mamagement }},{{ incoming }},{{ incoming_date }}}
+            {%- unless forloop.last -%},{%- endunless forloop.last -%}
+          {%- endfor -%}
+          ]
+      </script>
+    </variant-radios-bundle>
+  {%- endunless -%}
+{%- endif -%}

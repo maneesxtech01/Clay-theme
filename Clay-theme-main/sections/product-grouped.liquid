@@ -1,0 +1,263 @@
+{%- liquid
+  assign theme_st = settings
+  assign product_image_ratio = theme_st.product_image_ratio
+  assign show_secondary_image = theme_st.show_secondary_image
+  assign show_button_add_to_cart = theme_st.show_add_cart
+  assign hidden_price = theme_st.hidden_price
+  assign product_check = product.id
+  assign show_quantity = theme_st.show_quantity_input
+-%}
+<div class="product-group">
+  {%- if search.results != blank -%}
+    {%- assign array = search.terms | remove: 'id:' | split: ' OR ' | uniq -%}
+    {%- assign item = search.results -%}
+    {%- assign product = item[0] -%}
+    <div class="sf-prod__block info-product-group">
+      {%- assign product_form_id = 'form-' | append: section.id -%}
+      {%- form 'product',
+        product,
+        class: 'form',
+        id: product_form_id,
+        novalidate: 'novalidate',
+        data-type: 'add-to-cart-form'
+      -%}
+        <div class="product-group-list border rounded p-20">
+          {%- for i in array -%}
+            {%- liquid
+              assign j = i | plus: 0      
+              assign item = search.results | where: 'id', j
+              assign product = item[0]
+              assign product_available = product.variants | where: 'available'
+              if product_check == product.id or product.available == false
+                continue
+              endif
+            -%}
+            {%- if product.metafields.custom.external_affiliate == blank -%}
+              <div class="product-group-item{% if forloop.first == true %} main-product{% endif %} flex gap-15 align-center mb-15 pb-15 gap-15 border-bottom-dashed last-0">
+                <div
+                  class="product-image {{ product.handle }} mb-0 mb-md-15 flex-auto w-custom"
+                  style="--custom-width: 9rem"
+                >
+                  {%- liquid
+                    assign current_variant = product.selected_or_first_available_variant
+                    assign image = current_variant.featured_image | default: product.featured_image
+                  -%}
+                  <a class="img-url" href="{{ product.url | within: collection }}" title=" {{ product.title }}">
+                    {% assign product_media = product.featured_media %}
+                    {%- if product_media -%}
+                      {%- liquid
+                        assign ratio = ''
+                        if product_image_ratio != 'adapt'
+                          case product_image_ratio
+                            when 'square'
+                              assign ratio = '1/1'
+                            when 'landscape'
+                              assign ratio = '4/3'
+                            when 'portrait'
+                              assign ratio = '3/4'
+                            else
+                              assign ratio = '3/4'
+                          endcase
+                        else
+                          if product_media.media_type == 'model'
+                            assign ratio = '3/4'
+                          else
+                            assign ratio = product_media.aspect_ratio
+                          endif
+                        endif
+                        assign alt_features = product_media.alt | default: product.title | escape
+                      -%}
+                      <div
+                        class="product-item__media--ratio rounded-5"
+                        style="--aspect-ratio: {{ ratio }};"
+                      >
+                        {% render 'responsive-image',
+                          type: 'product',
+                          class: 'product-image',
+                          image: product_media,
+                          image_alt: alt_features
+                        %}
+                        {%- liquid
+                          if product.media[1] != blank and show_secondary_image
+                            assign alt_features = product.media[1].alt | default: product.title | escape
+                            render 'responsive-image', type: 'product', class: 'secondary-image invisible product-image', image: product.media[1], image_alt: alt_features
+                          endif
+                        -%}
+                      </div>
+                    {%- else -%}
+                      {%- liquid
+                        assign ratio = ''
+                        if product_image_ratio != 'adapt'
+                          case product_image_ratio
+                            when 'square'
+                              assign ratio = '1/1'
+                            when 'landscape'
+                              assign ratio = '4/3'
+                            when 'portrait'
+                              assign ratio = '3/4'
+                            else
+                              assign ratio = '3/4'
+                          endcase
+                        else
+                          assign ratio = '3/4'
+                        endif
+                      -%}
+                      <div
+                        class="product-item__media--ratio rounded-5"
+                        style="--aspect-ratio: {{ ratio }};"
+                      >
+                        {% render 'placeholder-render', class: 'rounded-5' %}
+                      </div>
+                    {% endif %}
+                  </a>
+                </div>
+                <div class="product-info flex-1">
+                  <div class="product-group-content-info d-flex align-center justify-content-between">
+                    <div class="product-group_info">
+                      <a
+                        class="product-item__name unset heading-style no-underline block lh-normal"
+                        href="{{ product.url | within: collection }}"
+                        arial-label="{{ product.title }}"
+                      >
+                        {{ product.title }}
+                      </a>
+                      <div class="variant-select mt-10 flex flex-wrap gap-5">
+                        {%- if product.variants.size > 1 -%}
+                          <select
+                            name="items[][id]"
+                            class="product-variant-option rounded-5 capitalize"
+                            data-compare-price="{{ product.compare_at_price | default: product.price }}"
+                            data-price="{{ product.price }}"
+                            data-handle="{{ product.handle }}"
+                            style="--input-padding: 0 10px;--input-height: 35px;--input-border-radius: 5px;--input-bg: transparent"
+                          >
+                            {% for variant in product_available %}
+                              {%- liquid
+                                assign selected = false
+                              -%}
+                              {% assign quantity = variant.inventory_quantity %}
+                              {%- if quantity < 1 and variant.available == false -%}
+                                {% continue %}
+                              {% endif %}
+                              {%- if variant.id == product.selected_or_first_available_variant.id -%}
+                                {% assign selected = true %}
+                              {% endif %}
+                              <option
+                                value="{{ variant.id }}"
+                                {% if selected %}
+                                  selected="true"
+                                {% endif %}
+                                data-image="{{ variant.featured_image | default: image | image_url }}"
+                                data-compare-price="{{ variant.compare_at_price | default: variant.price }}"
+                                data-price="{{ variant.price }}"
+                                data-option="{{ variant.title }}"
+                              >
+                                {{ variant.title }}
+                              </option>
+                            {% endfor %}
+                          </select>
+                        {%- else -%}
+                          <input
+                            type="hidden"
+                            class="product-variant-option mr-20"
+                            name="items[][id]"
+                            value="{{ product.selected_or_first_available_variant.id }}"
+                            data-compare-price="{{ product.compare_at_price | default: product.price }}"
+                            data-price="{{ product.price }}"
+                          >
+                        {% endif %}
+                        {%- if show_button_add_to_cart and theme_st.enable_catalog_mode == false and show_quantity -%}
+                          <div class="product-form__input product-form__quantity">
+                            <label class="form__label visually-hidden" for="Quantity-{{ product.id }}">
+                              {{ 'products.product.quantity.label' | t }}
+                            </label>
+                            <quantity-input class="quantity rounded-5 border inline-flex text-center">
+                              <button
+                                class="quantity__button bg-transparent pointer border-0 no-js-hidden w-custom inline-flex content-center"
+                                name="minus"
+                                type="button"
+                                style="--custom-width: 3.4rem"
+                              >
+                                <span class="visually-hidden">
+                                  {{- 'products.product.quantity.decrease' | t: product: product.title | escape -}}
+                                </span>
+                                <svg width="9" height="2" fill="none">
+                                  <path fill="#111" d="M9 .501v1H0v-1h9Z"/>
+                                </svg>
+                              </button>
+                              <label class="visually-hidden" for="quantity">
+                                {{ 'general.cart.headings.quantity' | t }}
+                              </label>
+                              <input
+                                class="quantity-{{ product.id }} quantity__input-product-group quantity-input bg-unset text-center appearance-none p-0-important w-custom"
+                                type="number"
+                                name="items[][quantity]"
+                                id="Quantity-{{ product.id }}"
+                                min="0"
+                                value="{%- if forloop.first -%} 1 {%- else -%} 0 {%- endif -%}"
+                                form="{{ product_form_id }}"
+                                style="--input-padding: 0;--inputs-border-width: 0;--input-height: 33px;--custom-width: 2rem;--input-border-radius: 0;--input-bg: transparent"
+                              >
+                              <button
+                                class="quantity__button bg-transparent pointer border-0 no-js-hidden w-custom"
+                                name="plus"
+                                type="button"
+                                style="--custom-width: 3.4rem"
+                              >
+                                <span class="visually-hidden">
+                                  {{- 'products.product.quantity.increase' | t: product: product.title | escape -}}
+                                </span>
+                                <svg width="9" height="10" fill="none">
+                                  <path fill="#111" fill-rule="evenodd" d="M4 9.501h1v-4h4v-1H5v-4H4v4H0v1h4v4Z" clip-rule="evenodd"/>
+                                </svg>
+                              </button>
+                            </quantity-input>
+                          </div>
+                        {%- endif -%}
+                      </div>
+                      {% if hidden_price == false %}
+                        <div
+                          class="product-item__price flex gap-custom lh-normal fs-custom"
+                          style="--font-size: {{ settings.price_size }}; --gap: 3px;--product-item__price-top: 14px;"
+                        >
+                          {%- render 'price', scope: 'item', product: product, show_badges: false -%}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {% endform %}
+    </div>
+    {%- if theme_st.enable_catalog_mode == false -%}
+      <div class="product-group-actions mt-30 mb-30">
+        <button
+          class="btn btn-primary w-full product-group-submit product-form__submit word-wrap relative"
+          data-add-cart-err-qty="{{ 'products.product.add_cart_error_qty' | t }}"
+        >
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin opacity-0 icon-load">
+            <use href="#icon-load"></use>
+          </svg>
+          <span class="product-form__text hidden-on-load">{{ 'products.product.add_to_cart' | t }}</span>
+        </button>
+        <div class="product-dynamic-checkout mt-15">
+          <div class="payment-button">
+            <button
+              type="button"
+              class="w-full shopify-payment-button__button shopify-payment-button__button--unbranded product-group-buy-now"
+              data-testid="Checkout-button"
+              data-add-cart-err-qty="{{ 'products.product.add_cart_error_qty' | t }}"
+            >
+              <span>
+                {{ 'products.product.buy_it_now' | t }}
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  {% endif %}
+</div>

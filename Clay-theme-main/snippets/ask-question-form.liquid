@@ -1,0 +1,88 @@
+{%- form 'contact', id: 'ContactForm', class: 'isolate field' -%}
+  <div
+    class="contact__fields field flex flex-wrap gap-10 mb-10 flex-cols"
+    style="--col-number: 1;--col-desktop: 2;"
+  >
+    <div class="field flex-1 form-floating">
+      <input
+        class="field__input w-full form-control"
+        autocomplete="name"
+        type="text"
+        id="Ask-name"
+        name="contact[{{ 'templates.contact.form.name' | t }}]"
+        value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+        placeholder="{{ 'templates.contact.form.name' | t }}"
+        required
+      >
+      <label for="Ask-name">
+        {{ 'templates.contact.form.name' | t -}}
+      </label>
+    </div>
+    <div class="field flex-1 form-floating">
+      <input
+        type="tel"
+        id="Ask-phone"
+        class="field__input w-full form-control"
+        autocomplete="tel"
+        name="contact[{{ 'templates.contact.form.phone' | t }}]"
+        pattern="[0-9\-]*"
+        value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+        placeholder="{{ 'templates.contact.form.phone' | t }}"
+        required
+      >
+      <label for="Ask-phone">
+        {{ 'templates.contact.form.phone' | t }}
+      </label>
+    </div>
+  </div>
+  <div class="field mb-10 form-floating">
+    <input
+      autocomplete="email"
+      type="email"
+      id="Ask-email"
+      class="field__input w-full form-control"
+      name="contact[email]"
+      spellcheck="false"
+      autocapitalize="off"
+      value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+      aria-required="true"
+      {% if form.errors contains 'email' %}
+        aria-invalid="true"
+        aria-describedby="ContactForm-email-error"
+      {% endif %}
+      placeholder="{{ 'templates.contact.form.email' | t }}"
+      required
+    >
+    <label for="Ask-email">
+      {{ 'templates.contact.form.email' | t }}
+    </label>
+    {%- if form.errors contains 'email' -%}
+      <small class="contact__field-error" id="ContactForm-email-error">
+        <span class="visually-hidden">{{ 'accessibility.error' | t }}</span>
+        <span class="form__message error">
+          {{- form.errors.translated_fields.email | capitalize }}
+          {{ form.errors.messages.email -}}
+        </span>
+      </small>
+    {%- endif -%}
+  </div>
+  <div class="field mb-10 form-floating textarea">
+    <textarea
+      rows="10"
+      id="AskMessage"
+      class="text-area field__input w-full form-control"
+      name="contact[{{ 'templates.contact.form.comment' | t }}]"
+      placeholder="{{ 'templates.contact.form.comment' | t }}"
+      required
+    >
+        {{- form.body -}}
+      </textarea>
+    <label class="form__label" for="AskMessage">
+      {{ 'templates.contact.form.comment' | t }}
+    </label>
+  </div>
+  <div class="note my-25">{{ 'templates.contact.form.note' | t }}</div>
+  <button type="submit" class="button w-full btn-primary">
+    {{ 'templates.contact.form.send_contact' | t }}
+  </button>
+{%- endform -%}

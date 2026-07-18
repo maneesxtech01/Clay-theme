@@ -1,0 +1,76 @@
+{%- liquid
+  assign theme_st = settings
+  if scope != 'detail'
+    assign target = product.variants[0]
+  else
+    assign target = product.selected_or_first_available_variant
+  endif
+  assign compare_at_price = target.compare_at_price
+  assign price = target.price | default: 1999
+
+  assign money_price = price | money
+  if theme_st.show_currency_code
+    assign money_price = price | money_with_currency
+  endif
+  if target == product and product.price_varies
+    assign money_price = 'products.product.price.from_price_html' | t: price: money_price
+  endif
+  assign special_class = ''
+  if compare_at_price > price
+    assign special_class = 'price--special'
+  endif
+-%}
+
+<div class="card-product-price {{ class }} flex align-center flex-wrap gap-5 relative">
+  {%- if compare_at_price > price -%}
+    <div class="price-regular primary-color">
+      <span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
+      <span class="price heading_weight primary-color price-same-style {{ special_class }}">
+        {{ money_price }}
+      </span>
+    </div>
+    <div class="price-regular">
+      <span class="visually-hidden">
+        {{- 'products.product.price.regular_price' | t -}}
+      </span>
+      <s class="price-item compare-price dark-grey">
+        {%- if theme_st.show_currency_code -%}
+          {{ compare_at_price | money_with_currency }}
+        {%- else -%}
+          {{ compare_at_price | money }}
+        {%- endif -%}
+      </s>
+    </div>
+  {%- else -%}
+    <div class="price-regular">
+      <span class="visually-hidden">
+        {{- 'products.product.price.regular_price' | t -}}
+      </span>
+      <span class="price price-same-style heading-style">
+        {{ money_price }}
+      </span>
+    </div>
+  {%- endif -%}
+  {% if target.unit_price_measurement != null %}
+    <small class="unit-price">
+      <span class="visually-hidden-price">{{ 'products.product.price.unit_price' | t }}</span>
+      <span class="price-item price-item--last">
+        <span class="number">
+          {%- if theme_st.show_currency_code -%}
+            {{- target.unit_price | money_with_currency -}}
+          {%- else -%}
+            {{- target.unit_price | money -}}
+          {%- endif -%}
+        </span>
+        <span aria-hidden="true">/</span>
+        <span class="visually-hidden">&nbsp;{{ 'products.product.price.unit_price_separator' | t }}&nbsp;</span>
+        <span class="unit">
+          {%- if target.unit_price_measurement.reference_value != 1 -%}
+            {{- target.unit_price_measurement.reference_value -}}
+          {%- endif -%}
+          {{ target.unit_price_measurement.reference_unit }}
+        </span>
+      </span>
+    </small>
+  {% endif %}
+</div>

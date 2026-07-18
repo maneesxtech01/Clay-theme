@@ -1,0 +1,278 @@
+{{ 'page-heading-banner.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign section_st = section.settings
+  assign t = template | split: '.' | first
+  assign section_width = section_st.section_width
+  assign color_scheme = section_st.color_scheme
+  assign background_image = section_st.background_image
+  assign height = section_st.height
+  assign scroll_animation = settings.scroll_animation
+-%}
+{%- capture style -%}
+  --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};{%- if background_image != blank and height == 'adapt' -%}--aspect-ratio: {{ background_image.aspect_ratio }};{% endif %}--overlay-opacity: {{ section_st.overlay_opacity }}%;
+{%- endcapture -%}
+{%- if section.blocks.size > 0 -%}
+  <div
+    class="section remove_spacing sec__page-heading color-{{ color_scheme }} gradient{% if background_image != blank %} bg-transparent relative mb-60{% else %} mb-60{% endif %} align-center justify-content-{{ section_st.alignment }}{% if t == 'cart' and cart == empty %} hidden{% else %} flex{% endif %}"
+    style="{{ style | strip | strip_newlines }}"
+  >
+    {%- if background_image != blank -%}
+      <div class="overlay-bg">
+        {%- assign image_alt = background_image.alt | default: 'product' | escape -%}
+        {% render 'responsive-image',
+          type: 'banner',
+          container: section_width,
+          image: background_image,
+          image_alt: image_alt,
+          class: 'background-heading absolute inset-0 z--1 pointer-none w-full h-full object-position-center object-fit-cover'
+        %}
+      </div>
+    {% endif %}
+    <div class="{{ section_width }}">
+      <div class="heading-content relative text-{{ section_st.alignment }}">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign block_st = block.settings
+            assign header_size = ''
+            if block_st.header_size == 'small'
+              assign header_size = 'h3'
+            elsif block_st.header_size == 'large'
+              assign header_size = 'h1-size'
+            endif
+          -%}
+          {%- case block.type -%}
+            {%- when 'heading' -%}
+              <motion-element
+                data-motion="fade-up-lg"
+                data-motion-delay="50"
+                {% if scroll_animation != 'slide_in' %}
+                  hold
+                {% endif %}
+               data-motion-delay="{{ forloop.index0 | times: 50 }}"
+                class="{% if scroll_animation == 'slide_in' %} opacity-0 {% endif %} block"
+              >
+                <h1 class="heading-title heading-letter-spacing h2 mt-8 mb-0 {{ header_size }}">
+                  {%- if block_st.page_title != blank -%}
+                    {{ block_st.page_title }}
+                  {%- else -%}
+                    {% if template contains 'blog' %}
+                      {{ blog.title }}
+                    {% elsif template contains 'cart' %}
+                      {{- 'general.cart.title' | t -}}
+                    {% else %}
+                      {{ page.title }}
+                    {% endif %}
+                  {% endif %}
+                </h1>
+              </motion-element>
+            {%- when 'description' -%}
+              {% if block_st.description != blank or page.content != blank %}
+                <motion-element
+                  data-motion="fade-up-lg"
+                  {% if scroll_animation != 'slide_in' %}
+                    hold
+                  {% endif %}
+                  data-motion-delay="{{ forloop.index0 | times: 50 }}"
+                  class="heading-description block {% if scroll_animation == 'slide_in' %} opacity-0 {% endif %} mt-10 rich__text-m0"
+                >
+                  {% if block_st.description != blank -%}
+                    {{- block_st.description -}}
+                  {%- else %}
+                    {{ page.content -}}
+                  {%- endif %}
+                </motion-element>
+              {% endif %}
+            {%- when 'breadcrumb' -%}
+              <motion-element
+                data-motion="fade-up-lg"
+                {% if scroll_animation != 'slide_in' %}
+                  hold
+                {% endif %}
+               data-motion-delay="{{ forloop.index0 | times: 50 }}"
+                class="{% if scroll_animation == 'slide_in' %} opacity-0 {% endif %} block"
+              >
+                <div class="page-title-breadcrumb">
+                  {%- render 'breadcrumbs' -%}
+                </div>
+              </motion-element>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% schema %}
+{
+  "name": "t:sections.all.page_heading.label",
+  "tag": "section",
+  "class": "page-title",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ],
+      "default": "stretch_width",
+      "label": "t:sections.all.section_width.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "default": "default-color-scheme"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "t:sections.all.section_header.alignment.label",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.content_settings.content_alignment.left.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.content_settings.content_alignment.center.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.content_settings.content_alignment.right.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.image.background_image.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "t:sections.all.image.background_image.label"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:sections.all.image.overlay_opacity.label",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.all.page_heading.height.option__1"
+        },
+        {
+          "value": "based_on_content",
+          "label": "t:sections.all.page_heading.height.option__2"
+        }
+      ],
+      "default": "adapt",
+      "label": "t:sections.all.page_heading.height.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 80,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 40,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    }
+  ],
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "breadcrumb",
+      "name": "t:sections.all.page_heading.breadcrumb.label",
+      "limit": 1
+    },
+    {
+      "type": "heading",
+      "name": "t:sections.all.page_heading.heading.label",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "page_title",
+          "label": "t:sections.all.page_heading.heading.label",
+          "info": "t:sections.all.page_heading.heading.info"
+        },
+        {
+          "type": "select",
+          "id": "header_size",
+          "label": "t:sections.all.content_settings.font_size.label",
+          "default": "default",
+          "options": [
+            {
+              "value": "default",
+              "label": "t:sections.all.content_settings.font_size.default.label"
+            },
+            {
+              "value": "small",
+              "label": "t:sections.all.content_settings.font_size.small.label"
+            },
+            {
+              "value": "large",
+              "label": "t:sections.all.content_settings.font_size.large.label"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "t:sections.all.page_heading.description.label",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "t:sections.all.section_header.description.label"
+        },
+        {
+          "type": "paragraph",
+          "content": "t:sections.all.page_heading.description.info"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

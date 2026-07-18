@@ -1,0 +1,228 @@
+{{ 'my-account.css' | asset_url | stylesheet_tag }}
+
+<div class="container">
+  <div class="flex flex-wrap gap" style="--col-gap: 30px;--col-width: 25%;">
+    <div class=" col-lg-w-custom border-right mb-30" style="--col-width:75%">
+      <div class="mb-15">
+        <h3 class="title-default mb-10">{{ 'customer.order.title' | t: name: order.name }}</h3>
+        <p class="text-order">
+          {{ 'customer.order.date_html' | t: date: order.created_at | date: '%B %d, %Y %I:%M%p' }}
+        </p>
+      </div>
+
+      {% if order.cancelled %}
+        {%- assign cancelled_at = order.cancelled_at | date: '%B %d, %Y %I:%M%p' -%}
+        <p>{{ 'customer.order.cancelled_html' | t: date: cancelled_at }}</p>
+        <p>{{ 'customer.order.cancelled_reason' | t: reason: order.cancel_reason }}</p>
+      {% endif %}
+      <div class="overflow-hidden overflow-x-auto">
+        <table class="responsive-table table-history-order">
+          <thead>
+            <tr>
+              <th class="text-left border ">{{ 'customer.order.product' | t }}</th>
+              <th class="text-left border ">{{ 'customer.order.sku' | t }}</th>
+              <th class="text-left border ">{{ 'customer.order.price' | t }}</th>
+              <th class="text-left border ">{{ 'customer.order.quantity' | t }}</th>
+              <th class="text-left border ">{{ 'customer.order.total' | t }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for line_item in order.line_items %}
+              <tr id="{{ line_item.key }}" class="">
+                <td class="border " data-label="{{ 'customer.order.product' | t }}">
+                  <div>
+                    {{ line_item.title | link_to: line_item.product.url }}
+                    {%- assign property_size = line_item.properties | size -%}
+                    {% unless line_item.selling_plan_allocation == null and property_size == 0 %}
+                      <div class="item-props">
+                        {% unless line_item.selling_plan_allocation == null %}
+                          <span class="item-props__property">
+                            {{ line_item.selling_plan_allocation.selling_plan.name }}
+                          </span>
+                        {% endunless %}
+                        {% if property_size != 0 %}
+                          {% for property in line_item.properties %}
+                            {% assign property_first_char = property.first | slice: 0 %}
+                            {% if property.last != blank and property_first_char != '_' %}
+                              <span class="item-props__property">
+                                {{ property.first }}:&nbsp;
+                                {%- if property.last contains '/uploads/' -%}
+                                  <a href="{{ property.last }}">{{ property.last | split: '/' | last }}</a>
+                                {%- else -%}
+                                  {{ property.last }}
+                                {% endif %}
+                              </span>
+                            {% endif %}
+                          {% endfor %}
+                        {% endif %}
+                      </div>
+                    {% endunless %}
+                    {%- if line_item.line_level_discount_allocations != blank -%}
+                      <ul class=" scd-cart__discounts mt-2" aria-label="{{ 'customer.order.discount' | t }}">
+                        {%- for discount_allocation in line_item.line_level_discount_allocations -%}
+                          <li class="__item" style="justify-content: flex-start;">
+                            <svg
+                              aria-hidden="true"
+                              width="20"
+                              height="20"
+                              focusable="false"
+                              role="presentation"
+                              viewBox="0 0 12 13"
+                            >
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M7 .5h3a2 2 0 0 1 2 2v3a.995.995 0 0 1-.293.707l-6 6a1 1 0 0 1-1.414 0l-4-4a1 1 0 0 1 0-1.414l6-6A.995.995 0 0 1 7 .5zm2 2a1 1 0 1 0 2 0 1 1 0 0 0-2 0z" fill="currentColor"></path>
+                            </svg>
+                            {{ discount_allocation.discount_application.title }} (-
+                            {{- discount_allocation.amount | money -}}
+                            )
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    {% endif %}
+                  </div>
+                  {%- if line_item.fulfillment -%}
+                    <div class="note">
+                      {%- assign created_at = line_item.fulfillment.created_at | time_tag: format: 'date' -%}
+                      {{ 'customer.order.fulfilled_at_html' | t: date: created_at }}
+                      <div>
+                        {%- if line_item.fulfillment.tracking_url -%}
+                          <a href="{{ line_item.fulfillment.tracking_url }}">
+                            {{ 'customer.order.track_shipment' | t }}
+                          </a>
+                        {% endif %}
+                        <div>
+                          {{ line_item.fulfillment.tracking_company }}
+                          {%- if line_item.fulfillment.tracking_number -%}
+                            #{{ line_item.fulfillment.tracking_number }}
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  {% endif %}
+                </td>
+                <td class="border " data-label="{{ 'customer.order.sku' | t }}">{{ line_item.sku }}</td>
+                <td class="border " data-label="{{ 'customer.order.price' | t }}">
+                  <dl>
+                    {%- if line_item.original_price != line_item.final_price -%}
+                      <dt>
+                        <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+                      </dt>
+                      <dd>
+                        <s>{{ line_item.original_price | money }}</s>
+                      </dd>
+                      <dt>
+                        <span class="visually-hidden">{{ 'products.price.sale_price' | t }}</span>
+                      </dt>
+                      <dd>
+                        <span class="">{{ line_item.final_price | money }}</span>
+                      </dd>
+                    {%- else -%}
+                      <dt>
+                        <span class="visually-hidden">{{ 'products.price.regular_price' | t }}</span>
+                      </dt>
+                      <dd>
+                        {{ line_item.original_price | money }}
+                      </dd>
+                    {% endif %}
+
+                    {%- if line_item.unit_price_measurement -%}
+                      <dt>
+                        <span class="visually-hidden visually-hidden--inline">
+                          {{- 'products.product.price.unit_price' | t -}}
+                        </span>
+                      </dt>
+                      <dd>
+                        <small class="price-unit-price">
+                          {%- capture unit_price_separator -%}
+                          <span aria-hidden="true">/</span><span class="visually-hidden">{{ 'accessibility.unit_price_separator' | t }}&nbsp;</span>
+                        {%- endcapture -%}
+                          {%- capture unit_price_base_unit -%}
+                          {%- if line_item.unit_price_measurement.reference_value != 1 -%}
+                            {{- line_item.unit_price_measurement.reference_value -}}
+                          {% endif %}
+                          {{ line_item.unit_price_measurement.reference_unit }}
+                        {%- endcapture -%}
+
+                          <span data-unit-price>{{ line_item.unit_price | money }}</span>
+                          {{- unit_price_separator -}}
+                          {{- unit_price_base_unit -}}
+                        </small>
+                      </dd>
+                    {% endif %}
+                  </dl>
+                </td>
+                <td class="border " data-label="{{ 'customer.order.quantity' | t }}">{{ line_item.quantity }}</td>
+                <td class="border " data-label="{{ 'customer.order.total' | t }}">
+                  {{ line_item.quantity | times: line_item.price | money }}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+          <tfoot>
+            <tr class="">
+              <td class="border  " colspan="4" class="small--hide">{{ 'customer.order.subtotal' | t }}</td>
+              <td class="border " data-label="{{ 'customer.order.subtotal' | t }}">
+                {{ order.line_items_subtotal_price | money }}
+              </td>
+            </tr>
+
+            {% for discount in order.discounts %}
+              <tr>
+                <td class="border  " colspan="4" class="small--hide">
+                  {{ discount.code }}
+                  {{ 'customer.order.discount' | t }}
+                </td>
+                <td class="border " data-label="{{ 'customer.order.discount' | t }}">{{ discount.savings | money }}</td>
+              </tr>
+            {% endfor %}
+
+            {% for shipping_method in order.shipping_methods %}
+              <tr>
+                <td class="border  " colspan="4" class="small--hide">
+                  {{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})
+                </td>
+                <td class="border " data-label="{{ 'customer.order.shipping' | t }} ({{ shipping_method.title }})">
+                  {{ shipping_method.price | money }}
+                </td>
+              </tr>
+            {% endfor %}
+
+            {% for tax_line in order.tax_lines %}
+              <tr>
+                <td class="border  " colspan="4" class="small--hide">
+                  {{ 'customer.order.tax' | t }} ({{ tax_line.title }}
+                  {{ tax_line.rate | times: 100 }}%)
+                </td>
+                <td
+                  class="border "
+                  data-label="{{ 'customer.order.tax' | t }} ({{ tax_line.title }} {{ tax_line.rate | times: 100 }}%)"
+                >
+                  {{ tax_line.price | money }}
+                </td>
+              </tr>
+            {% endfor %}
+
+            <tr>
+              <td class="border  " colspan="4" class="small--hide">{{ 'customer.order.total' | t }}</td>
+              <td class="border " data-label="{{ 'customer.order.total' | t }}">
+                {{ order.total_price | money }}
+                {{ order.currency }}
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    <div class="col-lg-w-custom mb-30" style="--col-width:25%">
+      <div class="mb-30">
+        <h3 class="title-default mb-15">{{ 'customer.order.billing_address' | t }}</h3>
+        <p class="">{{ 'customer.order.payment_status' | t }}: {{ order.financial_status_label }}</p>
+        <div class="">{{ order.billing_address | format_address }}</div>
+      </div>
+      <div>
+        <h3 class="title-default mb-15">{{ 'customer.order.shipping_address' | t }}</h3>
+        <p class="">{{ 'customer.order.fulfillment_status' | t }}: {{ order.fulfillment_status_label }}</p>
+        <div class="">{{ order.shipping_address | format_address }}</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,883 @@
+{{ 'shopable-video.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign color_scheme = section_st.color_scheme
+  if section_st.reset_spacing
+    assign reset_spacing = ' remove_spacing'
+  endif
+  assign heading = section_st.heading
+  assign description = section_st.description
+  assign header_size = section_st.header_size
+  assign image_ratio = section_st.image_ratio
+  assign custom_ratio = section_st.custom_ratio
+  assign video_autoplay = section_st.video_autoplay
+  assign items_per_row = section_st.items_per_row
+  assign column_gap = section_st.column_gap
+  assign show_arrow = section_st.show_arrow
+  assign carousel_pagination = section_st.carousel_pagination
+  assign infinite = section_st.infinite
+  assign autoplay = section_st.autoplay
+  assign autorotate_speed = section_st.autorotate_speed
+  assign reveal = section_st.reveal
+  assign items_per_row_mobile = section_st.items_per_row_mobile
+  assign header_size = ''
+  if section_st.header_size == 'small'
+    assign header_size = 'h3'
+  elsif section_st.header_size == 'large'
+    assign header_size = 'h1-size'
+  endif
+  if section_st.reset_spacing
+    assign reset_spacing = ' remove_spacing'
+  endif
+  assign scroll_animation = settings.scroll_animation
+-%}
+{%- capture video_attribute -%}
+{% if video_autoplay -%}
+    muted autoplay
+{% endif %}
+{%- endcapture -%}
+{%- capture style -%}
+      --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};
+    {%- endcapture -%}
+<div
+  class="section{% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} sec__shopable-video color-{{ color_scheme }} gradient{{ reset_spacing }}{% if reveal %} overflow-hidden{% endif %}"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ section_width }}">
+    {%- if heading != blank or description != blank -%}
+      <div class="section__header mb-33 mb-sm-20 text-{{ section_st.header_alignment }}{% if section_st.section_width == 'full_width' %} px-20{% endif %}">
+        {%- if section_st.heading != blank -%}
+          <motion-element
+                data-motion="fade-up-lg"
+                data-motion-delay="50"
+                {% if scroll_animation != 'slide_in' %}
+                  hold
+                {% endif %}
+            class="block  {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}"
+            style="
+              {%- if scroll_animation != 'none' -%}
+                --animation-order: 0;
+              {% endif %}
+            "
+          >
+          <h2
+            class="section__header-heading heading-letter-spacing {{ header_size  }} mt-0{% if section_st.description != blank %} mb-10{% else %} mb-0{% endif %}"
+          >
+            {{ section_st.heading }}
+          </h2>
+        </motion-element>
+        {% endif %}
+        {%- if section_st.description != blank -%}
+          <motion-element
+            data-motion="fade-up-lg"
+            data-motion-delay="150"
+            {% if scroll_animation != 'slide_in' %}
+              hold
+            {% endif %}
+            class="section__header-des block {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %} rich__text-m0"
+            style="
+              {%- if scroll_animation != 'none' -%}
+                --animation-order: 1
+              {% endif %}
+            "
+          >
+            {{ section_st.description }}
+          </motion-element>
+        {% endif %}
+      </div>
+    {% endif %}
+    {% if section.blocks.size > 0 %}
+      <slide-section
+        class="swiper{% if reveal %} reveal_on_scroll{% endif %}"
+        data-section-id="{{ section.id }}"
+        data-autoplay="{{ autoplay }}"
+        data-effect="slide"
+        data-loop="{{ infinite }}"
+        data-speed="500"
+        data-autoplay-speed="{{ autorotate_speed }}"
+        data-spacing="{{ column_gap }}"
+        data-mobile="{{ items_per_row_mobile }}"
+        data-desktop="{{ items_per_row }}"
+        data-pagination-progressbar="{% if carousel_pagination == 'show_progress_bar' %}true{% else %}false{% endif %}"
+      >
+        {% if show_arrow %}
+          {%- render 'swiper-navigation', class: "show-on-mobile" -%}
+        {% endif %}
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            {% liquid
+              assign block_st = block.settings
+              assign poster_image = block_st.poster_image
+              assign video_url = block_st.video_url
+              assign local_video = block_st.local_video
+            %}
+            <shopable-video
+              data-custom-class="shopable-video"
+              class="swiper-slide rounded"
+              {{ block.shopify_attributes }}
+            >
+              <motion-element
+                data-motion="fade-up-lg"
+                {% if scroll_animation != 'slide_in' %}
+                  hold
+                {% endif %}
+                data-motion-delay="{{ forloop.index0 | times: 50 }}"
+                class="video-item__banner block pointer rounded {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}"
+                style="
+                  {%- if scroll_animation != 'none' -%}
+                    --animation-order: {{  forloop.index }}
+                  {% endif %}
+                "
+              >
+                {% if poster_image != blank or video_url != blank or local_video != blank %}
+                  {%- liquid
+                    assign ratio = ''
+                    if image_ratio != 'adapt'
+                      case image_ratio
+                        when 'square'
+                          assign ratio = '1/1'
+                        when 'landscape'
+                          assign ratio = '4/3'
+                        when 'portrait'
+                          assign ratio = '3/4'
+                        else
+                          if custom_ratio != empty
+                            assign ratio = custom_ratio | replace: ':', '/'
+                          else
+                            assign ratio = '3/4'
+                          endif
+                      endcase
+                    else
+                      if poster_image != blank
+                        assign ratio = poster_image.aspect_ratio
+                      else
+                        assign ratio = local_video.aspect_ratio
+                      endif
+                    endif
+                  -%}
+                  <div
+                    class="video-item__popup-media--ratio rounded"
+                    style="--aspect-ratio: {{ ratio }};"
+                  >
+                    {% if local_video != blank %}
+                      {%- liquid
+                        assign source = local_video.sources
+                        assign source_url = ''
+                        for s in source
+                          if s.format == 'mp4'
+                            assign source_url = s.url
+                            break
+                          endif
+                        endfor
+                        assign poster = local_video.preview_image | image_url: width: 1100
+                        if poster_image != blank
+                          assign poster = poster_image | image_url: width: 1100
+                        endif
+                      -%}
+                      <video
+                        loop="true"
+                        data-src="{{ source_url }}"
+                        poster="{{ poster }}"
+                        playsinline="true"
+                        {{ video_attribute }}
+                      ></video>
+                    {% else %}
+                      {% if poster_image != blank %}
+                        {%- assign image_alt = poster_image.alt | default: 'poster' | escape -%}
+                        {% render 'responsive-image', type: 'banner', image: poster_image, image_alt: image_alt %}
+                      {% else %}
+                        {% render 'placeholder-render' %}
+                      {% endif %}
+                    {% endif %}
+                  </div>
+                {% else %}
+                  {%- liquid
+                    assign ratio = ''
+                    if image_ratio != 'adapt'
+                      case image_ratio
+                        when 'square'
+                          assign ratio = '1/1'
+                        when 'landscape'
+                          assign ratio = '4/3'
+                        when 'portrait'
+                          assign ratio = '3/4'
+                        else
+                          if custom_ratio != empty
+                            assign ratio = custom_ratio | replace: ':', '/'
+                          else
+                            assign ratio = '3/4'
+                          endif
+                      endcase
+                    else
+                      assign ratio = '3/4'
+                    endif
+                  -%}
+                  <div
+                    class="video-item__popup-media--ratio"
+                    style="--aspect-ratio: {{ ratio }};"
+                  >
+                    {%- render 'placeholder-render', class: 'rounded' -%}
+                  </div>
+                {% endif %}
+              </motion-element>
+              {% if block_st.product != blank %}
+                <div class="video-item__product rounded-5 absolute bottom-15 right-15 left-15 overflow-hidden pointer-none">
+                  {% render 'product-item',
+                    card_product: block_st.product,
+                    section_id: section.id,
+                    template_enable_action: false,
+                    template_enable_product_vendor: false,
+                    template_enable_rate: false,
+                    template_enable_price: true,
+                    template_enable_product_short_description: false,
+                    template_enable_color_swatches: false,
+                    template_disable_product_url: true,
+                    type: 'list',
+                    indexFor: forloop.index,
+                    scroll_animation: scroll_animation
+                  %}
+                </div>
+              {% endif %}
+              {% if block_st.product != blank %}
+                <div class="video-item__popup product__item-js hidden">
+                  {%- unless block_st.product.has_only_default_variant -%}
+                    <script type="application/json" class="productVariantsQty">
+                      [
+                        {%- for variant in block_st.product.variants -%}
+                          {%- assign op = variant.option1 | replace: '"', '\"' -%}
+                          {%- liquid
+                              assign id = '"id":' | append: variant.id
+                              assign option = '"option":"' | append: op | append: '"'
+                              assign quantity = '"qty":' | append: variant.inventory_quantity
+                              assign available = '"available":' | append: variant.available
+                              assign mamagement = '"mamagement":"' | append: variant.inventory_management | append: '"'
+                              assign incoming = '"incoming":"' | append: variant.incoming | append: '"'
+                              assign incoming_date = '"incoming_date":"' | append: variant.next_incoming_date | append: '"'
+                          -%}
+                          { {{ id }},{{ option }},{{ quantity }},{{ available }},{{ mamagement }},{{ incoming }},{{ incoming_date }}}
+                          {%- unless forloop.last -%},{%- endunless forloop.last -%}
+                        {%- endfor -%}
+                        ]
+                    </script>
+                  {%- endunless -%}
+                  <div
+                    class="video-item__popup--flex flex flex-cols flex-wrap"
+                    style="--gap: 0px; --col-desktop: 2;--col-tablet: 1; --col-number: 1;"
+                  >
+                    {% comment %} video media {% endcomment %}
+                    <div class="shopable-video__media relative">
+                      {% if poster_image != blank or video_url != blank or local_video != blank %}
+                        {%- liquid
+                          assign ratio = ''
+                          if image_ratio != 'adapt'
+                            case image_ratio
+                              when 'square'
+                                assign ratio = '1/1'
+                              when 'landscape'
+                                assign ratio = '4/3'
+                              when 'portrait'
+                                assign ratio = '3/4'
+                              else
+                                if custom_ratio != empty
+                                  assign ratio = custom_ratio | replace: ':', '/'
+                                else
+                                  assign ratio = '3/4'
+                                endif
+                            endcase
+                          else
+                            if poster_image != blank
+                              assign ratio = poster_image.aspect_ratio
+                            else
+                              assign ratio = '3/4'
+                            endif
+                          endif
+                        -%}
+                        <div
+                          class="video-item__popup-media--ratio"
+                          style="--aspect-ratio: {{ ratio }};"
+                        >
+                          {% if local_video != blank %}
+                            {%- liquid
+                              assign source = local_video.sources
+                              assign source_url = ''
+                              for s in source
+                                if s.format == 'mp4'
+                                  assign source_url = s.url
+                                  break
+                                endif
+                              endfor
+                              assign poster = local_video.preview_image | image_url: width: 1100
+                              if poster_image != blank
+                                assign poster = poster_image | image_url: width: 1100
+                              endif
+                            -%}
+                            <video
+                              loop="true"
+                              controls="true"
+                              data-src="{{ source_url }}"
+                              playsinline="true"
+                              poster="{{ poster }}"
+                              {{ video_attribute }}
+                            ></video>
+                          {% else %}
+                            {% if poster_image != blank %}
+                              {%- assign image_alt = poster_image.alt | default: 'poster' | escape -%}
+                              {% render 'responsive-image', type: 'banner', image: poster_image, image_alt: image_alt %}
+                            {% else %}
+                              {% render 'placeholder-render', class="rounded" %}
+                            {% endif %}
+                          {% endif %}
+                        </div>
+                      {% else %}
+                        {%- liquid
+                          assign ratio = ''
+                          if image_ratio != 'adapt'
+                            case image_ratio
+                              when 'square'
+                                assign ratio = '1/1'
+                              when 'landscape'
+                                assign ratio = '4/3'
+                              when 'portrait'
+                                assign ratio = '3/4'
+                              else
+                                if custom_ratio != empty
+                                  assign ratio = custom_ratio | replace: ':', '/'
+                                else
+                                  assign ratio = '3/4'
+                                endif
+                            endcase
+                          else
+                            assign ratio = '3/4'
+                          endif
+                        -%}
+                        <div
+                          class="video-item__popup-media--ratio h-full"
+                          style="--aspect-ratio: {{ ratio }};"
+                        >
+                          {%- render 'placeholder-render' -%}
+                        </div>
+                      {% endif %}
+                      <div class="video-item__product flex align-center video-item__product-mobile rounded-5 absolute bottom-15 right-15 left-15 overflow-hidden hidden-on-mobile">
+                        <div class="video-item__product-shopable">
+                          {% render 'product-item',
+                            card_product: block_st.product,
+                            section_id: section.id,
+                            template_enable_action: false,
+                            template_enable_product_vendor: false,
+                            template_enable_rate: false,
+                            template_enable_price: true,
+                            template_enable_product_short_description: false,
+                            template_enable_color_swatches: false,
+                            template_disable_product_url: true,
+                            type: 'list',
+                            indexFor: forloop.index,
+                            scroll_animation: scroll_animation
+                          %}
+                        </div>
+                        <div
+                          class="btn btn-white btn-shopable hidden-md"
+                          style="
+                            --btn-padding-y: 1rem;
+                            --btn-padding-x: 2rem;
+                          "
+                        >
+                          {{ 'products.product.shop_now' | t }}
+                        </div>
+                      </div>
+                    </div>
+                    <div class="shopable-video__product-information color-default absolute z-3 flex flex-column right-0 top-0 h-full">
+                      <span class="absolute left-0 right-0 z-2 h-full pointer-none overlay-shopable"></span>
+                      <div class="grow-1 overflow-auto p-30 pb-0 custom-scrollbar">
+                        {% liquid
+                          assign theme_st = settings
+                          assign product_image_ratio = theme_st.product_image_ratio
+                          assign product_custom_ratio = theme_st.product_custom_ratio
+                          assign product_form_id = 'product-form-' | append: section.id
+                        %}
+                        <slide-section
+                          class="swiper mb-30 hidden-nav-mobile lazy-loading-swiper-before"
+                          data-section-id="{{ block.id }}"
+                          data-effect="slide"
+                          data-speed="500"
+                          data-mobile="2"
+                          data-tablet="2"
+                          data-desktop="2"
+                          data-spacing="15"
+                          data-pagination-progressbar="true"
+                        >
+                          <div class="swiper-wrapper">
+                            {% for image in block_st.product.media %}
+                              {% liquid
+                                assign ratio = ''
+                                if product_image_ratio != 'adapt'
+                                  case product_image_ratio
+                                    when 'square'
+                                      assign ratio = '1/1'
+                                    when 'landscape'
+                                      assign ratio = '4/3'
+                                    when 'portrait'
+                                      assign ratio = '3/4'
+                                    else
+                                      if product_custom_ratio != empty
+                                        assign ratio = product_custom_ratio | replace: ':', '/'
+                                      else
+                                        assign ratio = '3/4'
+                                      endif
+                                  endcase
+                                else
+                                  if image.media_type == 'model'
+                                    assign ratio = '3/4'
+                                  else
+                                    assign ratio = image.aspect_ratio
+                                  endif
+                                endif
+                              %}
+                              <div
+                                class="video-item__product-media--ratio rounded overflow-hidden swiper-slide"
+                                style="--aspect-ratio: {{ ratio }};"
+                              >
+                                {%- assign image_alt = image.alt | default: 'poster' | escape -%}
+                                {% render 'responsive-image',
+                                  type: 'product',
+                                  image: image.preview_image.src,
+                                  image_alt: image_alt,
+                                  class: 'rounded'
+                                %}
+                              </div>
+                            {% endfor %}
+                          </div>
+                          <div
+                            class="swiper-pagination"
+                          ></div>
+                        </slide-section>
+                        {% render 'product-badges', card_product: block_st.product, type: 'main_product' %}
+                        <a
+                          aria-label="{{ block_st.product.title }}"
+                          class="product-item__name h4 heading-color no-underline block mb-12"
+                          href="{{ block_st.product.url }}"
+                        >
+                          {{- block_st.product.title -}}
+                        </a>
+                        <div
+                          class="review_sold flex flex-wrap gap-20 align-center mb-custom lh-normal mt-custom row-gap-5"
+                          style="--space-top: 2px;--space-bottom: 13"
+                        >
+                          {%- render 'review' | product: block_st.product -%}
+                        </div>
+                        {%- render 'price',
+                          scope: 'item',
+                          product: block_st.product,
+                          class: 'price-large mb-10',
+                          show_badges: false
+                        -%}
+                        {%- if block_st.product.metafields.custom.short_description -%}
+                          <div class="product-single__short-description mb-15">
+                            {{ block_st.product.metafields.custom.short_description }}
+                          </div>
+                        {%- else -%}
+                          <div class="product-single__short-description mb-15">
+                            {{ block_st.product.description }}
+                          </div>
+                        {% endif %}
+                        {% if block_st.product.metafields.custom.countdown_timer
+                          and block_st.product.metafields.custom.countdown_timer != blank
+                        %}
+                          {{ 'countdown.css' | asset_url | stylesheet_tag }}
+                          <div class="countdown-timer p-20 inline-flex product-timer flex-column gap-10 rounded-5 {{ block_st.timer_style  }}">
+                            <div class="countdown-messeage ln-normal heading-style">
+                              {{ 'sections.shopable_video.countdown_message' | t }}
+                            </div>
+                            <countdown-timer
+                              class="hidden flex flex-wrap fs-16 primary-color"
+                              data-endtime="{{ block_st.product.metafields.custom.countdown_timer }}"
+                              data-days="{{ 'products.product.countdown.days' | t }}"
+                              data-hours="{{ 'products.product.countdown.hours' | t }}"
+                              data-mins="{{ 'products.product.countdown.mins' | t }}"
+                              data-secs="{{ 'products.product.countdown.secs' | t }}"
+                            >
+                            </countdown-timer>
+                          </div>
+                          {%- if product.metafields.custom.countdown_timer
+                            and product.metafields.custom.countdown_timer != blank
+                          -%}
+                            <div
+                              class="countdown-timer mb-20 inline-flex flex-column gap-5 product-timer rounded-5 p-20 pt-15 default"
+
+                              style="--gap: 7;"
+                            >
+                              <div class="countdown-messeage ln-normal heading-style">
+                                {{ 'sections.shopable_video.countdown_message' | t }}
+                              </div>
+
+                              <countdown-timer
+                                class="hidden flex flex-wrap fs-18 primary-color {{ block_st.timer_style }}"
+                                {{ block.shopify_attributes }}
+                                data-endtime="{{ product.metafields.custom.countdown_timer }}"
+                                data-days="{{ 'products.product.countdown.days' | t }}"
+                                data-hours="{{ 'products.product.countdown.hours' | t }}"
+                                data-mins="{{ 'products.product.countdown.mins' | t }}"
+                                data-secs="{{ 'products.product.countdown.secs' | t }}"
+                                style="--color-heading: var(--color-primary);"
+                              >
+                              </countdown-timer>
+                            </div>
+                          {% endif %}
+                        {% endif %}
+                        {%- render 'color-swatches',
+                          product: block_st.product,
+                          type: 'detail',
+                          class: 'mb-30 swatch-large',
+                          update_url: false
+                        -%}
+                        <a
+                          aria-label="{{ block_st.product.title }}"
+                          class="product-item__name heading-color no-underline heading_weight block lh-normal mb-5"
+                          href="{{ block_st.product.url }}"
+                        >
+                          {{- 'general.product.view_detail' | t -}}
+                          <svg width="12" height="9" fill="none" class="ms-8">
+                            <use href="#icon-view-all">
+                          </svg>
+                        </a>
+                      </div>
+                      <div
+                        class="product-single__buy-buttons mt-25 sticky bottom-0 inset-x-0 border-top px-20 py-15"
+                        {{ block.shopify_attributes }}
+                      >
+                        {%- render 'buy-buttons',
+                          product: block_st.product,
+                          product_form_id: product_form_id,
+                          section_id: section.id,
+                          show_wishlist: true,
+                          show_compare: true,
+                          formClass: '',
+                          show_quantity: false
+                        -%}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+            </shopable-video>
+          {% endfor %}
+        </div>
+        {%- if carousel_pagination == 'show_dots'
+          or carousel_pagination == 'show_dots_on_mobile'
+          or carousel_pagination == 'show_progress_bar'
+        -%}
+          <motion-element
+            data-motion="fade-up-sm"
+                            {% if scroll_animation != 'slide_in' %}
+                              hold
+                            {% endif %} 
+                            data-motion-delay="150"
+            class="swiper-pagination block parent-pagination {% if carousel_pagination == 'show_dots_on_mobile' %} hidden-md{% endif %}"
+          ></motion-element>
+        {% endif %}
+      </slide-section>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.shopable-video.name",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:sections.all.section_width.label",
+      "default": "fluid_container",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_header.label"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.all.section_header.heading.label"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:sections.all.section_header.description.label"
+    },
+    {
+      "type": "select",
+      "id": "header_size",
+      "label": "t:sections.all.section_header.header_size.label",
+      "default": "medium",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:sections.all.section_header.header_size.small.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.all.section_header.header_size.medium.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.section_header.header_size.large.label"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "t:sections.all.section_header.alignment.label",
+      "default": "left",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.section_header.alignment.left.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.section_header.alignment.center.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.section_header.alignment.right.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.shopable-video.settings.video_settings.header"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "t:sections.all.image.image_ratio.label",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.all.image.image_ratio.adapt.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.all.image.image_ratio.square.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.all.image.image_ratio.portrait.label"
+        },
+        {
+          "value": "landscape",
+          "label": "t:sections.all.image.image_ratio.landscape.label"
+        },
+        {
+          "value": "custom",
+          "label": "t:sections.all.image.image_ratio.custom.label"
+        }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "text",
+      "id": "custom_ratio",
+      "label": "t:sections.all.image.image_ratio.custom_ratio.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_autoplay",
+      "label": "t:sections.shopable-video.settings.video_settings.autoplay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "items_per_row",
+      "label": "t:sections.all.items.items_per_row.label",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "t:sections.all.items.column_gap.label",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.carousel_settings.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "t:sections.all.carousel_settings.show-next-back.label",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "carousel_pagination",
+      "label": "t:sections.all.carousel_settings.pagination.label",
+      "options": [
+        {
+          "value": "disable",
+          "label": "t:sections.all.carousel_settings.pagination.disable.label"
+        },
+        {
+          "value": "show_dots",
+          "label": "t:sections.all.carousel_settings.pagination.show_dots.label"
+        },
+        {
+          "value": "show_dots_on_mobile",
+          "label": "t:sections.all.carousel_settings.pagination.show_dots_on_mobile.label"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "infinite",
+      "label": "t:sections.all.carousel_settings.infinite.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "t:sections.all.carousel_settings.auto_change.label",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autorotate_speed",
+      "label": "t:sections.all.carousel_settings.change_slides_every.label",
+      "max": 6,
+      "min": 2,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "reveal",
+      "label": "t:sections.all.carousel_settings.reveal.label",
+      "info": "t:sections.all.carousel_settings.reveal.info",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.mobile_options.label"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row_mobile",
+      "label": "t:sections.all.items.items_per_row.label",
+      "min": 1,
+      "max": 2,
+      "step": 0.5,
+      "default": 1
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_spacing",
+      "label": "t:sections.all.section_padding.reset_spacing.label",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "limit": 10,
+      "name": "t:sections.shopable-video.blocks.name",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "t:sections.shopable-video.blocks.product"
+        },
+        {
+          "type": "image_picker",
+          "id": "poster_image",
+          "label": "t:sections.shopable-video.blocks.poster_image"
+        },
+        {
+          "type": "video",
+          "id": "local_video",
+          "label": "t:sections.shopable-video.blocks.video_local.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.shopable-video.name",
+      "blocks": [
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

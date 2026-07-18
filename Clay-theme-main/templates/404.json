@@ -1,0 +1,79 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "divider_zDJB6F": {
+      "type": "divider",
+      "settings": {
+        "section_width": "container",
+        "border_height": 1,
+        "border_color": "rgba(0,0,0,0)",
+        "reset_spacing": false
+      }
+    },
+    "main": {
+      "type": "page-404",
+      "blocks": {
+        "image_VQTRFT": {
+          "type": "image",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/img_4.jpg"
+          }
+        },
+        "heading_6nj4md": {
+          "type": "heading",
+          "settings": {
+            "heading": "Oops...That link is broken.",
+            "font_size": 36,
+            "font_weight": "heading_weight",
+            "uppercase": false,
+            "spacing_bottom": 20
+          }
+        },
+        "subheading_yFdKEQ": {
+          "type": "subheading",
+          "settings": {
+            "subheading": "Sorry for the inconvenience. Go to our homepage or check out our latest collections.",
+            "font_size": 15,
+            "font_weight": "body_weight",
+            "uppercase": false,
+            "spacing_bottom": 40
+          }
+        },
+        "button_4yrfiE": {
+          "type": "button",
+          "settings": {
+            "first_button_label": "Back to Homepage",
+            "first_button_link": "https:\/\/glozin-demo.myshopify.com\/",
+            "open_link": false,
+            "first_button_type": "primary",
+            "spacing_bottom": 0
+          }
+        }
+      },
+      "block_order": [
+        "image_VQTRFT",
+        "heading_6nj4md",
+        "subheading_yFdKEQ",
+        "button_4yrfiE"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    }
+  },
+  "order": [
+    "divider_zDJB6F",
+    "main"
+  ]
+}

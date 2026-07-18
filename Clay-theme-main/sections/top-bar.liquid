@@ -1,0 +1,495 @@
+{%- liquid
+  assign section_st = section.settings
+  assign theme_st = settings
+  assign section_width = section_st.section_width
+  assign color_scheme = section_st.color_scheme
+-%}
+{%- if section.blocks.size > 0 -%}
+  {%- style -%}
+    #topbar a {
+      text-decoration-line: none;
+    }
+    #topbar .swiper-slide {
+      display: flex;
+    }
+    #topbar
+      .swiper:not([class*='initialized'])[data-direction='vertical']
+      .swiper-wrapper
+      .swiper-slide:not(:first-child) {
+      opacity: 0;
+    }
+    #topbar .text-slide {
+      width: 90%;
+      flex: 0 0 auto;
+      margin: 0 auto;
+    }
+    .topbar-item .list-social__item a {
+      width: 3rem;
+      height: 3rem;
+    }
+    @media (min-width: 1024px) {
+      #topbar slide-section {
+        padding-left: 4rem;
+      }
+      #topbar .text-slide {
+        width: 50%;
+        flex: 0 0 auto;
+        max-width: 40rem;
+        margin: unset;
+      }
+    }
+    @media (max-width: 1024px) {
+      #topbar .swiper-slide {
+        justify-content: center;
+      }
+    }
+  {%- endstyle -%}
+  {%- capture style -%}
+    --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};--swiper-navigation-color: var(--color-text);
+  {%- endcapture -%}
+  {%- liquid
+    assign hidden_block = true
+    for block in section.blocks
+      assign block_st = block.settings
+      if block_st.hidden_on_mobile == false
+        assign hidden_block = false
+        break
+      endif
+    endfor
+  -%}
+  <div
+    id="topbar"
+    class="topbar gradient{% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} section remove_spacing color-{{ color_scheme }}{% if hidden_block == true %} hidden block-1025{% endif %}{% if section_st.show_separator_line %} border-bottom{% endif %}{% if section_st.uppercase %} uppercase{% endif %}{% if section_st.show_mobile == blank %} hidden block-1025{% endif %}"
+    style="{{ style | strip | strip_newlines }}"
+  >
+    <div class="{{ section_width }}">
+      <div
+        class="flex flex-wrap flex-md-nowrap gap justify-center justify-between-1025 align-center topbar__section-inner gap-10 gap-lg-25 fs-custom {{ section_st.font_weight }}"
+        style="--font-size: {{ section_st.font_size }};"
+      >
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign block_st = block.settings
+          -%}
+          {%- case block.type -%}
+            {%- when 'store_information' -%}
+              {% if theme_st.store_email != blank or theme_st.store_phone != blank %}
+                <div class="topbar-item{% if block_st.hidden_on_mobile %} hidden flex-1025{% else %} flex{% endif %} gap-10">
+                  {%- if block_st.show_phone and theme_st.store_phone != blank -%}
+                    <a
+                      class="no-underline"
+                      href="tel:{{ theme_st.store_phone }}"
+                      arial-label="{{ theme_st.store_phone }}"
+                    >
+                      <span>{{ theme_st.store_phone }}</span>
+                    </a>
+                  {% endif %}
+                  {%- if block_st.show_email and theme_st.store_email != blank -%}
+                    <a
+                      class="no-underline"
+                      href="mailto:{{ theme_st.store_email }}"
+                      arial-label="{{ theme_st.store_email }}"
+                    >
+                      <span>{{ theme_st.store_email }}</span>
+                    </a>
+                  {% endif %}
+                </div>
+              {% endif %}
+            {%- when 'socials' -%}
+              {%- if settings.facebook != blank
+                or settings.instagram != blank
+                or settings.twitter != blank
+                or settings.tiktok != blank
+                or settings.youtube != blank
+                or settings.pinterest != blank
+                or settings.vimeo != blank
+                or settings.linkedin != blank
+                or settings.whatsapp != blank
+                or settings.tumblr != blank
+                or settings.snapchat != blank
+              -%}
+                <div class="topbar-item{% if block_st.hidden_on_mobile %} hidden block-1025{% endif %}">
+                  {%- render 'social-icons' -%}
+                </div>
+              {% endif %}
+            {%- when 'text' -%}
+              <div class="topbar-item{% if block_st.hidden_on_mobile %} hidden block-1025{% endif %}">
+                {%- if block_st.text != blank -%}
+                  <div class="topbar-message">{{- block_st.text -}}</div>
+                {% endif %}
+              </div>
+            {%- when 'text_slider' -%}
+              <div class="topbar-item w-full text-slide{% if block_st.hidden_on_mobile %} hidden block-1025{% endif %}">
+                <slide-section
+                  class="swiper bls__swiper text-center text-md-start gap-0 lazy-loading-swiper-before"
+                  data-section-id="{{ section.id }}"
+                  data-loop="true"
+                  data-autoplay="true"
+                  data-autoplaySpeed="{{ section_st.change_every }}"
+                  data-loop="true"
+                  data-mobile="1"
+                  data-tablet="1"
+                  data-desktop="1"
+                  data-direction="vertical"
+                  data-spacing="0"
+                  style="--color-dark: transparent;--swiper-navigation-color: currentColor; --col-gap: 0;--swiper-navigation-sides-offset: 1rem;"
+                >
+                  <div class="swiper-action gradient show-arrow static absolute-lg align-center left-0 inset-y-0 z-3 flex gap-20 pe-1025-25 pe-0">
+                    <div
+                      class="swiper-arrow swiper-button-prev original-style visible absolute left-10 static-lg-impo transform-md-none transition"
+                      style="--swiper-navigation-sides-offset: 1rem;--swiper-width: 0.5rem;"
+                    >
+                      <svg width="6" height="11" fill="none">
+                        <use href="#icon-back" />
+                      </svg>
+                    </div>
+                    <div
+                      class="swiper-arrow swiper-button-next original-style visible absolute right-10 static-lg-impo transform-md-none transition"
+                      style="--swiper-navigation-sides-offset: 1rem;--swiper-width: 0.5rem;"
+                    >
+                      <svg width="6" height="11" fill="none">
+                        <use href="#icon-next" />
+                      </svg>
+                    </div>
+                  </div>
+                  <div class="swiper-wrapper">
+                    {%- if block_st.text1 != blank -%}
+                      <div class="swiper-slide flex align-center text-center text-lg-start lh-normal">
+                        <div class="px-15">
+                          {{- block_st.text1 -}}
+                        </div>
+                      </div>
+                    {% endif %}
+                    {%- if block_st.text2 != blank -%}
+                      <div class="swiper-slide flex align-center text-center text-lg-start lh-normal">
+                        <div class="px-15">
+                          {{- block_st.text2 -}}
+                        </div>
+                      </div>
+                    {% endif %}
+                    {%- if block_st.text3 != blank -%}
+                      <div class="swiper-slide flex align-center text-center text-lg-start lh-normal">
+                        <div class="px-15">
+                          {{- block_st.text3 -}}
+                        </div>
+                      </div>
+                    {% endif %}
+                  </div>
+                </slide-section>
+              </div>
+            {%- when 'cur_lang' -%}
+              <div class="lang__currency-desktop justify-content-center justity-md-unset topbar-item{% if block_st.hidden_on_mobile %} hidden flex-1025{% else %} flex{% endif %} flex-wrap gap-10 gap-lg-25 align-center row-gap-0">
+                {%- if block_st.menu_link != blank -%}
+                  <ul class="linklist list-unstyled flex flex-wrap gap-10 gap-lg-25">
+                    {%- for link in block_st.menu_link.links -%}
+                      <li>
+                        <a class="no-underline block" href="{{ link.url }}" aria-label="{{ link.title }}">
+                          {{- link.title -}}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {% endif %}
+                {%- if block_st.show_our_store and theme_st.store_page and theme_st.store_address -%}
+                  <a
+                    href="{{ pages[theme_st.store_page].url | default: '#' }}"
+                    aria-label="{{ theme_st.store_address }}"
+                    class="no-underline"
+                  >
+                    {%- if theme_st.store_address != blank -%}
+                      <span>{{ theme_st.store_address }}</span>
+                    {%- else -%}
+                      <span>{{ pages[theme_st.store_page].title }}</span>
+                    {% endif %}
+                  </a>
+                {% endif %}
+                {%- if block_st.show_currency -%}
+                  {%- render 'country-switcher' -%}
+                {% endif %}
+                {%- if block_st.show_language -%}
+                  {%- render 'language-switcher' -%}
+                {% endif %}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{% endif %}
+{% schema %}
+{
+  "name": "t:sections.top-bar.name",
+  "class": "section-top-bar",
+  "limit": 1,
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ],
+      "default": "stretch_width",
+      "label": "t:sections.all.section_width.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "default": "default-color-scheme"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mobile",
+      "label": "t:sections.top-bar.settings.show_mobile.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_separator_line",
+      "label": "t:sections.top-bar.settings.show_separator_line.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.content_setting.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase",
+      "label": "t:sections.all.content_setting.uppercase.label"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "label": "t:sections.all.content_setting.font_size.label",
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "options": [
+        {
+          "value": "body_weight",
+          "label": "t:sections.all.content_setting.font_weight.body_weight.label"
+        },
+        {
+          "value": "heading_weight",
+          "label": "t:sections.all.content_setting.font_weight.heading_weight.label"
+        },
+        {
+          "value": "subheading_weight",
+          "label": "t:sections.all.content_setting.font_weight.subheading_weight.label"
+        }
+      ],
+      "default": "body_weight",
+      "label": "t:sections.all.content_setting.font_weight.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 10,
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 10,
+      "min": 0,
+      "max": 15,
+      "step": 1,
+      "unit": "px"
+    }
+  ],
+  "max_blocks": 3,
+  "blocks": [
+    {
+      "type": "store_information",
+      "name": "t:sections.top-bar.blocks.store_information.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "t:sections.all.blocks.store_info.info"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_email",
+          "label": "t:sections.top-bar.blocks.store_information.settings.show_email.label",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_phone",
+          "label": "t:sections.top-bar.blocks.store_information.settings.show_phone.label",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "hidden_on_mobile",
+          "label": "t:sections.top-bar.blocks.hidden_on_mobile.label",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "socials",
+      "name": "t:sections.top-bar.blocks.social_link.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "t:sections.all.blocks.socials.info"
+        },
+        {
+          "type": "checkbox",
+          "id": "hidden_on_mobile",
+          "label": "t:sections.top-bar.blocks.hidden_on_mobile.label",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.top-bar.blocks.text.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "label": "t:sections.top-bar.blocks.text.name",
+          "default": "Free Shipping for all order over $99"
+        },
+        {
+          "type": "checkbox",
+          "id": "hidden_on_mobile",
+          "label": "t:sections.top-bar.blocks.hidden_on_mobile.label",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "text_slider",
+      "name": "t:sections.top-bar.blocks.text_slider.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text1",
+          "label": "t:sections.top-bar.blocks.text_slider.settings.text_1.label",
+          "default": "Sign up for 10% off your first order. Sign Up"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text2",
+          "label": "t:sections.top-bar.blocks.text_slider.settings.text_2.label",
+          "default": "100% secure online payment"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "text3",
+          "label": "t:sections.top-bar.blocks.text_slider.settings.text_3.label",
+          "default": "Free Shipping for all order over $99"
+        },
+        {
+          "type": "range",
+          "id": "change_every",
+          "min": 3,
+          "max": 6,
+          "step": 1,
+          "label": "t:sections.top-bar.blocks.text_slider.settings.change_every.label",
+          "unit": "s",
+          "default": 3
+        },
+        {
+          "type": "checkbox",
+          "id": "hidden_on_mobile",
+          "label": "t:sections.top-bar.blocks.hidden_on_mobile.label"
+        }
+      ]
+    },
+    {
+      "type": "cur_lang",
+      "name": "t:sections.top-bar.blocks.cur_lang.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "link_list",
+          "id": "menu_link",
+          "label": "t:sections.top-bar.blocks.link_list.settings.menu.label",
+          "default": "footer"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_currency",
+          "label": "t:sections.top-bar.blocks.cur_lang.settings.show_currency.label",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_language",
+          "label": "t:sections.top-bar.blocks.cur_lang.settings.show_language.label",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "show_our_store",
+          "label": "t:sections.top-bar.blocks.cur_lang.settings.show_our_store.label",
+          "default": false
+        },
+        {
+          "type": "paragraph",
+          "content": "t:sections.all.blocks.store.info"
+        },
+        {
+          "type": "checkbox",
+          "id": "hidden_on_mobile",
+          "label": "t:sections.top-bar.blocks.hidden_on_mobile.label",
+          "default": true
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.top-bar.name",
+      "blocks": [
+        {
+          "type": "text_slider"
+        },
+        {
+          "type": "cur_lang"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

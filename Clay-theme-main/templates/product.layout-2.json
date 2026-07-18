@@ -1,0 +1,344 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "breadcrumb": {
+      "type": "breadcrumb",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "next_prev": false
+      }
+    },
+    "main": {
+      "type": "main-product-layout-2",
+      "blocks": {
+        "badges_RwfTMp": {
+          "type": "badges",
+          "settings": {}
+        },
+        "title_G6tU8U": {
+          "type": "title",
+          "settings": {}
+        },
+        "review_and_sold_AAbJC9": {
+          "type": "review_and_sold",
+          "settings": {
+            "show_review": true,
+            "show_sold_products": true,
+            "sold": "8,10,12,15,17,22",
+            "hours": "10,12,15,16,18,20,24"
+          }
+        },
+        "price_VJ4N8m": {
+          "type": "price",
+          "settings": {}
+        },
+        "short_description_9BGxVm": {
+          "type": "short_description",
+          "settings": {
+            "excerpt_length": 200
+          }
+        },
+        "live_view_rzDP6G": {
+          "type": "live_view",
+          "settings": {
+            "min_number": 10,
+            "max_number": 40,
+            "interval_time": 10,
+            "content": "[count] peoples are viewing this right now"
+          }
+        },
+        "countdown_timer_QB4Ydn": {
+          "type": "countdown_timer",
+          "settings": {
+            "timer_style": "default",
+            "content": "🔥 Hurry Up! Sale ends in:"
+          }
+        },
+        "variant_picker_tcCihG": {
+          "type": "variant_picker",
+          "settings": {
+            "variant_type": "swatches",
+            "show_size_guide": true,
+            "size_guide_label": "Size guide",
+            "size_guide_page": "size-guide"
+          }
+        },
+        "product_addons_YRaprz": {
+          "type": "product_addons",
+          "settings": {
+            "show_compare_color": true,
+            "show_ask_question": true,
+            "show_share": true
+          }
+        },
+        "stock_countdown_JNK9zi": {
+          "type": "stock_countdown",
+          "settings": {
+            "message": "Hurry up! Only [count] items left in stock",
+            "stock_items": 30
+          }
+        },
+        "buy_buttons_LcQGtR": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true,
+            "show_wishlist": true,
+            "show_compare": true
+          }
+        },
+        "pickup_avaiability_cyVydQ": {
+          "type": "pickup_avaiability",
+          "settings": {}
+        },
+        "product_grouped_6epkNf": {
+          "type": "product_grouped",
+          "settings": {
+            "heading": ""
+          }
+        },
+        "more_colors_3zmxGq": {
+          "type": "more_colors",
+          "settings": {
+            "heading": "",
+            "image_width": 40
+          }
+        },
+        "text_CzxwUn": {
+          "type": "text",
+          "settings": {
+            "heading": "",
+            "content": ""
+          }
+        },
+        "product_meta_kiKPhW": {
+          "type": "product_meta",
+          "settings": {
+            "show_barcode": false,
+            "show_sku": true,
+            "show_available": true,
+            "show_vendor": true,
+            "show_tags": false,
+            "show_type": true,
+            "show_collections": true
+          }
+        },
+        "delivery_return_iJHeMD": {
+          "type": "delivery_return",
+          "settings": {
+            "delivery_design": "horizontal",
+            "delivery_content_icon": "truck",
+            "delivery_content": "<p>Estimate delivery times:<strong> 3-5 days International.</strong></p>",
+            "discount_content_icon": "discount",
+            "discount_content": "<p>Use code <strong>'WELCOME15'</strong> for discount 15% on your first order.</p>",
+            "return_content_icon": "free_shipping",
+            "return_content": "<p>Free shipping and returns: <strong>On all orders over $150.</strong></p>"
+          }
+        },
+        "trust_badge_qKXhpg": {
+          "type": "trust_badge",
+          "settings": {
+            "message": "Guarantee Safe Checkout:",
+            "trust_badge_image": "shopify://shop_images/payment.png",
+            "image_width": 340
+          }
+        },
+        "complementary_products_Wip9YG": {
+          "type": "complementary_products",
+          "settings": {
+            "heading": "Pairs well with",
+            "product_list_limit": 10,
+            "products_per_page": 3,
+            "show_navigation": false,
+            "show_pagination": true,
+            "enable_quick_add": false
+          }
+        }
+      },
+      "block_order": [
+        "badges_RwfTMp",
+        "title_G6tU8U",
+        "review_and_sold_AAbJC9",
+        "price_VJ4N8m",
+        "short_description_9BGxVm",
+        "live_view_rzDP6G",
+        "countdown_timer_QB4Ydn",
+        "variant_picker_tcCihG",
+        "product_addons_YRaprz",
+        "stock_countdown_JNK9zi",
+        "buy_buttons_LcQGtR",
+        "pickup_avaiability_cyVydQ",
+        "product_grouped_6epkNf",
+        "more_colors_3zmxGq",
+        "text_CzxwUn",
+        "product_meta_kiKPhW",
+        "delivery_return_iJHeMD",
+        "trust_badge_qKXhpg",
+        "complementary_products_Wip9YG"
+      ],
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "enable_sticky_content_on_desktop": true,
+        "enable_skeleton_loading": false,
+        "desktop_media_width": 50,
+        "desktop_layout": "thumbnail_left",
+        "image_zoom": "no_zoom",
+        "enable_video_looping": true,
+        "enable_video_autoplay": true,
+        "enable_frequently_bought_together": true,
+        "enable_on_desktop": true,
+        "enable_on_mobile": true,
+        "mobile_options": "hidden_thumbnail",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "product_information_tab_zaCr3e": {
+      "type": "product-information-tab",
+      "blocks": {
+        "description_4CKHTP": {
+          "type": "description",
+          "settings": {
+            "title": "Description"
+          }
+        },
+        "custom_tab_kHFeKa": {
+          "type": "custom_tab",
+          "settings": {
+            "title": "Custom tab",
+            "tab_content": "content_page",
+            "content_rich": "<p>abd</p>",
+            "page": "size-guide"
+          }
+        },
+        "custom_tab_K7qCiw": {
+          "type": "custom_tab",
+          "settings": {
+            "title": "Custom tab",
+            "tab_content": "content",
+            "content_rich": "<p>abd</p>",
+            "page": ""
+          }
+        }
+      },
+      "block_order": [
+        "description_4CKHTP",
+        "custom_tab_kHFeKa",
+        "custom_tab_K7qCiw"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "reset_spacing": false
+      }
+    },
+    "1716793714ce89e457": {
+      "type": "apps",
+      "settings": {}
+    },
+    "divider_TKLM6L": {
+      "type": "divider",
+      "settings": {
+        "section_width": "container",
+        "border_height": 1,
+        "border_color": "#ebebeb",
+        "reset_spacing": false
+      }
+    },
+    "related_products": {
+      "type": "related-products",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "People Also Bought",
+        "description": "Here’s some of our most similar products people are buying. Click to discover trending style.",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "items_to_show": 5,
+        "items_per_row": 4,
+        "column_gap": 30,
+        "items_per_row_mobile": 1.5,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "divider_HtLXd3": {
+      "type": "divider",
+      "settings": {
+        "section_width": "container",
+        "border_height": 1,
+        "border_color": "#ebebeb",
+        "reset_spacing": false
+      }
+    },
+    "products_recently_viewed_GdCNUL": {
+      "type": "products-recently-viewed",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "heading": "Recently Viewed",
+        "description": "Explore your recently viewed items, blending quality and style for a refined living experience.",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "items_to_show": 8,
+        "items_per_row": 4,
+        "column_gap": 30,
+        "show_arrow": true,
+        "carousel_pagination": "disable",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 1.5,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "product-set": {
+      "type": "product-set",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "How to wear it?",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "left",
+        "items_per_row": 2,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 1.5,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    }
+  },
+  "order": [
+    "breadcrumb",
+    "main",
+    "product_information_tab_zaCr3e",
+    "1716793714ce89e457",
+    "divider_TKLM6L",
+    "related_products",
+    "divider_HtLXd3",
+    "products_recently_viewed_GdCNUL",
+    "product-set"
+  ]
+}

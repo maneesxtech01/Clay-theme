@@ -1,0 +1,374 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "page_sale_banner_DK6g3h": {
+      "type": "page-sale-banner",
+      "blocks": {
+        "item_nbN6pz": {
+          "type": "item",
+          "settings": {
+            "sale_label": "HOLIDAY",
+            "sale_title": "Sale 30% Off",
+            "sale_desc": "30% off during the holiday season.",
+            "sale_code": "HOLIDAY30All",
+            "content_width": "25%"
+          }
+        },
+        "item_iaa9QM": {
+          "type": "item",
+          "settings": {
+            "sale_label": "BUNDLE",
+            "sale_title": "Sale 50% Off",
+            "sale_desc": "Discount when buying combo.",
+            "sale_code": "BUNDLEDEAL50",
+            "content_width": "50%"
+          }
+        },
+        "item_i6WegL": {
+          "type": "item",
+          "settings": {
+            "sale_label": "FLASHSALE",
+            "sale_title": "Sale 75% Off",
+            "sale_desc": "Big discounts for Flash Sale hours.",
+            "sale_code": "FLASHSALE75",
+            "content_width": "25%"
+          }
+        },
+        "item_MFtELj": {
+          "type": "item",
+          "settings": {
+            "sale_label": "BLACK FRIDAY",
+            "sale_title": "Best Of Sale",
+            "sale_desc": "Extra 50% off for VIP customers.",
+            "sale_code": "VIPSale50All",
+            "content_width": "25%"
+          }
+        }
+      },
+      "block_order": [
+        "item_nbN6pz",
+        "item_iaa9QM",
+        "item_i6WegL",
+        "item_MFtELj"
+      ],
+      "custom_css": [],
+      "settings": {
+        "section_width": "fluid_container",
+        "overlay_opacity": 80,
+        "color_scheme": "scheme-3d10de96-a479-49bd-819c-e044746b4f3e",
+        "heading": "Black Friday<br>Sale Up to 75% Off",
+        "description": "<p>Black Friday sale up to 75% all items. Hurry up! </p>",
+        "header_size": "large",
+        "header_alignment": "center",
+        "heading_uppercase": false,
+        "padding_top": 100,
+        "padding_bottom": 100,
+        "reset_spacing": true
+      }
+    },
+    "scrolling_text_XyQdFP": {
+      "type": "scrolling-text",
+      "blocks": {
+        "scrolling_text_KrUKh9": {
+          "type": "scrolling_text",
+          "settings": {
+            "content": "Black Friday & Holiday Sale: Up to 75% Off All Products"
+          }
+        },
+        "scrolling_text_6iNFmi": {
+          "type": "scrolling_text",
+          "settings": {
+            "content": "Black Friday & Holiday Sale: Up to 75% Off All Products"
+          }
+        }
+      },
+      "block_order": [
+        "scrolling_text_KrUKh9",
+        "scrolling_text_6iNFmi"
+      ],
+      "settings": {
+        "section_width": "full_width",
+        "color_scheme": "scheme-4faf0e4d-27f4-4d02-bc51-617383bab1a9",
+        "direction": "left",
+        "icon_between_item": "star",
+        "speed": 25,
+        "space_between_text": 80,
+        "font_size": 13,
+        "font_weight": "heading_weight",
+        "uppercase": true,
+        "use_heading_font": false,
+        "padding_top": 20,
+        "padding_bottom": 20,
+        "reset_spacing": false
+      }
+    },
+    "collection_tab_mjLLX3": {
+      "type": "collection-tab",
+      "blocks": {
+        "collection_EwEAQi": {
+          "type": "collection",
+          "settings": {
+            "collection": "blazers",
+            "collection_title": "All Products"
+          }
+        },
+        "collection_QRwbGX": {
+          "type": "collection",
+          "settings": {
+            "collection": "tops",
+            "collection_title": "Best Of Sale"
+          }
+        },
+        "collection_FyefLy": {
+          "type": "collection",
+          "settings": {
+            "collection": "crop-top",
+            "collection_title": "Sale 75% Off"
+          }
+        },
+        "collection_hYgmw9": {
+          "type": "collection",
+          "settings": {
+            "collection": "handbags",
+            "collection_title": "Sale 50% Off"
+          }
+        },
+        "collection_giKLGx": {
+          "type": "collection",
+          "settings": {
+            "collection": "sweaters",
+            "collection_title": "Sale 30% Off"
+          }
+        }
+      },
+      "block_order": [
+        "collection_EwEAQi",
+        "collection_QRwbGX",
+        "collection_FyefLy",
+        "collection_hYgmw9",
+        "collection_giKLGx"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "Last Chance<br> 50–75% Off. Snooze—You Lose",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "tab_header_style": "horizontal",
+        "horizontal_tab_style": "fill",
+        "display_mode": "grid",
+        "items_to_show": 8,
+        "items_per_row": 4,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "rows": 2,
+        "show_load_more_button": true,
+        "button_label": "Show All Products",
+        "carousel_on_mobile": true,
+        "items_per_row_mobile": 2,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "product_testimonials_KNN6XE": {
+      "type": "product-testimonials",
+      "blocks": {
+        "testimonials_items_FQz4eH": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_image": "shopify://shop_images/tes_home2_1.jpg",
+            "author_rating": 5,
+            "author_text": "<p>These are sooo pretty and very comfy. Perfect color as well. I love wearing these with a neutral top and Chelsea boots. Wicked cute...😍</p>",
+            "select_product": "basic-bright-green-rib-extreme-crop",
+            "author_name": "Carie-Gosée H."
+          }
+        },
+        "testimonials_items_taknUR": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_image": "shopify://shop_images/tes_home2_2.jpg",
+            "author_rating": 5,
+            "author_text": "<p>A perfect product, it keeps you very warm without over heating. True to size, I couldn't be happier with the purchase... Thank you! 🤗</p>",
+            "select_product": "balloon-sleeve-blouse-square-neck",
+            "author_name": "Cameron Smith."
+          }
+        },
+        "testimonials_items_RV8Jjg": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_image": "shopify://shop_images/h1-test-3.jpg",
+            "author_rating": 5,
+            "author_text": "<p>A fantastic purchase! The product provides just the right amount of warmth without causing overheating. Highly recommend! 😊</p>",
+            "select_product": "slim-fit-basic-unpatterned-t-shirt",
+            "author_name": "Algistino Lionel."
+          }
+        },
+        "testimonials_items_aVntBB": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_rating": 5,
+            "author_text": "<p>These are sooo pretty and very comfy. Perfect color as well. I love wearing these with a neutral top and Chelsea boots. Wicked cute...😍</p>",
+            "select_product": "anime-t-shirt-printed-short-sleeve",
+            "author_name": "Youngly P"
+          }
+        }
+      },
+      "block_order": [
+        "testimonials_items_FQz4eH",
+        "testimonials_items_taknUR",
+        "testimonials_items_RV8Jjg",
+        "testimonials_items_aVntBB"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "scheme-2b5c6c91-201d-4fb1-aba3-e6d562656976",
+        "heading": "Customer Say!",
+        "description": "<p>Customers love our products and we always strive to please them all.</p>",
+        "header_alignment": "center",
+        "header_size": "medium",
+        "design": "default",
+        "show_image": false,
+        "show_verified_buyer": true,
+        "img_position": "left",
+        "image_ratio": "square",
+        "custom_ratio": "",
+        "img_width": 30,
+        "framed": false,
+        "rate_color": "#ff9c05",
+        "items_per_row": 3,
+        "column_gap": 30,
+        "show_arrow": true,
+        "carousel_pagination": "show_dots_on_mobile",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "reset_spacing": false
+      }
+    },
+    "rich_text_EcBgbR": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_j3PNaT": {
+          "type": "heading",
+          "settings": {
+            "heading": "Hello! Everyday for Women's",
+            "font_size": 36,
+            "font_weight": "heading_weight",
+            "uppercase": false,
+            "spacing_bottom": 24
+          }
+        },
+        "description_P9ehdd": {
+          "type": "description",
+          "settings": {
+            "description": "<p>Discover a collection of timeless wardrobe essentials, seamlessly transitioning from work to weekend. Inspired by travel, our America-designed pieces prioritize sustainability with natural fibers and mindful practices. Explore a range of <span style=\"text-decoration:underline\"><strong>tops</strong></span>, <span style=\"text-decoration:underline\"><strong>bottoms</strong></span>, <span style=\"text-decoration:underline\"><strong>sweaters</strong></span>, and accessories in versatile styles, featuring high-quality materials like cotton, linen, tencel, and wool. </p><p>Each piece is crafted with meticulous attention to detail, ensuring a perfect blend of comfort and elegance. Our designs emphasize clean lines and sophisticated silhouettes, making them suitable for any occasion. Whether you’re dressing up for a night out or keeping it casual, our collection offers endless styling possibilities. Embrace the essence of effortless chic with our thoughtfully designed wardrobe staples, and experience the harmony of style, quality, and sustainability. Join us in redefining modern fashion with a conscience.</p>",
+            "font_size": 15,
+            "font_weight": "body_weight",
+            "spacing_bottom": 10
+          }
+        }
+      },
+      "block_order": [
+        "heading_j3PNaT",
+        "description_P9ehdd"
+      ],
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "content_alignment": "center",
+        "content_max_width": 77,
+        "enable_expand_content": true,
+        "expand_content_button": "See all Information",
+        "content_max_height": 150,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "icon_box_TRwJBD": {
+      "type": "icon-box",
+      "blocks": {
+        "icon_box_ACjiqA": {
+          "type": "icon_box",
+          "settings": {
+            "icon_svg": "free_shipping",
+            "custom_svg": "",
+            "heading": "Free Shipping",
+            "description": "<p>Enjoy free worldwide shipping and returns, with customs<br/> and duties taxes included.</p>"
+          }
+        },
+        "icon_box_RLNr9a": {
+          "type": "icon_box",
+          "settings": {
+            "icon_svg": "check_badge",
+            "custom_svg": "",
+            "heading": "Free Returns",
+            "description": "<p>Free returns within 15 days, please make sure the items<br/> are in undamaged condition.</p>"
+          }
+        },
+        "icon_box_tj4DJd": {
+          "type": "icon_box",
+          "settings": {
+            "icon_svg": "message_communications",
+            "custom_svg": "",
+            "heading": "Support Online",
+            "description": "<p>We support customers 24/7, send questions we will<br/> solve for you immediately.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "icon_box_ACjiqA",
+        "icon_box_RLNr9a",
+        "icon_box_tj4DJd"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "type": "default",
+        "column_gap": 30,
+        "icon_position": "top",
+        "icon_size": 32,
+        "spacing": 11,
+        "content_alignment": "center",
+        "heading_font_size": 16,
+        "heading_font_weight": "heading_weight",
+        "heading_uppercase": false,
+        "heading_spacing_bottom": 10,
+        "des_font_size": 15,
+        "des_font_weight": "body_weight",
+        "carousel_on_mobile": true,
+        "items_per_row_mobile": "1",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": true
+      }
+    }
+  },
+  "order": [
+    "page_sale_banner_DK6g3h",
+    "scrolling_text_XyQdFP",
+    "collection_tab_mjLLX3",
+    "product_testimonials_KNN6XE",
+    "rich_text_EcBgbR",
+    "icon_box_TRwJBD"
+  ]
+}

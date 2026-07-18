@@ -1,0 +1,532 @@
+{% comment %}
+  Renders a product card
+
+  Accepts:
+  - card_product: {Object} Product Liquid object (optional)
+  - template_enable_action: {Boolean} template is disable action or not, action is contain wishlist, compare, quickview (optional)
+  - template_enable_product_vendor: {Boolean} template is disable vendor or not (optional)
+  - template_enable_rate: {Boolean} template is disable rate or not (optional)
+  - template_enable_price: {Boolean} template is disable price or not (optional)
+  - template_enable_product_short_description: {Boolean} template is disable short description or not (optional)
+  - template_enable_color_swatches: {Boolean} template is disable color swatches or not (optional)
+  - template_disable_product_url: {Boolean} template is disable product url or not (optional)
+  - class: {String} custom class (optional)
+  - type: {String} Display type of product item - list/normal (optional)
+
+  Usage:
+  {% render 'card-product', template_enable_action: false, template_enable_product_vendor: true %}
+{% endcomment %}
+{% liquid
+    assign enable_rtl = settings.rtl
+    assign iso_code = request.locale.iso_code
+    assign lis_language_rtl = settings.language_rtl
+    if lis_language_rtl != blank
+      if lis_language_rtl contains iso_code
+        assign enable_rtl = true
+      else
+        assign enable_rtl = false
+      endif
+    endif
+  %}
+  {% liquid
+    assign theme_st = settings
+    assign product_image_ratio = theme_st.product_image_ratio
+    assign product_custom_ratio = theme_st.product_custom_ratio
+    assign action_when_click_added_wishlist = theme_st.action_when_click_added_wishlist
+    assign product_style = theme_st.product_style
+    assign show_quick_view = theme_st.show_quick_view
+    assign show_wishlist = theme_st.show_wishlist
+    assign show_compare = theme_st.show_compare
+    assign show_vendor = theme_st.show_vendor
+    assign show_short_description = theme_st.show_short_description
+    assign show_rate = theme_st.show_rate
+    assign show_secondary_image = theme_st.show_secondary_image
+    assign show_add_cart = theme_st.show_add_cart
+    assign show_variant = theme_st.show_variant
+    assign product_truncation_title = theme_st.product_truncation_title
+    assign hidden_price = theme_st.hidden_price
+    assign wishlist = pages.wishlist
+    assign compare = pages.compare
+    assign type_video = false
+    if enable_short_description == true
+      assign show_short_description = true
+    endif
+    assign bage_positon = ''
+    if enable_rtl
+      assign bage_positon = 'pointer-none absolute top-sm-15 top-10 right-sm-15 right-10'
+    else
+      assign bage_positon = 'pointer-none absolute top-sm-15 top-10 left-sm-15 left-10'
+    endif
+    assign priceclass = ''
+    if direction == 'horizontal'
+      assign priceclass = 'justify-center'
+    endif
+  %}
+  {% comment %} Case card product has data, handle data {% endcomment %}
+  {% if card_product and card_product != empty %}
+    <product-bunle-item
+      class="product-item product__item-js {{ class }} style-as-{{ product_style }}"
+    >
+      <motion-element
+        class="product-item__wrapper block {% if direction == 'horizontal' %} flex-column  {% endif %} {{settings.product_hover_effect }} product-grid {% if scroll_animation != 'none' and scroll_animation != null %} scroll-trigger {{ scroll_animation }} {% endif %}"
+        {% if indexFor and scroll_animation %}
+          data-cascade
+        {% endif %}
+        data-motion="fade-up-lg"
+        {% if scroll_animation != 'slide_in' or collection_product == true %}
+          hold
+        {% endif %}
+        {% if collection_product == true %}
+          data-margin="0px 0px 5 0px"
+        {% endif %}
+        data-motion-delay="{{ indexFor | minus: 1 | times: 40 }}"
+        style="{% if indexFor and scroll_animation %}--animation-order: {{ indexFor }};  {% endif %}"
+      >
+        {% comment %} Product inner media {% endcomment %}
+        <div class="product-item__inner hover-effect overflow-hidden relative">
+          {% assign product_media = card_product.featured_media %}
+          {% comment %} Case product has image {% endcomment %}
+          {%- if product_media -%}
+            {%- liquid
+              assign ratio = ''
+              if product_image_ratio != 'adapt'
+                case product_image_ratio
+                  when 'square'
+                    assign ratio = '1/1'
+                  when 'landscape'
+                    assign ratio = '4/3'
+                  when 'portrait'
+                    assign ratio = '3/4'
+                  else
+                    if product_custom_ratio != empty
+                      assign ratio = product_custom_ratio | replace: ':', '/'
+                    else
+                      assign ratio = '3/4'
+                    endif
+                endcase
+              else
+                if product_media.media_type == 'model'
+                  assign ratio = '3/4'
+                else
+                  assign ratio = product_media.aspect_ratio
+                endif
+              endif
+              assign alt_features = product_media.alt | default: card_product.title | escape
+              if product_media.media_type == 'video' or product_media.media_type == 'external_video'
+                assign show_secondary_image = false
+                assign type_video = true
+              endif
+            -%}
+            <a
+              draggable="false"
+              {% if template_disable_product_url == true %}
+                role="link" aria-disabled="true"
+              {% else %}
+                href="{{ card_product.url }}"
+              {% endif %}
+              aria-label="{{ card_product.title }}"
+              class="product__media product-item__media--ratio rounded block{% if card_product.media[1] != blank and show_secondary_image %} show_secondary{% endif %}"
+              style="--aspect-ratio: {{ ratio }};"
+            >
+              {% if type_video %}
+                {%- liquid
+                  assign source = product_media.sources
+                  assign source_url = ''
+                  for s in source
+                    if s.format == 'mp4'
+                      assign source_url = s.url
+                      break
+                    endif
+                  endfor
+                -%}
+                {% if product_media.media_type == 'video' %}
+                    <video
+                      playsinline="true"
+                      muted="muted"
+                      loop="loop"
+                      autoplay
+                      preload="metadata"
+                      class="product-image lazy-video-item first-image"
+                      data-src="{{ source_url }}"
+                      data-poster="{{ product_media.preview_image.src | image_url }}"
+                      poster="{{ product_media.preview_image.src | image_url }}"
+                    ></video>
+                {% elsif product_media.media_type == 'external_video' %}
+                    {% liquid
+                      assign video_id = product_media.external_id
+                    %}
+                    {%- if product_media.host == 'youtube' -%}
+                      <iframe
+                        src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1&disablekb0&fs=0&autoplay=1&mute=1&loop=1&controls=0&rel=0&playlist={{ video_id }}&playsinline=1"
+                        class="js-youtube"
+                        frameborder="0"
+                        allowfullscreen
+                      ></iframe>
+                    {%- else -%}
+                      <iframe
+                        class="js-vimeo"
+                        src="https://player.vimeo.com/video/{{ video_id }}?autoplay=1&muted=1&loop=1&controls=0"
+                        frameborder="0"
+                        allowfullscreen
+                      ></iframe>
+                    {%- endif -%}
+                {% endif %}
+                  {% render 'responsive-image',
+                    type: 'product',
+                    class: 'product-image secondary-image hidden',
+                    image: product_media,
+                    image_alt: alt_features,
+                    container: container,
+                    colunm: colunm,
+                    colunm_mobile: colunm_mobile,
+                    padding: padding,
+                    custom_widths: custom_widths,
+                    sizes: sizes
+                  %}
+              {% else %}
+                {% render 'responsive-image',
+                  type: 'product',
+                  class: 'product-image first-image',
+                  image: product_media,
+                  image_alt: alt_features,
+                  container: container,
+                  colunm: colunm,
+                  colunm_mobile: colunm_mobile,
+                  padding: padding,
+                  custom_widths: custom_widths,
+                  sizes: sizes
+                %}
+                {%- liquid
+                  if card_product.media[1] != blank and show_secondary_image
+                    assign alt_features = card_product.media[1].alt | default: card_product.title | escape
+                    render 'responsive-image', type: 'product', class: 'secondary-image opacity-0 product-image', image: card_product.media[1], image_alt: alt_features, container: container, colunm: colunm, colunm_mobile: colunm_mobile, padding: padding, custom_widths: custom_widths, sizes: sizes
+                  endif
+                -%}
+              {% endif %}
+            </a>
+          {%- else -%}
+            {% comment %} Case product has no image show placeholder {% endcomment %}
+            {%- liquid
+              assign ratio = ''
+              if product_image_ratio != 'adapt'
+                case product_image_ratio
+                  when 'square'
+                    assign ratio = '1/1'
+                  when 'landscape'
+                    assign ratio = '4/3'
+                  when 'portrait'
+                    assign ratio = '3/4'
+                  else
+                    if product_custom_ratio != empty
+                      assign ratio = product_custom_ratio | replace: ':', '/'
+                    else
+                      assign ratio = '3/4'
+                    endif
+                endcase
+              else
+                assign ratio = '3/4'
+              endif
+            -%}
+            <a
+              draggable="false"
+              {% if template_disable_product_url == true %}
+                role="link" aria-disabled="true"
+              {% else %}
+                href="{{ card_product.url }}"
+              {% endif %}
+              aria-label="{{ card_product.title }}"
+              class="product-item__media--ratio rounded block"
+              style="--aspect-ratio: {{ ratio }};"
+            >
+              {% render 'placeholder-render', class: 'rounded' %}
+            </a>
+          {%- endif -%}
+          {% if template_enable_product_badges == true %}
+            {% render 'product-badges',
+              card_product: card_product,
+              type: 'price_badges',
+              class: bage_positon,
+              sticky: type
+            %}
+          {% endif %}
+            {% comment %} Product item wishlist using only wishlist page {% endcomment %}
+            {% if template_enable_remove_in_wishlist_page == true %}
+                {%- if show_wishlist == true -%}
+                  {% if wishlist == empty %}
+                    {% assign action_when_click_added_wishlist = 'remove' %}
+                  {% endif %}
+                  <button-wishlist
+                    tabindex="0"
+                    class="product-item__button pointer product-item__button-wishlist tooltip btn-hover transition btn-hover transition shadow btn-white rounded-50 p-0 border w-45 h-45 inline-flex content-center absolute top-10 top-1025-15{% if settings.rtl %} left-10 left-1025-15{% else %} right-10 right-1025-15{% endif %}"
+                    data-product-id="{{ card_product.id }}"
+                    data-action="{{ action_when_click_added_wishlist }}"
+                    data-tooltip-remove="{{ 'products.product.actions.wishlist.remove' | t }}"
+                    data-tooltip-add="{{ 'products.product.actions.wishlist.add' | t }}"
+                    data-tooltip-redirect="{{ 'products.product.actions.wishlist.redirect' | t }}"
+                  >
+                    <svg width="11" height="11" fill="none">
+                      <use href="#icon-close" />
+                    </svg>
+                    <span class="tooltip-content invisible rounded-3 absolute pointer-none tooltip-left">
+                      {{- 'products.product.actions.wishlist.add' | t -}}
+                    </span>
+                  </button-wishlist>
+                {%- endif -%}
+              {% endif %}
+              <div class="product-item__action transition flex flex-column gap-5 absolute static-1025 bottom-10{% if settings.rtl %} left-10{% else %} right-10{% endif %}{% if settings.show_action_on_mobile and product_style != 'card' %} invisible-1025{% elsif settings.show_action_on_mobile and product_style == 'card' %} visible-1025{% elsif settings.show_action_on_mobile == false and product_style == 'card' %} visible-1025{% endif %}{% if settings.show_action_on_mobile == false %} invisible{% endif %}">
+                {% if template_enable_action == true %}
+                  {% if show_quick_view == true or show_compare == true or show_wishlist == true %}
+                    <div class="product-item__button-action heading-color transition flex gap-5 absolute-1025 z-5{% if product_style == 'morden' %} inset-x-0 bottom-10 bottom-1025-15 flex-row justify-center action__morden-style{% endif %}{% if product_style != 'morden' %} flex-column bottom-10 bottom-1025-auto top-1025-15{% if settings.rtl %} left-10 left-1025-15{% else %} right-10 right-1025-15{% endif %}{% endif %}{% if product_style != 'card' %} product__action-animation{% endif %}">
+                        {% comment %} Product item wishlist {% endcomment %}
+                        {%- if show_wishlist == true -%}
+                          {% if wishlist == empty %}
+                            {% assign action_when_click_added_wishlist = 'remove' %}
+                          {% endif %}
+                          <button-wishlist
+                            tabindex="0"
+                            class="product-item__button pointer product-item__button-wishlist tooltip relative btn-hover transition btn-hover transition btn-white rounded-50 p-0 shadow w-45 h-45 inline-flex content-center"
+                            data-product-id="{{ card_product.id }}"
+                            data-action="{{ action_when_click_added_wishlist }}"
+                            data-tooltip-remove="{{ 'products.product.actions.wishlist.remove' | t }}"
+                            data-tooltip-add="{{ 'products.product.actions.wishlist.add' | t }}"
+                            data-tooltip-redirect="{{ 'products.product.actions.wishlist.redirect' | t }}"
+                          >
+                            <svg width="14" height="13" fill="none">
+                              <use href="#icon-wishlist" />
+                            </svg>
+                            <span class="tooltip-content invisible rounded-3 absolute pointer-none{% if product_style == 'morden' %} tooltip-top{% endif %}{% if product_style != 'morden' %}{% if settings.rtl %} tooltip-right{% else %} tooltip-left{% endif %}{% endif %}">
+                              {{- 'products.product.actions.wishlist.add' | t -}}
+                            </span>
+                          </button-wishlist>
+                        {%- endif -%}
+                        {% comment %} Product item compare {% endcomment %}
+                        {%- if show_compare == true -%}
+                          {% assign action_when_click_added_compare = 'go_to_page' %}
+                          {% if compare == empty %}
+                            {% assign action_when_click_added_compare = 'remove' %}
+                          {% endif %}
+                          <button-compare
+                            tabindex="0"
+                            class="{% if product_style == 'card' %}invisible-1025 product__action-animation transition {% endif %}product-item__button pointer product-item__button-compare tooltip relative btn-hover transition btn-white rounded-50 p-0 shadow w-45 h-45 inline-flex-1025 hidden content-center"
+                            data-product-id="{{ card_product.id }}"
+                            data-action="{{ action_when_click_added_compare }}"
+                            data-tooltip-remove="{{ 'products.product.actions.compare.remove' | t }}"
+                            data-tooltip-add="{{ 'products.product.actions.compare.add' | t }}"
+                            data-tooltip-redirect="{{ 'products.product.actions.compare.redirect' | t }}"
+                          >
+                            <svg width="14" height="14" fill="none">
+                              <use href="#icon-compare" />
+                            </svg>
+                            <span class="tooltip-content invisible rounded-3 absolute pointer-none{% if product_style == 'morden' %} tooltip-top{% endif %}{% if product_style != 'morden' %}{% if settings.rtl %} tooltip-right{% else %} tooltip-left{% endif %}{% endif %}">
+                              {{- 'products.product.actions.compare.add' | t -}}
+                            </span>
+                          </button-compare>
+                        {%- endif -%}
+                        {% comment %} Product item quickview {% endcomment %}
+                        {%- if show_quick_view == true -%}
+                          <button-quickview
+                            data-custom-class="quickview"
+                            tabindex="0"
+                            class="{% if product_style == 'card' %}invisible-1025 product__action-animation transition {% endif %}product-item__button pointer product-item__button-quickview tooltip relative btn-hover transition btn-white rounded-50 p-0 shadow w-45 h-45 inline-flex-1025 hidden content-center"
+                            data-url="/products/{{ card_product.handle }}?section_id=product-quickview&ajax=1"
+                          >
+                            <svg width="14" height="12" fill="none" class="hidden-on-load">
+                              <use href="#icon-quickview" />
+                            </svg>
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin opacity-0 icon-load">
+                              <use href="#icon-load"></use>
+                            </svg>
+                            <span class="tooltip-content invisible rounded-3 absolute pointer-none{% if product_style == 'morden' %} tooltip-top{% endif %}{% if product_style != 'morden' %}{% if settings.rtl %} tooltip-right{% else %} tooltip-left{% endif %}{% endif %}">
+                              {{- 'products.product.actions.quickview.label' | t -}}
+                            </span>
+                          </button-quickview>
+                        {%- endif -%}
+                      </div>
+                  {% endif %}
+                {% endif %}
+              </div>
+        </div>
+        {% comment %} Product information {% endcomment %}
+        <div class="product-item__information word-break text-{{ settings.product_alignment }} mt-15">
+          {% comment %} Product item vendor {% endcomment %}
+          {%- if template_enable_product_vendor == true -%}
+            {%- if show_vendor -%}
+              <div class="product-item__vendor dark-grey">{{ card_product.vendor }}</div>
+            {%- endif -%}
+          {% endif %}
+          {% comment %} Product item title {% endcomment %}
+            <a
+              aria-label="{{ card_product.title }}"
+              class="{% if product_truncation_title != 'none' %}product-title__truncate {% endif %}product-item__name {{ settings.product_name_text_transform }} heading-style no-underline fs-custom block lh-normal"
+              style="--font-size: {{ settings.product_size }};{% if product_truncation_title != 'none' %} --line-clamp: {{ product_truncation_title }};{% endif %}"            {% if template_disable_product_url == true %}
+                role="link" aria-disabled="true"
+              {% else %}
+                href="{{ card_product.url }}"
+              {% endif %}
+            >
+              {{- card_product.title -}}
+            </a>
+          {% comment %} Product item rating {% endcomment %}
+  
+          {%- if template_enable_rate == true -%}
+            {%- if show_rate -%}
+              {%- if card_product.metafields.judgeme.badge -%}
+                <review-product
+                  class="review-product-added inline-loading inline-flex"
+                  data-product-handle="{{ card_product.handle }}"
+                >
+                  {% comment %} {{- 'products.product.loading' | t -}} {% endcomment %}
+                  <script type="application/json" class="product-review-json">
+                    {%- render 'review' | product: card_product -%}
+                  </script>
+                </review-product>
+              {%- endif -%}
+            {%- endif -%}
+          {%- endif -%}
+          {%- liquid
+            assign product_form_id = 'quick-add-bundle-' | append: section.id | append: card_product.id
+          -%}
+            <product-form-bundle data-minimum="{{ section.settings.minimum }}" data-maximum="{{ section.settings.maximum }}" class="product-item__product-form-bundle" data-handle="{{ card_product.handle }}">
+              {%- form 'product',
+                card_product,
+                id: product_form_id,
+                class: 'form',
+                novalidate: 'novalidate',
+                data-type: 'add-to-cart-form'
+              -%}
+                <input
+                  type="hidden"
+                  name="id"
+                  value="{{ card_product.selected_or_first_available_variant.id }}"
+                  disabled
+                >
+                  {% if hidden_price != true %}
+                    <div
+                      class="product-item__price justify-content-{{ settings.product_alignment }} fs-custom flex gap-custom lh-normal {{ priceclass }}"
+                      style="--font-size: {{ settings.price_size }}; --gap: 3px;"
+                    >
+                      {%- render 'price', scope: 'item', product: card_product, show_badges: false, class: priceclass -%}
+                    </div>
+                  {% endif %}
+                {%- if show_variant -%}
+                  {%- render 'color-swatches' | product: card_product | type: "bundle" -%}
+                {%- endif -%}
+                {% if show_add_cart and theme_st.enable_catalog_mode == false %}
+                  <button
+                    id="{{ product_form_id }}-submit"
+                    type="submit"
+                    name="add"
+                    class="w-full product__add-cart product__add-cart__bundle product-item__select-options transition btn-outline text-center inline-flex content-center relative mt-20 morden-style"
+                    aria-haspopup="dialog"
+                    aria-labelledby="{{ product_form_id }}-submit title-{{ section.id }}-{{ card_product.id }}"
+                    aria-live="polite"
+                    arial-label="
+                      {%- if card_product.selected_or_first_available_variant.available -%}
+                        {{ 'products.product.actions.add_to_bundle.label_bundle' | t }}
+                      {%- else -%}
+                        {{ 'products.product.actions.add_to_cart.sold_out.label' | t }}
+                      {%- endif -%}
+                    "
+                    data-sold-out-message="true"
+                    {% if card_product.selected_or_first_available_variant.available == false %}
+                      disabled
+                    {% endif %}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin opacity-0 icon-load">
+                      <use href="#icon-load"></use>
+                    </svg>
+                    <span class="block hidden-on-load btn-action">
+                      {%- if card_product.selected_or_first_available_variant.available -%}
+                        {{ 'products.product.actions.add_to_bundle.label_bundle' | t }}
+                      {%- else -%}
+                        {{ 'products.product.actions.add_to_cart.sold_out.label' | t }}
+                      {%- endif -%}
+                    </span>
+                    <span class="sold-out-message hidden">
+                      {{ 'products.product.actions.add_to_cart.sold_out.label' | t }}
+                    </span>
+                  </button>
+                {% endif %}
+              {%- endform -%}
+            </product-form-bundle>
+        </div>
+      </motion-element>
+    </product-bunle-item>
+  {% else %}
+    {% comment %} Case card product has no data, handle default data with shopify placeholder {% endcomment %}
+    <div class="product-item{{ class }} {{ product_style }}">
+      <motion-element
+        {% if indexFor and scroll_animation %}
+          data-cascade
+        {% endif %}
+        data-motion="fade-up-lg"
+        {% if scroll_animation != 'slide_in' or collection_product == true %}
+          hold
+        {% endif %}
+        {% if collection_product == true %}
+          data-margin="0px 0px 5 0px"
+        {% endif %}
+        data-motion-delay="{{ indexFor | minus: 1 | times: 50  }}"
+        style="{% if indexFor and scroll_animation %}--animation-order: {{ indexFor }};  {% endif %}"
+        class="product-item__wrapper product-grid block {% if scroll_animation != 'none' and scroll_animation != null %} scroll-trigger {{ scroll_animation }}  {% endif %} {%if direction == 'horizontal' %} flex-column {% endif %}"
+      >
+        <div class="product-item__inner relative">
+          <div class="product-item__media">
+            <a
+              role="link"
+              aria-disabled="true"
+              title="{{ 'onboarding.product_title_example' | t }}"
+              aria-label="{{ 'onboarding.product_title_example' | t }}"
+            >
+              {%- liquid
+                assign ratio = ''
+                if product_image_ratio != 'adapt'
+                  case product_image_ratio
+                    when 'square'
+                      assign ratio = '1/1'
+                    when 'landscape'
+                      assign ratio = '4/3'
+                    when 'portrait'
+                      assign ratio = '3/4'
+                    else
+                      if product_custom_ratio != empty
+                        assign ratio = product_custom_ratio | replace: ':', '/'
+                      else
+                        assign ratio = '3/4'
+                      endif
+                  endcase
+                else
+                  assign ratio = '3/4'
+                endif
+              -%}
+              <div
+                class="product-item__media--ratio rounded"
+                style="--aspect-ratio: {{ ratio }};"
+              >
+                {%- render 'placeholder-render', class: 'rounded' -%}
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="product-item__information word-break text-{{ settings.product_alignment }} mt-15">
+          <a
+            draggable="false"
+            aria-disabled="true"
+            role="link"
+            class="product-item__name"
+            title="{{ 'onboarding.product_title_example' | t }}"
+            aria-label="{{ 'onboarding.product_title_example' | t }}"
+          >
+            {{ 'onboarding.product_title_example' | t }}
+          </a>
+          <div
+            class="product-item__price mt-5 justify-content-{{ settings.product_alignment }} fs-custom flex"
+            style="--font-size: {{ settings.price_size }}"
+          >
+            {%- render 'price' | scope: 'item', show_badges: false, class: priceclass -%}
+          </div>
+        </div>
+      </motion-element>
+    </div>
+  {% endif %}
+  

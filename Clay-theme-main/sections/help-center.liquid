@@ -1,0 +1,344 @@
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign color_scheme = section_st.color_scheme
+  if section_st.reset_spacing
+    assign reset_spacing = ' remove_spacing'
+  endif
+  assign show_only_faq = false
+  if section_st.description_2 == blank and section_st.first_button_label == blank and section_st.description == blank and section_st.heading == blank and section_st.subheading == blank and section_st.image == blank
+    assign show_only_faq = true
+  endif
+  assign scroll_animation = settings.scroll_animation
+-%}
+{%- capture style -%}
+    --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};--max-width: 50rem;
+  {%- endcapture -%}
+{%- style -%}
+  .faq-section-items.active .faq-section-title {
+    color: var(--color-heading);
+  }
+{%- endstyle -%}
+
+<section
+  class="section{% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} color-{{ color_scheme }} gradient {{ reset_spacing }} faqs-page"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ section_width }}">
+    <div class="faqs-content flex-wrap flex gap" style="--col-gap: 30px">
+      <motion-element
+        data-motion="fade-up-lg"
+        data-motion-delay="0"
+        {% if scroll_animation != 'slide_in' %}
+          hold
+        {% endif %}
+        class="col-md-w-custom block rounded-style {% if show_only_faq == true %} hidden {% endif %} {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}"
+        style="
+          --col-width: 35%; {%- if scroll_animation != 'none' -%}
+          --animation-order: 0
+                          {% endif %}
+        "
+      >
+        <div class="faq_contact rounded sticky top-30">
+          {% if section_st.subheading != blank %}
+            <p class="m-0 mb-5 fs-custom">
+              {{ section_st.subheading }}
+            </p>
+          {% endif %}
+          {%- if section_st.heading != blank -%}
+            <h2 class="heading-letter-spacing h4 mt-0 mb-20 mb-xl-25 fs-36">
+              {{ section_st.heading }}
+            </h2>
+          {% endif %}
+          {%- if section_st.description != blank -%}
+            <div class="description mb-20">
+              {{ section_st.description }}
+            </div>
+          {% endif %}
+          {% if section_st.image != blank %}
+            <div class="w-custom max-w-100 mb-10" style="--custom-width: {{ section_st.image_size }}px">
+              {%- assign sizes = section_st.image_size | append: 'px' -%}
+              {%- assign image_alt = section_st.image.alt | default: 'images' -%}
+              {% render 'responsive-image',
+                type: 'other',
+                image: section_st.image,
+                image_alt: image_alt,
+                sizes: sizes,
+                custom_widths: '185, 120, 100, 50',
+                no_animate: true
+              %}
+            </div>
+          {% endif %}
+          {%- if section_st.description_2 != blank -%}
+            <div class="description mb-20">
+              {{ section_st.description_2 }}
+            </div>
+          {% endif %}
+          {% if section_st.first_button_label != blank %}
+            <a
+              {% if section_st.first_button_link == blank %}
+                role="link" aria-disabled="true"
+              {% else %}
+                href="{{ section_st.first_button_link | default: "#" }}"
+              {% endif %}
+              aria-label="{{ section_st.first_button_label }}"
+              class="inline-flex no-underline btn-{{ section_st.first_button_type }} justify-content-center {% if  section_st.first_button_type != "link" %}  w-full {% endif %}"
+            >
+              {{ section_st.first_button_label }}
+            </a>
+          {% endif %}
+        </div>
+      </motion-element>
+      <motion-element
+        data-motion="fade-up-lg"
+        data-motion-delay="150"
+        {% if scroll_animation != 'slide_in' %}
+          hold
+        {% endif %}
+        class="{% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}  {% if show_only_faq != true %} faqs-right {% else %} w-full {% endif %} block  relative flex-1 mb-0-important p-30 p-xl-45 rounded-style rounded-15 bg-white"
+        {%- if scroll_animation != 'none' -%}
+          style="--animation-order: 1"
+        {% endif %}
+      >
+        {%- for block in section.blocks -%}
+          {%- assign block_st = block.settings -%}
+          {%- case block.type -%}
+            {%- when 'faq' -%}
+              <collapsible-block
+                tabindex="0"
+                {{ block.shopify_attributes }}
+                class="faq-section-items bls-toggle relative block {% if forloop.first %} active {% endif %}  {% if forloop.last == false %} border-bottom {% endif %}  "
+              >
+                <h3
+                  class="faq-section-title h6 my-0 pointer py-20 relative collapsible-heading text-color hover-heading-color transition pe-12"
+                >
+                  {{- block_st.question }}
+                  <span class="open-children-toggle absolute inset-0 flex flex-end pointer">
+                    <span class="icon_plus-animation"> </span>
+                  </span>
+                </h3>
+                <div
+                  class="faq-section-content overflow-hidden collapsible-content mb-20"
+                  {% if forloop.first != true %}
+                    style="display: none;"
+                  {% endif %}
+                >
+                  <div class="faq_content-inner rich__text-m0">{{ block_st.answer }}</div>
+                </div>
+              </collapsible-block>
+          {%- endcase -%}
+        {%- endfor -%}
+      </motion-element>
+    </div>
+  </div>
+</section>
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'faq' -%}
+            {%- liquid
+              assign block_st = block.settings
+              assign question = block_st.question
+              assign answer = block_st.answer
+            -%}
+            {%- if answer != blank or question != blank -%}
+              {
+                "@type": "Question",
+                "name": "{{ question }}",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "{{ answer | replace: '<p>', '' | replace: '</p>', '' }}"
+                }
+              }
+            {% endif %}
+            {%- unless forloop.last -%},{%- endunless -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    ]
+  }
+</script>
+{% schema %}
+{
+  "name": "t:sections.help-center.name",
+  "disabled_on": {
+    "groups": ["custom.overlay", "header", "footer"]
+  },
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:sections.all.section_width.label",
+      "default": "container",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.faqs-page.settings.header.general"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "t:sections.all.contents.subheading.label",
+      "default": "Have a question?"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.all.section_header.heading.label",
+      "default": "Help Center"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:sections.all.section_header.description.label",
+      "default": "<p>If you have an issue or question that requires immediate assistance, you can click the button below to chat live with a Customer Service representative.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.all.image.label"
+    },
+    {
+      "type": "range",
+      "id": "image_size",
+      "label": "t:sections.help-center.settings.image_size.label",
+      "default": 100,
+      "min": 50,
+      "max": 160,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "richtext",
+      "id": "description_2",
+      "label": "t:sections.help-center.settings.description_2.label",
+      "default": "<p>Customer support team from: 8am to 7:30pm daily.Average answer time: 5h.</p>"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.faqs-page.settings.header.button"
+    },
+    {
+      "type": "text",
+      "id": "first_button_label",
+      "default": "Button label",
+      "label": "t:sections.help-center.settings.button.label",
+      "info": "t:sections.all.contents.button.first_button_label.info"
+    },
+    {
+      "type": "url",
+      "id": "first_button_link",
+      "label": "t:sections.help-center.settings.button.link"
+    },
+    {
+      "type": "select",
+      "id": "first_button_type",
+      "label": "t:sections.all.contents.button.button_type.label",
+      "default": "primary",
+      "options": [
+        {
+          "value": "primary",
+          "label": "t:sections.all.contents.button.button_type.primary.label"
+        },
+        {
+          "value": "outline",
+          "label": "t:sections.all.contents.button.button_type.outline.label"
+        },
+        {
+          "value": "link",
+          "label": "t:sections.all.contents.button.button_type.link.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "t:sections.faqs-page.blocks.question.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "t:sections.faqs-page.blocks.question.settings.question",
+          "default": "Frequently Asked Questions?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "t:sections.faqs-page.blocks.question.settings.answer",
+          "default": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.help-center.name",
+      "blocks": [
+        {
+          "type": "faq",
+          "settings": {
+            "question": "Frequently Asked Questions?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>"
+          }
+        },
+        {
+          "type": "faq"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

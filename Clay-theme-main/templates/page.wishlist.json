@@ -1,0 +1,97 @@
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin theme editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
+{
+  "sections": {
+    "page-heading": {
+      "type": "page-heading",
+      "blocks": {
+        "breadcrumb_UKcBAE": {
+          "type": "breadcrumb",
+          "settings": {
+          }
+        },
+        "heading_X8998p": {
+          "type": "heading",
+          "settings": {
+            "page_title": "",
+            "header_size": "default"
+          }
+        },
+        "description_XFfaTA": {
+          "type": "description",
+          "settings": {
+            "description": ""
+          }
+        }
+      },
+      "block_order": [
+        "breadcrumb_UKcBAE",
+        "heading_X8998p",
+        "description_XFfaTA"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "alignment": "center",
+        "overlay_opacity": 0,
+        "height": "adapt",
+        "padding_top": 80,
+        "padding_bottom": 0
+      }
+    },
+    "main": {
+      "type": "page-wishlist",
+      "settings": {
+        "section_width": "fluid_container",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    },
+    "divider_p9yTJV": {
+      "type": "divider",
+      "settings": {
+        "section_width": "fluid_container",
+        "border_height": 1,
+        "border_color": "#ebebeb",
+        "reset_spacing": false
+      }
+    },
+    "products_recently_viewed_MWb4ER": {
+      "type": "products-recently-viewed",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "Recently Viewed",
+        "description": "Explore your recently viewed items, blending quality and style for a refined living experience.",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "items_to_show": 5,
+        "items_per_row": 4,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "show_dots_on_mobile",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 2,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    }
+  },
+  "order": [
+    "page-heading",
+    "main",
+    "divider_p9yTJV",
+    "products_recently_viewed_MWb4ER"
+  ]
+}

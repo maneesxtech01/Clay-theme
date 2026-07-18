@@ -1,0 +1,121 @@
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin theme editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
+{
+  "sections": {
+    "heading": {
+      "type": "page-heading",
+      "blocks": {
+        "breadcrumb_6m9rGB": {
+          "type": "breadcrumb",
+          "settings": {
+          }
+        },
+        "heading_xwFKKa": {
+          "type": "heading",
+          "settings": {
+            "page_title": "",
+            "header_size": "default"
+          }
+        },
+        "description_YRWpkt": {
+          "type": "description",
+          "settings": {
+            "description": "<p>Discover style insights and trends on our fashion lifestyle blog.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "breadcrumb_6m9rGB",
+        "heading_xwFKKa",
+        "description_YRWpkt"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "alignment": "center",
+        "overlay_opacity": 0,
+        "height": "adapt",
+        "padding_top": 80,
+        "padding_bottom": 4
+      }
+    },
+    "main": {
+      "type": "main-blog",
+      "blocks": {
+        "categories_gYgLVH": {
+          "type": "categories",
+          "settings": {
+            "title": "Blog Categories",
+            "menu": "blog-categories"
+          }
+        },
+        "recent_post_KiffBB": {
+          "type": "recent_post",
+          "settings": {
+            "title": "Popular Posts",
+            "maximum": 3,
+            "image_ratio": "square",
+            "custom_ratio": ""
+          }
+        },
+        "tags_fxDYtj": {
+          "type": "tags",
+          "settings": {
+            "title": "Tags"
+          }
+        },
+        "image_banner_mhPKkQ": {
+          "type": "image_banner",
+          "settings": {
+            "image": "shopify:\/\/shop_images\/blog_banner.jpg",
+            "url": "shopify:\/\/collections\/all",
+            "open_link": true
+          }
+        }
+      },
+      "block_order": [
+        "categories_gYgLVH",
+        "recent_post_KiffBB",
+        "tags_fxDYtj",
+        "image_banner_mhPKkQ"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "enable_sidebar": true,
+        "sidebar_position": "left",
+        "layout": "grid",
+        "items_to_show": 8,
+        "items_per_row": 2,
+        "column_gap": 30,
+        "pagination": "default",
+        "button_show_more": "Load more",
+        "promotion_link": "",
+        "promotion_postion": 3,
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "content_alignment": "center",
+        "show_category": true,
+        "show_date": true,
+        "show_author": true,
+        "show_excerpt": true,
+        "show_comment_count": true,
+        "show_readmore": false,
+        "readmore_type": "primary",
+        "items_per_row_mobile": 1,
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "heading",
+    "main"
+  ]
+}

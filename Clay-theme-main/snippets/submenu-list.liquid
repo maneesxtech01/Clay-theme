@@ -1,0 +1,258 @@
+{%- liquid
+  assign section_st = section.settings
+  assign menu_type = menu_type
+-%}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+{% if link.links.size > 0 %}
+  <ul
+    class="subchildmenu list-unstyled px-30 px-1025-0{% if menu_type != 'dropdown' %} grid grid-cols gap{% endif %}"
+  >
+    {% if only_for_domain == true %}
+      {% for child_link in link.links %}
+        {% for grandchild_link in child_link.links %}
+          <li class="menu-link level-1 {% if only_for_domain == true %} block hidden-1025 {% endif %}">
+            <menu-item class="relative static-1025 flex justify-between align-center border-bottom border-bottom-1025-0">
+              <a
+                class="menu_item-link  no-underline  py-10 py-1025-5 min-h-55 min-h-1025-unset inline-flex align-center"
+                href="{{ grandchild_link.url }}"
+              >
+                {% liquid
+                  assign label_setting = ''
+                  assign show_label = false
+
+                  if grandchild_link.title contains '[hot]'
+                    assign label_setting = label_setting | append: 'hot'
+                    assign show_label = true
+                  endif
+
+                  if grandchild_link.title contains '[new]'
+                    assign label_setting = label_setting | append: 'new'
+                    assign show_label = true
+                  endif
+
+                  if grandchild_link.title contains '[sale]'
+                    assign label_setting = label_setting | append: 'sale'
+                    assign show_label = true
+                  endif
+
+                  if grandchild_link.title contains '[popular]'
+                    assign label_setting = label_setting | append: 'popular'
+                    assign show_label = true
+                  endif
+
+                  if grandchild_link.title contains '[coming soon]' and only_for_domain == true
+                    assign label_setting = label_setting | append: 'coming_soon'
+                    assign show_label = true
+                  endif
+
+                  assign child_link_title = grandchild_link.title
+                  assign clean_title = child_link_title
+                  assign clean_title = clean_title | replace: '[hot]', ''
+                  assign clean_title = clean_title | replace: '[new]', ''
+                  assign clean_title = clean_title | replace: '[sale]', ''
+                  assign clean_title = clean_title | replace: '[popular]', ''
+                  assign clean_title = clean_title | replace: '[coming soon]', ''
+                  assign clean_title = clean_title | strip
+                %}
+                <span class="{% if child_link.links.size == 0 %}smooth-padding-hover transition{% endif %}">
+                  {{- clean_title -}}
+                </span>
+                {% if show_label %}
+                  <span class="menu_label rounded-2 text-center heading_weight relative absolute-1025 whitespace-nowrap uppercase  {{ label_setting }}">
+                    {% if label_setting == 'coming_soon' and only_for_domain == true %}
+                      coming soon
+                    {% else %}
+                      {{- section_st[label_setting] -}}
+                    {% endif %}
+                  </span>
+                {% endif %}
+              </a>
+            </menu-item>
+          </li>
+        {% endfor %}
+      {% endfor %}
+    {% endif %}
+
+    {% for child_link in link.links %}
+      <li class="menu-link level-1 {% if only_for_domain == true %} hidden block-1025 {% endif %}">
+        <menu-item class="relative static-1025 flex justify-between align-center border-bottom border-bottom-1025-0">
+          <a
+            class="menu_item-link {% if only_for_domain == true %}  hidden-important {% endif %}  no-underline{% if menu_type != 'dropdown' %} heading-style{% endif %} py-10 py-1025-5 min-h-55 min-h-1025-unset inline-flex align-center"
+            href="{{ child_link.url }}"
+          >
+            {% liquid
+              assign label_setting = ''
+              assign show_label = false
+
+              if child_link.title contains '[hot]'
+                assign label_setting = label_setting | append: 'hot'
+                assign show_label = true
+              endif
+
+              if child_link.title contains '[new]'
+                assign label_setting = label_setting | append: 'new'
+                assign show_label = true
+              endif
+
+              if child_link.title contains '[sale]'
+                assign label_setting = label_setting | append: 'sale'
+                assign show_label = true
+              endif
+
+              if child_link.title contains '[popular]'
+                assign label_setting = label_setting | append: 'popular'
+                assign show_label = true
+              endif
+
+              if grandchild_link.title contains '[coming soon]' and only_for_domain == true
+                assign label_setting = label_setting | append: 'coming_soon'
+                assign show_label = true
+              endif
+
+              assign child_link_title = child_link.title
+              assign clean_title = child_link_title
+              assign clean_title = clean_title | replace: '[hot]', ''
+              assign clean_title = clean_title | replace: '[new]', ''
+              assign clean_title = clean_title | replace: '[sale]', ''
+              assign clean_title = clean_title | replace: '[popular]', ''
+              assign clean_title = clean_title | replace: '[coming soon]', ''
+              assign clean_title = clean_title | strip
+            %}
+            <span class="{% if child_link.links.size == 0 %}reversed-links transition{% endif %}">
+              {{- clean_title -}}
+            </span>
+            {% if show_label %}
+              <span class="menu_label rounded-2 text-center heading_weight relative absolute-1025 whitespace-nowrap uppercase  {{ label_setting }}">
+                {% if label_setting == 'coming_soon' and only_for_domain == true %}
+                  coming soon
+                {% else %}
+                  {{- section_st[label_setting] -}}
+                {% endif %}
+              </span>
+            {% endif %}
+          </a>
+          {%- if child_link.links.size > 0 -%}
+            <open-children-toggle class="inline-flex ms-5 flex-end align-center pointer{% if menu_type != 'dropdown' %} hidden-1025{% endif %}{% if enable_rtl %} left-0 left-1025-15{% else %} right-1025-15 right-0{% endif %}{% if section_st.redirect_to_link == blank %} absolute w-full w-1025-auto inset-y-0 static-1025{% else %} w-30 h-30 content-center{% endif %}">
+              {% if enable_rtl %}
+                <svg width="6" height="11" fill="none">
+                  <use href="#icon-back" />
+                </svg>
+              {% else %}
+                <svg width="6" height="11" fill="none">
+                  <use href="#icon-next" />
+                </svg>
+              {% endif %}
+            </open-children-toggle>
+          {%- endif -%}
+        </menu-item>
+        {% if child_link.links.size > 0 %}
+          <ul class="sub-children-menu{% if menu_type == 'dropdown' %} invisible-1025{% endif %} gradient transition absolute{% if menu_type != 'dropdown' %} static-1025{% endif %} list-unstyled">
+            <li class="hidden-1025 grey-bg px-30 border-bottom flex gap-15 align-center justify-between{% if theme_st.menu_font == 'heading_font' %} heading-style{% endif %}">
+              <back-menu
+                class="py-10 min-h-55 inline-flex gap-20 align-center back-lv1 fs-big-1 heading-style"
+                role="link"
+              >
+                {% if enable_rtl %}
+                  <svg width="6" height="11" fill="none">
+                    <use href="#icon-next" />
+                  </svg>
+                {% else %}
+                  <svg width="6" height="11" fill="none">
+                    <use href="#icon-back" />
+                  </svg>
+                {% endif %}
+                {% liquid
+                  assign child_link_title = child_link.title
+                  assign clean_title = child_link_title
+                  assign clean_title = clean_title | replace: '[hot]', ''
+                  assign clean_title = clean_title | replace: '[new]', ''
+                  assign clean_title = clean_title | replace: '[sale]', ''
+                  assign clean_title = clean_title | replace: '[popular]', ''
+                  assign clean_title = clean_title | replace: '[coming soon]', ''
+                  assign clean_title = clean_title | strip
+                %}
+                {{ clean_title }}
+              </back-menu>
+              <close-menu class="close-menu lh-1 ms-10">
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                  <use href="#icon-close" />
+                </svg>
+              </close-menu>
+            </li>
+            <ul class="list-unstyled px-30 px-1025-0 gradient">
+              {% for grandchild_link in child_link.links %}
+                <li class="menu-link level-2 border-bottom border-bottom-1025-0">
+                  {% liquid
+                    assign label_setting = ''
+                    assign show_label = false
+
+                    if grandchild_link.title contains '[hot]'
+                      assign label_setting = label_setting | append: 'hot'
+                      assign show_label = true
+                    endif
+
+                    if grandchild_link.title contains '[new]'
+                      assign label_setting = label_setting | append: 'new'
+                      assign show_label = true
+                    endif
+
+                    if grandchild_link.title contains '[sale]'
+                      assign label_setting = label_setting | append: 'sale'
+                      assign show_label = true
+                    endif
+
+                    if grandchild_link.title contains '[popular]'
+                      assign label_setting = label_setting | append: 'popular'
+                      assign show_label = true
+                    endif
+
+                    if grandchild_link.title contains '[coming soon]' and only_for_domain == true
+                      assign label_setting = label_setting | append: 'coming_soon'
+                      assign show_label = true
+                    endif
+
+                    assign grandchild_link_title = grandchild_link.title
+                    assign clean_title = grandchild_link_title
+                    assign clean_title = clean_title | replace: '[hot]', ''
+                    assign clean_title = clean_title | replace: '[new]', ''
+                    assign clean_title = clean_title | replace: '[sale]', ''
+                    assign clean_title = clean_title | replace: '[popular]', ''
+                    assign clean_title = clean_title | replace: '[coming soon]', ''
+                    assign clean_title = clean_title | strip
+                  %}
+                  <a
+                    class="menu_item-link no-underline py-10 py-1025-5 min-h-55 min-h-1025-unset inline-flex align-center"
+                    href="{{ grandchild_link.url }}"
+                    aria-label="{{ clean_title }}"
+                  >
+                    <span class="reversed-links transition">{{- clean_title -}}</span>
+                    {% if show_label %}
+                      <span class="menu_label rounded-2 text-center heading_weight relative absolute-1025 whitespace-nowrap uppercase  {{ label_setting }}">
+                        {% if label_setting == 'coming_soon' and only_for_domain == true %}
+                          coming soon
+                        {% else %}
+                          {{- section_st[label_setting] -}}
+                        {% endif %}
+                      </span>
+                    {% endif %}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}

@@ -1,0 +1,208 @@
+{%- liquid
+  assign st = section.settings
+  assign infomation_meta = product.metafields.custom.information_product_tab
+  assign reset_spacing = ''
+  if st.reset_spacing
+    assign reset_spacing = ' remove_spacing'
+  endif
+-%}
+{%- if section.blocks.size > 0 -%}
+  <div
+    id="{{ section.id }}"
+    class="section gradient {{ reset_spacing }} bls__product-tabs "
+    data-section-type="tabs"
+    data-section-id="{{ section.id }}"
+  >
+    <div class="{{ st.section_width }} section-full">
+      <div class="product info detailed">
+        <div class="product data items">
+          <ul
+            class="nav nav-tabs list-none text-center gap-30 gap-xl-60 p-0 flex  justify-content-start mb-big mt-0"
+            style="--space-bottom: 40;--height: 2px;"
+          >
+            {%- for block in section.blocks %}
+              {% liquid
+                assign bk_st = block.settings
+                assign hidden = ''
+                if block.type == 'custom_tab' and bk_st.tab_content == 'content_custom'
+                  assign hidden = 'hidden'
+                  if infomation_meta.value.information_text != blank or infomation_meta.value.information_in_page != blank
+                    assign hidden = ''
+                  endif
+                endif
+              %}
+              <li class="data {{ hidden }} item{% if forloop.first %} active{% endif %}">
+                <a
+                  class="is-nav-tabs heading-weight relative whitespace-nowrap heading-color py-15 inline-block border-animation"
+                  href="#{{ block.id }}"
+                  data-block-id="proTabs{{ block.id }}"
+                  {%- if block.type == 'review' -%}
+                    tab-review
+                  {%- endif -%}
+                  {%- if block.type == '@app' -%}
+                    tab-review-app
+                  {%- endif -%}
+                >
+                  {{- bk_st.title -}}
+                  {%- if block.type == '@app' -%}
+                    {{ 'products.product.review_app' | t }}
+                  {%- endif -%}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+          <div class="tab-content">
+            {%- for block in section.blocks %}
+              {% assign bk_st = block.settings %}
+              <div
+                id="proTabs{{ block.id }}"
+                class="tab-item transition{% if forloop.first  %} active{% endif %}"
+              >
+                <div
+                  class="tab-panel"
+                  {% if forloop.first %}
+                    style="display: block;"
+                  {% else %}
+                    style="display: none;"
+                  {% endif %}
+                >
+                  {%- case block.type -%}
+                    {%- when '@app' -%}
+                      {% render block %}
+                    {%- when 'description' -%}
+                      {{ product.description }}
+                    {%- when 'review' -%}
+                      <div id="shopify-product-reviews" data-id="{{ product.id }}">
+                        {{ product.metafields.spr.reviews }}
+                      </div>
+                    {%- when 'custom_tab' -%}
+                      {% assign tab_content = bk_st.tab_content %}
+                      {%- case tab_content -%}
+                        {%- when 'content' -%}
+                          {% if bk_st.content_rich == blank %}
+                            No content available.
+                          {% else %}
+                            {{ bk_st.content_rich }}
+                          {% endif %}
+                        {%- when 'content_page' -%}
+                          {%- if bk_st.page != blank -%}
+                            {{ pages[bk_st.page].content }}
+                          {%- endif -%}
+                        {% when 'content_custom' %}
+                          {% if infomation_meta.value.information_text != blank %}
+                            {{ infomation_meta.value.information_text }}
+                          {% elsif infomation_meta.value.information_in_page != blank %}
+                            {{ pages[infomation_meta.value.information_in_page].content }}
+                          {% endif %}
+                      {%- endcase -%}
+                  {%- endcase -%}
+                </div>
+              </div>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+<script src="{{ 'product_tab.js' | asset_url }}" defer></script>
+{% schema %}
+{
+  "name": "t:sections.product-information-tabs.name",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:sections.all.section_width.label",
+      "default": "container",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_spacing",
+      "label": "t:sections.product-information-tabs.settings.reset_spacing.label",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "description",
+      "name": "t:sections.product-information-tabs.settings.description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.product-information-tabs.settings.description"
+        }
+      ]
+    },
+    {
+      "type": "custom_tab",
+      "name": "t:sections.product-information-tabs.blocks.custom_tab.name",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.product-information-tabs.blocks.custom_tab.settings.title.label",
+          "default": "Custom tab"
+        },
+        {
+          "type": "select",
+          "id": "tab_content",
+          "label": "t:sections.product-information-tabs.blocks.custom_tab.settings.tab_content.label",
+          "options": [
+            {
+              "value": "content",
+              "label": "t:sections.product-information-tabs.blocks.custom_tab.settings.tab_content.options__1.label"
+            },
+            {
+              "value": "content_page",
+              "label": "t:sections.product-information-tabs.blocks.custom_tab.settings.tab_content.options__2.label"
+            },
+            {
+              "value": "content_custom",
+              "label": "t:sections.product-information-tabs.blocks.custom_tab.settings.tab_content.options__3.label"
+            }
+          ]
+        },
+        {
+          "type": "richtext",
+          "id": "content_rich",
+          "label": "t:sections.product-information-tabs.blocks.custom_tab.settings.content.label",
+          "default": "<p>abd</p>"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "t:sections.product-information-tabs.blocks.custom_tab.settings.page.label"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

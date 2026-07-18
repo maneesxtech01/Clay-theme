@@ -1,0 +1,24 @@
+<a
+  href="{{ routes.account_url }}"
+  class="{% if request.path == routes.account_url %}active {% endif %} no-underline heading-color subheading_weight border-bottom px-20 py-15 block lh-normal"
+>
+  {{ 'customer.account.dashboard' | t }}
+</a>
+<a
+  href="{{ routes.account_addresses_url }}"
+  class="{% if request.path == routes.account_addresses_url %}active {% endif %} no-underline heading-color subheading_weight border-bottom px-20 py-15 block lh-normal"
+>
+  {{ 'customer.account.your_addresses' | t }}
+</a>
+<a
+  href="/pages/wishlist"
+  class="no-underline heading-color subheading_weight border-bottom px-20 py-15 block lh-normal"
+>
+  {{ 'customer.account.your_wishlist' | t }}
+</a>
+<a
+  href="{{ routes.account_logout_url }}"
+  class="no-underline heading-color subheading_weight border-bottom px-20 py-15 block lh-normal"
+>
+  {{ 'customer.log_out' | t }}
+</a>

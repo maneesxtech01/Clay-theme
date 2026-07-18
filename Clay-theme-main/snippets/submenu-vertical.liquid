@@ -1,0 +1,9 @@
+{% if link.links.size > 0 %}
+    <div class="flex flex-column vertical-child__menu">
+        {% for child_link in link.links %}
+            <div class="vertical-child__menu-item {% if child_link.links.size > 0 %}vertical-child__menu-item-level1{% endif %}">
+                <a class="no-underline {% if child_link.links.size > 0 %} title-child__menu{% else %}title-child__parent{% endif %}" href="{{ child_link.url }}">{{ child_link.title }}</a>
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}

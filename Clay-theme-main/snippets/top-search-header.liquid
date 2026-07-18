@@ -1,0 +1,104 @@
+{% # theme-check-disable ContentForHeaderModification %}
+{%- liquid
+  assign theme_st = settings
+  assign search_type = theme_st.search_type
+-%}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+{% if search_type == 'default' or search_type == 'popup' %}
+  {{ 'search-type-default.css' | asset_url | stylesheet_tag }}
+{% endif %}
+<div class="header_search {% if type == 'header_mega' %}header_search-mega{% endif %}">
+  <div class="block block-quick-search block-search predictive_search_suggest search_{{ search_type }}{% if search_type == 'default' %} search-type-default me-md-10{% endif %}">
+    {%- if search_type == 'default' -%}
+      <div class="block-search-full search-layout-form">
+        <div class="search-modal search-full">
+          <div class="search-modal__content">
+            <form
+              action="{{ routes.search_url }}"
+              id="search_mini_form"
+              method="get"
+              role="search"
+              class="search search-modal__form"
+            >
+              <input type="hidden" name="type" value="product">
+              <div class="field flex relative btn-rounded">
+                <button
+                  id="button_search_default"
+                  class="search__button field__button{% if search_type == 'default' %} light-dark-grey{% else %} header-color{% endif %} hover-heading-color btn-reset w-44 content-center absolute-md left-5 inset-y-0 pointer"
+                  aria-label="{{ 'general.search.search' | t }}"
+                >
+                  <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" class="transition">
+                    <use href="#icon-search" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
+                  class="btn-reset top-search-toggle header-icon header-color w-44 h-44 inline-flex content-center header-color pointer transition"
+                  aria-label="{{ 'templates.search.tooltip' | t }}"
+                >
+                  <svg width="17" height="17" viewBox="0 0 17 17" fill="currentColor">
+                    <use href="#icon-search" />
+                  </svg>
+                </button>
+                <input
+                  class="search__input field__input flex-1 max-w-custom hidden block-md"
+                  type="search"
+                  name="q"
+                  id="search-template"
+                  value="{{ search.terms | escape }}"
+                  placeholder="{{ 'general.search.search' | t }}"
+                  maxlength="128"
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-owns="predictive-search-results"
+                  aria-controls="predictive-search-results"
+                  aria-haspopup="listbox"
+                  aria-autocomplete="list"
+                  autocorrect="off"
+                  autocomplete="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                  style="--input-padding: 1rem 1rem 1rem 4.5rem; --input-height: 4rem; --max-width: 200px;"
+                >
+                <label class="field__label visually-hidden" for="search-template">
+                  {{- 'general.search.search' | t -}}
+                </label>
+                <input type="hidden" name="options[unavailable_products]" value="last">
+                <input type="hidden" name="options[prefix]" value="last">
+                <input type="hidden" name="options[fields]" value="title,vendor,product_type,variants.title">
+                <input type="hidden" name="type" value="{{ search_result }}">
+                <span class="loading-icon absolute inline-flex align-center inset-y-0 invisible{% if enable_rtl %} left-45{% else %} right-15{% endif %}">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin">
+                    <use href="#icon-load"></use>
+                  </svg>
+                </span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    {%- else -%}
+      <div class="dropdown-toggle">
+        <button
+          class="btn-reset top-search-toggle header-icon header-color w-44 h-44 inline-flex content-center header-color overlay pointer transition"
+          aria-label="{{ 'templates.search.tooltip' | t }}"
+        >
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="currentColor">
+            <use href="#icon-search" />
+          </svg>
+        </button>
+      </div>
+    {%- endif -%}
+  </div>
+</div>

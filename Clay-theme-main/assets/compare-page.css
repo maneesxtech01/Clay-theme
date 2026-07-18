@@ -1,0 +1,68 @@
+.compare-field {
+  flex: 0 0 auto;
+  width: 40%;
+  background-color: var(--color-white);
+}
+.compare-row:last-child > div {
+  border-bottom: 0;
+}
+.compare-row:nth-child(even) > div {
+  background-color: var(--grey-color);
+}
+.compare-table {
+  max-width: 100%;
+  overflow-x: auto;
+  --btn-padding-y: 12.5px;
+  --btn-padding-x: 1.5rem;
+}
+.compare-table .product__badges-sale-countdown {
+  display: none;
+}
+.compare-row-availability .available {
+  color: #14854e;
+}
+.compare-row-availability .unavailable {
+  color: #907341;
+}
+.compare-table .product__badges {
+  flex-direction: column;
+}
+.compare-row > *:not(.compare-field) {
+  flex: 0 0 auto;
+  width: 61%;
+}
+@media screen and (min-width: 576px) {
+  .compare-row > *:not(.compare-field) {
+    flex: 0 0 auto;
+    width: 45%;
+  }
+}
+@media screen and (min-width: 768px) {
+  .compare-row > *:not(.compare-field) {
+    flex: 0 0 auto;
+    width: 32%;
+  }
+  .compare-field {
+    flex: 0 0 auto;
+    width: 20%;
+    background-color: var(--color-white);
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .compare-row > *:not(.compare-field) {
+    flex: 0 0 auto;
+    width: 21.5%;
+  }
+  .compare-field {
+    flex: 0 0 auto;
+    width: 14.2%;
+    background-color: var(--color-white);
+  }
+}
+@media screen and (min-width: 1350px) {
+  .compare-row > *:not(.compare-field) {
+    flex: 0 0 auto;
+    width: 17.2%;
+  }
+}

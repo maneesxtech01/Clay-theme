@@ -1,0 +1,85 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-article",
+      "blocks": {
+        "featured_image_ne7Ufj": {
+          "type": "featured_image",
+          "settings": {
+            "image_height": "small"
+          }
+        },
+        "category_FrbYbq": {
+          "type": "category",
+          "settings": {
+          }
+        },
+        "title_8UcLB3": {
+          "type": "title",
+          "settings": {
+          }
+        },
+        "blog_meta_Gdcegm": {
+          "type": "blog_meta",
+          "settings": {
+          }
+        },
+        "content_article_nGLPt4": {
+          "type": "content_article",
+          "settings": {
+          }
+        },
+        "addons_aybBAy": {
+          "type": "addons",
+          "settings": {
+            "show_tag": true,
+            "show_share": true
+          }
+        },
+        "prev_next_articles_WKL9q9": {
+          "type": "prev_next_articles",
+          "settings": {
+          }
+        },
+        "related_kzzKw8": {
+          "type": "related",
+          "settings": {
+            "related_title": "Related Posts",
+            "image_ratio": "adapt",
+            "custom_ratio": "",
+            "show_date": true,
+            "show_author": true,
+            "show_excerpt": true
+          }
+        }
+      },
+      "block_order": [
+        "featured_image_ne7Ufj",
+        "category_FrbYbq",
+        "title_8UcLB3",
+        "blog_meta_Gdcegm",
+        "content_article_nGLPt4",
+        "addons_aybBAy",
+        "prev_next_articles_WKL9q9",
+        "related_kzzKw8"
+      ],
+      "settings": {
+        "section_width": "container",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

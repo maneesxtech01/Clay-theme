@@ -1,0 +1,538 @@
+<script src="{{ 'compare.js' | asset_url }}" defer="defer"></script>
+{{ 'compare-page.css' | asset_url | stylesheet_tag }}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+{% liquid
+  assign theme_st = settings
+  assign product_image_ratio = theme_st.product_image_ratio
+  assign product_custom_ratio = theme_st.product_custom_ratio
+  assign show_secondary_image = theme_st.show_secondary_image
+  assign show_add_cart = theme_st.show_add_cart
+  assign hidden_price = theme_st.hidden_price
+
+  assign size_trigger = theme_st.size_trigger
+  if size_trigger != blank 
+    assign  option_name_size = size_trigger | replace: ' ', '' | split: ','
+   else
+    assign option_name_size = 'Size'
+  endif
+
+  
+  assign option_name_color = 'Color'
+  if theme_st.color_swatch_trigger != blank
+    assign option_name_color = theme_st.color_swatch_trigger | split: ','
+  endif
+  assign type_video = false
+  assign section_width = section.settings.section_width
+  assign section_id = section.id
+  # theme-check-disable UnusedAssign
+  assign bage_positon = ''
+  if enable_rtl
+    assign bage_positon = 'pointer-none absolute top-sm-15 top-10 right-sm-15 right-10'
+  else
+    assign bage_positon = 'pointer-none absolute top-sm-15 top-10 left-sm-15 left-10'
+  endif
+  # theme-check-disable UnusedAssign
+  assign scroll_animation = settings.scroll_animation
+%}
+{%- style -%}
+  :is(.color-content, .size-content):not(:last-child) {
+    margin-inline-end: 3px;
+  }
+  .compare-table .jdgm-prev-badge__text {
+    display: none;
+  }
+{%- endstyle -%}
+<section
+  class="section compare-page-section fadeIn mt-60"
+  data-section-type="page-compare"
+  data-section-id="{{ section.id }}"
+  data-view="{{ template.name }}"
+>
+  {%- if search.results != blank -%}
+    {% paginate search.results by 50 %}
+      {%- for product in search.results -%}
+        <div class="product-compare">
+          <div class="compare-row-basic">
+            <div
+              class="compare-item-basic-{{ product.id }} product-item compare-value border-inline-end px-20 py-15 border-bottom label-depend-on-button"
+              data-product-handle="{{ product.handle }}"
+            >
+              <div class="product-img-compare overflow-hidden relative product-item__inner">
+                <compare-remove
+                  class="compare-remove pointer d-block compare-remove-js btn-hover transition shadow bg-white rounded-50 border z-3 w-45 h-45 inline-flex content-center absolute top-10 top-1025-15{% if enable_rtl %} left-10 left-1025-15{% else %} right-10 right-1025-15{% endif %}"
+                  data-product-id="{{ product.id }}"
+                  data-product-handle="{{ product.handle }}"
+                >
+                  <svg width="11" height="11" fill="none">
+                    <use href="#icon-close" />
+                  </svg>
+                </compare-remove>
+                <div class="product-item__media {{ settings.product_hover_effect }}">
+                  <a
+                    draggable="false"
+                    href="{{ product.url }}"
+                    aria-label="{{ product.title }}"
+                  >
+                    {% assign product_media = product.featured_media %}
+                    {%- if product_media -%}
+                      {%- liquid
+                        assign ratio = ''
+                        if product_image_ratio != 'adapt'
+                          case product_image_ratio
+                            when 'square'
+                              assign ratio = '1/1'
+                            when 'landscape'
+                              assign ratio = '4/3'
+                            when 'portrait'
+                              assign ratio = '3/4'
+                            else
+                              if product_custom_ratio != empty
+                                assign ratio = product_custom_ratio | replace: ':', '/'
+                              else
+                                assign ratio = '3/4'
+                              endif
+                          endcase
+                        else
+                          if product_media.media_type == 'model'
+                            assign ratio = '3/4'
+                          else
+                            assign ratio = product_media.aspect_ratio
+                          endif
+                        endif
+                        if product_media.media_type == 'video' or product_media.media_type == 'external_video'
+                          assign show_secondary_image = false
+                          assign type_video = true
+                        else
+                          assign type_video = false
+                        endif
+                        assign alt_features = product_media.alt | default: product.title | escape
+                      -%}
+                      <div class="product-item__media--ratio rounded hover-effect" style="--aspect-ratio: {{ ratio }};">
+                        {% if type_video %}
+                          {%- liquid
+                            assign source = product_media.sources
+                            assign source_url = ''
+                            for s in source
+                              if s.format == 'mp4'
+                                assign source_url = s.url
+                                break
+                              endif
+                            endfor
+                          -%}
+                          {% if product_media.media_type == 'video' %}
+                            <video
+                              playsinline="true"
+                              muted="muted"
+                              loop="loop"
+                              autoplay
+                              preload="metadata"
+                              class="product-image"
+                              src="{{ source_url }}"
+                              poster="{{ product_media.preview_image.src | image_url }}"
+                            ></video>
+                          {% elsif product_media.media_type == 'external_video' %}
+                            {% liquid
+                              assign video_id = product_media.external_id
+                            %}
+                            {%- if product_media.host == 'youtube' -%}
+                              <iframe
+                                src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1&disablekb0&fs=0&autoplay=1&mute=1&loop=1&controls=0&rel=0&playlist={{ video_id }}&playsinline=1"
+                                class="js-youtube"
+                                frameborder="0" 
+                                allowfullscreen
+                              ></iframe>
+                            {%- else -%}
+                              <iframe
+                                class="js-vimeo"
+                                src="https://player.vimeo.com/video/{{ video_id }}?autoplay=1&muted=1&loop=1&controls=0"
+                                frameborder="0"
+                                allowfullscreen
+                              ></iframe>
+                            {%- endif -%}
+                          {% endif %}
+                        {% else %}
+                          {% render 'responsive-image',
+                            type: 'product',
+                            class: 'product-image',
+                            image: product_media,
+                            image_alt: alt_features
+                          %}
+                          {%- liquid
+                            if product.media[1] != blank and show_secondary_image
+                              assign alt_features = product.media[1].alt | default: product.title | escape
+                              render 'responsive-image', type: 'product', class: 'secondary-image invisible product-image', image: product.media[1], image_alt: alt_features
+                            endif
+                          -%}
+                        {% endif %}
+                      </div>
+                    {%- else -%}
+                      {%- liquid
+                        assign ratio = ''
+                        if product_image_ratio != 'adapt'
+                          case product_image_ratio
+                            when 'square'
+                              assign ratio = '1/1'
+                            when 'landscape'
+                              assign ratio = '4/3'
+                            when 'portrait'
+                              assign ratio = '3/4'
+                            else
+                              if product_custom_ratio != empty
+                                assign ratio = product_custom_ratio | replace: ':', '/'
+                              else
+                                assign ratio = '3/4'
+                              endif
+                          endcase
+                        else
+                          assign ratio = '3/4'
+                        endif
+                      -%}
+                      <div
+                        class="product-item__media--ratio rounded"
+                        style="--aspect-ratio: {{ ratio }};"
+                      >
+                        {% render 'placeholder-render', class: 'rounded' %}
+                      </div>
+                    {% endif %}
+                  </a>
+                  {% render 'product-badges' | card_product: product, type: 'product_item', class: bage_positon %}
+                </div>
+              </div>
+              <div class="product-item__information word-break text-{{ settings.product_alignment }} mt-15">
+                <a
+                  class="product-item__name {{ settings.product_name_text_transform }} heading-style no-underline fs-custom block lh-normal"
+                  style="--font-size: {{ settings.product_size }}"
+                  href="{{ product.url | within: collection }}"
+                  aria-label=" {{ product.title }}"
+                >
+                  {{ product.title }}
+                </a>
+
+                {% if hidden_price != true %}
+                  <div
+                    class="product-item__price justify-content-{{ settings.product_alignment }} flex gap-custom lh-normal fs-custom"
+                    style="--font-size: {{ settings.price_size }}; --gap: 3px;"
+                  >
+                    {%- render 'price', scope: 'item', product: product, show_badges: false -%}
+                  </div>
+                {% endif %}
+                {% if show_add_cart and theme_st.enable_catalog_mode == false %}
+                  {%- liquid
+                    assign product_form_id = 'quick-add-' | append: section_id | append: product.id
+                    assign qty_rules = false
+                    if product.selected_or_first_available_variant.quantity_rule.template > 1 or product.selected_or_first_available_variant.quantity_rule.max != null or product.selected_or_first_available_variant.quantity_rule.increment > 1
+                      assign qty_rules = true
+                    endif
+                  -%}
+                  {%- if product.variants.size > 1 or qty_rules -%}
+                    <select-option
+                      tabindex="0"
+                      data-item="overlay-quickbuy"
+                      data-custom-class="quickview"
+                      class="product-item__select-options mt-12 bls-add-cart-list transition btn-outline block relative grow-1 max-w-custom text-center"
+                      data-url="/products/{{ product.handle }}?section_id=product-quickview&ajax=1"
+                      style="--max-width: 23rem;"
+                    >
+                      <span class="hidden-on-load">
+                        {{- 'products.product.actions.select_options.label' | t -}}
+                      </span>
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin opacity-0 icon-load">
+                        <use href="#icon-load"></use>
+                      </svg>
+                    </select-option>
+                  {%- else -%}
+                    <product-form class="block product-item__product-form grow-1 max mt-12">
+                      {%- form 'product',
+                        product,
+                        id: product_form_id,
+                        class: 'form',
+                        novalidate: 'novalidate',
+                        data-type: 'add-to-cart-form'
+                      -%}
+                        <input
+                          type="hidden"
+                          name="id"
+                          value="{{ product.selected_or_first_available_variant.id }}"
+                          disabled
+                        >
+                        <button
+                          id="{{ product_form_id }}-submit"
+                          type="submit"
+                          name="add"
+                          class="product-item__button-submit bls-add-cart-list transition btn-outline block relative text-center w-full"
+                          style="--max-width: 23rem;"
+                          aria-haspopup="dialog"
+                          aria-labelledby="{{ product_form_id }}-submit title-{{ section_id }}-{{ product.id }}"
+                          aria-live="polite"
+                          data-sold-out-message="true"
+                          {% if product.selected_or_first_available_variant.available == false %}
+                            disabled
+                          {% endif %}
+                        >
+                          <span class="hidden-on-load btn-action">
+                            {%- if product.selected_or_first_available_variant.available -%}
+                              {{ 'products.product.actions.add_to_cart.default.label' | t }}
+                            {%- else -%}
+                              {{ 'products.product.actions.add_to_cart.sold_out.label' | t }}
+                            {% endif %}
+                          </span>
+                          <span class="sold-out-message hidden hidden-on-load">
+                            {{ 'products.product.actions.add_to_cart.sold_out.label' | t }}
+                          </span>
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin opacity-0 icon-load">
+                            <use href="#icon-load"></use>
+                          </svg>
+                        </button>
+                      {%- endform -%}
+                    </product-form>
+                  {% endif %}
+                {% endif %}
+                {%- unless product.has_only_default_variant -%}
+                  <script type="application/json" class="productinfo">
+                    {{ product.variants | json }}
+                  </script>
+                  <script type="application/json" class="productOptions">
+                    {{ product.options | json }}
+                  </script>
+                {%- endunless -%}
+              </div>
+            </div>
+          </div>
+          <div class="compare-row-review">
+            <div
+              class="compare-item-availability-{{ product.id }} compare-value flex-wrap border-inline-end px-20 py-15 border-bottom flex align-center"
+              data-product-handle="{{ product.handle }}"
+            >
+              {%- render 'review' | product: product -%}
+            </div>
+          </div>
+          <div class="compare-row-vendor">
+            <div
+              class="compare-item-vendor-{{ product.id }} word-break compare-value flex-wrap border-inline-end px-20 py-15 border-bottom flex align-center"
+              data-product-handle="{{ product.handle }}"
+            >
+              <span>
+                {%- if product.vendor -%}
+                  {{ product.vendor }}
+                {%- else -%}
+                  -
+                {% endif %}
+              </span>
+            </div>
+          </div>
+          <div class="compare-row-color">
+            <div
+              class="compare-item-availability-{{ product.id }} compare-value flex-wrap border-inline-end px-20 py-15 border-bottom flex align-center"
+              data-product-handle="{{ product.handle }}"
+            >
+              {%- if product.has_only_default_variant -%}
+                <span>-</span>
+              {%- else -%}
+                {%- for option in product.options_with_values -%}
+                  {%- liquid
+                    assign is_color_option = false
+                    for colorItem in option_name_color
+                      if option.name == colorItem
+                        assign is_color_option = true
+                      endif
+                    endfor
+                  -%}
+                  {%- if is_color_option -%}
+                    {%- for value in option.values -%}
+                      <span class="color-content uppercase-first-letter">
+                        {{- value -}}
+                        {%- if forloop.last != true %}, {% endif %}
+                      </span>
+                    {%- endfor -%}
+                  {% endif %}
+                {%- endfor -%}
+              {% endif %}
+            </div>
+          </div>
+          <div class="compare-row-size">
+            <div
+              class="compare-item-availability-{{ product.id }} compare-value flex-wrap border-inline-end px-20 py-15 border-bottom flex align-center"
+              data-product-handle="{{ product.handle }}"
+            >
+              {%- if product.has_only_default_variant -%}
+                <span>-</span>
+              {%- else -%}
+                {%- liquid
+                  assign size_option = false
+                  for option in product.options_with_values
+                    for sizeItem in option_name_size
+                      if option.name == sizeItem
+                        assign size_option = true
+                      endif
+                    endfor
+                  endfor
+                -%}
+                {%- if size_option -%}
+                  {%- for option in product.options_with_values -%}
+                    {%- liquid
+                      assign is_size_option = false
+                      for sizeItem in option_name_size
+                        if option.name == sizeItem
+                          assign is_size_option = true
+                        endif
+                      endfor
+                    -%}
+                    {%- if is_size_option -%}
+                      {%- for value in option.values -%}
+                        <span class="size-content uppercase-first-letter">
+                          {{- value -}}
+                          {%- if forloop.last != true %}, {% endif %}
+                        </span>
+                      {%- endfor -%}
+                    {% endif %}
+                  {%- endfor -%}
+                {%- else -%}
+                  <span>-</span>
+                {% endif %}
+              {% endif %}
+            </div>
+          </div>
+          <div class="compare-row-availability">
+            <div
+              class="compare-item-availability-{{ product.id }} compare-value flex-wrap border-inline-end px-20 py-15 border-bottom flex gap-5 align-center{% if product.available %} available{% else %} unavailable{% endif %}"
+              data-product-handle="{{ product.handle }}"
+            >
+              {%- if product.available -%}
+                <svg width="12" height="10" fill="none">
+                  <path fill="#008A00" d="M10.86.86 4 7.718l-2.86-2.86a.69.69 0 0 0-.484-.187.617.617 0 0 0-.453.187.661.661 0 0 0-.203.485c0 .177.068.328.203.453L3.531 9.14A.636.636 0 0 0 4 9.328a.636.636 0 0 0 .469-.187l7.328-7.344A.594.594 0 0 0 12 1.344a.661.661 0 0 0-.203-.485.636.636 0 0 0-.469-.187.67.67 0 0 0-.469.187Z"/>
+                </svg>
+                {{ 'products.product.general.instock' | t }}
+              {%- else -%}
+                <svg width="10" height="10" fill="none">
+                  <path fill="#907341" d="M.531 1.797a.594.594 0 0 1-.203-.453c0-.188.068-.35.203-.485A.636.636 0 0 1 1 .672c.188 0 .344.062.469.187L5 4.391 8.531.859A.636.636 0 0 1 9 .672c.188 0 .344.062.469.187a.661.661 0 0 1 .203.485.594.594 0 0 1-.203.453L5.938 5.328l3.53 3.531a.661.661 0 0 1 .204.485.594.594 0 0 1-.203.453A.611.611 0 0 1 9 10a.611.611 0 0 1-.469-.203L5 6.28 1.469 9.797A.611.611 0 0 1 1 10a.611.611 0 0 1-.469-.203.594.594 0 0 1-.203-.453c0-.188.068-.35.203-.485l3.531-3.53-3.53-3.532Z"/>
+                </svg>
+                {{ 'products.product.unavailable' | t }}
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    {% endpaginate %}
+  {% endif %}
+
+  <div class="{{ section_width }} section-full compare-page-main product-preload-js">
+    <motion-element
+      data-motion="fade-up-lg"
+      data-motion-delay="500"
+      {% if scroll_animation != 'slide_in' %}
+        hold
+      {% endif %}
+      class="block {% if scroll_animation != 'none' and scroll_animation == 'slide_in' -%} scroll-trigger opacity-0 {{ scroll_animation }}{% endif %} "
+    >
+      <div class="compare-table border rounded hidden">
+        <div class="compare-row flex flex-nowrap compare-row-basic">
+          <div class="compare-field lh-normal flex align-center heading-style border-inline-end px-20 py-15 border-bottom">
+            {{ 'products.product.product_compare' | t }}
+          </div>
+        </div>
+        <div class="compare-row flex flex-nowrap compare-row-review">
+          <div class="compare-field lh-normal flex align-center heading-style border-inline-end px-20 py-15 border-bottom">
+            {{ 'products.product.review' | t }}
+          </div>
+        </div>
+        <div class="compare-row flex flex-nowrap compare-row-vendor">
+          <div class="compare-field lh-normal flex align-center heading-style border-inline-end px-20 py-15 border-bottom">
+            {{ 'products.product.vendor' | t }}
+          </div>
+        </div>
+        <div class="compare-row flex flex-nowrap compare-row-color">
+          <div class="compare-field lh-normal flex align-center heading-style border-inline-end px-20 py-15 border-bottom">
+            {{ 'products.product.color' | t }}
+          </div>
+        </div>
+        <div class="compare-row flex flex-nowrap compare-row-size">
+          <div class="compare-field lh-normal flex align-center heading-style border-inline-end px-20 py-15 border-bottom">
+            {{ 'products.product.size' | t }}
+          </div>
+        </div>
+        <div class="compare-row flex flex-nowrap compare-row-availability">
+          <div class="compare-field lh-normal flex align-center heading-style border-inline-end px-20 py-15 border-bottom">
+            {{ 'products.product.availability' | t }}
+          </div>
+        </div>
+      </div>
+      <div class="compare-no-product-js hidden text-center empty-hidden-heading">
+        <p class="mb-30">{{ 'templates.compare.empty_des' | t }}</p>
+        <a
+          class="compare-no-product-url btn-primary no-underline inline-block"
+          href="{{ routes.all_products_collection_url }}"
+        >
+          {{- 'templates.compare.redirect' | t -}}
+        </a>
+      </div>
+    </motion-element>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "t:sections.page-compare.name",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ],
+      "default": "fluid_container",
+      "label": "t:sections.all.section_width.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,117 @@
+<script src="{{ 'wishlist.js' | asset_url }}" defer="defer"></script>
+{{ 'wishlist-page.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign scroll_animation = settings.scroll_animation
+-%}
+{%- capture style -%}
+  --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};--col-gap-desktop: 30px;--col-desktop: 4;--col-number: 2;--col-desktop-small: 3;--col-tablet: 3;--col-gap: 15px;
+{%- endcapture -%}
+<div
+  class="section product wishlist-page-section"
+  data-section-type="page-wishlist"
+  data-section-id="{{ section.id }}"
+  data-view="{{ template.name }}"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <skeleton-page></skeleton-page>
+  <div class="wishlist-page-section-inner">
+    <div class="{{ section_width }} wishlist-page-main">
+      {%- if search.results != blank -%}
+        {% paginate search.results by 50 %}
+          <div class="wishlist-list-items grid grid-cols gap fadeIn">
+            {%- for product in search.results -%}
+              <div
+                class="col-6 col-md-4 col-lg-3 product-load wl-product-js product-preload-js wishlist-list"
+                data-product-handle="{{ product.handle }}"
+              >
+                {% render 'product-item',
+                  card_product: product,
+                  section_id: section.id,
+                  template_enable_action: true,
+                  template_enable_price: true,
+                  template_enable_product_vendor: true,
+                  template_enable_rate: true,
+                  template_enable_add_cart: true,
+                  template_enable_product_short_description: false,
+                  template_enable_color_swatches: true,
+                  template_enable_remove_in_wishlist_page: true,
+                  type: 'gird',
+                  scroll_animation: scroll_animation,
+                  indexFor: forloop.index
+                %}
+              </div>
+            {%- endfor -%}
+          </div>
+        {% endpaginate %}
+      {% endif %}
+      <div class="wishlist-no-product-js fadeIn hidden text-center empty-hidden-heading">
+        <p class="mb-30">{{ 'templates.wishlist.empty_des' | t }}</p>
+        <a
+          class="wishlist-no-product-url btn-primary no-underline inline-block"
+          href="{{ routes.all_products_collection_url }}"
+        >
+          {{- 'templates.wishlist.redirect' | t -}}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.page-wishlist.name",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ],
+      "default": "fluid_container",
+      "label": "t:sections.all.section_width.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    }
+  ]
+}
+{% endschema %}

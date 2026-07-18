@@ -1,0 +1,381 @@
+{{ 'page-sale.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign st = section.settings
+  assign container = st.section_width
+  assign heading = st.heading
+  assign description = st.description
+  assign text_alignment = st.header_alignment
+  assign text_color = st.text_color
+  if st.heading_uppercase
+    assign text_transform = 'uppercase'
+  endif
+  if st.reset_spacing
+    assign reset_spacing = ' remove_spacing'
+  endif
+  assign header_size = '60'
+  if st.header_size == 'small'
+    assign header_size = '40'
+  elsif st.header_size == 'large'
+    assign header_size = '80'
+  endif
+  assign local_video = st.local_video
+  assign scroll_animation = settings.scroll_animation
+%}
+
+{%- capture style -%}
+  --section-pt: {{ st.padding_top }}; --section-pb: {{ st.padding_bottom }}; 
+  --overlay-opacity: {{ st.overlay_opacity }}%;
+{%- endcapture -%}
+
+<div
+  class=" color-{{ st.color_scheme }} gradient section {% if local_video != blank %} relative {% endif %}  bls__banner {{ reset_spacing }}"
+  style="{{ style | strip | strip_newlines }}"
+>
+  {% if local_video != blank %}
+    <div class="video-sale w-full absolute inset-0 ">
+      {%- liquid
+        assign source = local_video.sources
+        assign source_url = ''
+        for s in source
+          if s.format == 'mp4'
+            assign source_url = s.url
+            break
+          endif
+        endfor
+      -%}
+      <video
+        loop="true"
+        muted="true"
+        playsinline="true"
+        autoplay="true"
+        src="{{ source_url }}"
+        poster="{{ local_video.preview_image | image_url: width: 1100 }}"
+      ></video>
+    </div>
+  {% endif %}
+
+  <div class="{{ container }}{% if local_video != blank %} relative z-1  flex justify-center flex-column {% endif %} section-full overflow-hidden">
+    {%- if heading != blank or description != blank -%}
+      <div class="bls__section-header text-{{ text_alignment }} mb-60" style="--text-color: {{ text_color }}">
+        {%- if heading != blank -%}
+          <motion-element
+                data-motion="fade-up-lg"
+                data-motion-delay="50"
+                {% if scroll_animation != 'slide_in' %}
+                  hold
+                {% endif %}
+            class="block  {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}"
+            style="
+              {%- if scroll_animation != 'none' -%}
+                --animation-order: 0;
+              {% endif %}
+            "
+          >
+            <h2
+              class="section__header-heading heading-letter-spacing fs-big mt-0{% if description != blank %} mb-10{% else %} mb-0{% endif %} {{ text_transform }} "
+              style="--font-size: {{ header_size }}"
+            >
+              {{ heading }}
+            </h2>
+          </motion-element>
+        {%- endif -%}
+        {%- if description != blank -%}
+          <motion-element
+            data-motion="fade-up-lg"
+            data-motion-delay="150"
+            {% if scroll_animation != 'slide_in' %}
+              hold
+            {% endif %}
+            class="section__header-des {% if scroll_animation != 'none' -%} scroll-trigger {{ scroll_animation }}{% endif %}  block rich__text-m0"
+            style="
+              {%- if scroll_animation != 'none' -%}
+                --animation-order: 1;
+              {% endif %}
+            "
+          >
+            {{ description }}
+          </motion-element>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    <div
+      class="grid grid-cols gap"
+      style="
+        --col-gap-desktop: 3rem;
+        --col-number: 2;
+        --col-desktop: 4;
+        --col-gap: 1.5rem;
+        --col-desktop-small: 2;
+        --col-tablet: 2;
+      "
+    >
+      {% for block in section.blocks %}
+        <motion-element
+          data-motion="fade-up-lg"
+          {% if scroll_animation != 'slide_in' %}
+            hold
+          {% endif %}
+          data-motion-delay="{{ forloop.index0 | times: 50 }}"
+          class="banner-sale-items mb-10 text-center {% if scroll_animation != 'none' and scroll_animation != null %} scroll-trigger {{ scroll_animation }} {% endif %} {{ settings.hover_effect }}"
+          {%- if scroll_animation != 'none' -%}
+            style="--animation-order: {{  forloop.index }};"
+          {%- endif -%}
+          {{ block.shopify_attributes }}
+          style="--col-width: {{ block.settings.content_width }};"
+        >
+          {% if block.settings.sale_label != blank
+            or block.settings.sale_title != blank
+            or block.settings.sale_desc != blank
+          %}
+            <div class="banner-sale-content relative pt-40 px-15 pb-30 border">
+              {% if block.settings.sale_label != blank %}
+                <span
+                  class="banner-sale-label btn-white btn-rounded heading-style fs-12 inline-block mb-20"
+                  style="
+                    --btn-padding-y: 6px;
+                    --btn-padding-x: 22px;
+                  "
+                >
+                  {{- block.settings.sale_label -}}
+                </span>
+              {% endif %}
+              {% if block.settings.sale_title != blank %}
+                <h4 class="banner-sale-title lh-1 mt-0">{{ block.settings.sale_title }}</h4>
+              {% endif %}
+              {% if block.settings.sale_desc != blank %}
+                <p class="banner-sale-desc lh-1">{{ block.settings.sale_desc }}</p>
+              {% endif %}
+            </div>
+          {% endif %}
+          {% if block.settings.sale_code != blank %}
+            <div class="banner-sale-code py-30 px-15 bg-white uppercase">
+              <div class="banner-sale-code__title lh-1 pt-4 color-dark fs-12 mb-5">
+                {{ 'page_sale.use_code' | t }}
+              </div>
+              <div class="banner-sale-code__label lh-1 heading_weight color-dark fs-18">
+                {{ block.settings.sale_code }}
+              </div>
+            </div>
+          {% endif %}
+        </motion-element>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.page-sale-banner.name",
+  "class": "bls-sales-banner-page not-hide-br",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ],
+      "default": "full_width",
+      "label": "t:sections.all.section_width.label"
+    },
+    {
+      "type": "video",
+      "id": "local_video",
+      "label": "t:sections.instagram-shop.blocks.local_video"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "label": "t:sections.all.image.overlay_opacity.label",
+      "default": 80
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_header.label"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "default": "Sale Up to 75% Off",
+      "label": "t:sections.all.section_header.heading.label"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:sections.all.section_header.description.label"
+    },
+    {
+      "type": "select",
+      "id": "header_size",
+      "label": "t:sections.all.section_header.header_size.label",
+      "default": "medium",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:sections.all.section_header.header_size.small.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.all.section_header.header_size.medium.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.section_header.header_size.large.label"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "t:sections.all.section_header.alignment.label",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.content_settings.content_alignment.left.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.content_settings.content_alignment.center.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.content_settings.content_alignment.right.label"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_uppercase",
+      "label": "t:sections.all.text_transform.uppercase.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_spacing",
+      "label": "t:sections.all.section_padding.reset_spacing.label",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "t:sections.page-sale-banner.blocks.item.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "sale_label",
+          "label": "t:sections.page-sale-banner.blocks.item.settings.sale_label.label",
+          "default": "Sale off"
+        },
+        {
+          "type": "text",
+          "id": "sale_title",
+          "label": "t:sections.page-sale-banner.blocks.item.settings.sale_title.label",
+          "default": "Sale title"
+        },
+        {
+          "type": "textarea",
+          "id": "sale_desc",
+          "label": "t:sections.page-sale-banner.blocks.item.settings.sale_desc.label",
+          "default": "Sale description"
+        },
+        {
+          "type": "text",
+          "id": "sale_code",
+          "label": "t:sections.page-sale-banner.blocks.item.settings.sale_code.label",
+          "default": "uminosale2023"
+        },
+        {
+          "type": "select",
+          "id": "content_width",
+          "label": "t:sections.all.content_setting.width.label",
+          "default": "50%",
+          "options": [
+            {
+              "value": "20%",
+              "label": "20%"
+            },
+            {
+              "value": "25%",
+              "label": "25%"
+            },
+            {
+              "value": "33.3333%",
+              "label": "33%"
+            },
+            {
+              "value": "50%",
+              "label": "50%"
+            },
+            {
+              "value": "66.6666%",
+              "label": "66%"
+            },
+            {
+              "value": "75%",
+              "label": "75%"
+            },
+            {
+              "value": "80%",
+              "label": "80%"
+            },
+            {
+              "value": "100%",
+              "label": "100%"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

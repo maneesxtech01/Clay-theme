@@ -1,0 +1,246 @@
+{{ 'before-you-leave.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable ContentForHeaderModification %}
+{%- capture content_for_query_string -%}
+  {{ content_for_header }}
+{%- endcapture -%}
+{% # theme-check-enable ContentForHeaderModification %}
+{%- assign page_url = content_for_query_string
+  | split: '"pageurl":"'
+  | last
+  | split: '"'
+  | first
+  | split: request.host
+  | last
+  | replace: '\/', '/'
+  | replace: '%20', ' '
+  | replace: '\u0026', '&'
+-%}
+{%- assign page_query_string = page_url | split: '?' | last -%}
+{%- liquid
+  assign section_st = section.settings
+  assign th_st = settings
+  assign show_time = section_st.show_time
+  assign color_scheme = section_st.color_scheme
+  assign content_heading = section_st.content_heading
+  assign sub_heading = section_st.sub_heading
+  assign description = section_st.description
+  assign code = section_st.code
+  assign collection = section_st.collection
+  assign recommended_heading = section_st.recommended_heading
+  assign recommended_button_label = th_st.recommended_button_label
+-%}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+<before-you-leave
+  class="before-you-leave color-default bls__drawer h-full overflow-auto fixed z-16 inset-y-0 transition-popup{% if enable_rtl %} right left-0{% else %} left right-0{% endif %} custom-scrollbar"
+  data-time-delay="{{ show_time | times: 1 }}"
+  data-section-id="{{ section.id }}"
+  style="--drawer-width: 42rem;"
+>
+
+</before-you-leave>
+<template id="{{ section.id }}">
+  <button
+    class="btn-reset button-close bg-transparent color-{{ color_scheme }} close-before pointer hover-svg-zoom absolute z-3 top-10{% if enable_rtl %} left-10{% else %} right-10{% endif %} w-44 h-44 inline-flex content-center"
+    aria-label="{{ 'accessibility.close' | t }}"
+  >
+    <svg width="13" height="13" viewBox="0 0 13 13" fill="none" class="transition heading-color">
+      <use href="#icon-close"></use>
+    </svg>
+  </button>
+  <div
+    class="before-content text-center gradient color-{{ color_scheme }} relative{% if section_st.banner != blank %} flex content-center{% endif %}"
+    {% if section_st.banner != blank %}
+      style="--aspect-ratio: {{ section_st.banner.aspect_ratio }}"
+    {% endif %}
+  >
+    {%- if section_st.banner != blank -%}
+      {%- assign image_alt = section_st.banner.alt | default: 'before you leave' -%}
+      {% render 'responsive-image',
+        type: 'banner',
+        image: section_st.banner,
+        image_alt: image_alt,
+        class: 'absolute inset-0 z-1 pointer-none w-full h-full object-position-center object-fit-cover'
+      %}
+    {% endif %}
+    <div class="before-banner-content{% if section_st.banner != blank %} relative z-2{% endif %} p-30">
+      {%- if sub_heading != blank -%}
+        <div class="before-sub-heading heading-style fs-18 mb-15">
+          {{ sub_heading }}
+        </div>
+      {% endif %}
+      {%- if content_heading != blank -%}
+        <h2 class="before-heading heading-letter-spacing mt-0 mb-30 not-hide-br">
+          {{ content_heading }}
+        </h2>
+      {% endif %}
+      {%- if code != blank -%}
+        <div class="before-code mb-30">
+          <a
+            href="javascript:;"
+            class="btn-primary inline-flex discount gap-10 no-underline content-center"
+            data-code="{{ code }}"
+            aria-label="{{ 'popup.copy' | t }}"
+          >
+            <svg width="16" height="14" fill="none">
+              <path fill="currentColor" fill-rule="evenodd" d="M14.286 4.667v7.583H4.57V4.667h9.715ZM16 4.375c0-.805-.64-1.458-1.429-1.458H4.286c-.79 0-1.429.653-1.429 1.458v8.167c0 .805.64 1.458 1.429 1.458H14.57c.79 0 1.429-.653 1.429-1.458V4.375Z" clip-rule="evenodd"/><path fill="currentColor" fill-rule="evenodd" d="M13.43.875A.866.866 0 0 0 12.573 0H1.43C1.05 0 .687.154.42.427A1.474 1.474 0 0 0 0 1.458V10.5c0 .484.384.875.857.875a.866.866 0 0 0 .857-.875V1.75h10.857a.866.866 0 0 0 .858-.874Z" clip-rule="evenodd"/>
+            </svg>
+            <span class="text relative">
+              <span class="copied-action">
+                {{ code }}
+              </span>
+              <span class="copied-success absolute invisible inset-0 inline-flex content-center">
+                {{- 'popup.copied' | t -}}
+              </span>
+            </span>
+          </a>
+        </div>
+      {% endif %}
+      {%- if description != blank -%}
+        <div class="before-des rich__text-m0">
+          {{ description }}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+  {%- if collection != blank -%}
+    {%- liquid
+      assign collection = collections[collection]
+    -%}
+    <div class="before-product p-30">
+      {%- if recommended_heading != blank -%}
+        <h5 class="before-product-title heading-letter-spacing mt-0 mb-30">
+          {{ recommended_heading }}
+        </h5>
+      {% endif %}
+      <div class="before-product-content">
+        {% for product in collection.products limit: 3 %}
+          <div class="product-before-items" style="--rounded-radius: 5px;">
+            {% render 'product-item',
+              card_product: product,
+              template_enable_price: true,
+              template_enable_add_cart: false,
+              template_enable_product_vendor: false,
+              template_enable_rate: true,
+              template_enable_product_short_description: false,
+              template_enable_color_swatches: true,
+              type: 'list'
+            %}
+          </div>
+        {% endfor %}
+      </div>
+      <a
+        href="{{ collection.url }}"
+        class="btn btn-primary btn-before-bottom no-underline text-center block mt-30"
+      >
+        {%- if recommended_button_label != blank -%}
+          {{ recommended_button_label }}
+        {%- else -%}
+          {{ 'general.continue_shopping' | t }}
+        {% endif %}
+      </a>
+    </div>
+  {% endif %}
+</template>
+<div class="overlay close-before"></div>
+{% schema %}
+{
+  "name": "t:sections.before-you-leave.name",
+  "tag": "section",
+  "class": "not-hide-br",
+  "enabled_on": {
+    "groups": ["custom.overlay"]
+  },
+  "limit": 1,
+  "settings": [
+    {
+      "type": "range",
+      "id": "show_time",
+      "label": "t:sections.before-you-leave.settings.show_time.label",
+      "min": 25,
+      "max": 100,
+      "default": 30,
+      "step": 1,
+      "unit": "s"
+    },
+    {
+      "type": "image_picker",
+      "id": "banner",
+      "label": "t:sections.before-you-leave.settings.banner.label",
+      "info": "t:sections.before-you-leave.settings.banner.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.before-you-leave.settings.header.content_popup"
+    },
+    {
+      "type": "text",
+      "id": "sub_heading",
+      "label": "t:sections.before-you-leave.settings.sub_heading.label",
+      "default": "10% Coupon!"
+    },
+    {
+      "type": "textarea",
+      "id": "content_heading",
+      "label": "t:sections.before-you-leave.settings.heading.label",
+      "default": "Big Save 10% Coupon!"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:sections.before-you-leave.settings.desc.label",
+      "default": "<p>Enter the code below at checkout to get 10% off your first order.<\/p>",
+      "info": "t:sections.before-you-leave.settings.desc.info"
+    },
+    {
+      "type": "text",
+      "id": "code",
+      "label": "t:sections.before-you-leave.settings.code.label",
+      "default": "Topsale10STBL"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "info": "t:sections.before-you-leave.settings.color_scheme.info",
+      "default": "default-color-scheme"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.before-you-leave.settings.header.recommended_products"
+    },
+    {
+      "type": "text",
+      "id": "recommended_heading",
+      "label": "t:sections.before-you-leave.settings.heading.label",
+      "default": "You may also like..."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "t:sections.before-you-leave.settings.collection.label"
+    },
+    {
+      "type": "text",
+      "id": "recommended_button_label",
+      "label": "t:sections.before-you-leave.settings.button_label.label",
+      "default": "Continue Shopping"
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.before-you-leave.name"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,324 @@
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign scroll_animation = settings.scroll_animation
+-%}
+{%- capture style -%}
+  --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};--max-width: 50rem;
+{%- endcapture -%}
+{%- style -%}
+  .faq-section-items.active .faq-section-title {
+    color: var(--color-heading);
+  }
+{%- endstyle -%}
+<section
+  class="section{% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} faqs-page"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ section_width }}">
+    <div class="faqs-content flex-wrap flex gap" style="--col-gap: 50px">
+       <motion-element
+        data-motion="fade-up-sm"
+        {% if scroll_animation != 'slide_in' %}
+          hold
+        {% endif %}
+        data-motion-delay="150"
+        class="col-md-w-custom rounded-style {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %} "
+        style="
+          --col-width: 35%; {%- if scroll_animation != 'none' -%}
+          --animation-order: 1
+          {% endif %}
+        "
+      >
+        <div class="grey-bg faq_contact rounded sticky top-30 p-30 p-1025-40">
+          {%- if section_st.heading != blank -%}
+            <h2 class="heading-letter-spacing h4 mt-0">
+              {{ section_st.heading }}
+            </h2>
+          {% endif %}
+          {%- if section_st.description != blank -%}
+            <div class="description mb-20">
+              {{ section_st.description }}
+            </div>
+          {% endif %}
+          {% if section_st.first_button_label != blank or section_st.second_button_label != blank %}
+            <div
+              class="sec__content-btn align-center flex flex-wrap flex-column gap-15"
+            >
+              {% if section_st.first_button_label != blank %}
+                <a
+                  {% if section_st.first_button_link == blank %}
+                    role="link" aria-disabled="true"
+                  {% else %}
+                    href="{{ section_st.first_button_link | default: "#" }}"
+                  {% endif %}
+                  aria-label="{{ section_st.first_button_label }}"
+                  class="inline-flex no-underline btn-{{ section_st.first_button_type }} justify-content-center w-full"
+                >
+                  {{ section_st.first_button_label }}
+                </a>
+              {% endif %}
+              {% if section_st.second_button_label != blank %}
+                <a
+                  {% if section_st.second_button_link == blank %}
+                    role="link" aria-disabled="true"
+                  {% else %}
+                    href="{{ section_st.second_button_link | default: "#" }}"
+                  {% endif %}
+                  aria-label="{{ section_st.second_button_label }}"
+                  class="inline-flex no-underline btn-{{ section_st.second_button_type }} justify-content-center  w-full"
+                >
+                  {{ section_st.second_button_label }}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </motion-element>
+      <motion-element
+        data-motion="fade-up-sm"
+        {% if scroll_animation != 'slide_in' %}
+          hold
+        {% endif %}
+        data-motion-delay="150"
+        class="faqs-right relative flex-1 mb-0-important {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}"
+        {%- if scroll_animation != 'none' -%}
+          style="--animation-order: 2"
+        {% endif %}
+      >
+        {%- for block in section.blocks -%}
+          {%- assign block_st = block.settings -%}
+          {%- case block.type -%}
+            {%- when 'title' -%}
+              <h2
+                class="heading-letter-spacing h4 mb-0{% if forloop.first %} mt-0{% else %} mt-50{% endif %}"
+                {{ block.shopify_attributes }}
+              >
+                <span>{{ block_st.title }}</span>
+              </h2>
+            {%- when 'faq' -%}
+              <collapsible-block
+                tabindex="0"
+                {{ block.shopify_attributes }}
+                class="faq-section-items bls-toggle relative block border-bottom"
+              >
+                <h3
+                  class="faq-section-title h6 my-0 pointer py-20 relative collapsible-heading text-color hover-heading-color transition pe-12"
+                >
+                  {{- block_st.question }}
+                  <span class="open-children-toggle absolute inset-0 flex flex-end pointer">
+                    <span class="icon_plus-animation"> </span>
+                  </span>
+                </h3>
+                <div class="faq-section-content overflow-hidden collapsible-content mb-20" style="display: none;">
+                  <div class="faq_content-inner rich__text-m0">{{ block_st.answer }}</div>
+                </div>
+              </collapsible-block>
+          {%- endcase -%}
+        {%- endfor -%}
+      </motion-element>
+    </div>
+  </div>
+</section>
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'faq' -%}
+            {%- liquid
+              assign block_st = block.settings
+              assign question = block_st.question
+              assign answer = block_st.answer
+            -%}
+            {%- if answer != blank or question != blank -%}
+              {
+                "@type": "Question",
+                "name": "{{ question }}",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "{{ answer | replace: '<p>', '' | replace: '</p>', '' }}"
+                }
+              }
+            {% endif %}
+            {%- unless forloop.last -%},{%- endunless -%}
+        {%- endcase -%}
+      {%- endfor -%}
+    ]
+  }
+</script>
+{% schema %}
+{
+  "name": "t:sections.faqs-page.name",
+  "disabled_on": {
+    "groups": ["custom.overlay", "header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:sections.all.section_width.label",
+      "default": "container",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.faqs-page.settings.header.general"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.all.section_header.heading.label",
+      "default": "Contact Us"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:sections.all.section_header.description.label",
+      "default": "<p>If you have an issue or question that requires immediate assistance, you can click the button below to chat live with a Customer Service representative.</p>"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.faqs-page.settings.header.button"
+    },
+    {
+      "type": "text",
+      "id": "first_button_label",
+      "default": "Button label",
+      "label": "t:sections.all.contents.button.first_button_label.label",
+      "info": "t:sections.all.contents.button.first_button_label.info"
+    },
+    {
+      "type": "url",
+      "id": "first_button_link",
+      "label": "t:sections.all.contents.button.first_button_link.label"
+    },
+    {
+      "type": "select",
+      "id": "first_button_type",
+      "label": "t:sections.all.contents.button.button_type.label",
+      "default": "primary",
+      "options": [
+        {
+          "value": "primary",
+          "label": "t:sections.all.contents.button.button_type.primary.label"
+        },
+        {
+          "value": "outline",
+          "label": "t:sections.all.contents.button.button_type.outline.label"
+        },
+        {
+          "value": "link",
+          "label": "t:sections.all.contents.button.button_type.link.label"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "second_button_label",
+      "label": "t:sections.all.contents.button.secondary_button_label.label",
+      "info": "t:sections.all.contents.button.secondary_button_label.info"
+    },
+    {
+      "type": "url",
+      "id": "second_button_link",
+      "label": "t:sections.all.contents.button.secondary_button_link.label"
+    },
+    {
+      "type": "select",
+      "id": "second_button_type",
+      "label": "t:sections.all.contents.button.button_type.label",
+      "default": "primary",
+      "options": [
+        {
+          "value": "primary",
+          "label": "t:sections.all.contents.button.button_type.primary.label"
+        },
+        {
+          "value": "outline",
+          "label": "t:sections.all.contents.button.button_type.outline.label"
+        },
+        {
+          "value": "link",
+          "label": "t:sections.all.contents.button.button_type.link.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 2,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "t:sections.faqs-page.blocks.title.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "t:sections.all.section_header.heading.label",
+          "default": "Questions heading"
+        }
+      ]
+    },
+    {
+      "type": "faq",
+      "name": "t:sections.faqs-page.blocks.question.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "t:sections.faqs-page.blocks.question.settings.question",
+          "default": "Frequently Asked Questions?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "t:sections.faqs-page.blocks.question.settings.answer",
+          "default": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

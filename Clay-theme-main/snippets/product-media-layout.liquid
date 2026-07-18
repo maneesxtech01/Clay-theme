@@ -1,0 +1,590 @@
+{% liquid
+  assign product_image_ratio = theme_st.product_image_ratio
+  assign product_custom_ratio = theme_st.product_custom_ratio
+  assign image_list = ''
+  assign filtered_images = ''
+  assign enable_video_looping = true
+  assign enable_video_autoplay = true
+  if section_st
+    assign enable_video_looping = section_st.enable_video_looping
+    assign enable_video_autoplay = section_st.enable_video_autoplay
+  endif
+%}
+{% for image in images %}
+  {% if image.alt == 'image-360' and image.media_type == 'image' %}
+    {% capture filtered_images %}{{ filtered_images }}{{ image.preview_image | image_url }},{% endcapture %}
+  {% endif %}
+{% endfor %}
+{% assign filtered_images = filtered_images | split: ',' | compact %}
+{% if is_thumbnail == true %}
+  {% for image in images %}
+    {% liquid
+      assign ratio = ''
+      if product_image_ratio != 'adapt'
+        case product_image_ratio
+          when 'square'
+            assign ratio = '1/1'
+          when 'landscape'
+            assign ratio = '4/3'
+          when 'portrait'
+            assign ratio = '3/4'
+          else
+            if product_custom_ratio != empty
+              assign ratio = product_custom_ratio | replace: ':', '/'
+            else
+              assign ratio = '3/4'
+            endif
+        endcase
+      else
+        if image.preview_image != blank
+          assign ratio = image.preview_image.aspect_ratio
+        else
+          assign ratio = '3/4'
+        endif
+      endif
+    %}
+    {% if image.alt == 'image-360' and image.media_type == 'image' %}
+      <div class="{{ custom_class }}" style="--aspect-ratio: {{ ratio }}">
+        {%- assign image_alt = image.alt | default: 'product' | escape -%}
+        {% render 'responsive-image', type: 'product', image: image.preview_image, image_alt: image_alt %}
+      </div>
+      {% break %}
+    {% endif %}
+  {% endfor %}
+{% else %}
+  {% for image in filtered_images %}
+    {% capture image_json %}"{{ image }}"{%- unless forloop.last -%},{%- endunless -%}{% endcapture %}
+    {% capture image_list %}{{ image_list }}{{ image_json }}{% endcapture %}
+  {% endfor %}
+  {% if image_list.size != 0 %}
+    <div
+      class="cloudimage-360{{ custom_class }} rounded-5"
+      data-fullscreen="true"
+      {% comment %} product 360 will not work if use "" on data-image-list-x {% endcomment %}
+      data-image-list-x='[{{ image_list }}]'
+      data-autoplay="true"
+      data-play-once="true"
+      data-speed="150"
+    >
+      <div class="control_360">
+        <button class="cloudimage-360-left"></button>
+        <button class="cloudimage-360-right"></button>
+      </div>
+    </div>
+  {% endif %}
+{% endif %}
+
+{% comment %} == {% endcomment %}
+{% if product.selected_or_first_available_variant.featured_media != null %}
+  {%- assign featured_media = product.selected_or_first_available_variant.featured_media -%}
+  {%- assign media_position = 1 -%}
+  {% liquid
+    assign ratio = ''
+    if product_image_ratio != 'adapt'
+      case product_image_ratio
+        when 'square'
+          assign ratio = '1/1'
+        when 'landscape'
+          assign ratio = '4/3'
+        when 'portrait'
+          assign ratio = '3/4'
+        else
+          if product_custom_ratio != empty
+            assign ratio = product_custom_ratio | replace: ':', '/'
+          else
+            assign ratio = '3/4'
+          endif
+      endcase
+    else
+      if featured_media.preview_image != blank
+        assign ratio = featured_media.preview_image.aspect_ratio
+      else
+        assign ratio = '3/4'
+      endif
+    endif
+  %}
+  {%- case featured_media.media_type -%}
+    {%- when 'external_video' -%}
+      {% comment %} Case external video {% endcomment %}
+      {% liquid
+        assign video_id = featured_media.external_id
+      %}
+      {%- capture video_attribute -%}
+            {%- if enable_video_looping -%}
+                loop=1
+            {% endif %}
+        {%- endcapture -%}
+      <div
+        class="media-gallery__external-video {{ custom_class }} rounded-5"
+        style="--aspect-ratio: {{ ratio }}"
+      >
+        {% if is_thumbnail == true %}
+          {%- assign image_alt = featured_media.alt | default: 'product' | escape -%}
+          {% render 'responsive-image',
+            type: 'product',
+            image: featured_media.preview_image,
+            image_alt: image_alt,
+            no_animate: true
+          %}
+        {% else %}
+          {%- if featured_media.host == 'youtube' -%}
+            <iframe
+              src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1&rel=0&autoplay={% if enable_video_autoplay -%}1{% else %}0{%- endif -%}&mute={% if enable_video_autoplay -%}1{% else %}0{%- endif -%}&loop={%- if enable_video_looping -%}1&playlist={{ video_id }}{%else%}0{% endif %}"
+              class="js-youtube media-video"
+            ></iframe>
+          {%- else -%}
+            <iframe
+              class="js-vimeo media-video"
+              src="https://player.vimeo.com/video/{{ video_id }}?autoplay={% if enable_video_autoplay -%}1{% else %}0{%- endif -%}&muted={% if enable_video_autoplay -%}1{% else %}0{%- endif -%}&loop={%- if enable_video_looping -%}1{%else%}0{% endif %}"
+              frameborder="0"
+              allowfullscreen
+            ></iframe>
+          {%- endif -%}
+        {% endif %}
+      </div>
+    {%- when 'video' -%}
+      {% comment %} Case local video {% endcomment %}
+      {%- capture video_attribute -%}
+        {%- if enable_video_looping -%}
+            loop 
+        {% endif %}
+        {% if enable_video_autoplay -%}
+            muted autoplay
+        {%- endif -%}
+      {%- endcapture -%}
+      <div
+        class="media-gallery__local-video {{ custom_class }} rounded-5 w-full"
+        style="--aspect-ratio: {{ ratio }}"
+      >
+        {%- liquid
+          assign source = featured_media.sources
+          assign source_url = ''
+          for s in source
+            if s.format == 'mp4'
+              assign source_url = s.url
+              break
+            endif
+          endfor
+        -%}
+        {% if is_thumbnail == true %}
+          {%- assign image_alt = featured_media.alt | default: 'product' | escape -%}
+          {% render 'responsive-image',
+            type: 'product',
+            image: featured_media.preview_image,
+            image_alt: image_alt,
+            class: 'rounded-5',
+            no_animate: true
+          %}
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 22 22"
+            fill="none"
+            class="absolute product_media-model-icon rounded-3"
+          >
+            <rect width="22" height="22" rx="2" fill="#111111"></rect>
+            <path d="M14.7181 10.4268L9.07977 6.13623C8.87285 5.97921 8.59817 5.95557 8.37137 6.07759C8.14277 6.19866 8 6.44459 8 6.71039V15.2887C8 15.5573 8.14277 15.8023 8.37137 15.9234C8.46805 15.9745 8.57377 16 8.68039 16C8.81954 16 8.9605 15.9537 9.07977 15.8619L14.7181 11.5751C14.8961 11.438 15 11.2261 15 11.001C15.0009 10.7721 14.8943 10.5611 14.7181 10.4268Z" fill="white"></path>
+          </svg>
+        {% else %}
+          <div class="test">
+            <video
+              playsinline="true"
+              muted="muted"
+              loop="loop"
+              controls="controls"
+              preload="metadata"
+              class="rounded-5 block w-full h-full absolute inset-0 media-video"
+              src="{{ source_url }}"
+              poster="{{ featured_media.preview_image | image_url: width: 800 }}"
+              {{ video_attribute }}
+            ></video>
+          </div>
+        {% endif %}
+      </div>
+    {%- when 'model' -%}
+      {% comment %} Case product 3d {% endcomment %}
+      <div
+        class="media-gallery__model {{ custom_class }} rounded-5 pointer"
+        {% if is_thumbnail == true %}
+          style="--aspect-ratio: {{ ratio }}"
+        {% endif %}
+      >
+        {% if is_thumbnail == true %}
+          {%- assign image_alt = featured_media.alt | default: 'product' | escape -%}
+          {% render 'responsive-image',
+            type: 'product',
+            image: featured_media.preview_image,
+            image_alt: image_alt,
+            class: 'rounded-5',
+            no_animate: true
+          %}
+          <svg width="22" height="22" fill="none" class="absolute product_media-model-icon rounded-3">
+            <rect width="22" height="22" fill="#111" rx="2"/><path fill="#fff" d="M15.4 8.063 12.104 6.16a1.203 1.203 0 0 0-1.2 0L7.6 8.063A1.198 1.198 0 0 0 7 9.1v3.8a1.194 1.194 0 0 0 .6 1.037l3.304 1.903a1.203 1.203 0 0 0 1.2 0l3.296-1.903A1.198 1.198 0 0 0 16 12.9V9.1a1.193 1.193 0 0 0-.6-1.037Zm-4.096 7.087L8 13.247a.4.4 0 0 1-.2-.347V9.1a.398.398 0 0 1 .2-.347l3.304-1.903a.401.401 0 0 1 .2-.052c.07 0 .139.018.2.052L15 8.753c.064.036.115.09.148.155l-3.152 1.803a1.005 1.005 0 0 0-.492.873v3.626a.437.437 0 0 1-.2-.06Z"/>
+          </svg>
+        {% else %}
+          <div class="bls__responsive-image " style="--aspect-ratio: {{ ratio }}">
+            <product-model
+              class="deferred-media media media--transparent no-js-hidden rounded-5"
+              data-media-id="{{ featured_media.id }}"
+              style="--aspect-ratio: {{ ratio }}"
+            >
+              <button id="Deferred-Poster-Modal-{{ featured_media.id }}" class="deferred-media__poster" type="button">
+                <span class="deferred-media__poster-button motion-reduce">
+                  {%- render 'icon-3d-model' -%}
+                </span>
+                {%- assign image_alt = featured_media.alt | default: 'product' | escape -%}
+                {% render 'responsive-image',
+                  type: 'product',
+                  image: featured_media.preview_image,
+                  image_alt: image_alt
+                %}
+              </button>
+              <template>
+                {%- liquid
+                  echo featured_media | media_tag: image_size: '2048x', toggleable: true
+                -%}
+              </template>
+            </product-model>
+          </div>
+          {% if type != 'single' and type != 'quickview' %}
+            <button
+              class="btn-primary w-full product__xr-button text-center"
+              type="button"
+              aria-label="{{ 'products.product.xr_button_label' | t }}"
+              data-shopify-xr
+              data-shopify-xr-hidden
+              data-shopify-model3d-id="{{ featured_media.id }}"
+              data-shopify-title="{{ product.title | escape }}"
+            >
+              {{ 'products.product.xr_button' | t }}
+            </button>
+          {% endif %}
+        {% endif %}
+      </div>
+    {%- else -%}
+      {% if featured_media.alt != 'image-360' %}
+        {% if zoom_type != 'no_zoom' %}
+          <a
+            {% if zoom_type == 'no_zoom' or zoom_type == 'open_lightbox' %}
+              href="{{ featured_media.preview_image | image_url }}"
+            {% endif %}
+            class="media-gallery__image {{ custom_class }} rounded-5 pointer 1"
+            {% if is_thumbnail == null or is_thumbnail == false %}
+              data-position="{{ media_position }}"
+              data-media-id="{{ section.id }}-{{ featured_media.id }}"
+            {% endif %}
+            data-pswp-width="{{ featured_media.preview_image.width }}"
+            data-pswp-height="{{ featured_media.preview_image.height }}"
+            data-cropped="true"
+            style="--aspect-ratio: {{ ratio }}"
+            data-pane-container
+          >
+        {% else %}
+          <div
+            class="media-gallery__image {{ custom_class }} rounded-5 pointer 2"
+            data-position="{{ media_position }}"
+            data-media-id="{{ section.id }}-{{ featured_media.id }}"
+            style="--aspect-ratio: {{ ratio }}"
+          >
+        {% endif %}
+        {% if zoom_type != 'no_zoom' %}
+          {%- assign image_alt = featured_media.alt | default: 'product' | escape -%}
+          {% render 'responsive-image',
+            type: 'product',
+            image: featured_media.preview_image,
+            image_alt: image_alt,
+            class: 'drift-trigger'
+          %}
+          {% if zoom_type == 'open_lightbox' %}
+            <button class="zoom_light_box">
+              {% render 'icon-zoom' %}
+            </button>
+          {% endif %}
+        {% else %}
+          {%- assign image_alt = featured_media.alt | default: 'product' | escape -%}
+          {% if type != 'quickview' %}
+            {% render 'responsive-image',
+              type: 'product',
+              image: featured_media.preview_image,
+              image_alt: image_alt,
+              class: 'nn',
+              no_animate: true
+            %}
+          {% else %}
+            {% render 'responsive-image',
+              type: 'product',
+              image: featured_media.preview_image,
+              image_alt: image_alt,
+              class: 'quickview'
+            %}
+          {% endif %}
+        {% endif %}
+        {% if zoom_type != 'no_zoom' %}
+          </a>
+        {% else %}
+          </div>
+        {% endif %}
+      {% endif %}
+  {%- endcase -%}
+{% endif %}
+{% for image in images %}
+  {%- unless image.id == product.selected_or_first_available_variant.featured_media.id -%}
+    {% liquid
+      assign ratio = ''
+      if product_image_ratio != 'adapt'
+        case product_image_ratio
+          when 'square'
+            assign ratio = '1/1'
+          when 'landscape'
+            assign ratio = '4/3'
+          when 'portrait'
+            assign ratio = '3/4'
+          else
+            if product_custom_ratio != empty
+              assign ratio = product_custom_ratio | replace: ':', '/'
+            else
+              assign ratio = '3/4'
+            endif
+        endcase
+      else
+        if image.preview_image != blank
+          assign ratio = image.preview_image.aspect_ratio
+        else
+          assign ratio = '3/4'
+        endif
+      endif
+      assign media_position = media_position | default: 0 | plus: 1
+    %}
+    {%- case image.media_type -%}
+      {%- when 'external_video' -%}
+        {% comment %} Case external video {% endcomment %}
+        {% liquid
+          assign video_id = image.external_id
+        %}
+        {%- capture video_attribute -%}
+              {%- if enable_video_looping -%}
+                  loop=1
+              {% endif %}
+          {%- endcapture -%}
+        <div
+          class="media-gallery__external-video {{ custom_class }} rounded-5 pointer"
+          style="--aspect-ratio: {{ ratio }}"
+        >
+          {% if is_thumbnail == true %}
+            {%- assign image_alt = image.alt | default: 'product' | escape -%}
+            {% render 'responsive-image',
+              type: 'product',
+              image: image.preview_image,
+              image_alt: image_alt,
+              no_animate: true
+            %}
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 22 22"
+              fill="none"
+              class="absolute product_media-model-icon rounded-3"
+            >
+              <rect width="22" height="22" rx="2" fill="#111111"></rect>
+              <path d="M14.7181 10.4268L9.07977 6.13623C8.87285 5.97921 8.59817 5.95557 8.37137 6.07759C8.14277 6.19866 8 6.44459 8 6.71039V15.2887C8 15.5573 8.14277 15.8023 8.37137 15.9234C8.46805 15.9745 8.57377 16 8.68039 16C8.81954 16 8.9605 15.9537 9.07977 15.8619L14.7181 11.5751C14.8961 11.438 15 11.2261 15 11.001C15.0009 10.7721 14.8943 10.5611 14.7181 10.4268Z" fill="white"></path>
+            </svg>
+          {% else %}
+            {%- if image.host == 'youtube' -%}
+              <iframe
+                src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1&rel=0&autoplay={% if enable_video_autoplay -%}1{% else %}0{%- endif -%}&mute={% if enable_video_autoplay -%}1{% else %}0{%- endif -%}&loop={%- if enable_video_looping -%}1&playlist={{ video_id }}{%else%}0{% endif %}"
+                class="js-youtube media-video"
+              ></iframe>
+            {%- else -%}
+              <iframe
+                class="js-vimeo media-video"
+                src="https://player.vimeo.com/video/{{ video_id }}?autoplay={% if enable_video_autoplay -%}1{% else %}0{%- endif -%}&muted={% if enable_video_autoplay -%}1{% else %}0{%- endif -%}&loop={%- if enable_video_looping -%}1{%else%}0{% endif %}"
+                frameborder="0"
+                allowfullscreen
+              ></iframe>
+            {%- endif -%}
+          {% endif %}
+        </div>
+      {%- when 'video' -%}
+        {% comment %} Case local video {% endcomment %}
+        {%- capture video_attribute -%}
+          {%- if enable_video_looping -%}
+              loop 
+          {% endif %}
+          {% if enable_video_autoplay -%}
+              muted autoplay
+          {%- endif -%}
+      {%- endcapture -%}
+        <div
+          class="media-gallery__local-video {{ custom_class }} rounded-5 w-full pointer"
+          style="--aspect-ratio: {{ ratio }}"
+        >
+          {%- liquid
+            assign source = image.sources
+            assign source_url = ''
+            for s in source
+              if s.format == 'mp4'
+                assign source_url = s.url
+                break
+              endif
+            endfor
+          -%}
+          {% if is_thumbnail == true %}
+            {%- assign image_alt = image.alt | default: 'product' | escape -%}
+            {% render 'responsive-image',
+              type: 'product',
+              image: image.preview_image,
+              image_alt: image_alt,
+              class: 'rounded-5',
+              no_animate: true
+            %}
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 22 22"
+              fill="none"
+              class="absolute product_media-model-icon rounded-3"
+            >
+              <rect width="22" height="22" rx="2" fill="#111111"></rect>
+              <path d="M14.7181 10.4268L9.07977 6.13623C8.87285 5.97921 8.59817 5.95557 8.37137 6.07759C8.14277 6.19866 8 6.44459 8 6.71039V15.2887C8 15.5573 8.14277 15.8023 8.37137 15.9234C8.46805 15.9745 8.57377 16 8.68039 16C8.81954 16 8.9605 15.9537 9.07977 15.8619L14.7181 11.5751C14.8961 11.438 15 11.2261 15 11.001C15.0009 10.7721 14.8943 10.5611 14.7181 10.4268Z" fill="white"></path>
+            </svg>
+          {% else %}
+            <div class="test">
+              <video
+                playsinline="true"
+                muted="muted"
+                loop="loop"
+                controls="controls"
+                preload="metadata"
+                class="rounded-5 block w-full h-full absolute inset-0 media-video"
+                src="{{ source_url }}"
+                poster="{{ image.preview_image | image_url: width: 800 }}"
+                {{ video_attribute }}
+              ></video>
+            </div>
+          {% endif %}
+        </div>
+      {%- when 'model' -%}
+        {% comment %} Case product 3d {% endcomment %}
+        <div
+          class="media-gallery__model {{ custom_class }} rounded-5 pointer pointer"
+          {% if is_thumbnail == true %}
+            style="--aspect-ratio: {{ ratio }}"
+          {% endif %}
+        >
+          {% if is_thumbnail == true %}
+            {%- assign image_alt = image.alt | default: 'product' | escape -%}
+            {% render 'responsive-image',
+              type: 'product',
+              image: image.preview_image,
+              image_alt: image_alt,
+              class: 'rounded-5',
+              no_animate: true
+            %}
+            <svg width="22" height="22" fill="none" class="absolute product_media-model-icon rounded-3">
+              <rect width="22" height="22" fill="#111" rx="2"/><path fill="#fff" d="M15.4 8.063 12.104 6.16a1.203 1.203 0 0 0-1.2 0L7.6 8.063A1.198 1.198 0 0 0 7 9.1v3.8a1.194 1.194 0 0 0 .6 1.037l3.304 1.903a1.203 1.203 0 0 0 1.2 0l3.296-1.903A1.198 1.198 0 0 0 16 12.9V9.1a1.193 1.193 0 0 0-.6-1.037Zm-4.096 7.087L8 13.247a.4.4 0 0 1-.2-.347V9.1a.398.398 0 0 1 .2-.347l3.304-1.903a.401.401 0 0 1 .2-.052c.07 0 .139.018.2.052L15 8.753c.064.036.115.09.148.155l-3.152 1.803a1.005 1.005 0 0 0-.492.873v3.626a.437.437 0 0 1-.2-.06Z"/>
+            </svg>
+          {% else %}
+            <div class="bls__responsive-image " style="--aspect-ratio: {{ ratio }}">
+              <product-model
+                class="deferred-media media media--transparent no-js-hidden rounded-5"
+                data-media-id="{{ image.id }}"
+                style="--aspect-ratio: {{ ratio }}"
+              >
+                <button id="Deferred-Poster-Modal-{{ image.id }}" class="deferred-media__poster" type="button">
+                  <span class="deferred-media__poster-button motion-reduce">
+                    {%- render 'icon-3d-model' -%}
+                  </span>
+                  {%- assign image_alt = image.alt | default: 'product' | escape -%}
+                  {% render 'responsive-image', type: 'product', image: image.preview_image, image_alt: image_alt %}
+                </button>
+                <template>
+                  {%- liquid
+                    echo image | media_tag: image_size: '2048x', toggleable: true
+                  -%}
+                </template>
+              </product-model>
+            </div>
+            {% if type != 'single' and type != 'quickview' %}
+              <button
+                class="btn-primary w-full product__xr-button text-center"
+                type="button"
+                aria-label="{{ 'products.product.xr_button_label' | t }}"
+                data-shopify-xr
+                data-shopify-xr-hidden
+                data-shopify-model3d-id="{{ image.id }}"
+                data-shopify-title="{{ product.title | escape }}"
+              >
+                {{ 'products.product.xr_button' | t }}
+              </button>
+            {% endif %}
+          {% endif %}
+        </div>
+      {%- else -%}
+        {% if image.alt != 'image-360' %}
+          {% if zoom_type != 'no_zoom' %}
+            <a
+              {% if zoom_type == 'no_zoom' or zoom_type == 'open_lightbox' %}
+                href="{{ image.preview_image | image_url }}"
+              {% endif %}
+              class="media-gallery__image {{ custom_class }} rounded-5 pointer"
+              {% if is_thumbnail == null or is_thumbnail == false %}
+                data-position="{{ media_position }}"
+                data-media-id="{{ section.id }}-{{ image.id }}"
+              {% endif %}
+              data-pswp-width="{{ image.preview_image.width }}"
+              data-pswp-height="{{ image.preview_image.height }}"
+              data-cropped="true"
+              style="--aspect-ratio: {{ ratio }}"
+              data-pane-container
+            >
+          {% else %}
+            <div
+              class="media-gallery__image {{ custom_class }} rounded-5 pointer"
+              data-position="{{ media_position }}"
+              data-media-id="{{ section.id }}-{{ image.id }}"
+              style="--aspect-ratio: {{ ratio }}"
+            >
+          {% endif %}
+          {% if zoom_type != 'no_zoom' %}
+            {%- assign image_alt = image.alt | default: 'product' | escape -%}
+            {% render 'responsive-image',
+              type: 'product',
+              image: image.preview_image,
+              image_alt: image_alt,
+              class: 'drift-trigger'
+            %}
+            {% if zoom_type == 'open_lightbox' %}
+              {% liquid
+                assign loop_zoom = false
+                if layout == 'grid' or layout == 'stack'
+                  assign loop_zoom = true
+                endif
+              %}
+              {% if loop_zoom == false %}
+                <button class="zoom_light_box">
+                  {% render 'icon-zoom' %}
+                </button>
+              {% endif %}
+            {% endif %}
+          {% else %}
+            {%- assign image_alt = image.alt | default: 'product' | escape -%}
+            {% if is_thumbnail %}
+              {% render 'responsive-image',
+                type: 'product',
+                image: image.preview_image,
+                image_alt: image_alt,
+                no_animate: true
+              %}
+            {% else %}
+              {% render 'responsive-image', type: 'product', image: image.preview_image, image_alt: image_alt %}
+            {% endif %}
+          {% endif %}
+          {% if zoom_type != 'no_zoom' %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
+        {% endif %}
+    {%- endcase -%}
+  {%- endunless -%}
+{% endfor %}

@@ -1,0 +1,83 @@
+/* ══════════════════════════════════════════════════
+   Page Heading Banner — Global Styles
+   Applies to all pages using the page-heading section
+   ══════════════════════════════════════════════════ */
+
+/* Base banner — dark gradient fallback (shows when no image is set) */
+.page-title .sec__page-heading {
+  position: relative;
+  overflow: hidden;
+  min-height: 18rem;
+  background: linear-gradient(135deg, #1a1a2e 0%, #2d2d44 45%, #3a3a5c 100%);
+}
+
+/* When a background image IS set, remove the CSS gradient
+   (the image itself will show) */
+.page-title .sec__page-heading.bg-transparent {
+  background: transparent;
+}
+
+/* ── White text for heading + breadcrumbs ── */
+.page-title .sec__page-heading .heading-title {
+  color: #fff;
+}
+
+.page-title .sec__page-heading .breadcrumbs,
+.page-title .sec__page-heading .breadcrumbs a,
+.page-title .sec__page-heading .breadcrumbs span,
+.page-title .sec__page-heading .breadcrumbs li {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+.page-title .sec__page-heading .breadcrumbs a:hover {
+  color: #fff !important;
+}
+
+.page-title .sec__page-heading .breadcrumbs [aria-current],
+.page-title .sec__page-heading .breadcrumbs .breadcrumbs__current {
+  color: rgba(255, 255, 255, 0.65) !important;
+}
+
+/* Description text */
+.page-title .sec__page-heading .heading-description,
+.page-title .sec__page-heading .heading-description p {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* ── Z-index: keep content above overlay ── */
+.page-title .overlay-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.page-title .sec__page-heading > .container,
+.page-title .sec__page-heading > .fluid_container,
+.page-title .sec__page-heading > .stretch_width,
+.page-title .sec__page-heading > .full_width {
+  position: relative;
+  z-index: 2;
+}
+
+/* ── Background image fill ── */
+.page-title .sec__page-heading .background-heading {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Dark overlay via --overlay-opacity CSS var ── */
+.page-title .overlay-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: #000;
+  opacity: var(--overlay-opacity, 0.35);
+  pointer-events: none;
+  z-index: 1;
+}

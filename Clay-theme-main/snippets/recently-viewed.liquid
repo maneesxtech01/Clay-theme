@@ -1,0 +1,14 @@
+<div class="header__recently-viewed hidden block-1025">
+  <a
+    href="/pages/recently-viewed-products"
+    class="header-icon header-color {% if type != 'header_mega' %}w-44 h-44 inline-flex content-center{% else %}flex align-center no-underline{% endif %}"
+    aria-label="Recent view product"
+  >
+    <svg width="17" height="18" viewBox="0 0 17 18" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+      <use href="#icon-recently-view" />
+    </svg>
+    {% if type == 'header_mega' %}
+      {{ 'templates.rvp.rvp' | t }}
+    {% endif %}
+  </a>
+</div>

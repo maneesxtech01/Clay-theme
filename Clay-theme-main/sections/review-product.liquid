@@ -1,0 +1,39 @@
+{% # theme-check-disable ContentForHeaderModification %}
+{%- capture content_for_query_string -%}
+  {{ content_for_header }}
+{%- endcapture -%}
+{% # theme-check-enable ContentForHeaderModification %}
+{%- assign pageurl = content_for_query_string
+  | split: '"pageurl":"'
+  | last
+  | split: '"'
+  | first
+  | split: request.host
+  | last
+  | replace: '\/', '/'
+  | replace: '%20', ' '
+  | replace: '\u0026', '&'
+-%}
+{%- assign page_query_string = pageurl | split: '?' | last -%}
+{%- liquid
+  assign product_handle = ''
+  if page_query_string contains 'product_handle='
+    assign product_handle = page_query_string | split: 'product_handle=' | last | split: '&' | first
+  endif
+  assign card_product = all_products[product_handle]
+%}
+{%- if card_product.metafields.judgeme.badge -%}
+  <div
+    class="jdgm-widget jdgm-preview-badge product-reviews"
+    data-id="{{ card_product.id }}"
+  >
+    {{ card_product.metafields.judgeme.badge }}
+  </div>
+{% endif %}
+{%- if card_product.metafields.spr.reviews -%}
+  <div
+    class="product-reviews"
+  >
+    <span class="shopify-product-reviews-badge" data-id="{{ card_product.id }}"></span>
+  </div>
+{%- endif -%}

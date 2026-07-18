@@ -1,0 +1,403 @@
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+-%}
+{%- capture style -%}
+  --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};--max-width: 50rem;
+{%- endcapture -%}
+<div
+  class="section{% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} sec__collection-list"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ section_width }} flex justify-center align-center flex-column text-center">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign block_st = block.settings
+        assign image = block_st.image
+        assign open_link = block_st.open_link
+        assign mb_custom = ''
+        if block_st.spacing_bottom > 41
+          assign mb_custom = 'mb-big'
+        elsif block_st.spacing_bottom > 30
+          assign mb_custom = 'mb-medium'
+        else
+          assign mb_custom = 'mb-custom'
+        endif
+        assign uppercase = ''
+        if block_st.uppercase
+          assign uppercase = 'uppercase'
+        endif
+        assign fs_custom = ''
+        if block_st.font_size > 41
+          assign fs_custom = 'fs-big'
+        elsif block_st.font_size > 24
+          assign fs_custom = 'fs-medium'
+        else
+          assign fs_custom = 'fs-custom'
+        endif
+        assign font_weight = block_st.font_weight
+      -%}
+      {%- case block.type -%}
+        {%- when 'image' -%}
+          {% if image != blank %}
+            <div
+              class="mb-40 max-w-100"
+              style="{%- if image != blank -%}--aspect-ratio: {{ image.aspect_ratio }};{% endif %}; width: 440px"
+            >
+              {%- assign image_alt = image.alt | escape | default: 'image' -%}
+              {% render 'responsive-image', image: image, image_alt: image_alt, no_animate: true %}
+            </div>
+          {% endif %}
+        {%- when 'heading' -%}
+          <h2
+            class="sec__content-heading heading-letter-spacing mt-0 {{ mb_custom }} {{ uppercase }} {{ fs_custom }} {{ font_weight }}"
+            style="--font-size: {{ block_st.font_size }};--space-bottom: {{ block_st.spacing_bottom }}"
+            {{ block.shopify_attributes }}
+          >
+            {{ block_st.heading }}
+          </h2>
+        {%- when 'subheading' -%}
+          <div
+            class="sec__content-subheading heading  {{ mb_custom }} {{ uppercase }} {{ fs_custom }} {{ font_weight }}"
+            style="--font-size: {{ block_st.font_size }};--space-bottom: {{ block_st.spacing_bottom }}"
+          >
+            {{ block_st.subheading | escape }}
+          </div>
+        {%- when 'description' -%}
+          <div
+            class="sec__content-des rich__text-m0 {{ mb_custom }} {{ uppercase }} {{ fs_custom }} {{ font_weight }}"
+            style="--font-size: {{ block_st.font_size }};--space-bottom: {{ block_st.spacing_bottom }}"
+            {{ block.shopify_attributes }}
+          >
+            {{ block_st.description }}
+          </div>
+        {%- when 'button' -%}
+          {% if block_st.first_button_label != blank or block_st.second_button_label != blank %}
+            <div
+              class="sec__content-btn align-center flex flex-wrap gap-15 justify-content-{{ section_st.content_alignment_mobile }} justify-content-md-{{ section_st.content_alignment }} {{ mb_custom }}"
+              style="--space-bottom: {{ block_st.spacing_bottom }}"
+            >
+              {% if block_st.first_button_label != blank %}
+                <a
+                  {% if block_st.first_button_link == blank %}
+                    role="link" aria-disabled="true"
+                  {% else %}
+                    href="{{ block_st.first_button_link | default: "#" }}"
+                  {% endif %}
+                  aria-label="{{ block_st.first_button_label }}"
+                  {%- if open_link != blank -%}
+                    target="_blank"
+                  {% endif %}
+                  class="inline-flex no-underline btn-{{ block_st.first_button_type }}"
+                >
+                  {{ block_st.first_button_label }}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.page_404.name",
+  "tag": "section",
+  "limit": 1,
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:sections.all.section_width.label",
+      "default": "fluid_container",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_spacing",
+      "label": "t:sections.all.section_padding.reset_spacing.label",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "t:sections.all.image.label",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.all.image.label"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "t:sections.all.contents.heading.label",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.all.contents.heading.label",
+          "default": "Talk about your brand"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "label": "t:sections.all.content_settings.font_size.label",
+          "default": 36,
+          "min": 24,
+          "max": 100,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "t:sections.all.content_settings.font_weight.label",
+          "default": "heading_weight",
+          "options": [
+            {
+              "value": "body_weight",
+              "label": "t:sections.all.content_settings.font_weight.body_weight.label"
+            },
+            {
+              "value": "subheading_weight",
+              "label": "t:sections.all.content_settings.font_weight.subheading_weight.label"
+            },
+            {
+              "value": "heading_weight",
+              "label": "t:sections.all.content_settings.font_weight.heading_weight.label"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "uppercase",
+          "label": "t:sections.all.text_transform.uppercase.label"
+        },
+        {
+          "type": "range",
+          "id": "spacing_bottom",
+          "label": "t:sections.all.content_settings.spacing.spacing_bottom.label",
+          "default": 24,
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "unit": "px"
+        }
+      ]
+    },
+    {
+      "type": "subheading",
+      "name": "t:sections.all.contents.subheading.label",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "t:sections.all.contents.subheading.label",
+          "default": "Subheading"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "label": "t:sections.all.content_settings.font_size.label",
+          "default": 14,
+          "min": 12,
+          "max": 24,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "t:sections.all.content_settings.font_weight.label",
+          "default": "subheading_weight",
+          "options": [
+            {
+              "value": "body_weight",
+              "label": "t:sections.all.content_settings.font_weight.body_weight.label"
+            },
+            {
+              "value": "subheading_weight",
+              "label": "t:sections.all.content_settings.font_weight.subheading_weight.label"
+            },
+            {
+              "value": "heading_weight",
+              "label": "t:sections.all.content_settings.font_weight.heading_weight.label"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "uppercase",
+          "label": "t:sections.all.text_transform.uppercase.label"
+        },
+        {
+          "type": "range",
+          "id": "spacing_bottom",
+          "label": "t:sections.all.content_settings.spacing.spacing_bottom.label",
+          "default": 15,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "t:sections.all.contents.description.label",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "description",
+          "default": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
+          "label": "t:sections.all.contents.description.label"
+        },
+        {
+          "type": "range",
+          "id": "font_size",
+          "label": "t:sections.all.content_settings.font_size.label",
+          "default": 14,
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "unit": "px"
+        },
+        {
+          "type": "select",
+          "id": "font_weight",
+          "label": "t:sections.all.content_settings.font_weight.label",
+          "default": "body_weight",
+          "options": [
+            {
+              "value": "body_weight",
+              "label": "t:sections.all.content_settings.font_weight.body_weight.label"
+            },
+            {
+              "value": "subheading_weight",
+              "label": "t:sections.all.content_settings.font_weight.subheading_weight.label"
+            },
+            {
+              "value": "heading_weight",
+              "label": "t:sections.all.content_settings.font_weight.heading_weight.label"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "spacing_bottom",
+          "label": "t:sections.all.content_settings.spacing.spacing_bottom.label",
+          "default": 25,
+          "min": 0,
+          "max": 40,
+          "step": 1,
+          "unit": "px"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "t:sections.all.contents.button.label",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "first_button_label",
+          "default": "Button label",
+          "label": "t:sections.page_404.blocks.button.settings.first_button_label.label",
+          "info": "t:sections.all.contents.button.first_button_label.info"
+        },
+        {
+          "type": "url",
+          "id": "first_button_link",
+          "label": "t:sections.page_404.blocks.button.settings.first_button_link.label"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_link",
+          "label": "t:sections.collection-main.blocks.image_banner.settings.open_link.label",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "first_button_type",
+          "label": "t:sections.all.contents.button.button_type.label",
+          "default": "primary",
+          "options": [
+            {
+              "value": "primary",
+              "label": "t:sections.all.contents.button.button_type.primary.label"
+            },
+            {
+              "value": "outline",
+              "label": "t:sections.all.contents.button.button_type.outline.label"
+            },
+            {
+              "value": "link",
+              "label": "t:sections.all.contents.button.button_type.link.label"
+            }
+          ]
+        },
+        {
+          "type": "range",
+          "id": "spacing_bottom",
+          "label": "t:sections.all.content_settings.spacing.spacing_bottom.label",
+          "default": 24,
+          "min": 0,
+          "max": 30,
+          "step": 1,
+          "unit": "px"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

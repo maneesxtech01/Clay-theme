@@ -1,0 +1,171 @@
+{%- liquid
+  assign theme_st = settings
+  assign type = type
+  assign container = container
+  assign image_mobile = image_mobile
+  assign image_alt = image_alt
+  assign colunm = colunm | default: 1
+  assign colunm_tablet = colunm | default: 1
+  assign colunm_mobile = colunm_mobile | default: 1
+  assign padding = padding | default: 0
+  assign class = class
+  if type == 'product'
+    assign class = class | append: ' bls-loaded-image bls-loading-image'
+  endif
+  assign sizes = sizes
+  assign section_width = '100vw'
+  assign section_width_mobile = '100vw'
+  if container == 'stretch_width'
+    assign section_width = '100vw - 60px'
+    assign section_width_mobile = '100vw - 30px'
+  elsif container == 'fluid_container'
+    assign section_width = theme_st.fluid_container_width | append: 'px'
+    assign section_width_mobile = '100vw - 30px'
+  elsif container == 'container'
+    assign section_width = theme_st.page_width | append: 'px'
+    assign section_width_mobile = '100vw - 30px'
+  else
+    assign section_width = '100vw'
+    assign section_width_mobile = '100vw'
+  endif
+
+  if type == 'product'
+    assign widths = '720, 660, 550, 480, 330, 240, 185'
+    if colunm >= 4
+      assign colunm_tablet = 3
+    endif
+    assign colunm_tablet = colunm | minus: 1
+    assign zoom_out = 'zoom-out-sm'
+  elsif type == 'blog'
+    assign widths = '720, 660, 550, 480, 360'
+    if colunm >= 4
+      assign colunm_tablet = 3
+    endif
+    assign zoom_out = 'zoom-out-sm'
+  elsif type == 'banner'
+    assign widths = '3840, 3000, 2400, 1920, 1500, 1370, 1100, 720, 660, 550, 480, 360'
+    if colunm > 2
+      assign colunm_tablet = colunm | minus: 1
+    endif
+    assign zoom_out = 'zoom-out'
+  elsif type == 'cart'
+    assign widths = '550, 480, 360, 160, 90'
+    assign section_width = '160px'
+    assign section_width_mobile = '90px'
+  else
+    assign widths = '720, 660, 550, 480, 360, 240, 185, 120, 60'
+    if colunm > 2
+      assign colunm_tablet = colunm | minus: 1
+    endif
+    assign zoom_out = 'zoom-out-sm'
+  endif
+
+  assign padding_mobile = 0
+  if padding and padding >= 20
+    assign padding_mobile = 15 | append: 'px'
+  endif
+  assign padding = padding | append: 'px'
+
+  if custom_widths != blank
+    assign widths = custom_widths
+  endif
+
+  assign loading = 'lazy'
+  if lazy_load == true
+    assign loading = 'eager'
+  endif
+  assign secondary_image = false
+  if class contains 'secondary-image'
+    assign secondary_image = true
+  endif
+  assign scroll_animation = settings.scroll_animation
+-%}
+{% if sizes == blank %}
+  {%- capture sizes -%}
+    {%- liquid
+      assign divide_colunm = 1
+      assign divide_colunm_tablet = 1
+      assign divide_colunm_mobile = 1
+      if colunm > 1
+        assign divide_colunm = 1.00 | divided_by: colunm | round: 2
+      endif
+      if colunm_tablet > 1
+        assign divide_colunm_tablet = 1.00 | divided_by: colunm_tablet | round: 2
+      endif
+      if colunm_mobile > 1
+        assign divide_colunm_mobile = 1.00 | divided_by: colunm_mobile | round: 2
+        assign padding_mobile = 10 | append: 'px'
+      endif
+      if padding_mobile == 0
+        assign padding_mobile = '0px'
+      endif
+    -%}
+    (min-width: 1200px) calc(({{ section_width }} -  {{ padding }} * {{ colunm | minus: 1 }}) * {{ divide_colunm }}){{- -}}
+    , (min-width: 768px) calc( ({{ section_width_mobile }} - {{ padding }} * {{ colunm_tablet | minus: 1 }} ) * {{ divide_colunm_tablet }}){{- -}}
+    , calc( ({{ section_width_mobile }} - {{ padding_mobile }} * {{ colunm_mobile | minus: 1 }} ) * {{ divide_colunm_mobile }})
+  {%- endcapture -%}
+{% endif %}
+{% if no_animate == blank and secondary_image == false and scroll_animation == 'slide_in' and settings.zoom_image ==true %}
+  <motion-element
+    data-motion="{{ custom_zoom | default: zoom_out }}"
+    data-image
+    {% if hold == false or scroll_animation != 'slide_in' %}
+      hold
+    {% endif %}
+    {% if delay != blank %}
+      data-motion-delay="{{ delay}}"
+    {% endif %}
+    class="block {{ class | remove: 'drift-trigger' }} motion-image h-full w-full"
+    {% if first == true or section.index == 1 %}
+      style="transform: scale(1.2)"
+    {% endif %}
+  >
+{% endif %}
+{% if image_mobile != blank %}
+  <picture class="image-picture ">
+    {%- liquid
+      assign srcset_mobile = image_mobile | image_url: width: image_mobile.width | image_tag: widths: '480, 360', alt: image_alt | split: 'srcset="' | last
+      unless srcset_mobile contains 'src='
+        echo '<source media="(max-width: 767px)" srcset="' | append: srcset_mobile
+      endunless
+      if image == blank
+        assign image = image_mobile
+      endif
+    -%}
+    {{-
+      image
+      | image_url: width: image.width
+      | image_tag:
+        loading: loading,
+        width: image.width,
+        height: image.height,
+        sizes: sizes,
+        widths: widths,
+        alt: image_alt
+    -}}
+  </picture>
+{% else %}
+  {% assign width = width | default: image.width %}
+  {{-
+    image
+    | image_url: width: image.width
+    | image_tag:
+      loading: loading,
+      width: width,
+      height: image.height,
+      sizes: sizes,
+      class: class,
+      widths: widths,
+      alt: image_alt
+  -}}
+{% endif %}
+{% if no_animate == blank and secondary_image == false and scroll_animation == 'slide_in' and settings.zoom_image ==true %}
+  </motion-element>
+{% endif %}
+
+{% if type == 'product' %}
+  {% unless class contains 'secondary-image' %}
+    <div class="loading_image skeleton">
+    </div>
+  {% endunless %}
+{% endif %}

@@ -1,0 +1,234 @@
+{{ 'shopable-video.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign section_st = section.settings
+  assign color_scheme = section_st.color_scheme
+  assign image_ratio = section_st.image_ratio
+  assign custom_ratio = section_st.custom_ratio
+  assign offset_bottom = section_st.offset_bottom
+  assign offset_left = section_st.offset_left
+  assign action_close = section_st.action_close
+-%}
+
+<shopable-video-sticky class="shopable-video-sticky__mini-video color-{{ color_scheme }}" data-action-close="{{ action_close }}">
+  <div class="mini-video__video fixed z-16" style="bottom: {{ offset_bottom }}px; --left: {{ offset_left }}px;">
+      {% liquid
+          assign block_st = section.blocks[0].settings
+          assign poster_image = block_st.poster_image
+          assign video_url = block_st.video_url
+          assign local_video = block_st.local_video
+      %}
+      <div class="mini-video__video-wrapper">
+        {% if poster_image != blank or video_url != blank or local_video != blank %}
+          {%- liquid
+            assign ratio = ''
+            if image_ratio != 'adapt'
+              case image_ratio
+                when 'square'
+                  assign ratio = '1/1'
+                when 'landscape'
+                  assign ratio = '4/3'
+                when 'portrait'
+                  assign ratio = '3/4'
+                else
+                  if custom_ratio != empty
+                    assign ratio = custom_ratio | replace: ':', '/'
+                  else
+                    assign ratio = '3/4'
+                  endif
+              endcase
+            else
+              if poster_image != blank
+                assign ratio = poster_image.aspect_ratio
+              else
+                assign ratio = local_video.aspect_ratio
+              endif
+            endif
+          -%}
+          <div
+            class="video-mini-item__popup"
+            style="--aspect-ratio: {{ ratio }};"
+          >
+            {% if local_video != blank %}
+              {%- liquid
+                assign source = local_video.sources
+                assign source_url = ''
+                for s in source
+                  if s.format == 'mp4'
+                    assign source_url = s.url
+                    break
+                  endif
+                endfor
+                assign poster = local_video.preview_image | image_url: width: 1100
+                if poster_image != blank
+                  assign poster = poster_image | image_url: width: 1100
+                endif
+              -%}
+              <video
+                loop="true"
+                data-src="{{ source_url }}"
+                data-poster="{{ poster }}"
+                pinlaysinle="true"
+                autoplay="true"
+                muted="true"
+                class="lazy-video-item"
+              ></video>
+            {% else %}
+              {% if poster_image != blank %}
+                {%- assign image_alt = poster_image.alt | default: 'poster' | escape -%}
+                {% render 'responsive-image', type: 'banner', image: poster_image, image_alt: image_alt %}
+              {% else %}
+                {% render 'placeholder-render' %}
+              {% endif %}
+            {% endif %}
+          </div>
+        {% else %}
+          {%- liquid
+            assign ratio = ''
+            if image_ratio != 'adapt'
+              case image_ratio
+                when 'square'
+                  assign ratio = '1/1'
+                when 'landscape'
+                  assign ratio = '4/3'
+                when 'portrait'
+                  assign ratio = '3/4'
+                else
+                  if custom_ratio != empty
+                    assign ratio = custom_ratio | replace: ':', '/'
+                  else
+                    assign ratio = '3/4'
+                  endif
+              endcase
+            else
+              assign ratio = '3/4'
+            endif
+          -%}
+          <div
+            class="video-mini-item__popup"
+            style="--aspect-ratio: {{ ratio }};"
+          >
+            {%- render 'placeholder-render', class: 'rounded' -%}
+          </div>
+        {% endif %}
+        <button
+          class="btn-reset button-close close-mini-video justify-center pointer inline-flex align-center"
+          aria-label="{{ 'accessibility.close' | t }}"
+        >
+          <svg width="11" height="11" viewBox="0 0 11 11" fill="none" class="transition">
+            <use href="#icon-close" />
+          </svg>
+        </button>
+      </div>
+  </div>
+  <div class="shopable-video-sticky__blocks-content">
+  
+  </div>
+</shopable-video-sticky>
+<script src="{{ 'shopable-video-sticky.js' | asset_url }}" defer="defer"></script>
+
+
+{% schema %}
+{
+  "name": "t:sections.shopable-video-sticky.name",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "action_close",
+      "label": "t:sections.shopable-video-sticky.action_close.name",
+      "default": false,
+      "info": "t:sections.shopable-video-sticky.action_close.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.shopable-video.settings.video_settings.header"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "t:sections.all.image.image_ratio.label",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.all.image.image_ratio.adapt.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.all.image.image_ratio.square.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.all.image.image_ratio.portrait.label"
+        },
+        {
+          "value": "landscape",
+          "label": "t:sections.all.image.image_ratio.landscape.label"
+        },
+        {
+          "value": "custom",
+          "label": "t:sections.all.image.image_ratio.custom.label"
+        }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "text",
+      "id": "custom_ratio",
+      "label": "t:sections.all.image.image_ratio.custom_ratio.label"
+    },
+    {
+        "type": "range",
+        "id": "offset_bottom",
+        "label": "t:sections.shopable-video-sticky.blocks.settings.offset_bottom",
+        "default": 150,
+        "min": 5,
+        "max": 300,
+        "step": 5,
+        "unit": "px"
+    },
+    {
+        "type": "range",
+        "id": "offset_left",
+        "label": "t:sections.shopable-video-sticky.blocks.settings.offset_left",
+        "default": 25,
+        "min": 5,
+        "max": 155,
+        "step": 2,
+        "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "limit": 10,
+      "name": "t:sections.shopable-video.blocks.name",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product",
+          "label": "t:sections.shopable-video.blocks.product"
+        },
+        {
+          "type": "image_picker",
+          "id": "poster_image",
+          "label": "t:sections.shopable-video.blocks.poster_image"
+        },
+        {
+          "type": "video",
+          "id": "local_video",
+          "label": "t:sections.shopable-video.blocks.video_local.label"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

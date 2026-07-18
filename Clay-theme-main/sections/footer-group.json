@@ -1,0 +1,88 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.footer.name",
+  "type": "footer",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "store_info_tUhcyD": {
+          "type": "store_info",
+          "settings": {
+            "image": "shopify://shop_images/rbb-mitti-logo.png",
+            "image_width": 126,
+            "store_heading": "",
+            "store_description": "<p><strong>RB Mitti Store</strong> brings you handcrafted clay cookware, drinkware, and kitchen essentials made with love, tradition, and natural materials.</p>",
+            "store_address": false,
+            "store_phone": true,
+            "store_email": true,
+            "content_width": "33.333%"
+          }
+        },
+        "link_list_JTq77M": {
+          "type": "link_list",
+          "settings": {
+            "heading": "SHOP",
+            "menu": "company",
+            "content_width": "16%"
+          }
+        },
+        "link_list_x4zwRH": {
+          "type": "link_list",
+          "settings": {
+            "heading": "CUSTOMER SERVICE",
+            "menu": "footer-1",
+            "content_width": "16%"
+          }
+        },
+        "newsletter_Rk8BD6": {
+          "type": "newsletter",
+          "settings": {
+            "heading": "STAY CONNECTED",
+            "description": "Get early access to new designs, special offers, and the stories behind every handmade piece.",
+            "email_placeholder": "Enter your email...",
+            "button_label": "Subscribe",
+            "note": "",
+            "content_width": "33.333%"
+          }
+        }
+      },
+      "block_order": [
+        "store_info_tUhcyD",
+        "link_list_JTq77M",
+        "link_list_x4zwRH",
+        "newsletter_Rk8BD6"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "scheme-accf3b11-ba40-4a3e-bafb-243ece6683ec",
+        "enable_back_top": true,
+        "separator_line": "all-page",
+        "enable_country_selector": false,
+        "enable_language_selector": false,
+        "enable_follow_on_shop": true,
+        "show_social": true,
+        "payment_enable": true,
+        "payment_image": "shopify://shop_images/payment-logoss.png",
+        "payment_width": 180,
+        "bottom_image_width": 1400,
+        "copyright_text": "© 2026 RB Mitti. All rights reserved.",
+        "footer_heading_size": 16,
+        "padding_top": 60,
+        "padding_bottom": 45,
+        "reset_spacing_on_homepage": false
+      }
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

@@ -1,0 +1,125 @@
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin theme editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
+{
+  "sections": {
+    "page-heading": {
+      "type": "page-heading",
+      "blocks": {
+        "breadcrumb_kg6gTP": {
+          "type": "breadcrumb",
+          "settings": {
+          }
+        },
+        "heading_fmyy8C": {
+          "type": "heading",
+          "settings": {
+            "page_title": "Store Locator",
+            "header_size": "default"
+          }
+        },
+        "description_TfxHmk": {
+          "type": "description",
+          "settings": {
+            "description": "<p>Please use the below form. You can also call customer service on +1 (973) 435-3638.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "breadcrumb_kg6gTP",
+        "heading_fmyy8C",
+        "description_TfxHmk"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "alignment": "center",
+        "overlay_opacity": 0,
+        "height": "adapt",
+        "padding_top": 40,
+        "padding_bottom": 0
+      }
+    },
+    "main": {
+      "type": "pages-store-location",
+      "blocks": {
+        "item_giQMbx": {
+          "type": "item",
+          "settings": {
+            "store_lng": "105.77925",
+            "store_lat": "21.0075",
+            "store_name": "South Fulon",
+            "store_address": "268 St, South New York\/NY 98944, United States.",
+            "store_phone": "+222-1800-2628"
+          }
+        },
+        "item_MBNhGC": {
+          "type": "item",
+          "settings": {
+            "store_lng": "105.77925",
+            "store_lat": "25.0075",
+            "store_name": "Place Ste-Foy",
+            "store_address": "268 St, South New York\/NY 98944, United States.",
+            "store_phone": "+222-1800-2628"
+          }
+        },
+        "item_aDjii6": {
+          "type": "item",
+          "settings": {
+            "store_lng": "100.77925",
+            "store_lat": "21.0075",
+            "store_name": "Santiago Store",
+            "store_address": "268 St, South New York\/NY 98944, United States.",
+            "store_phone": "+222-1800-2628"
+          }
+        },
+        "item_B9XwGi": {
+          "type": "item",
+          "settings": {
+            "store_lng": "105.77925",
+            "store_lat": "21.0075",
+            "store_name": "Sydney Store",
+            "store_address": "268 St, South New York\/NY 98944, United States.",
+            "store_phone": "+222-1800-2628"
+          }
+        },
+        "item_m8LEYd": {
+          "type": "item",
+          "settings": {
+            "store_lng": "105.77925",
+            "store_lat": "21.0075",
+            "store_name": "Sydney Store",
+            "store_address": "268 St, South New York\/NY 98944, United States.",
+            "store_phone": "+222-1800-2628"
+          }
+        }
+      },
+      "block_order": [
+        "item_giQMbx",
+        "item_MBNhGC",
+        "item_aDjii6",
+        "item_B9XwGi",
+        "item_m8LEYd"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "page-heading",
+    "main"
+  ]
+}

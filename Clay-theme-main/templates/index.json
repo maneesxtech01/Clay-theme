@@ -1,0 +1,249 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "slideshow": {
+      "type": "slideshow",
+      "blocks": {
+        "slider_item_XF7KWB": {
+          "type": "slider_item",
+          "settings": {
+            "image": "shopify://shop_images/Poster-Clay-pot.webp",
+            "image_mobile": "shopify://shop_images/mobile-size-post-2.webp",
+            "overlay_opacity": 0,
+            "slider_effect": "effect_fadein",
+            "subheading": "100% Natural & Chemical-Free",
+            "heading": "Meet The Clay Cooler, Mitti Ka Cooler",
+            "description": "<p>Naturally cool, mineral-rich water the traditional way. Experience the taste your ancestors swore by.</p>",
+            "first_button_label": "Get Yours Today",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "content_alignment": "left",
+            "content_position": "bottom-left",
+            "content_width": "container",
+            "content_max_width": 100,
+            "content_padding_block": 120,
+            "content_padding_inline": 30,
+            "show_content_background": false,
+            "content_background": "#ffffff",
+            "content_box_opacity": 100,
+            "content_alignment_mobile": "left"
+          }
+        },
+        "slider_item_ge6R7w": {
+          "type": "slider_item",
+          "settings": {
+            "image": "shopify://shop_images/Poster-Clay-pot2_a8a963dd-e29b-49b9-a802-ed3dc8d2245f.webp",
+            "image_mobile": "shopify://shop_images/mobile-size-post-1.webp",
+            "overlay_opacity": 0,
+            "slider_effect": "effect_fadein",
+            "subheading": "Handcrafted With Love",
+            "heading": "The Jug & Bowl Set — Tradition On Your Table",
+            "description": "<p>Hand-painted clay pieces crafted to bring warmth, elegance, and generations of tradition to every meal.</p>",
+            "first_button_label": "Explore Serveware",
+            "first_button_link": "",
+            "first_button_style": false,
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_style": false,
+            "content_alignment": "left",
+            "content_position": "bottom-left",
+            "content_width": "container",
+            "content_max_width": 100,
+            "content_padding_block": 120,
+            "content_padding_inline": 30,
+            "show_content_background": false,
+            "content_background": "#ffffff",
+            "content_box_opacity": 100,
+            "content_alignment_mobile": "left"
+          }
+        }
+      },
+      "block_order": [
+        "slider_item_XF7KWB",
+        "slider_item_ge6R7w"
+      ],
+      "custom_css": [
+        ".sec__content-inner {max-width: 550px;}"
+      ],
+      "settings": {
+        "section_width": "full_width",
+        "slide_height": "large",
+        "desktop_height": 1000,
+        "mobile_height": 420,
+        "color_scheme": "scheme-4faf0e4d-27f4-4d02-bc51-617383bab1a9",
+        "subheading_font_size": 14,
+        "subheading_font_weight": "body_weight",
+        "subheading_spacing_bottom": 10,
+        "heading_font_size": 40,
+        "heading_font_weight": "heading_weight",
+        "heading_uppercase": false,
+        "heading_spacing_bottom": 10,
+        "des_font_size": 16,
+        "des_font_weight": "body_weight",
+        "des_spacing_bottom": 20,
+        "slide_effect": "fade",
+        "show_arrow": true,
+        "carousel_pagination": "show_dots_on_mobile",
+        "pagination_position": "right",
+        "autoplay": true,
+        "autorotate_speed": 5,
+        "content_below_image": false,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "collection_list_xmGiTx": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_m4tRCE": {
+          "type": "collection",
+          "settings": {
+            "collection": "dinner-sets",
+            "collection_image": "shopify://shop_images/04.webp",
+            "collection_title": "Dinner Sets"
+          }
+        },
+        "collection_bRUhY7": {
+          "type": "collection",
+          "settings": {
+            "collection": "cookware",
+            "collection_image": "shopify://shop_images/17.webp",
+            "collection_title": "Cookware"
+          }
+        },
+        "collection_4eirML": {
+          "type": "collection",
+          "settings": {
+            "collection": "drinkware",
+            "collection_image": "shopify://shop_images/18.webp",
+            "collection_title": "Drinkware"
+          }
+        },
+        "collection_xyi7Lh": {
+          "type": "collection",
+          "settings": {
+            "collection": "marble-tools",
+            "collection_image": "shopify://shop_images/Marble_Rolling_Board.png",
+            "collection_title": "Marble Collection"
+          }
+        },
+        "collection_xMd3n6": {
+          "type": "collection",
+          "settings": {
+            "collection": "wooden-tools",
+            "collection_image": "shopify://shop_images/Wooden_Spatula_Set_3_Pieces.webp",
+            "collection_title": "Wooden Collection"
+          }
+        },
+        "collection_4VfYMk": {
+          "type": "collection",
+          "settings": {
+            "collection": "kids-toys",
+            "collection_image": "shopify://shop_images/kids_clay_toys.webp",
+            "collection_title": "Kids Collection"
+          }
+        }
+      },
+      "block_order": [
+        "collection_m4tRCE",
+        "collection_bRUhY7",
+        "collection_4eirML",
+        "collection_xyi7Lh",
+        "collection_xMd3n6",
+        "collection_4VfYMk"
+      ],
+      "custom_css": [
+        "a.block.collection-item__media--ratio.hover-effect {border-radius: 50%;}"
+      ],
+      "name": "t:sections.collection-list.name",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "default",
+        "heading": "Shop RB Mitti Collections",
+        "description": "<p>From handmade clay cookware to dinnerware, drinkware, marble kitchen, wooden utensils, and kids collection every piece is crafted with 100% natural materials and delivered right to your doorstep.</p>",
+        "show_view_all_button": false,
+        "header_size": "medium",
+        "header_alignment": "center",
+        "display_mode": "carousel",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "items_per_row": 6,
+        "column_gap": 30,
+        "show_arrow": true,
+        "carousel_pagination": "disable",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 2,
+        "design": "morden",
+        "collection_information_position": "below_image",
+        "text_alignment": "center",
+        "show_product_count": false,
+        "show_icon": false,
+        "show_description": false,
+        "font_size": 16,
+        "font_weight": "heading_weight",
+        "information_spacing": 12,
+        "rounded_image": false,
+        "image_custom_width": false,
+        "image_width": 200,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
+    "products_carousel_LRkFG7": {
+      "type": "products-carousel",
+      "name": "t:sections.products-carousel.name",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "default",
+        "heading": "Best Selling Products",
+        "description": "",
+        "show_view_all_button": false,
+        "header_size": "medium",
+        "header_alignment": "left",
+        "collection": "frontpage",
+        "items_to_show": 8,
+        "items_per_row": 4,
+        "column_gap": 10,
+        "show_banner": false,
+        "sticky_banner": false,
+        "banner_width": 30,
+        "position": "left",
+        "banner_link": "",
+        "banner_type": "image",
+        "video_url": "",
+        "video_autoplay": true,
+        "show_arrow": false,
+        "carousel_pagination": "show_dots",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    }
+  },
+  "order": [
+    "slideshow",
+    "collection_list_xmGiTx",
+    "products_carousel_LRkFG7"
+  ]
+}

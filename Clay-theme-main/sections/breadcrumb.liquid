@@ -1,0 +1,54 @@
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign color_scheme = section_st.color_scheme
+  assign t = template | split: '.' | first
+-%}
+<section class="breadcrumbs color-{{ color_scheme }} gradien fs-small{% if t == 'product' and section.settings.next_prev %} py-20{% else %} py-25{% endif %}">
+  <div class="{{ section_width }}">
+    {% render 'breadcrumbs' | next_prev: section_st.next_prev %}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "t:sections.breadcrumbs.name",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ],
+      "default": "fluid_container",
+      "label": "t:sections.all.section_width.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "default": "default-color-scheme"
+    },
+    {
+      "type": "checkbox",
+      "id": "next_prev",
+      "label": "t:sections.breadcrumbs.settings.next_prev",
+      "default": false
+    }
+  ]
+}
+{% endschema %}

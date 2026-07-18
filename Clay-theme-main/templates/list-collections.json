@@ -1,0 +1,177 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "heading": {
+      "type": "page-heading",
+      "blocks": {
+        "heading_B3DXTc": {
+          "type": "heading",
+          "settings": {
+            "page_title": "Collections List",
+            "header_size": "default"
+          }
+        },
+        "description_tLPCVn": {
+          "type": "description",
+          "settings": {
+            "description": "<p>Explore our thoughtfully curated collections: Sweaters, Handbags, Denim, and more—each <br/>perfect for enhancing every style on every special occasion and daily wear.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "heading_B3DXTc",
+        "description_tLPCVn"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "alignment": "center",
+        "overlay_opacity": 0,
+        "height": "adapt",
+        "padding_top": 67,
+        "padding_bottom": 0
+      }
+    },
+    "main": {
+      "type": "main-list-collections",
+      "blocks": {
+        "collection_GawBmm": {
+          "type": "collection",
+          "settings": {
+            "collection": "sweaters",
+            "collection_title": ""
+          }
+        },
+        "collection_k6UJWD": {
+          "type": "collection",
+          "settings": {
+            "collection": "t-shirts",
+            "collection_title": ""
+          }
+        },
+        "collection_Dh49Wa": {
+          "type": "collection",
+          "settings": {
+            "collection": "tops",
+            "collection_title": ""
+          }
+        },
+        "collection_qag64J": {
+          "type": "collection",
+          "settings": {
+            "collection": "activewear",
+            "collection_title": ""
+          }
+        },
+        "collection_Kk8pDP": {
+          "type": "collection",
+          "settings": {
+            "collection": "best-seller",
+            "collection_image": "shopify://shop_images/coat.jpg",
+            "collection_title": ""
+          }
+        },
+        "collection_ACrmpU": {
+          "type": "collection",
+          "settings": {
+            "collection": "blazers",
+            "collection_image": "shopify://shop_images/bazzer.jpg",
+            "collection_title": ""
+          }
+        },
+        "collection_zpFtkQ": {
+          "type": "collection",
+          "settings": {
+            "collection": "demin",
+            "collection_image": "shopify://shop_images/Denim_Shirt.jpg",
+            "collection_title": ""
+          }
+        },
+        "collection_Lb3mRX": {
+          "type": "collection",
+          "settings": {
+            "collection": "handbags",
+            "collection_image": "shopify://shop_images/handbag.jpg",
+            "collection_title": ""
+          }
+        },
+        "collection_qirikr": {
+          "type": "collection",
+          "settings": {
+            "collection": "crop-top",
+            "collection_image": "shopify://shop_images/collection-1.jpg",
+            "collection_title": ""
+          }
+        },
+        "collection_HLUY4E": {
+          "type": "collection",
+          "settings": {
+            "collection": "dress",
+            "collection_image": "shopify://shop_images/collection-2.jpg",
+            "collection_title": ""
+          }
+        },
+        "collection_dHMiiC": {
+          "type": "collection",
+          "settings": {
+            "collection": "trending",
+            "collection_image": "shopify://shop_images/collection-3.jpg",
+            "collection_title": ""
+          }
+        },
+        "collection_pip9Fw": {
+          "type": "collection",
+          "settings": {
+            "collection": "shorts-1",
+            "collection_image": "shopify://shop_images/collection-14.jpg",
+            "collection_title": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_GawBmm",
+        "collection_k6UJWD",
+        "collection_Dh49Wa",
+        "collection_qag64J",
+        "collection_Kk8pDP",
+        "collection_ACrmpU",
+        "collection_zpFtkQ",
+        "collection_Lb3mRX",
+        "collection_qirikr",
+        "collection_HLUY4E",
+        "collection_dHMiiC",
+        "collection_pip9Fw"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "default",
+        "type": "selected",
+        "sort_collections": "alphabetical",
+        "image_ratio": "adapt",
+        "show_product_count": false,
+        "design": "default",
+        "text_alignment": "center",
+        "font_size": 16,
+        "items_to_show": 8,
+        "items_per_row": 4,
+        "column_gap": 30,
+        "pagination": "load_more_button",
+        "button_show_more": "Load more",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "heading",
+    "main"
+  ]
+}

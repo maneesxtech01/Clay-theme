@@ -1,0 +1,286 @@
+{% # theme-check-disable ContentForHeaderModification %}
+{%- capture content_for_query_string -%}
+  {{ content_for_header }}
+{%- endcapture -%}
+{% # theme-check-enable ContentForHeaderModification %}
+{%- assign page_url = content_for_query_string
+  | split: '"pageurl":"'
+  | last
+  | split: '"'
+  | first
+  | split: request.host
+  | last
+  | replace: '\/', '/'
+  | replace: '%20', ' '
+  | replace: '\u0026', '&'
+-%}
+{% liquid
+  assign section_st = section.settings
+  assign show_on_mobile = section_st.show_on_mobile
+  assign width = section_st.width
+  assign newsletter_heading = section_st.newsletter_heading
+  assign short_description = section_st.short_description
+  assign newsletter_email_placeholder = section_st.newsletter_email_placeholder
+  assign newsletter_button_label = section_st.newsletter_button_label
+  assign newsletter_banner = section_st.newsletter_banner
+  assign banner_width = section_st.banner_width
+  assign more_info = section_st.more_info
+  assign show = ''
+  if section_st.show != 'hide'
+    if section_st.show == 'show_homepage'
+      if request.page_type == 'index'
+        assign show = 'show_homepage'
+      else
+        assign show = ''
+      endif
+    else
+      assign show = 'show_all_page'
+    endif
+  endif
+  assign page_query_string = page_url | split: '?' | last
+%}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+{%- if show != blank -%}
+  {%- capture style -%}
+--popup-max-width: {{ width }}px;
+{%- endcapture -%}
+  <div class="section-newsletter-popup" style="display: none;">
+    <newsletter-popup
+      data-show="{{ show }}"
+      data-show-mb="{{ show_on_mobile }}"
+      data-section-id="{{ section.id }}"
+      {% if show_on_mobile != blank %}
+        class="hidden block-md"
+      {% endif %}
+    >
+      {%- if page_query_string contains 'ajax=1' -%}
+        <div
+          class="newsletter-popup popup-content flex{% if enable_rtl %} flex-row{% else %} flex-row-reverse{% endif %}"
+          style="{{ style | strip | strip_newlines }}"
+        >
+          <div class="newsletter-popup__content flex-1 relative">
+            <div class="{% if newsletter_banner != blank %}absolute-md inset-0{% endif %} overflow-y-auto custom-scrollbar p-1025-40 p-30 p-25 pt-1025-35 flex flex-column h-full w-full">
+              <div class="my-auto">
+                {%- if newsletter_heading != blank -%}
+                  <h2 class="heading-letter-spacing fs-22 newsletter-popup__heading mt-0 mb-10 lh-normal">
+                    {{ newsletter_heading }}
+                  </h2>
+                {% endif %}
+                {%- if short_description != blank -%}
+                  <div class="newsletter-popup-des mb-25 word-break rich__text-m0 lh-small">
+                    {{ short_description }}
+                  </div>
+                {% endif %}
+                {% form 'customer', class: 'newsletter-form', id: 'newsletter-form' %}
+                  <input type="hidden" name="contact[tags]" value="newsletter">
+                  <div class="section-newsletter-form">
+                    <div class="field gap-10 justify-content-center btn-large">
+                      <input
+                        id="NewsletterEmail--{{ section.id }}"
+                        type="email"
+                        name="contact[email]"
+                        class="flex-1 w-full mb-10"
+                        value="{{ form.email }}"
+                        aria-required="true"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        autocomplete="email"
+                        {% if form.errors %}
+                          autofocus
+                          aria-invalid="true"
+                          aria-describedby="Newsletter-error--{{ section.id }}"
+                        {% elsif form.posted_successfully? %}
+                          aria-describedby="Newsletter-success--{{ section.id }}"
+                        {% endif %}
+                        placeholder="{% if newsletter_email_placeholder != blank %}{{ newsletter_email_placeholder }}{% else %}{{ 'newsletter.label' | t }}{% endif %}"
+                        required
+                      >
+                      <label class="visually-hidden" for="NewsletterEmail--{{ section.id }}">
+                        {{ 'newsletter.label' | t -}}
+                      </label>
+                      <button
+                        type="submit"
+                        class="button btn-primary section-newsletter-form__button nowrap w-full"
+                        name="commit"
+                        aria-label="{{ 'subscribe.button_label' | t }}"
+                      >
+                        {% if newsletter_button_label != blank -%}
+                          {{- newsletter_button_label -}}
+                        {%- else -%}
+                          {{- 'subscribe.button_label' | t -}}
+                        {%- endif %}
+                      </button>
+                    </div>
+                    {%- if form.errors -%}
+                      <small class="visually-hidden" id="Newsletter-error--{{ section.id }}">
+                        {{- form.errors.translated_fields.email | capitalize }}
+                        {{ form.errors.messages.email -}}
+                      </small>
+                    {% endif %}
+                    {%- if form.posted_successfully? -%}
+                      <div
+                        class="visually-hidden"
+                        id="Newsletter-success--{{ section.id }}"
+                        tabindex="-1"
+                      >
+                        {{- 'newsletter.success' | t }}
+                      </div>
+                    {% endif %}
+                  </div>
+                {% endform %}
+                <div
+                  class="newsletter-popup__dont-show dont-show mt-10 fs-small pointer rich__text-mt-0 light-dark-grey lh-small"
+                  tabindex="0"
+                >
+                  {% if more_info != blank %}
+                    {{ more_info }}
+                  {% endif %}
+                  <span class="text-color hover-heading-color border-bottom inline-block mt-10">
+                    {{- 'newsletter_popup.do_not_show_again' | t -}}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% if newsletter_banner != blank %}
+            <div
+              class="newsletter-popup__banner relative hidden block-md col-w-custom"
+              style="--col-width: {{ banner_width }}%;--aspect-ratio: {{ newsletter_banner.aspect_ratio }}"
+            >
+              {%- assign image_alt = newsletter_banner.alt | default: 'banner_image' | escape -%}
+              {% render 'responsive-image',
+                type: 'other',
+                image: newsletter_banner,
+                image_alt: image_alt,
+                class: 'absolute inset-0 w-full h-full object-fit-cover'
+              %}
+            </div>
+          {% endif %}
+        </div>
+      {% endif %}
+    </newsletter-popup>
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "t:sections.newsletter_popup.name",
+  "tag": "section",
+  "class": "overlay-section overlay-newsletter",
+  "limit": 1,
+  "enabled_on": {
+    "groups": ["custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.newsletter_popup.header.heading"
+    },
+    {
+      "type": "select",
+      "id": "show",
+      "label": "t:sections.promotion-popup.settings.show.label",
+      "default": "show_homepage",
+      "options": [
+        {
+          "value": "show_homepage",
+          "label": "t:sections.promotion-popup.settings.show.show_homepage.label"
+        },
+        {
+          "value": "show_all_page",
+          "label": "t:sections.promotion-popup.settings.show.show_all_page.label"
+        },
+        {
+          "value": "hide",
+          "label": "t:sections.promotion-popup.settings.show.hide.label"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_mobile",
+      "label": "t:sections.promotion-popup.settings.show_on_mobile.label",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "width",
+      "label": "t:sections.newsletter_popup.settings.width",
+      "max": 700,
+      "min": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 670
+    },
+    {
+      "type": "header",
+      "content": "t:sections.newsletter_popup.header.content"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "t:sections.newsletter_popup.settings.heading",
+      "default": "Subscribe Our Newsletter"
+    },
+    {
+      "type": "richtext",
+      "id": "short_description",
+      "label": "t:sections.newsletter_popup.settings.short_description",
+      "default": "<p>We'll send you the occasional newsletter, with new product launches & sales, exclusive discounts and some updates from our journal. Don't worry! We not spam</p>"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_email_placeholder",
+      "label": "t:sections.newsletter_popup.settings.email_placeholder",
+      "default": "Enter your email address ..."
+    },
+    {
+      "type": "text",
+      "id": "newsletter_button_label",
+      "label": "t:sections.newsletter_popup.settings.button_label",
+      "default": "subscribe"
+    },
+    {
+      "type": "richtext",
+      "id": "more_info",
+      "label": "t:sections.newsletter_popup.settings.more_info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.newsletter_popup.header.banner_image"
+    },
+    {
+      "type": "image_picker",
+      "id": "newsletter_banner",
+      "label": "t:sections.newsletter_popup.settings.banner_image",
+      "info": "t:sections.newsletter_popup.settings.info"
+    },
+    {
+      "type": "range",
+      "id": "banner_width",
+      "label": "t:sections.newsletter_popup.settings.banner_width",
+      "max": 50,
+      "min": 20,
+      "step": 0.5,
+      "unit": "%",
+      "default": 36.5
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.newsletter_popup.name"
+    }
+  ]
+}
+{% endschema %}

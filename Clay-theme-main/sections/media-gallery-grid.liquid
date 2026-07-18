@@ -1,0 +1,75 @@
+{% liquid
+  assign theme_st = settings
+  assign product_image_ratio = theme_st.product_image_ratio
+  assign product_custom_ratio = theme_st.product_custom_ratio
+  assign images = product.media
+%}
+<div>
+  {% for image in images %}
+    {% liquid
+      assign ratio = ''
+      if product_image_ratio != 'adapt'
+        case product_image_ratio
+          when 'square'
+            assign ratio = '1/1'
+          when 'landscape'
+            assign ratio = '4/3'
+          when 'portrait'
+            assign ratio = '3/4'
+          else
+            if product_custom_ratio != empty
+              assign ratio = product_custom_ratio | replace: ':', '/'
+            else
+              assign ratio = '3/4'
+            endif
+        endcase
+      else
+        if image.preview_image != blank
+          assign ratio = image.preview_image.aspect_ratio
+        else
+          assign ratio = '3/4'
+        endif
+      endif
+    %}
+    <a
+      href="{{ image.preview_image | image_url }}"
+      class="media-gallery__image rounded-5"
+      data-position="{{ image.position }}"
+      data-pswp-width="{{ image.preview_image.width }}"
+      data-pswp-height="{{ image.preview_image.height }}"
+      data-cropped="true"
+      style="--aspect-ratio: {{ ratio }}"
+      data-alt="{{ image.alt }}"
+      data-media="{{ image.id }}"
+    >
+      {%- assign image_alt = image.alt | default: 'product' | escape -%}
+      {% render 'responsive-image', type: 'product', image: image.preview_image, image_alt: image_alt %}
+    </a>
+    <div
+      class="media-gallery__image rounded-5"
+      data-position="{{ image.position }}"
+      style="--aspect-ratio: {{ ratio }}"
+      data-pane-container
+      data-alt="{{ image.alt }}"
+      data-media="{{ image.id }}"
+    >
+      {%- assign image_alt = image.alt | default: 'product' | escape -%}
+      {% render 'responsive-image',
+        type: 'product',
+        image: image.preview_image,
+        image_alt: image_alt,
+        class: 'drift-trigger'
+      %}
+    </div>
+    <div
+      class="media-gallery__image rounded-5"
+      data-position="{{ image.position }}"
+      data-media="{{ image.id }}"
+      data-alt="{{ image.alt }}"
+      style="--aspect-ratio: {{ ratio }}"
+    >
+      {%- assign image_alt = image.alt | default: 'product' | escape -%}
+      {% render 'responsive-image', type: 'product', image: image.preview_image, image_alt: image_alt %}
+    </div>
+  {% endfor %}
+</div>

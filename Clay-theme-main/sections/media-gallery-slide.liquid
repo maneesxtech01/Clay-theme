@@ -1,0 +1,116 @@
+{% liquid
+  assign theme_st = settings
+  assign product_image_ratio = theme_st.product_image_ratio
+  assign product_custom_ratio = theme_st.product_custom_ratio
+  assign images = product.media
+  assign image_list = ''
+  assign filtered_images = ''
+%}
+{% for image in images %}
+  {% if image.alt == 'image-360' and image.media_type == 'image' %}
+    {% capture filtered_images %}{{ filtered_images }}{{ image.preview_image | image_url }},{% endcapture %}
+  {% endif %}
+{% endfor %}
+{% assign filtered_images = filtered_images | split: ',' | compact %}
+{% for image in filtered_images %}
+  {% capture image_json %}"{{ image }}"{%- unless forloop.last -%},{%- endunless -%}{% endcapture %}
+  {% capture image_list %}{{ image_list }}{{ image_json }}{% endcapture %}
+{% endfor %}
+{% comment %} Case product has more than one media {% endcomment %}
+<slide-with-thumbs
+  data-section-id="{{ section.id }}"
+  data-effect="slide"
+  data-speed="500"
+  data-mobile="1"
+  data-tablet="1"
+  data-desktop="1"
+  data-thumb-direction="horizontal"
+  data-thumb-slides-per-view="4"
+>
+  <div class="media-main-swiper bls-image-js">
+    <div class="swiper-wrapper-preview swiper">
+      <div class="swiper-wrapper"></div>
+      {%- render 'swiper-navigation', class: 'main-slide__navigation' -%}
+    </div>
+  </div>
+  {% comment %} {%- render 'swiper-navigation' -%} {% endcomment %}
+</slide-with-thumbs>
+<div class="media-gallery__append bls-image-js">
+  {% for image in images %}
+    {% liquid
+      assign ratio = ''
+      if product_image_ratio != 'adapt'
+        case product_image_ratio
+          when 'square'
+            assign ratio = '1/1'
+          when 'landscape'
+            assign ratio = '4/3'
+          when 'portrait'
+            assign ratio = '3/4'
+          else
+            if product_custom_ratio != empty
+              assign ratio = product_custom_ratio | replace: ':', '/'
+            else
+              assign ratio = '3/4'
+            endif
+        endcase
+      else
+        if image.preview_image != blank
+          assign ratio = image.preview_image.aspect_ratio
+        else
+          assign ratio = '3/4'
+        endif
+      endif
+    %}
+    <a
+      href="{{ image.preview_image | image_url }}"
+      class="swiper-slide media-gallery__image rounded-5"
+      data-position="{{ image.position }}"
+      data-pswp-width="{{ image.preview_image.width }}"
+      data-pswp-height="{{ image.preview_image.height }}"
+      data-cropped="true"
+      style="--aspect-ratio: {{ ratio }}"
+      data-alt="{{ image.alt }}"
+      data-media="{{ image.id }}"
+    >
+      {%- assign image_alt = image.alt | default: 'product' | escape -%}
+      {% render 'responsive-image', type: 'product', image: image.preview_image, image_alt: image_alt %}
+    </a>
+    <div
+      class="swiper-slide media-gallery__image rounded-5"
+      data-position="{{ image.position }}"
+      style="--aspect-ratio: {{ ratio }}"
+      data-pane-container
+      data-alt="{{ image.alt }}"
+      data-media="{{ image.id }}"
+    >
+      {%- assign image_alt = image.alt | default: 'product' | escape -%}
+      {% render 'responsive-image',
+        type: 'product',
+        image: image.preview_image,
+        image_alt: image_alt,
+        class: 'drift-trigger'
+      %}
+    </div>
+    <div
+      class="swiper-slide media-gallery__image rounded-5"
+      data-position="{{ image.position }}"
+      data-media="{{ image.id }}"
+      data-alt="{{ image.alt }}"
+      style="--aspect-ratio: {{ ratio }}"
+    >
+      {%- assign image_alt = image.alt | default: 'product' | escape -%}
+      {% render 'responsive-image', type: 'product', image: image.preview_image, image_alt: image_alt %}
+    </div>
+  {% endfor %}
+  <div class="media-thumb-swiper bls-image-js">
+    <div
+      class="thumbnail-slide swiper swiper-thumbnail-slide"
+    >
+      <div class="swiper-wrapper"></div>
+    </div>
+    <div
+      class="swiper-pagination hidden-md"
+    ></div>
+  </div>
+</div>

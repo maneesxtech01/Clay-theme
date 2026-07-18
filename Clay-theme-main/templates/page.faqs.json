@@ -1,0 +1,229 @@
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin theme editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
+{
+  "sections": {
+    "page-heading": {
+      "type": "page-heading",
+      "blocks": {
+        "breadcrumb_kg6gTP": {
+          "type": "breadcrumb",
+          "settings": {
+          }
+        },
+        "heading_fmyy8C": {
+          "type": "heading",
+          "settings": {
+            "page_title": "Help Center",
+            "header_size": "default"
+          }
+        },
+        "description_TfxHmk": {
+          "type": "description",
+          "settings": {
+            "description": "<p>Please use the below form. You can also call customer service on +1 (973) 435-3638.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "breadcrumb_kg6gTP",
+        "heading_fmyy8C",
+        "description_TfxHmk"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "alignment": "center",
+        "overlay_opacity": 0,
+        "height": "adapt",
+        "padding_top": 40,
+        "padding_bottom": 0
+      }
+    },
+    "main": {
+      "type": "page-faqs",
+      "blocks": {
+        "title_fipewL": {
+          "type": "title",
+          "settings": {
+            "title": "Shopping Information"
+          }
+        },
+        "faq_ThHtgk": {
+          "type": "faq",
+          "settings": {
+            "question": "Pellentesque habitant morbi tristique senectus et netus?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.<\/p>"
+          }
+        },
+        "faq_Gicg7X": {
+          "type": "faq",
+          "settings": {
+            "question": "How much is shipping and how long will it take?",
+            "answer": "<p>The perfect way to enjoy brewing tea on low hanging fruit to identify. Duis autem vel eum iriure dolor in hendrerit vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis. For me, the most important part of improving at photography has been sharing it. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.<\/p>"
+          }
+        },
+        "faq_836jPJ": {
+          "type": "faq",
+          "settings": {
+            "question": "How long will it take to get my package?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.<\/p>"
+          }
+        },
+        "faq_ia7ibM": {
+          "type": "faq",
+          "settings": {
+            "question": "Branding is simply a more efficient way to sell things?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.<\/p>"
+          }
+        },
+        "title_gbHw88": {
+          "type": "title",
+          "settings": {
+            "title": "Payment Information"
+          }
+        },
+        "faq_fFdf33": {
+          "type": "faq",
+          "settings": {
+            "question": "Pellentesque habitant morbi tristique senectus et netus?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.<\/p>"
+          }
+        },
+        "faq_7zgeNX": {
+          "type": "faq",
+          "settings": {
+            "question": "How much is shipping and how long will it take?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.<\/p>"
+          }
+        },
+        "faq_9x46hk": {
+          "type": "faq",
+          "settings": {
+            "question": "How long will it take to get my package?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.<\/p>"
+          }
+        },
+        "faq_3CHFF7": {
+          "type": "faq",
+          "settings": {
+            "question": "Branding is simply a more efficient way to sell things?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.<\/p>"
+          }
+        },
+        "title_bqPdEf": {
+          "type": "title",
+          "settings": {
+            "title": "Order & Returns"
+          }
+        },
+        "faq_Yk6NFT": {
+          "type": "faq",
+          "settings": {
+            "question": "Pellentesque habitant morbi tristique senectus et netus?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.<\/p>"
+          }
+        },
+        "faq_4M7pba": {
+          "type": "faq",
+          "settings": {
+            "question": "How much is shipping and how long will it take?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.<\/p>"
+          }
+        },
+        "faq_kAVH4d": {
+          "type": "faq",
+          "settings": {
+            "question": "How long will it take to get my package?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.<\/p>"
+          }
+        },
+        "faq_YnHLzc": {
+          "type": "faq",
+          "settings": {
+            "question": "Branding is simply a more efficient way to sell things?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.<\/p>"
+          }
+        },
+        "title_WyfxtT": {
+          "type": "title",
+          "settings": {
+            "title": "Ordering from Umino"
+          }
+        },
+        "faq_ihTetD": {
+          "type": "faq",
+          "settings": {
+            "question": "Pellentesque habitant morbi tristique senectus et netus?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.<\/p>"
+          }
+        },
+        "faq_efgqCe": {
+          "type": "faq",
+          "settings": {
+            "question": "How much is shipping and how long will it take?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.<\/p>"
+          }
+        },
+        "faq_L3TytR": {
+          "type": "faq",
+          "settings": {
+            "question": "How long will it take to get my package?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.<\/p>"
+          }
+        },
+        "faq_YHU93w": {
+          "type": "faq",
+          "settings": {
+            "question": "Branding is simply a more efficient way to sell things?",
+            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "title_fipewL",
+        "faq_ThHtgk",
+        "faq_Gicg7X",
+        "faq_836jPJ",
+        "faq_ia7ibM",
+        "title_gbHw88",
+        "faq_fFdf33",
+        "faq_7zgeNX",
+        "faq_9x46hk",
+        "faq_3CHFF7",
+        "title_bqPdEf",
+        "faq_Yk6NFT",
+        "faq_4M7pba",
+        "faq_kAVH4d",
+        "faq_YnHLzc",
+        "title_WyfxtT",
+        "faq_ihTetD",
+        "faq_efgqCe",
+        "faq_L3TytR",
+        "faq_YHU93w"
+      ],
+      "settings": {
+        "heading": "Contact Us",
+        "description": "<p>If you have an issue or question that requires immediate assistance, you can click the button below to chat live with a Customer Service representative.<\/p><p>Please allow 3 - 5 business days from the time your package arrives back to us for a refund to be issued. <\/p>",
+        "first_button_label": "Contact Us",
+        "first_button_link": "shopify:\/\/pages\/contact",
+        "first_button_type": "outline",
+        "second_button_label": "About us",
+        "second_button_link": "shopify:\/\/pages\/about",
+        "second_button_type": "primary",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "page-heading",
+    "main"
+  ]
+}

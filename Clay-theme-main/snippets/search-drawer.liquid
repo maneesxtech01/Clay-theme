@@ -1,0 +1,181 @@
+{%- liquid
+  assign theme_st = settings
+  assign show_search_price = theme_st.show_search_price
+  assign search_type = theme_st.search_type
+  assign popular_key_word = theme_st.popular_key_word
+  assign enable_search_suggestion = theme_st.enable_search_suggestion
+  assign search_terms = search.terms
+  assign key_terms = search_terms
+  assign collection_suggestion = theme_st.collection_suggestion
+  assign search_result = theme_st.search_result
+  if search_terms contains 'product_type:'
+    assign arr_terms = search_terms | remove: 'product_type:' | split: ' AND '
+    assign product_type = arr_terms[0] | strip
+    assign search_terms = arr_terms[1] | strip
+    if search_terms == blank
+      assign key_terms = key_terms | remove: ' AND '
+      assign search_terms = product_type
+    endif
+  endif
+-%}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+{%- style -%}
+  .search_type_drawer .product-item__wrapper{
+    --col-gap: 1.5rem;
+    --col-width: 8rem;
+    {% if settings.rounded_corner > 5 %}
+    --rounded-radius: 5px;
+    {% endif %}
+  }
+  .search_type_drawer .product-item:not(:last-child){
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 2rem;
+    margin-bottom: 2rem;
+  }
+{%- endstyle -%}
+<div class="search___drawer search___drawer-right flex flex-column h-full">
+  <div class="sticky top-0 pb-30">
+    <div class="mini_search_header py-18 flex justify-between border-bottom px-30 py-18">
+      <h3 class="search-title h5 m-0">{{ 'templates.search.title' | t }}</h3>
+      <button
+        class="btn-reset btn-search-close button-close pointer hover-svg-zoom "
+        aria-label="{{ 'general.search.search' | t }}"
+      >
+        <svg width="13" height="13" viewBox="0 0 13 13" fill="none" class="transition">
+          <use href="#icon-close" />
+        </svg>
+      </button>
+    </div>
+    <form
+      action="{{ routes.search_url }}"
+      id="search_mini_form"
+      method="get"
+      role="search"
+      class="search search-modal__form px-30 pt-30"
+    >
+      <div class="field flex relative btn-rounded">
+        <input
+          class="search__input field__input flex-1"
+          type="search"
+          name="q"
+          id="search-template"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ 'general.search.search' | t }}"
+          maxlength="128"
+          role="combobox"
+          aria-expanded="false"
+          aria-owns="predictive-search-results"
+          aria-controls="predictive-search-results"
+          aria-haspopup="listbox"
+          aria-autocomplete="list"
+          autocorrect="off"
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+          style="--input-padding: 1rem 4.5rem 1rem 2rem;"
+        >
+        <label class="field__label visually-hidden" for="search-template">
+          {{- 'general.search.search' | t -}}
+        </label>
+        <input type="hidden" name="options[unavailable_products]" value="last">
+        <input type="hidden" name="options[prefix]" value="last">
+        <input type="hidden" name="options[fields]" value="title,vendor,product_type,variants.title">
+        <input type="hidden" name="type" value="{{ search_result }}">
+        <span class="loading-icon absolute inline-flex align-center inset-y-0 invisible{% if enable_rtl %} left-50{% else %} right-50{% endif %}">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin">
+            <use href="#icon-load"></use>
+          </svg>
+        </span>
+        <button
+          class="search__button field__button header-color btn-reset w-44 ps-15 pe-10 inline-flex align-center absolute right-10 inset-y-0 pointer"
+          aria-label="{{ 'general.search.search' | t }}"
+        >
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="currentColor">
+            <use href="#icon-search" />
+          </svg>
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="search-modal__content flex-1 overflow-y-auto custom-scrollbar pb-30">
+    {%- if enable_search_suggestion and popular_key_word != blank -%}
+      {%- capture link_quick_search -%}
+          {{ routes.search_url }}?type=product&options%5Bfields%5D=title,tag,vendor,product_type,variants.title,variants.sku&options%5Bunavailable_products%5D=last&options%5Bprefix%5D=last&q=
+        {%- endcapture -%}
+      <div id="quick-search" class="quick-search px-30 mb-30">
+        <h3 class="quick-search-title h5 m-0">{{ 'general.search.quick_search' | t }}</h3>
+        <ul class="quick-search-list mt-15 list-unstyled flex flex-wrap gap-10">
+          {%- assign popular_key_word = popular_key_word | replace: ' ,', ',' | replace: ', ', ',' | split: ',' -%}
+          {%- for qr in popular_key_word -%}
+            {%- assign quick_text = qr | strip -%}
+            {%- if quick_text -%}
+              <li>
+                <a
+                  class="quick-url btn-rounded no-underline lh-normal px-20 py-8 border hover-heading-color hover-grey-bg inline-block"
+                  href="{{ link_quick_search }}{{ quick_text }}"
+                  aria-label="{{ quick_text }}"
+                >
+                  {{ quick_text }}
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+    <div id="predictive-search" class="predictive-search--header px-30">
+      <div class="predictive-search" data-predictive-search>
+        {%- if enable_search_suggestion and collection_suggestion -%}
+          {%- assign collection = collections[collection_suggestion] -%}
+          {%- if collection.products.size > 0 -%}
+            <div class="search-suggest search-list-item">
+              <h5 class="mb-15 mt-0">
+                {{ 'general.search.popular_products' | t }}
+              </h5>
+              <div id="search-results">
+                <div class="search__grid {{ product_style }}" style="--rounded-radius: 5px;">
+                  <div
+                    id="search-results-list"
+                    class="search-results-list {% if search_type == 'default' or search_type == 'popup' %} grid grid-cols{% endif %}"
+                    style="{% if search_type == 'default' or search_type == 'popup' %}--col-number: 1;--col-tablet: 1;--col-desktop-small:3;--col-desktop: 5;{% endif %}"
+                  >
+                    {%- for product in collection.products limit: 5 -%}
+                      {% render 'product-item',
+                        card_product: product,
+                        section_id: section.id,
+                        template_enable_action: false,
+                        template_enable_product_vendor: false,
+                        template_enable_rate: true,
+                        template_enable_price: show_search_price,
+                        template_enable_product_short_description: false,
+                        template_enable_color_swatches: false,
+                        type: 'list',
+                        sizes: '80px'
+                      %}
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+  
+      </div>
+      <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+    </div>
+    <div class="search__loading-state mt-15 ">
+        {%- render 'skeleton' -%}   
+    </div>
+  </div>
+</div>

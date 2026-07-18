@@ -1,0 +1,156 @@
+{% # theme-check-disable ContentForHeaderModification %}
+{%- capture content_for_query_string -%}
+  {{ content_for_header }}
+{%- endcapture -%}
+{% # theme-check-enable ContentForHeaderModification %}
+{%- assign page_url = content_for_query_string
+  | split: '"pageurl":"'
+  | last
+  | split: '"'
+  | first
+  | split: request.host
+  | last
+  | replace: '\/', '/'
+  | replace: '%20', ' '
+  | replace: '\u0026', '&'
+-%}
+{%- assign page_query_string = page_url | split: '?' | last -%}
+{%- liquid
+  assign theme_st = settings
+  assign search_type = theme_st.search_type
+  assign show_search_price = theme_st.show_search_price
+  assign product_style = theme_st.product_style
+  assign popular_key_word = theme_st.popular_key_word
+  assign search_terms = search.terms
+  assign key_terms = search_terms
+  assign enable_search_suggestion = theme_st.enable_search_suggestion
+  assign collection_suggestion = theme_st.collection_suggestion
+  if search_terms contains 'product_type:'
+    assign arr_terms = search_terms | remove: 'product_type:' | split: ' AND '
+    assign product_type = arr_terms[0] | strip
+    assign search_terms = arr_terms[1] | strip
+    if search_terms == blank
+      assign key_terms = key_terms | remove: ' AND '
+      assign search_terms = product_type
+    endif
+  endif
+  if page_query_string contains 'ajax=1' and page_query_string contains 'type=default'
+    assign search_type = 'default'
+  elsif page_query_string contains 'ajax=1' and page_query_string contains 'type=popup'
+    assign search_type = 'popup'
+  endif
+-%}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+{{ 'search-type-default.css' | asset_url | stylesheet_tag }}
+<header-search class="header_search search_type_{{ search_type }}">
+  <div class="block block-quick-search block-search predictive_search_suggest search_{{ search_type }}{% if search_type == 'default' %} search-type-default me-md-10{% endif %}">
+    {%- if search_type == 'default' -%}
+      <div class="block-search-full search-layout-form">
+        <div class="popup-search popup-search-form  fixed z-1 color-default inset-x-0 invisible {% if enable_search_suggestion == blank and popular_key_word == blank and enable_search_suggestion == blank and collection_suggestion == blank %} search-not-sugges search-hidden{% endif %}">
+          <div class="content-search-form border-top py-60 px-sm-15 overflow-y-auto">
+            <div class="fluid_container">
+              {%- if enable_search_suggestion and popular_key_word != blank -%}
+                {%- capture link_quick_search -%}
+                  {{ routes.search_url }}?type=product&options%5Bfields%5D=title,tag,vendor,product_type,variants.title,variants.sku&options%5Bunavailable_products%5D=last&options%5Bprefix%5D=last&q=
+                {%- endcapture -%}
+                <div id="quick-search" class="quick-search">
+                  <h3 class="quick-search-title h5 m-0">{{ 'general.search.quick_search' | t }}</h3>
+                  <ul class="quick-search-list mt-15 list-unstyled flex flex-wrap gap-10">
+                    {%- assign popular_key_word = popular_key_word
+                      | replace: ' ,', ','
+                      | replace: ', ', ','
+                      | split: ','
+                    -%}
+                    {%- for qr in popular_key_word -%}
+                      {%- assign quick_text = qr | strip -%}
+                      {%- if quick_text -%}
+                        <li>
+                          <a
+                            class="quick-url btn-rounded no-underline lh-normal px-20 py-8 border hover-heading-color hover-grey-bg inline-block"
+                            href="{{ link_quick_search }}{{ quick_text }}"
+                            aria-label="{{ quick_text }}"
+                          >
+                            {{ quick_text }}
+                          </a>
+                        </li>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              {%- endif -%}
+              <div id="predictive-search" class="predictive-search--header">
+                <div class="predictive-search" data-predictive-search>
+                  {%- if enable_search_suggestion and collection_suggestion -%}
+                    {%- assign collection = collections[collection_suggestion] -%}
+                    {%- if collection.products.size > 0 -%}
+                      <div class="search-suggest search-list-item mt-25 {% if collection.products.size > 0 %} collection-suggest {% endif %}" >
+                        <span class="h5 m-0">
+                          {{ 'general.search.popular_products' | t }}
+                        </span>
+                        <div id="search-results">
+                          <div class="search__grid mt-15 {{ product_style }}">
+                            <div
+                              id="search-results-list"
+                              class="search-results-list{% if search_type == 'default' or search_type == 'popup' %} grid grid-cols gap-15 gap-lg-20{% endif %}"
+                              style="{% if search_type == 'default' or search_type == 'popup' %}--col-number: 1;--col-tablet: 1;--col-desktop-small:3;--col-desktop: 5;{% endif %}"
+                            >
+                              {%- assign sizes = '(min-width: 1200px) calc((1200px -  30px * 3) * 0.2), (min-width: 768px) calc( (100vw - 30px - 30px * 2 ) * 0.33), 80px' -%}
+                              {%- for product in collection.products limit: 5 -%}
+                                {% render 'product-item',
+                                  card_product: product,
+                                  section_id: section.id,
+                                  template_enable_action: false,
+                                  template_enable_product_vendor: false,
+                                  template_enable_rate: true,
+                                  template_enable_price: show_search_price,
+                                  template_enable_product_short_description: false,
+                                  template_enable_color_swatches: false,
+                                  type: 'normal',
+                                  sizes: sizes
+                                %}
+                              {%- endfor -%}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    {%- endif -%}
+                  {%- endif -%}
+                </div>
+                <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+              </div>
+              <div class="search__loading-state mt-15 ">
+                  {%- render 'skeleton', type: 'popup' -%}              
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {%- else -%}
+      <div
+        id="search-form"
+        class="search__type-{{ search_type }} {% if search_type == 'default' %} transition-popup absolute right-0{% elsif search_type == 'popup' %} bls__drawer  top{% if enable_rtl %} left right-0{% else %} right left-0{% endif %}{% else %} bls__drawer transition-popup {% if enable_rtl %} right left-0{% else %} left right-0{% endif %}{% endif %} color-default fixed w-full z-16 inset-y-0 h-full "
+      >
+        {%- case search_type -%}
+          {%- when 'popup' -%}
+            {%- render 'search-popup', mobile: true -%}
+          {%- when 'drawer' -%}
+            {%- render 'search-drawer' -%}
+        {%- endcase -%}
+      </div>
+    {%- endif -%}
+  </div>
+</header-search>
+<div class="overlay_search">
+
+</div>

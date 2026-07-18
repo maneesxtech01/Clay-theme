@@ -1,0 +1,309 @@
+{%- liquid
+  assign section_st = section.settings
+  assign title = section_st.title_categories
+-%}
+  <div class="verticalmenu-mobile vertical-menu fixed color-default hidden block-1025 " data-title="{{ title }}">
+    <div
+      class="navigation vertical"
+      {% comment %} data-action-mobile="{{ section_st.redirect_to_link }}" {% endcomment %}
+      {% comment %} style="--hot-cl: {{ section_st.label_color_hot }};--hot-bg-cl: {{ section_st.label_background_hot }};--new-cl: {{ section_st.label_color_new }};--new-bg-cl: {{ section_st.label_background_new }};--sale-cl: {{ section_st.label_color_sale }};;--sale-bg-cl: {{ section_st.label_background_sale }};" {% endcomment %}
+    >
+      <div class="mobile-menu-content reset-color-on-menu">
+        <div class="title-menu-dropdown h-44 w-full inline-flex-1025 align-center hidden" style="--color-background: {{ section_st.background_categories }}">
+         <div class="toggle-vertical inline-flex pointer align-center gap-10">
+          <svg width="18" height="13" viewBox="0 0 18 13" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1.5 7.5C1.26562 7.5 1.0638 7.42188 0.894531 7.26562C0.738281 7.09635 0.660156 6.89453 0.660156 6.66016C0.660156 6.4388 0.738281 6.25 0.894531 6.09375C1.0638 5.92448 1.26562 5.83984 1.5 5.83984H16.5C16.7344 5.83984 16.9297 5.92448 17.0859 6.09375C17.2552 6.25 17.3398 6.4388 17.3398 6.66016C17.3398 6.89453 17.2552 7.09635 17.0859 7.26562C16.9297 7.42188 16.7344 7.5 16.5 7.5H1.5ZM1.5 2.5C1.26562 2.5 1.0638 2.42188 0.894531 2.26562C0.738281 2.09635 0.660156 1.89453 0.660156 1.66016C0.660156 1.4388 0.738281 1.25 0.894531 1.09375C1.0638 0.924479 1.26562 0.839844 1.5 0.839844H16.5C16.7344 0.839844 16.9297 0.924479 17.0859 1.09375C17.2552 1.25 17.3398 1.4388 17.3398 1.66016C17.3398 1.89453 17.2552 2.09635 17.0859 2.26562C16.9297 2.42188 16.7344 2.5 16.5 2.5H1.5ZM1.5 12.5C1.26562 12.5 1.0638 12.4219 0.894531 12.2656C0.738281 12.0964 0.660156 11.8945 0.660156 11.6602C0.660156 11.4388 0.738281 11.25 0.894531 11.0938C1.0638 10.9245 1.26562 10.8398 1.5 10.8398H16.5C16.7344 10.8398 16.9297 10.9245 17.0859 11.0938C17.2552 11.25 17.3398 11.4388 17.3398 11.6602C17.3398 11.8945 17.2552 12.0964 17.0859 12.2656C16.9297 12.4219 16.7344 12.5 16.5 12.5H1.5Z" fill="currentColor"/>
+            </svg>
+          <span>{{ title | default: 'Product categories' }}</span>
+         </div>
+        </div>
+        <div class="verticalmenu-html">
+          <ul class="list-none verticalmenu-list">
+            {%- for link in section_st.categories_menu.links -%}
+              {%- liquid
+                assign last_block = null
+                assign link_title_checked = link.title | downcase
+                for block in section.blocks
+                  assign text = block.settings.text | downcase
+                  if text == link_title_checked
+                    assign last_block = block
+                  endif
+                endfor
+                assign link_title = link.title
+                assign has_icon = false
+                assign icon_html = ''
+                for i in (1..10)
+                  assign icon_placeholder = '[icon_' | append: i | append: ']'
+                  assign icon_setting = 'icon_' | append: i
+                  if link_title contains icon_placeholder and section_st[icon_setting] != blank
+                    assign has_icon = true
+                    assign icon_html = section_st[icon_setting]
+                    assign link_title = link.title | replace: icon_placeholder, ''
+                  endif
+                endfor
+              -%}
+              {% if last_block != null %}
+                {%- liquid
+                  assign block_st = last_block.settings
+                  assign has_content = false
+                  assign mega_custom_width = block_st.mega_custom_width
+                -%}
+                {%- case last_block.type -%}
+                  {%- when 'menu_promotion' -%}
+                    {%- liquid
+                      if block_st.promotion_image_1 != blank
+                        assign has_content = true
+                      endif
+                    -%}
+                  {% else %}
+                    {%- liquid
+                      if block_st.product_1 != blank
+                        assign has_content = true
+                      endif
+                    -%}
+                {%- endcase -%}
+                {%- capture menu_level_0 -%}
+                  <menu-item class="menu-item__first relative static-1025 flex align-center flex-1">
+                    <a class="no-underline flex align-center nav-link" href="{{ link.url }}">
+                      {% if has_icon %}
+                        {{ icon_html }}
+                      {% else %}
+                        <span class="menu-icon-first-letter flex-1 text-center">
+                          {{ link_title | strip | first | upcase }}
+                        </span>
+                      {% endif %}
+                      <span class="menu-text inline-flex">{{ link_title }}</span>  
+                    </a>
+                    {%- if link.links.size > 0 -%}
+                      <open-children-toggle class="inline-flex flex-end align-center pointer ms-5{% if section_st.redirect_to_link == blank %} absolute inset-0 static-1025{% else %} touch-target-mb{% endif %}">
+                        <svg class="icon-down hidden block-1025 no-hidden" width="12" height="8">
+                          <use href="#icon-next"></use>
+                        </svg>
+                      </open-children-toggle>
+                    {%- endif -%}
+                  </menu-item>
+                {%- endcapture -%}
+                <li
+                  {{ block.shopify_attributes }}
+                  class="level0 relative{% if link.links.size or has_content %} menu-parent menu-parent__vertical mega-menu{% else %} single{% endif %}"
+                  {{ block.shopify_attributes }}
+                >
+                  {{ menu_level_0 }}
+                  {%- if link.links.size > 0 or has_content -%}
+                    <div
+                      class="custom-scrollbar submenu submenu-vertical__mega invisible-1025 absolute gradient p-0 py-1025-40 mega-menu-custom-width overflow-x-hidden"
+                      style="--mega_custom_width: {{ mega_custom_width }}px"
+                    >
+                      <div class="hidden-1025 grey-bg px-30 border-bottom flex gap-15 align-center justify-between{% if theme_st.menu_font == 'heading_font' %} heading-style{% endif %}">
+                        <back-menu
+                          class="py-10 min-h-55 min-h-1025-50 inline-flex gap-20 align-center fs-big-1 heading-style"
+                          role="link"
+                        >
+                          {% if enable_rtl %}
+                            <svg width="6" height="11" fill="none">
+                              <use href="#icon-next" />
+                            </svg>
+                          {% else %}
+                            <svg width="6" height="11" fill="none">
+                              <use href="#icon-back" />
+                            </svg>
+                          {% endif %}
+                          <div class="flex align-center gap-10">
+                            {% if has_icon %}
+                              {{ icon_html }}
+                            {% endif %}
+                            <span>
+                              {{ link_title }}
+                            </span>
+                          </div>
+                        </back-menu>
+                        <close-menu class="close-menu lh-1 ms-10">
+                          <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                            <use href="#icon-close" />
+                          </svg>
+                        </close-menu>
+                      </div>
+                      <div class="{% if full_width %}{% if section_width == 'container' %}container{% else %}fluid_container{% endif %}{% else %}stretch_width{% endif %}">
+                        {%- case last_block.type -%}
+                          {%- when 'menu_promotion' -%}
+                            {% assign banner_count = 0 %}
+                            {%- if block_st.promotion_image_1 != blank -%}
+                              {% assign banner_count = banner_count | plus: 1 %}
+                            {%- endif -%}
+                            <div
+                              class="vertical-block__promotion promotion-{{ block_st.promotion_style }} flex flex-column gap{% if block_st.promotion_style == 'horizontal' %}{% if block_st.promotion_position == "left" %} flex-1025-row-reverse{% else %} flex-1025-row{% endif %}{% endif %}"
+                              style="--col-mega-width: {% if block_st.promotion_style == 'horizontal' %}{{ block_st.promotion_image_width }}{% else %}0{% endif %}%; --col-gap: 30px"
+                            >
+                              {% if link.links.size > 0 %}
+                                <div
+                                  class="menu-list"
+                                  style="--row-gap: 40px; --col-desktop:{{ block_st.promotion_menu_column }};"
+                                >
+                                  {%- render 'submenu-list' , link: link -%}
+                                </div>
+                              {% endif %}
+                              {%- if block_st.promotion_image_1 != blank or block_st.promotion_image_2 != blank -%}
+                                <div class="col-mega">
+                                  <div  
+                                    class="grid grid-cols gap-20 px-30 px-1025-0 {{ settings.hover_effect }}"
+                                    style="--col-number: {{ banner_count }}"
+                                  >
+                                    {%- if block_st.promotion_image_1 != blank -%}
+                                      {%- assign banner_alt = block_st.promotion_image_1.alt
+                                        | default: link.title
+                                        | escape
+                                      -%}
+                                      <a
+                                        {% if block_st.promotion_link_1 == blank %}
+                                          role="link" aria-disabled="true"
+                                        {% else %}
+                                          aria-label="{{ link.title }}" href="{{ block_st.promotion_link_1 }}"
+                                        {% endif %}
+                                        {% if block_st.promotion_link_newtab_1 != blank %}
+                                          target="_blank"
+                                        {% endif %}
+                                        class="rounded"
+                                        style="--aspect-ratio: {{ block_st.promotion_image_1.aspect_ratio}}"
+                                      >
+                                        {% render 'responsive-image',
+                                          type: banner,
+                                          container: section_width,
+                                          image: block_st.promotion_image_1,
+                                          image_alt: banner_alt,
+                                          colunm: colunm,
+                                          colunm_mobile: colunm_mobile,
+                                          padding: 20,
+                                          sizes: '(min-width: 1200px) 450px, 360px',
+                                          class: 'rounded'
+                                        %}
+                                      </a>
+                                    {%- endif -%}
+                                  </div>
+                                </div>
+                              {%- endif -%}
+                            </div>
+                          {% else %}
+                            {% assign product_count = 0 %}
+                            {%- liquid
+                              if block_st.product_1 != blank
+                                assign product_count = product_count | plus: 1
+                              endif
+                            -%}
+                            <div
+                              class="flex flex-column gap-30 flex-1025-row vertical-block__product"
+                              style="--col-mega-width: {{ block_st.product_width }}%"
+                            >
+                              {% if link.links.size > 0 %}
+                                <div
+                                  class="menu-list"
+                                  style="--row-gap: 40px; --col-desktop:{{ block_st.product_menu_column }};"
+                                >
+                                  {%- render 'submenu-list' | link: link -%}
+                                </div>
+                              {% endif %}
+                              {%- if product_count > 0 -%}
+                                <div class="col-mega">
+                                  <div
+                                    class="grid grid-cols gap-20 px-30 px-1025-0"
+                                    style="--col-number: {{ product_count }}"
+                                  >
+                                    <span class="menu-title-product title-child__menu menu_item-link no-underline heading-style py-10 py-1025-5 min-h-55 min-h-1025-unset inline-flex align-center">
+                                      {{ block_st.product_title }}
+                                    </span>
+                                    {% render 'product-item',
+                                      card_product: block_st.product_1,
+                                      template_enable_product_vendor: false,
+                                      template_enable_rate: true,
+                                      template_enable_product_short_description: false,
+                                      template_enable_color_swatches: true,
+                                      type: 'grid',
+                                      template_enable_action: true,
+                                      template_enable_product_badges: true,
+                                      template_enable_price: true
+                                    %}
+                                  </div>
+                                </div>
+                              {%- endif -%}
+                          </div>
+
+                        {%- endcase -%}
+                      </div>
+                    </div>
+                  {%- endif -%}
+                </li>
+              {% else %}
+                {% liquid
+                  assign has_children = false
+                  for child_link in link.links
+                    if child_link.links.size > 0
+                      assign has_children = true
+                    endif
+                  endfor
+                %}
+                <li
+                  {{ block.shopify_attributes }}
+                  class="{% if has_children == false %}no-submenu__child {% endif %}level0{% if link.links.size %} menu-parent menu-parent__vertical dropdown-vertical{% else %} single{% endif %}"
+                  {{ block.shopify_attributes }}
+                >
+                  <menu-item class="menu-item__first relative static-1025 flex align-center flex-1">
+                    <a class="no-underline flex align-center nav-link" href="{{ link.url }}">
+                      {% if has_icon %}
+                        {{ icon_html }}
+                      {% else %}
+                        <span class="menu-icon-first-letter flex-1 text-center">
+                          {{ link_title | strip | first | upcase }}
+                        </span>
+                      {% endif %}
+                      <span class="menu-text inline-flex">{{ link_title }}</span>  
+                    </a>
+                    {%- if link.links.size > 0 -%}
+                      <open-children-toggle class="inline-flex flex-end align-center ms-5{% if section_st.redirect_to_link == blank %} absolute inset-0 static-1025{% else %} touch-target-mb{% endif %}">
+                        <svg class="icon-down hidden block-1025 no-hidden" width="12" height="8">
+                          <use href="#icon-next"></use>
+                        </svg>
+                      </open-children-toggle>
+                    {%- endif -%}
+                  </menu-item>
+                  {%- if link.links.size > 0 -%}
+                    <div class="submenu submenu-vertical color-default custom-scrollbar">
+                      <div class="hidden-1025 grey-bg px-30 border-bottom flex gap-15 align-center justify-between{% if theme_st.menu_font == 'heading_font' %} heading-style{% endif %}">
+                        <back-menu
+                          class="py-10 min-h-55 min-h-1025-50 inline-flex gap-20 align-center fs-big-1 heading-style"
+                          role="link"
+                        >
+                          {% if enable_rtl %}
+                            <svg width="6" height="11" fill="none">
+                              <use href="#icon-next" />
+                            </svg>
+                          {% else %}
+                            <svg width="6" height="11" fill="none">
+                              <use href="#icon-back" />
+                            </svg>
+                          {% endif %}
+                          <div class="flex align-center gap-10">
+                            {% if has_icon %}
+                              {{ icon_html }}
+                            {% endif %}
+                            <span>
+                              {{ link_title }}
+                            </span>
+                          </div>
+                        </back-menu>
+                        <close-menu class="close-menu lh-1 ms-10">
+                          <svg width="13" height="13" viewBox="0 0 13 13" fill="none">
+                            <use href="#icon-close" />
+                          </svg>
+                        </close-menu>
+                      </div>
+                      {%- render 'submenu-list' | link: link | menu_type: 'dropdown' | type_menu: 'mega' -%}
+                    </div>
+                  {%- endif -%}
+                </li>
+              {% endif %}
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="vertical-menu-overlay hidden block-1025"></div>

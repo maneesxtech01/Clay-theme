@@ -1,0 +1,66 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "name": "t:sections.overlay_group.name",
+  "type": "custom.overlay",
+  "sections": {
+    "before_you_leave_xTQDb4": {
+      "type": "before-you-leave",
+      "settings": {
+        "show_time": 82,
+        "sub_heading": "",
+        "content_heading": "Big Save <br>\n10% Coupon!",
+        "description": "<p>Enter the code below at checkout to get <br/>10% off your first order.</p>",
+        "code": "",
+        "color_scheme": "",
+        "recommended_heading": "You may also like...",
+        "collection": "best-seller",
+        "recommended_button_label": "Continue Shopping"
+      }
+    },
+    "mobile_navigation_bar_GG8UWc": {
+      "type": "mobile-navigation-bar",
+      "blocks": {
+        "homepage_xiQ8UP": {
+          "type": "homepage",
+          "settings": {}
+        },
+        "account_6ynFFp": {
+          "type": "account",
+          "settings": {}
+        },
+        "shop_MUxUGE": {
+          "type": "shop",
+          "settings": {}
+        },
+        "wishlist_DHxNDy": {
+          "type": "wishlist",
+          "settings": {}
+        },
+        "cart_8xqQBb": {
+          "type": "cart",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "homepage_xiQ8UP",
+        "account_6ynFFp",
+        "shop_MUxUGE",
+        "wishlist_DHxNDy",
+        "cart_8xqQBb"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "before_you_leave_xTQDb4",
+    "mobile_navigation_bar_GG8UWc"
+  ]
+}

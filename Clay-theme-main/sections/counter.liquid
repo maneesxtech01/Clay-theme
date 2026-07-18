@@ -1,0 +1,580 @@
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign color_scheme = section_st.color_scheme
+  if section_st.reset_spacing
+    assign reset_spacing = ' remove_spacing'
+  endif
+  assign heading = section_st.heading
+  assign description = section_st.description
+  assign header_size = ''
+  if section_st.header_size == 'small'
+    assign header_size = 'h3'
+  elsif section_st.header_size == 'large'
+    assign header_size = 'h1-size'
+  endif
+  assign column_gap = section_st.column_gap
+  assign items_per_row = section_st.items_per_row
+  assign scroll_animation = settings.scroll_animation
+-%}
+{%- capture style -%}
+  --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};
+{%- endcapture -%}
+{%- capture col_style -%}
+--col-desktop: {{ items_per_row }};--col-number: 1;{% if items_per_row > 3 %}--col-tablet: 3;{% else %}--col-tablet: {{ items_per_row }};{% endif %}
+{% if column_gap < 15 %}--col-gap: {{ column_gap }}px;{% else %}--col-gap: 15px;--col-gap-desktop: {{  column_gap }}px;{% endif %}--repeat: {{ section.blocks.size }}; --col-mobile: 1;
+{%- endcapture -%}
+<section
+  class="section{% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} sec__counter color-{{ color_scheme }} gradient{{ reset_spacing }}"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ section_width }}">
+    {%- if heading != blank or description != blank -%}
+      <div class="section__header mb-33 mb-sm-20 text-{{ section_st.header_alignment }}{% if section_st.section_width == 'full_width' %} px-20{% endif %}{% if section_st.show_view_all != blank and section_st.header_alignment != 'center' %} flex gap-15 gap-md-30 flex-wrap justify-content-{{ section_st.header_alignment }}{% if section_st.header_alignment == 'right' %} flex-row-reverse{% endif %}{% endif %}">
+        {%- if section_st.heading != blank -%}
+          <motion-element
+                data-motion="fade-up-lg"
+                data-motion-delay="50"
+                {% if scroll_animation != 'slide_in' %}
+                  hold
+                {% endif %}
+            class="block  {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}"
+            style="
+              {%- if scroll_animation != 'none' -%}
+                --animation-order: 0;
+              {% endif %}
+            "
+          >
+          <h2
+            class="section__header-heading  heading-letter-spacing {{ header_size  }} mt-0{% if section_st.description != blank %} mb-10{% else %} mb-0{% endif %}"
+          >
+            {{ section_st.heading }}
+          </h2>
+        </motion-element>
+        {% endif %}
+        {%- if section_st.description != blank -%}
+          <motion-element
+            data-motion="fade-up-lg"
+            data-motion-delay="150"
+            {% if scroll_animation != 'slide_in' %}
+              hold
+            {% endif %}
+            class="section__header-des block {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %} rich__text-m0"
+            style="
+              {%- if scroll_animation != 'none' -%}
+                --animation-order: 1
+              {% endif %}
+            "
+          >
+            {{ section_st.description }}
+          </motion-element>
+        {% endif %}
+      </div>
+    {% endif %}
+    <div
+      class="grid grid-cols gap"
+      style="{{ col_style | strip | strip_newlines }}"
+    >
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign block_st = block.settings
+          assign ending_number = block_st.ending_number
+          assign starting_number = block_st.starting_number
+          assign unit = block_st.unit
+        -%}
+        <motion-element
+          data-motion="fade-up-lg"
+          {% if scroll_animation != 'slide_in' %}
+            hold
+          {% endif %}
+          data-motion-delay="{{ forloop.index0 | times: 50 }}"
+          class="counter-content block {% if scroll_animation != 'none' -%} scroll-trigger {{ scroll_animation }} {% endif %} text-{{ section_st.content_alignment }}"
+          data-module="countup"
+          style="
+            {%- if scroll_animation != 'none' -%}
+              --animation-order: {{  forloop.index }}
+            {% endif %}
+          "
+        >
+          {%- if ending_number -%}
+            <h3
+              class="counter-inner mt-0{% if block_st.number_spacing_bottom > 41 %} mb-big{% elsif block_st.number_spacing_bottom > 30 %} mb-medium {% else %} mb-custom{% endif %}{% if section_st.number_font_size > 41 %} fs-big{% elsif section_st.number_font_size > 24 %} fs-medium{% else %} fs-custom{% endif %} {{ section_st.number_font_weight }}"
+              style="--font-size: {{ section_st.number_font_size }};--space-bottom: {{ section_st.number_spacing_bottom }}"
+            >
+              {%- if ending_number -%}
+                <span
+                  class="counter-number"
+                  data-start-number="{{ starting_number }}"
+                  data-end-number="{{ ending_number }}"
+                >
+                  {{ starting_number }}
+                </span>
+              {% endif %}
+              {%- if unit -%}
+                <span>{{ unit }}</span>
+              {% endif %}
+            </h3>
+          {% endif %}
+          {%- if block_st.heading != blank -%}
+            <h4
+              class="counter-heading heading-letter-spacing mt-0{% if block_st.number_spacing_bottom > 41 %} mb-big{% elsif block_st.number_spacing_bottom > 30 %} mb-medium {% else %} mb-custom{% endif %}{% if section_st.heading_font_size > 41 %} fs-big{% elsif section_st.heading_font_size > 24 %} fs-medium{% else %} fs-custom{% endif %} {{ section_st.heading_font_weight }}"
+              style="--font-size: {{ section_st.heading_font_size }};--space-bottom: {{ section_st.heading_spacing_bottom }};"
+            >
+              {{ block_st.heading }}
+            </h4>
+          {% endif %}
+          {%- if block_st.description != blank -%}
+            <div
+              class="ib-description rich__text-m0{% if block_st.des_spacing_bottom > 41 %} mb-big{% elsif block_st.des_spacing_bottom > 30 %} mb-medium {% else %} mb-custom{% endif %}{% if section_st.des_font_size > 41 %} fs-big{% elsif section_st.des_font_size > 24 %} fs-medium{% else %} fs-custom{% endif %} {{ section_st.des_font_weight }}"
+              style="--font-size: {{ section_st.des_font_size }};--space-bottom: {{ section_st.des_spacing_bottom }};"
+            >
+              {{ block_st.description }}
+            </div>
+          {% endif %}
+        </motion-element>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+<script type="module">
+  class CountUp {
+    constructor(el) {
+      this.el = el;
+      this.init();
+    }
+  
+    init() {
+      const numbers = this.el.querySelectorAll('[data-end-number]');
+      
+      if (numbers.length > 0) {
+        numbers.forEach(el => {
+          this.setupInView(el);
+        });
+      }
+    }
+  
+    setupInView(el) {
+      Motion.inView(el, () => {
+        const endNumber = parseFloat(el.dataset.endNumber.replace(/,/g, ''));
+        const decimals = this.countDecimals(endNumber);
+        this.animateNumber(el, endNumber, decimals);
+      });
+    }
+  
+    animateNumber(el, endNumber, decimals) {
+      Motion.animate(0, endNumber, {
+        duration: 2,
+        ease: "easeOutQuint",
+        onUpdate: (latest) => {
+          el.innerHTML = this.formatNumber(latest, decimals);
+        }
+      });
+    }
+  
+    countDecimals(val) {
+      if (Math.floor(val) === val) return 0;
+      return val.toString().split('.')[1].length || 0;
+    }
+  
+    formatNumber(val, decimals) {
+      return val.toLocaleString('en-US', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+      });
+    }
+  }
+  
+  // Initialize
+  const dataModules = [...document.querySelectorAll('[data-module="countup"]')];
+  dataModules.forEach((element) => {
+    element.dataset.module.split(' ').forEach(() => {
+      new CountUp(element);
+    });
+  });
+</script>
+{% schema %}
+{
+  "name": "t:sections.counter.name",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ],
+      "default": "container",
+      "label": "t:sections.all.section_width.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "default": "default-color-scheme"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_header.label"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.all.section_header.heading.label"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:sections.all.section_header.description.label"
+    },
+    {
+      "type": "select",
+      "id": "header_size",
+      "label": "t:sections.all.section_header.header_size.label",
+      "default": "medium",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:sections.all.section_header.header_size.small.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.all.section_header.header_size.medium.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.section_header.header_size.large.label"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "t:sections.all.section_header.alignment.label",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.content_settings.content_alignment.left.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.content_settings.content_alignment.center.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.content_settings.content_alignment.right.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.counter.settings.label"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "t:sections.counter.settings.speed.label",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 5,
+      "unit": "s"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row",
+      "label": "t:sections.all.items.items_per_row.label",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "t:sections.all.items.column_gap.label",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.content_settings.label"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "t:sections.all.content_settings.content_alignment.label",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.content_settings.content_alignment.left.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.content_settings.content_alignment.center.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.content_settings.content_alignment.right.label"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.all.content_settings.number.label"
+    },
+    {
+      "type": "range",
+      "id": "number_font_size",
+      "label": "t:sections.all.content_settings.font_size.label",
+      "default": 36,
+      "min": 20,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "number_font_weight",
+      "label": "t:sections.all.content_settings.font_weight.label",
+      "default": "heading_weight",
+      "options": [
+        {
+          "value": "body_weight",
+          "label": "t:sections.all.content_settings.font_weight.body_weight.label"
+        },
+        {
+          "value": "subheading_weight",
+          "label": "t:sections.all.content_settings.font_weight.subheading_weight.label"
+        },
+        {
+          "value": "heading_weight",
+          "label": "t:sections.all.content_settings.font_weight.heading_weight.label"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "number_spacing_bottom",
+      "label": "t:sections.all.content_settings.spacing.spacing_bottom.label",
+      "default": 25,
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.all.content_settings.heading.label"
+    },
+    {
+      "type": "range",
+      "id": "heading_font_size",
+      "label": "t:sections.all.content_settings.font_size.label",
+      "default": 18,
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "heading_font_weight",
+      "label": "t:sections.all.content_settings.font_weight.label",
+      "default": "heading_weight",
+      "options": [
+        {
+          "value": "body_weight",
+          "label": "t:sections.all.content_settings.font_weight.body_weight.label"
+        },
+        {
+          "value": "subheading_weight",
+          "label": "t:sections.all.content_settings.font_weight.subheading_weight.label"
+        },
+        {
+          "value": "heading_weight",
+          "label": "t:sections.all.content_settings.font_weight.heading_weight.label"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing_bottom",
+      "label": "t:sections.all.content_settings.spacing.spacing_bottom.label",
+      "default": 25,
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.all.content_settings.description.label"
+    },
+    {
+      "type": "range",
+      "id": "des_font_size",
+      "label": "t:sections.all.content_settings.font_size.label",
+      "default": 14,
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "des_font_weight",
+      "label": "t:sections.all.content_settings.font_weight.label",
+      "default": "body_weight",
+      "options": [
+        {
+          "value": "body_weight",
+          "label": "t:sections.all.content_settings.font_weight.body_weight.label"
+        },
+        {
+          "value": "subheading_weight",
+          "label": "t:sections.all.content_settings.font_weight.subheading_weight.label"
+        },
+        {
+          "value": "heading_weight",
+          "label": "t:sections.all.content_settings.font_weight.heading_weight.label"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "des_spacing_bottom",
+      "label": "t:sections.all.content_settings.spacing.spacing_bottom.label",
+      "default": 0,
+      "min": 0,
+      "max": 60,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_spacing",
+      "label": "t:sections.all.section_padding.reset_spacing.label",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "counter",
+      "name": "t:sections.counter.blocks.counter.name",
+      "settings": [
+        {
+          "type": "number",
+          "id": "starting_number",
+          "label": "t:sections.counter.blocks.counter.settings.starting_number.label",
+          "default": 0
+        },
+        {
+          "type": "number",
+          "id": "ending_number",
+          "label": "t:sections.counter.blocks.counter.settings.ending_number.label",
+          "default": 50
+        },
+        {
+          "type": "text",
+          "id": "unit",
+          "label": "t:sections.counter.blocks.counter.settings.unit.label"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "t:sections.all.section_header.heading.label",
+          "default": "Products for Sale"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "t:sections.all.section_header.description.label",
+          "default": "<p>That’s why we strive to offer a diverse range of products that cater to all styles.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.counter.name",
+      "blocks": [
+        {
+          "type": "counter",
+          "settings": {
+            "ending_number": 53,
+            "unit": "k",
+            "heading": "Products for Sale",
+            "description": "<p>That's why we strive to offer a diverse range of products that cater to all styles.</p>"
+          }
+        },
+        {
+          "type": "counter",
+          "settings": {
+            "ending_number": 8,
+            "unit": "k",
+            "heading": "Happy Customer",
+            "description": "<p>We pride ourselves on creating great products and experiences with our valued customers.</p>"
+          }
+        },
+        {
+          "type": "counter",
+          "settings": {
+            "ending_number": 13,
+            "unit": "k",
+            "heading": "Partner Brand",
+            "description": "<p>Partner with brands that share our values, striving to protect our environment.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

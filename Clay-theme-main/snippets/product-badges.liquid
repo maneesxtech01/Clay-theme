@@ -1,0 +1,305 @@
+{%- liquid
+  if card_product and card_product != empty
+    assign theme_st = settings
+    assign show_sale = theme_st.show_sale
+    assign show_new = theme_st.show_new
+    assign show_pre_order = theme_st.show_pre_order
+    assign show_sold_out = theme_st.show_sold_out
+    assign option_name = 'Color'
+    assign sale = false
+    assign sold_out = false
+    assign pre_order = false
+    assign product_avail = false
+    assign product_qty = 0
+    assign sale_badge_addons = theme_st.sale_badge_addons
+    assign countdown_style = theme_st.countdown_style
+    assign scrolling_text = theme_st.scrolling_text
+    assign sale_badge_type = theme_st.sale_badge_type
+    if card_product.has_only_default_variant == false
+      if type != 'price_badges'
+        if card_product.options_with_values[0].name == option_name
+          if card_product.options_with_values.size < 2
+            for variant in card_product.variants limit: 1
+              assign product_qty = product_qty | plus: variant.inventory_quantity
+              assign product_avail = variant.available
+              assign product_management = variant.inventory_management
+              assign compare_at_price = variant.compare_at_price
+              assign price = variant.price
+            endfor
+            if product_management != null
+              if product_qty < 1
+                if product_avail == true
+                  assign pre_order = true
+                  assign sold_out = false
+                else
+                  assign pre_order = false
+                  assign sold_out = true
+                endif
+              else
+                assign pre_order = false
+                assign sold_out = false
+              endif
+            else
+              assign pre_order = false
+              assign sold_out = false
+            endif
+          else
+            assign prod = card_product.variants | where: 'option1', card_product.options_with_values[0].values[0]
+            assign product_management = 'shopify'
+            for p in prod
+              assign product_qty = product_qty | plus: p.inventory_quantity
+              if p.available
+                assign product_avail = true
+              endif
+              if p.inventory_management == null
+                assign product_management = 'null'
+              endif
+              assign compare_at_price = prod[0].compare_at_price
+              assign price = prod[0].price
+              if product_management != 'null'
+                if product_qty < 1
+                  if product_avail == true
+                    assign pre_order = true
+                    assign sold_out = false
+                  else
+                    assign pre_order = false
+                    assign sold_out = true
+                  endif
+                else
+                  assign pre_order = false
+                  assign sold_out = false
+                endif
+              else
+                assign pre_order = false
+                assign sold_out = false
+              endif
+            endfor
+          endif
+        else
+          assign product_management = 'shopify'
+          for variant in card_product.variants
+            assign product_qty = product_qty | plus: variant.inventory_quantity
+            if variant.available == true
+              assign product_avail = true
+            endif
+            if variant.inventory_management == null
+              assign product_management = 'null'
+            endif
+          endfor
+          assign compare_at_price = card_product.variants[0].compare_at_price
+          assign price = card_product.variants[0].price
+          if product_management != 'null'
+            if product_qty < 1
+              if product_avail == true
+                assign pre_order = true
+                assign sold_out = false
+              else
+                assign pre_order = false
+                assign sold_out = true
+              endif
+            else
+              assign pre_order = false
+              assign sold_out = false
+            endif
+          else
+            assign pre_order = false
+            assign sold_out = false
+          endif
+        endif
+      else
+        assign product_qty = product_qty | plus: card_product.selected_or_first_available_variant.inventory_quantity
+        assign product_avail = card_product.selected_or_first_available_variant.available
+        assign product_management = card_product.selected_or_first_available_variant.inventory_management
+        assign compare_at_price = card_product.selected_or_first_available_variant.compare_at_price
+        assign price = card_product.selected_or_first_available_variant.price
+        if product_management != null
+          if product_qty < 1
+            if product_avail == true
+              assign pre_order = true
+              assign sold_out = false
+            else
+              assign pre_order = false
+              assign sold_out = true
+            endif
+          else
+            assign pre_order = false
+            assign sold_out = false
+          endif
+        else
+          assign pre_order = false
+          assign sold_out = false
+        endif
+      endif
+    else
+      assign compare_at_price = card_product.compare_at_price
+      assign price = card_product.price
+      if card_product.available != true
+        assign sold_out = true
+      endif
+      for v in card_product.variants
+        if v.inventory_quantity
+          assign product_qty = product_qty | plus: v.inventory_quantity
+        endif
+      endfor
+      if product_qty < 1 and card_product.available == true
+        assign pre_order = true
+        assign sold_out = false
+      endif
+      for v in card_product.variants
+        if v.inventory_management == null
+          assign pre_order = false
+          assign sold_out = false
+        endif
+      endfor
+    endif
+    if compare_at_price > price and compare_at_price != blank
+      assign sale = true
+    endif
+  endif
+
+  assign product_create_at = card_product.created_at | date: '%s'
+  assign now_timestamp = 'now' | date: '%s'
+  assign diff_seconds = now_timestamp | minus: product_create_at
+  assign diff_days = diff_seconds | divided_by: 3600 | divided_by: 24
+  assign new_badge_display_period = theme_st.new_badge_display_period
+  assign subscription = card_product.selling_plan_groups.size
+  assign show_product_badges = true
+  if sticky == 'sticky'
+    assign show_product_badges = false
+  endif
+-%}
+{%- if sale
+  or sold_out
+  or pre_order
+  or card_product.metafields.custom.custom_product_badge
+  or show_new
+  or subscription > 0
+-%}
+  {% if show_product_badges %}
+    <div
+      class="product__badges fs-small flex flex-column flex-wrap gap-custom {{ class }}"
+      style="--gap: 3;"
+      data-sale-color="{{ settings.sale_color }}"
+      data-sold-out-color="{{ settings.sold_out_color }}"
+      data-pre-order-color="{{ settings.pre_order_color }}"
+      data-sale-bg="{{ settings.sale_background }}"
+      data-sold-out-bg="{{ settings.sold_out_background }}"
+      data-pre-order-bg="{{ settings.pre_order_background }}"
+      data-show-sale="{{ show_sale }}"
+      data-show-sold-out="{{ show_sold_out }}"
+      data-show-preorder="{{ show_pre_order }}"
+      data-sale-badge-type="{{ sale_badge_type }}"
+    >
+      {%- if sale and show_sale and sale_badge_type != 'scrolling' -%}
+        <div
+          class="product__badges-sale {% if sale_badge_type == 'price' %}product__badges-type-price{% elsif sale_badge_type == 'percent' %}product__badges-type-percent{% endif %} product__badges-inner align-self-start px-15 sale inline-flex content-center subheading_weight text-center lh-normal"
+          style="--badges-color: {{ settings.sale_color }};--badges-bg:{{ settings.sale_background }};"
+        >
+          {%- assign p = compare_at_price | minus: price -%}
+          {% if sale_badge_type == 'price' %}
+            {{ 'products.product.save' | t }}
+            {{- p | money -}}
+          {% elsif sale_badge_type == 'percent' %}
+            {%- if p > 0 -%}
+              {%- assign p = p | times: 100.0 | divided_by: compare_at_price | round -%}
+            {%- endif -%}
+            -
+            {{- p -}}
+            %
+          {% else %}
+            {{ 'products.product.label.sale_label' | t }}
+          {%- endif %}
+        </div>
+      {%- endif -%}
+      {%- if sold_out and show_sold_out -%}
+        <div
+          class="product__badges-sold-out product__badges-inner align-self-start px-15 sold-out inline-flex content-center subheading_weight text-center lh-normal"
+          style="--badges-color: {{ settings.sold_out_color }};--badges-bg:{{ settings.sold_out_background }};"
+        >
+          {{ 'products.product.sold_out' | t }}
+        </div>
+      {%- else -%}
+        {%- if pre_order and show_pre_order -%}
+          <div
+            class="product__badges-pre-order product__badges-inner align-self-start px-15 pre-order inline-flex content-center subheading_weight text-center lh-normal"
+            style="--badges-color: {{ settings.pre_order_color }};--badges-bg:{{ settings.pre_order_background }};"
+          >
+            {{ 'products.product.pre_order' | t }}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+      {% if show_new and diff_days < new_badge_display_period %}
+        <div
+          class="product__badges-new product__badges-inner align-self-start px-15 pre-order inline-flex content-center subheading_weight text-center lh-normal"
+          style="--badges-color: {{ settings.new_color }};--badges-bg:{{ settings.new_background }};"
+        >
+          {{ 'products.product.label.new_label' | t }}
+        </div>
+      {% endif %}
+      {% if card_product.metafields.custom.custom_product_badge %}
+        <div
+          class="product__badges-custom product__badges-inner align-self-start px-15 pre-order inline-flex content-center subheading_weight text-center lh-normal"
+          style="--badges-color: {{ settings.custom_badge_color }};--badges-bg:{{ settings.custom_badge_background }};"
+        >
+          {{ card_product.metafields.custom.custom_product_badge }}
+        </div>
+      {% endif %}
+      {% if subscription > 0 %}
+        <div
+          class="product__badges-custom subscription product__badges-inner align-self-start px-15 pre-order inline-flex content-center subheading_weight text-center lh-normal"
+          style="--badges-color: #111;--badges-bg: #F8BA26;"
+        >
+          {{- 'products.product.label.subscription' | t -}}
+        </div>
+      {% endif %}
+    </div>
+    {% if type == 'product_item' %}
+      {% if sale and sale_badge_addons == 'countdown' and card_product.metafields.custom.countdown_timer %}
+        {{ 'countdown.css' | asset_url | stylesheet_tag }}
+        <div
+          class="hidden product__badges-sale-countdown transition btn {% if countdown_style == 'normal' %}bg-white{% endif %} shadow text-center content-center absolute z-5  left-1025-15 right-1025-15  bottom-1025-15  max-w-custom mx-auto fadeIn {{ countdown_style }}"
+          style="--countdown-text-weight: var(--heading-weight);--btn-padding-y: {% if countdown_style == 'normal' %} 1.15rem {% else %} 1rem 0rem {%endif%}; --max-width: {% if countdown_style == 'normal' %}19rem {% else %} 100% {% endif %} ;"
+        >
+          <countdown-timer
+            class="hidden {% if countdown_style == 'normal' %} primary-color{% endif %} flex flex-wrap fs-14 heading_weight {{ countdown_style }}"
+            data-endtime="{{ card_product.metafields.custom.countdown_timer }}"
+            data-days="{{ 'products.product.countdown.day' | t }}"
+            data-hours="{{ 'products.product.countdown.hour' | t }}"
+            data-mins="{{ 'products.product.countdown.min' | t }}"
+            data-secs="{{ 'products.product.countdown.sec' | t }}"
+          >
+          </countdown-timer>
+        </div>
+      {% endif %}
+      {% if sale and sale_badge_addons == 'scrolling' and scrolling_text != blank %}
+        {{ 'marquee.css' | asset_url | stylesheet_tag }}
+        {% liquid
+          assign p = compare_at_price | minus: price
+          assign percent_number = p | append: '%'
+          if p > 0
+            assign p = p | times: 100.0 | divided_by: compare_at_price | round
+            assign percent_number = p | append: '%'
+          endif
+        %}
+        <div
+          class="product__badges-sale-scrolling marquee flex overflow-hidden w-full justify-center fs-custom absolute inset-x-0 bottom-0 pointer-none py-10 uppercase heading_weight"
+          data-text-product-scrolling="{{ scrolling_text }}"
+          style="--speed: 15s;--badges-color: {{ settings.scrolling_color }};--badges-bg:{{ settings.scrolling_background }};"
+        >
+          {%- for i in (0..4) -%}
+            <div class="flex animation-marquee">
+              {%- for i in (0..2) -%}
+                <div class="flex gap align-center whitespace-nowrap rich__text-m0 lh-normal fs-small">
+                  <span class="content-badges-scrolling">
+                    {{- scrolling_text | replace: '[percent_sale]', percent_number -}}
+                  </span>
+                  {% render 'icon-lighting' %}
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{%- endif -%}

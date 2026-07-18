@@ -1,0 +1,81 @@
+{% if localization.available_countries.size > 1 %}
+  <localization-form>
+    {%- assign form_id = 'localization-country-' | append: section.id -%}
+    {% form 'localization', id: form_id %}
+      <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+      <div class="disclosure relative flex align-center">
+        <div class="button-localization pointer disclosure__button show-overlay flex align-center gap-10 {% if type == 'mobile-navigation' %}mobile-navigation__button{% endif %}">
+          <span class="flex align-center {% if type == 'mobile-navigation' %}flex-column gap-4{% else %}gap-10{% endif %}">
+            <span class="rounded-50 border localization-flags {% if type == 'mobile-navigation' %}mobile-navigation__flag{% endif %}">
+              {{-
+                localization.country
+                | image_url: width: localization.country.width
+                | image_tag:
+                  width: localization.country.width,
+                  height: localization.country.height,
+                  alt: localization.country.name
+              -}}
+            </span>
+            {% if type == 'mobile-navigation' %}
+              <span class="block fs-small heading-style">
+                {{ localization.country.currency.iso_code }}
+                {{ localization.country.currency.symbol }}
+              </span>
+            {% else %}
+              <span>
+                {{ localization.country.name }}
+                ({{ localization.country.currency.iso_code }}
+                {{ localization.country.currency.symbol }})
+              </span>
+            {% endif %}
+          </span>
+          {% if type != 'mobile-navigation' %}
+            <svg class="icon-down flex-10" width="10" height="6">
+              <use href="#icon-arrow-down" />
+            </svg>
+          {% endif %}
+        </div>
+        <div class="disclosure__list custom-scrollbar shadow transition invisible z-10 absolute left-0 right-0 color-default overflow-y-auto">
+          <icon-close class="pointer-none border inline-flex hidden-1025 mx-auto rounded-50 overflow-hidden absolute top-0 inset-x-0 w-50 h-50 content-center heading-color bg-white">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" class="transition">
+              <use href="#icon-close" />
+            </svg>
+          </icon-close>
+          <ul class="h-full list-unstyled">
+            {% for country in localization.available_countries %}
+              <li class="disclosure__item py-4" tabindex="-1">
+                <a
+                  href="#"
+                  class="no-underline reversed-links text-color hover-heading-color"
+                  {% if country.iso_code == localization.country.iso_code %}
+                    aria-current="true"
+                  {% endif %}
+                  data-value="{{ country.iso_code }}"
+                  arial-label="{{ country.name }}"
+                >
+                  <span class="flex align-center gap-10">
+                    <span class="rounded-50 border localization-flags">
+                      {{-
+                        country
+                        | image_url: width: country.width
+                        | image_tag:
+                          width: country.width,
+                          height: country.height,
+                          alt: country.name
+                      -}}
+                    </span>
+                    <span>
+                      {{ country.name }}
+                      ({{ country.currency.iso_code }}
+                      {{ country.currency.symbol }})
+                    </span>
+                  </span>
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endform %}
+  </localization-form>
+{% endif %}

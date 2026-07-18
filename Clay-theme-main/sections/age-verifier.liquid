@@ -1,0 +1,255 @@
+{% liquid
+  assign theme_st = settings
+  assign section_st = section.settings
+  assign logo_image = theme_st.logo
+  assign logo_width = theme_st.desktop_logo_width
+  assign logo_width_mb = theme_st.mobile_logo_width
+%}
+{%- style -%}
+  .overlay-age-verifier age-verifier {
+    z-index: 1001;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+  .overlay-age-verifier age-verifier.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: all 0.3s;
+  }
+{%- endstyle -%}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+<age-verifier
+  class="gradient color-{{ section_st.color_scheme }} fixed inset-0 z-20 flex flex-column content-center"
+  style="--content-bg: {{ section_st.content_background }}"
+>
+  {%- if section_st.image != blank -%}
+    <div
+      class="flex gap-30 w-full h-full align-center{% if enable_rtl %} flex-row-reverse{% else %} flex-row{% endif %}"
+    >
+  {% endif %}
+  {%- if section_st.image != blank -%}
+    <div class="flex-1 hidden block-1025 relative h-full">
+      {%- assign image_alt = section_st.image.alt | default: 'age verifier' -%}
+      {% render 'responsive-image',
+        type: 'banner',
+        image: section_st.image,
+        image_alt: image_alt,
+        class: 'absolute inset-0 h-full object-fit-cover w-full'
+      %}
+    </div>
+  {% endif %}
+  <div
+    class="age-outline-focus-none p-30{% if section_st.image != blank %} flex-1{% endif %} fadeIn age-verify-detail relative z-3 bg-default padding-inner overflow-y-auto text-center"
+  >
+    {% if section_st.show_logo %}
+      {%- if logo_image != blank -%}
+        {%- assign logo_height = logo_width | divided_by: logo_image.aspect_ratio | round -%}
+        <div
+          class="logo"
+          style="--header-logo-width: {{ logo_width }}px; ----header-logo-width-mobile: {{ logo_width_mb }}px;"
+        >
+          <img
+            srcset="
+              {%- if logo_image.width >= 165 -%}
+                {{ logo_image | image_url: width: 165 }} 165w,{% endif %}
+              {%- if logo_image.width >= 330 -%}
+                {{ logo_image | image_url: width: 330 }} 330w,{% endif %}
+              {%- if logo_image.width >= 535 -%}
+                {{ logo_image | image_url: width: 535 }} 535w,{% endif %}
+              {%- if logo_image.width >= 750 -%}
+                {{ logo_image | image_url: width: 750 }} 750w,{% endif %}
+              {{ logo_image | image_url }} {{ logo_image.width }}w
+            "
+            src="{{ logo_image | image_url: width: 330 }}"
+            sizes="{{ logo_width }}px"
+            loading="lazy"
+            width="{{ logo_width }}"
+            height="{{ logo_height }}"
+            alt="{{ logo_height.alt | default: shop.name | escape }}"
+            style="width: {{ logo_width }}px"
+          >
+        </div>
+      {% endif %}
+    {% endif %}
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign block_st = block.settings
+      -%}
+      {%- case block.type -%}
+        {%- when 'heading' -%}
+          <h2 class="heading-letter-spacing banner__heading mt-0 mb-15" {{ block.shopify_attributes }}>
+            <span>{{ block_st.heading }}</span>
+          </h2>
+        {%- when 'description' -%}
+          <div class="banner__text mb-20 rich__text-m0" {{ block.shopify_attributes }}>
+            {{ block_st.description }}
+          </div>
+        {%- when 'button' -%}
+          {%- if block_st.button_decline != blank or block_st.button_approve != blank -%}
+            <div class="age-button-wrapper flex mt-30 gap-10 flex-wrap justify-content-center">
+              {%- if block_st.button_decline != blank -%}
+                <button class="btn-outline age-verifier-decline" aria-label="{{ block_st.button_decline }}">
+                  {{ block_st.button_decline }}
+                </button>
+              {% endif %}
+              {%- if block_st.button_approve != blank -%}
+                <button class="btn-primary age-verifier-approve" aria-label="{{ block_st.button_approve }}">
+                  {{ block_st.button_approve }}
+                </button>
+              {% endif %}
+            </div>
+          {% endif %}
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+  <div
+    class="age-outline-focus-none p-30{% if section_st.image != blank %} flex-1{% endif %} fadeIn decline-verify-detail hidden relative z-3 padding-inner overflow-y-auto text-center"
+  >
+    <h2 class="banner__heading mt-0">
+      <span>{{ section.settings.decline_heading }}</span>
+    </h2>
+    <div class="banner__text">
+      {{ section.settings.decline_text }}
+    </div>
+    <button class="btn-primary mt-30 age-verifier-return" aria-label="{{ section.settings.button_return }}">
+      {{ section.settings.button_return }}
+    </button>
+  </div>
+  {%- if section_st.image != blank -%}</div>{% endif %}
+</age-verifier>
+
+{% schema %}
+{
+  "name": "t:sections.age-verifier-popup.name",
+  "tag": "section",
+  "class": "overlay-section overlay-age-verifier",
+  "enabled_on": {
+    "groups": ["custom.overlay"]
+  },
+  "limit": 1,
+  "settings": [
+    {
+      "type": "header",
+      "content": "t:sections.age-verifier-popup.settings.general"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.age-verifier-popup.settings.color_scheme.label"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "t:sections.all.image.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_logo",
+      "label": "t:sections.age-verifier-popup.settings.show_logo.label",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.age-verifier-popup.settings.Decline-content.content"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.age-verifier-popup.settings.paragraph.content"
+    },
+    {
+      "type": "text",
+      "id": "decline_heading",
+      "label": "t:sections.age-verifier-popup.settings.decline_heading",
+      "default": "Come back when you're older"
+    },
+    {
+      "type": "richtext",
+      "id": "decline_text",
+      "label": "t:sections.age-verifier-popup.settings.decline_text.label",
+      "default": "<p>Sorry, the content of this store can't be seen by a younger audience. Come back when you're older.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_return",
+      "label": "t:sections.age-verifier-popup.settings.button_return.label",
+      "default": "Oops, I entered incorrectly"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "t:sections.age-verifier-popup.blocks.heading.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "default": "Welcome to Glozin!",
+          "label": "t:sections.all.contents.heading.label"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "t:sections.age-verifier-popup.blocks.description.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "description",
+          "default": "<p>You must be 18 years of age or older to view page. Please verify your age to enter.</p>",
+          "label": "t:sections.all.contents.description.label"
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "t:sections.age-verifier-popup.blocks.button.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_decline",
+          "default": "No, I'm not",
+          "label": "t:sections.age-verifier-popup.blocks.button.settings.button_decline.label"
+        },
+        {
+          "type": "text",
+          "id": "button_approve",
+          "default": "Yes, I am",
+          "label": "t:sections.age-verifier-popup.blocks.button.settings.button_approve.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.age-verifier-popup.name",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "description"
+        },
+        {
+          "type": "button"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

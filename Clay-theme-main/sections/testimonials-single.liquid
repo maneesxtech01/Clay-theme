@@ -1,0 +1,482 @@
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign color_scheme = section_st.color_scheme
+  if section_st.reset_spacing
+    assign reset_spacing = ' remove_spacing'
+  endif
+  assign column_gap = section_st.column_gap
+  assign heading = section_st.heading
+  assign description = section_st.description
+  assign header_size = ''
+  if section_st.header_size == 'small'
+    assign header_size = 'h3'
+  elsif section_st.header_size == 'large'
+    assign header_size = 'h1-size'
+  endif
+  assign show_arrow = section_st.show_arrow
+  assign autoplay = section_st.autoplay
+  assign autorotate_speed = section_st.autorotate_speed
+  assign img_style = section_st.img_style
+  assign img_width = section_st.img_width
+  assign tpye = section_st.tpye
+  assign scroll_animation = settings.scroll_animation
+-%}
+{%- capture style -%}
+  --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};--max-width: {{ section_st.content_max_width }}%; --rate-color: {{ section_st.rate_color }};
+{%- endcapture -%}
+{%- style -%}
+  single-item {
+    opacity: 0.6;
+  }
+  single-item.active {
+    opacity: 1;
+  }
+{%- endstyle -%}
+<section
+  class="section{% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} sec__testimonials-single section-slide-single color-{{ color_scheme }} gradient{{ reset_spacing }} {{ tpye }} image-{{ img_style }}"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ section_width }}">
+    {%- if heading != blank or description != blank -%}
+      <div class="section__header mb-33 mb-sm-20 text-{{ section_st.header_alignment }}{% if section_st.section_width == 'full_width' %} px-20{% endif %}">
+        {%- if section_st.heading != blank -%}
+          <motion-element
+                data-motion="fade-up-lg"
+                data-motion-delay="50"
+                {% if scroll_animation != 'slide_in' %}
+                  hold
+                {% endif %}
+            class="block  {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}"
+            style="
+              {%- if scroll_animation != 'none' -%}
+                --animation-order: 0;
+              {% endif %}
+            "
+          >
+          <h2
+            class="section__header-heading heading-letter-spacing {{ header_size  }} mt-0{% if section_st.description != blank %} mb-10{% else %} mb-0{% endif %}"
+          >
+            {{ section_st.heading }}
+          </h2>
+        </motion-element>
+        {% endif %}
+        {%- if section_st.description != blank -%}
+          <motion-element
+            data-motion="fade-up-lg"
+            data-motion-delay="150"
+            {% if scroll_animation != 'slide_in' %}
+              hold
+            {% endif %}
+            class="section__header-des block {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %} rich__text-m0"
+            style="
+              {%- if scroll_animation != 'none' -%}
+                --animation-order:1
+              {% endif %}
+            "
+          >
+            {{ section_st.description }}
+          </motion-element>
+        {% endif %}
+      </div>
+    {% endif %}
+    <slide-section-single
+      class="swiper max-w-custom"
+      data-section-id="{{ section.id }}"
+      data-autoplay="{{ autoplay }}"
+      data-effect="slide"
+      data-autoplay-speed="{{ autorotate_speed }}"
+      data-spacing="0"
+      data-mobile="1"
+      data-tablet="1"
+      data-desktop="1"
+    >
+      {% if show_arrow %}
+        {%- render 'swiper-navigation' -%}
+      {% endif %}
+      <div class="swiper-wrapper">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign block_st = block.settings
+          -%}
+          <div
+            {{ block.shopify_attributes }}
+            class="swiper-slide "
+          >
+            <motion-element
+              data-motion="fade-up-lg"
+              {% if scroll_animation != 'slide_in' %}
+                hold
+              {% endif %}
+              data-motion-delay="{{ forloop.index0 | times: 50 }}"
+              class="testimonial_wraper flex flex-column text-center justify-content-center {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}"
+              style="
+                {%- if scroll_animation != 'none' -%}
+                  --animation-order: {{  forloop.index }}
+                {% endif %}
+              "
+            >
+              {% if section_st.show_rate %}
+                <div class="testimonials-rating mb-15 relative">
+                  <div class="relative inline-flex">
+                    <svg width="78" height="14" fill="none">
+                      <use href="#icon-rate-grey"></use>
+                    </svg>
+                    <div class="absolute inset-0 z-1 rate-color inline-flex gap-custom" style="--gap: 2">
+                      {%- for i in (1..block_st.author_rating) -%}
+                        <svg width="14" height="14" fill="none" class="rate-color">
+                          <use href="#icon-rate"></use>
+                        </svg>
+                      {%- endfor -%}
+                    </div>
+                  </div>
+                </div>
+              {% endif %}
+              <div class="testimonials-quote my-0 mt-0 mb-20 rich__text-m0 fs-18">
+                {{ block_st.author_text }}
+              </div>
+              {% if section_st.show_author_name -%}
+                <div class="heading-style mt-10">
+                  {{ block_st.author_name }}
+                </div>
+              {%- endif %}
+              {% if section_st.show_date_published or section_st.show_author_info %}
+                <div class="testimonials-group mt-5 pt-0 mt-md-10 pt-md-15 fs-small-1">
+                  {% if section_st.show_date_published %}
+                    <span class="testimonials-date">
+                      {{- block_st.author_published -}}
+                    </span>
+                  {%- endif %}
+                  {% if section_st.show_author_info %}
+                    <span class="testimonials-adress fs-small-1">{{ block_st.author_address }}</span>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </motion-element>
+          </div>
+        {%- endfor -%}
+      </div>
+    </slide-section-single>
+    {% if section_st.show_author_image %}
+      <div class="testimonials-author-image flex flex-wrap justify-content-center gap-10 mt-30">
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign block_st = block.settings
+          -%}
+          <motion-element 
+            data-motion="fade-up-sm"
+            {% if scroll_animation != 'slide_in' %}
+              hold
+            {% endif %}
+            class="block slide_in scroll-trigger"
+            data-motion-delay="{{ forloop.index0 | times: 50 }}"
+          >
+            <single-item
+              class="testimonials-author-image block w-custom pointer transition{% if forloop.first %} active{% endif %}"
+              data-position="{{ forloop.index }}"
+              {{ block.shopify_attributes }}
+              style="--aspect-ratio: 1/1; --custom-width: {{ img_width }}px;"
+            >
+              {% if block_st.author_image != blank %}
+                {%- liquid
+                  assign alt = 'sections.testimonial.alt' | t
+                  if block_st.author_image.alt
+                    assign alt = block_st.author_image.alt | escape
+                  endif
+                -%}
+                {% render 'responsive-image',
+                  type: 'other',
+                  container: section_width,
+                  image: block_st.author_image,
+                  image_alt: alt,
+                  padding: column_gap,
+                  class: 'testimonials-image rounded-50'
+                %}
+              {% else %}
+                {% render 'placeholder-render', class: 'rounded-50' %}
+              {% endif %}
+            </single-item>
+          </motion-element>
+       
+        {%- endfor -%}
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "t:sections.testimonials_single.name",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ],
+      "default": "stretch_width",
+      "label": "t:sections.all.section_width.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "default": "default-color-scheme"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "min": 50,
+      "max": 100,
+      "step": 1,
+      "unit": "%",
+      "default": 100,
+      "label": "t:sections.all.content_settings.max_width.label",
+      "info": "t:sections.all.content_settings.max_width.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_header.label"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Testimonials",
+      "label": "t:sections.all.section_header.heading.label"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:sections.all.section_header.description.label"
+    },
+    {
+      "type": "select",
+      "id": "header_size",
+      "label": "t:sections.all.section_header.header_size.label",
+      "default": "medium",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:sections.all.section_header.header_size.small.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.all.section_header.header_size.medium.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.section_header.header_size.large.label"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "t:sections.all.section_header.alignment.label",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.content_settings.content_alignment.left.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.content_settings.content_alignment.center.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.content_settings.content_alignment.right.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.testimonials.settings.header.heading_setting"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rate",
+      "label": "t:sections.testimonials.settings.testimonials_setting.show_rate",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author_image",
+      "label": "t:sections.testimonials.settings.testimonials_setting.show_author_image",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author_name",
+      "label": "t:sections.testimonials.settings.testimonials_setting.show_author_name",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date_published",
+      "label": "t:sections.testimonials.settings.testimonials_setting.show_date_published",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author_info",
+      "label": "t:sections.testimonials.settings.testimonials_setting.show_author_info",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "rate_color",
+      "label": "t:settings_schema.product_card.settings.product_info.rate_color.label",
+      "default": "#FF9C05"
+    },
+    {
+      "type": "range",
+      "id": "img_width",
+      "label": "t:sections.all.banner.banner_width",
+      "min": 50,
+      "max": 100,
+      "step": 1,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.carousel_settings.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "t:sections.all.carousel_settings.show-next-back.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "t:sections.all.carousel_settings.auto_change.label",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autorotate_speed",
+      "label": "t:sections.all.carousel_settings.change_slides_every.label",
+      "max": 6,
+      "min": 2,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_spacing",
+      "label": "t:sections.all.section_padding.reset_spacing.label",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonials_items",
+      "name": "t:sections.testimonials.settings.block.add_testimonial",
+      "limit": 4,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "author_image",
+          "label": "t:sections.testimonials.settings.block.author_image"
+        },
+        {
+          "type": "range",
+          "id": "author_rating",
+          "label": "t:sections.testimonials.settings.block.rating",
+          "min": 1,
+          "max": 5,
+          "default": 5,
+          "step": 1
+        },
+        {
+          "type": "richtext",
+          "id": "author_text",
+          "default": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+          "label": "t:sections.testimonials.settings.block.author_text"
+        },
+        {
+          "type": "text",
+          "id": "author_name",
+          "default": "Author's name",
+          "label": "t:sections.testimonials.settings.block.author_name"
+        },
+        {
+          "type": "text",
+          "id": "author_address",
+          "label": "t:sections.testimonials.settings.block.author_address",
+          "default": "Los Angeles, CA"
+        },
+        {
+          "type": "text",
+          "id": "author_published",
+          "label": "t:sections.testimonials.settings.block.author_published",
+          "default": "Published on 26/6/2024"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.testimonials_single.presets.name",
+      "blocks": [
+        {
+          "type": "testimonials_items"
+        },
+        {
+          "type": "testimonials_items"
+        },
+        {
+          "type": "testimonials_items"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

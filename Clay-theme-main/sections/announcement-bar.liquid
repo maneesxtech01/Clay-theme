@@ -1,0 +1,480 @@
+{{ 'countdown.css' | asset_url | stylesheet_tag }}
+{%- if section.settings.announcement_actions == 'marquee' -%}
+  {{ 'marquee.css' | asset_url | stylesheet_tag }}
+{% endif %}
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign color_scheme = section_st.color_scheme
+  assign homepage_only = section_st.homepage_only
+  assign show_close = section_st.show_close
+  assign announcement_actions = section_st.announcement_actions
+  assign is_shown = false
+  if homepage_only
+    if request.page_type == 'index'
+      assign is_shown = true
+    endif
+  else
+    assign is_shown = true
+  endif
+-%}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+{%- capture style -%}
+    --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }}; --font-size: {{ section_st.font_size }};--countdown-text-size: {{ section_st.font_size }}px;--swiper-navigation-color: var(--color-text); 
+  {%- endcapture -%}
+{%- if section.blocks.size > 0 and is_shown -%}
+  {%- style -%}
+    announcement-bar .announcement-slide {
+      width: 80%;
+      max-width: 55rem;
+    }
+    .announcement-bar-close svg {
+      opacity: 0.6;
+    }
+    .announcement-bar-close:hover svg {
+      opacity: 1;
+    }
+    announcement-bar .swiper-wrapper {
+      align-items: center;
+    }
+    announcement-bar :where(.swiper-arrow:hover) {
+      background-color: transparent;
+    }
+    announcement-bar countdown-timer{
+      {% if section_st.font_weight == 'subheading_weight' %}--countdown-text-weight: var(--subheading-weight, 600);--heading-weight: var(--subheading-weight, 600);{% elsif section_st.font_weight == 'heading_weight' %}--countdown-text-weight: var(--heading-weight, 600);--heading-weight: var(--heading-weight, 600);{% else %}--countdown-text-weight: var(--body-weight, 600);--heading-weight: var(--body-weight, 600){% endif %}
+    }
+    announcement-bar .swiper-slide {
+      display: flex;
+    }
+  {%- endstyle -%}
+  <announcement-bar
+    class="section section{% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} remove_spacing color-{{ color_scheme }} gradient text-center relative{% if section_st.uppercase %} uppercase{% endif %} fs-custom {{ section_st.font_weight }}{% if section_st.show_mobile == blank %} hidden block-xl{% else %} block{% endif %}{% if section_st.show_separator_line %} border-bottom{% endif %}"
+    aria-label="{{ 'sections.header.announcement' | t }}"
+    style="{{ style | strip | strip_newlines }}"
+  >
+    <div class="{{ section_width }}">
+      {% if section.blocks.size > 1 %}
+        {%- if announcement_actions == 'slide' -%}
+          {% # theme-check-disable UnclosedHTMLElement %}
+          <div class="announcement-slide relative mx-auto btn-control-small no-js-hidden">
+            <slide-section
+              class="swiper lazy-loading-swiper-before"
+              data-section-id="{{ section.id }}"
+              data-autoplay="true"
+              data-autoplaySpeed="{{ section_st.change_every }}"
+              data-loop="true"
+              data-mobile="1"
+              data-tablet="1"
+              data-desktop="1"
+              data-direction="vertical"
+              data-spacing="0"
+            >
+              <div class="swiper-wrapper">
+                {% # theme-check-disable UnclosedHTMLElement %}
+        {%- else -%}
+          <div
+            class="marquee flex overflow-hidden w-full justify-content-center"
+            style="--speed: {{ section_st.speed }}s;--col-gap: {{ section_st.space_between }}px;"
+          >
+        {% endif %}
+        {%- if announcement_actions == 'marquee' -%}
+          {%- for i in (0..5) -%}
+            <div class="flex animation-marquee">
+              {%- for block in section.blocks -%}
+                {%- liquid
+                  assign block_st = block.settings
+                -%}
+                {%- if block_st.text != blank -%}
+                  <div
+                    class="announcement__bar-message mx-auto flex-nowrap flex{% if section_st.icon_between_item != 'none' %} gap{% endif %} content-center whitespace-nowrap"
+                  >
+                    <span class="grow">{{ block_st.text }}</span>
+                    {% if block_st.countdown_deadline != blank %}
+                      <div
+                        class="countdown-announcementBar ms-5 gap-5 flex align-center"
+                        data-block-id="{{ block.id }}"
+                      >
+                        <countdown-timer
+                          class="hidden flex flex-nowrap justify-center"
+                          data-endtime="{{ block_st.countdown_deadline }}"
+                          data-format="dd:hh:mm:ss"
+                          data-days="{{ 'products.product.countdown.days' | t }}"
+                          data-hours="{{ 'products.product.countdown.hours' | t }}"
+                          data-mins="{{ 'products.product.countdown.mins' | t }}"
+                          data-secs="{{ 'products.product.countdown.secs' | t }}"
+                        >
+                        </countdown-timer>
+                      </div>
+                    {% endif %}
+                    {% if section_st.icon_between_item == 'hight_light' %}
+                      {% render 'icon-highlight' %}
+                    {% elsif section_st.icon_between_item == 'dot' %}
+                      {% render 'icon-dot' %}
+                    {% elsif section_st.icon_between_item == 'star' %}
+                      {% render 'icon-star' %}
+                    {% else %}
+                      <span class="spacing"></span>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              {%- endfor -%}
+            </div>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign block_st = block.settings
+            -%}
+            {%- if block_st.text != blank -%}
+              <div class="swiper-slide align-center justify-center">
+                <div class="announcement__bar-message mx-auto flex-wrap px-20 flex justify-content-center">
+                  <span class="grow">{{ block_st.text }}</span>
+                  {% if block_st.countdown_deadline != blank %}
+                    <div
+                      class="countdown-announcementBar ms-5 gap-5 flex align-center"
+                      data-block-id="{{ block.id }}"
+                    >
+                      <countdown-timer
+                        class="hidden flex flex-wrap justify-center"
+                        data-endtime="{{ block_st.countdown_deadline }}"
+                        data-format="dd:hh:mm:ss"
+                        data-days="{{ 'products.product.countdown.days' | t }}"
+                        data-hours="{{ 'products.product.countdown.hours' | t }}"
+                        data-mins="{{ 'products.product.countdown.mins' | t }}"
+                        data-secs="{{ 'products.product.countdown.secs' | t }}"
+                      >
+                      </countdown-timer>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            {% endif %}
+          {%- endfor -%}
+        {% endif %}
+      {%- else -%}
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign block_st = block.settings
+          -%}
+          {%- if block_st.text != blank -%}
+            <div class="announcement__bar-message mx-auto flex-wrap flex justify-content-center">
+              <span class="grow">{{ block_st.text }}</span>
+              {% if block_st.countdown_deadline != blank %}
+                <div
+                  class="countdown-announcementBar ms-5 gap-5 flex align-center"
+                  data-block-id="{{ block.id }}"
+                >
+                  <countdown-timer
+                    class="hidden flex flex-wrap justify-center"
+                    data-endtime="{{ block_st.countdown_deadline }}"
+                    data-format="dd:hh:mm:ss"
+                    data-days="{{ 'products.product.countdown.days' | t }}"
+                    data-hours="{{ 'products.product.countdown.hours' | t }}"
+                    data-mins="{{ 'products.product.countdown.mins' | t }}"
+                    data-secs="{{ 'products.product.countdown.secs' | t }}"
+                  >
+                  </countdown-timer>
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {%- endfor -%}
+      {% endif %}
+      {% if section.blocks.size > 1 %}
+        </div>
+        {%- if announcement_actions == 'slide' -%}
+          <div
+            class="swiper-arrow original-style swiper-button-prev visible absolute left-10"
+            style="--swiper-navigation-sides-offset: -1rem;--swiper-width: 3rem;--swiper-size: 10px"
+          >
+            <svg width="6" height="11" fill="none">
+              <use href="#icon-back" />
+            </svg>
+          </div>
+          <div
+            class="swiper-arrow original-style swiper-button-next visible absolute right-10"
+            style="--swiper-navigation-sides-offset: -1rem;--swiper-width: 3rem;--swiper-size: 10px"
+          >
+            <svg width="6" height="11" fill="none">
+              <use href="#icon-next" />
+            </svg>
+          </div>
+          </slide-section>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+    {%- if show_close -%}
+      <div
+        class="announcement-bar-close color-{{ color_scheme }} gradient absolute{% if enable_rtl %} left-0{% else %} right-0{% endif %} top-0 w-30 h-full transition inline-flex content-center hover-svg-zoom pointer lh-normal"
+        tabindex="0"
+      >
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none" class="transition">
+          <use href="#icon-close" />
+        </svg>
+      </div>
+    {% endif %}
+  </announcement-bar>
+  <script>
+    if (sessionStorage.getItem('announcement_bar') == 'false') {
+      document.getElementById('shopify-section-{{ section.id }}').classList.add('hidden');
+    }
+  </script>
+{% endif %}
+
+{% schema %}
+{
+  "name": "t:sections.announcement-bar.name",
+  "class": "section-announcement-bar",
+  "limit": 1,
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ],
+      "default": "stretch_width",
+      "label": "t:sections.all.section_width.label"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "default": "default-color-scheme"
+    },
+    {
+      "type": "select",
+      "id": "announcement_actions",
+      "options": [
+        {
+          "value": "slide",
+          "label": "t:sections.announcement-bar.settings.announcement_actions.slide.label"
+        },
+        {
+          "value": "marquee",
+          "label": "t:sections.announcement-bar.settings.announcement_actions.marquee.label"
+        }
+      ],
+      "default": "slide",
+      "label": "t:sections.announcement-bar.settings.announcement_actions.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_close",
+      "default": true,
+      "label": "t:sections.announcement-bar.settings.show_close.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "homepage_only",
+      "default": true,
+      "label": "t:sections.announcement-bar.settings.homepage_only.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mobile",
+      "default": true,
+      "label": "t:sections.announcement-bar.settings.show_mobile.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_separator_line",
+      "default": true,
+      "label": "t:sections.announcement-bar.settings.show_separator_line.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.content_setting.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "uppercase",
+      "label": "t:sections.all.content_setting.uppercase.label"
+    },
+    {
+      "type": "range",
+      "id": "font_size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "label": "t:sections.all.content_setting.font_size.label",
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "font_weight",
+      "options": [
+        {
+          "value": "body_weight",
+          "label": "t:sections.all.content_setting.font_weight.body_weight.label"
+        },
+        {
+          "value": "heading_weight",
+          "label": "t:sections.all.content_setting.font_weight.heading_weight.label"
+        },
+        {
+          "value": "subheading_weight",
+          "label": "t:sections.all.content_setting.font_weight.subheading_weight.label"
+        }
+      ],
+      "default": "subheading_weight",
+      "label": "t:sections.all.content_setting.font_weight.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.announcement-bar.settings.marquee.label",
+      "info": "t:sections.announcement-bar.settings.marquee.info",
+      "visible_if": "{{ section.settings.announcement_actions == 'marquee' }}"
+    },
+    {
+      "type": "range",
+      "id": "speed",
+      "label": "t:sections.scrolling_text.settings.speed.label",
+      "default": 15,
+      "min": 3,
+      "max": 30,
+      "step": 1,
+      "unit": "s",
+      "visible_if": "{{ section.settings.announcement_actions == 'marquee' }}"
+    },
+    {
+      "type": "range",
+      "id": "space_between",
+      "min": 10,
+      "max": 100,
+      "step": 1,
+      "label": "t:sections.announcement-bar.settings.marquee.space_between.label",
+      "unit": "px",
+      "default": 50,
+      "visible_if": "{{ section.settings.announcement_actions == 'marquee' }}"
+    },
+    {
+      "type": "select",
+      "id": "icon_between_item",
+      "options": [
+        {
+          "value": "none",
+          "label": "t:sections.announcement-bar.settings.marquee.icon_between.none"
+        },
+        {
+          "value": "dot",
+          "label": "t:sections.announcement-bar.settings.marquee.icon_between.dot"
+        },
+        {
+          "value": "star",
+          "label": "t:sections.announcement-bar.settings.marquee.icon_between.star"
+        }
+      ],
+      "default": "none",
+      "label": "t:sections.announcement-bar.settings.marquee.icon_between.label",
+      "visible_if": "{{ section.settings.announcement_actions == 'marquee' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.announcement-bar.settings.slide.label",
+      "info": "t:sections.announcement-bar.settings.slide.info",
+      "visible_if": "{{ section.settings.announcement_actions == 'slide' }}"
+    },
+    {
+      "type": "range",
+      "id": "change_every",
+      "min": 3,
+      "max": 6,
+      "step": 1,
+      "label": "t:sections.announcement-bar.settings.slide.change_every.label",
+      "unit": "s",
+      "default": 3,
+      "visible_if": "{{ section.settings.announcement_actions == 'slide' }}"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 12,
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 12,
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "unit": "px"
+    }
+  ],
+  "max_blocks": 5,
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "t:sections.announcement-bar.blocks.announcement.name",
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "default": "Welcome to our store",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.text.label"
+        },
+        {
+          "type": "text",
+          "id": "countdown_deadline",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.countdown_deadline.label",
+          "info": "t:sections.announcement-bar.blocks.announcement.settings.countdown_deadline.info"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.announcement-bar.name",
+      "blocks": [
+        {
+          "type": "announcement",
+          "settings": {
+            "text": "Welcome to our store"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

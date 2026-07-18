@@ -1,0 +1,323 @@
+{%- liquid
+  assign theme_st = settings
+  assign product_image_ratio = theme_st.product_image_ratio
+  assign show_secondary_image = theme_st.show_secondary_image
+  assign show_button_add_to_cart = theme_st.show_add_cart
+  assign hidden_price = theme_st.hidden_price
+  assign product_check = product.id
+  assign scroll_animation = settings.scroll_animation
+-%}
+<div class="bought-together">
+  <div class="border p-30 pt-25 rounded" style="--input-height: 4rem;">
+    <motion-element
+      data-motion="fade-up-lg"
+      {% if scroll_animation != 'slide_in' %}
+        hold
+      {% endif %}
+      data-motion-delay="50"
+      class="block {% if scroll_animation == 'slide_in'  %} scroll-trigger {{ scroll_animation }} {% endif %} "
+    >
+      <h3 class="bought-together-heading capitalize fs-20 mb-25 mt-0">
+        {{ 'products.product.bought_together.text' | t }}
+      </h3>
+    </motion-element>
+    <motion-element
+      data-motion="fade-up-lg"
+      {% if scroll_animation != 'slide_in' %}
+        hold
+      {% endif %}
+      data-motion-delay="150"
+      class="block {% if scroll_animation == 'slide_in'  %} scroll-trigger {{ scroll_animation }} {% endif %} "
+    >
+      <div class="flex flex-wrap gap-30">
+        <div
+          class="flex flex-wrap flex-md-nowrap gap-30 w-full max-w-100"
+          {% if hidden_price == false %}
+            style="--col-width: clamp(30%, 8vw, 36rem); --btn-padding-x: 15px;"
+          {% endif %}
+        >
+          <div class="w-full col-md-remaining bought-together-container flex flex-nowrap row-gap-30 align-center overflow-auto w-full">
+            {%- if search.results != blank -%}
+              {%- assign array = search.terms | remove: 'id:' | split: ' OR ' | uniq -%}
+
+              {%- for i in array -%}
+                {%- assign j = i | plus: 0 -%}
+                {%- assign item = search.results | where: 'id', j -%}
+                {%- liquid
+                  assign product = item[0]
+                  assign product_available = product.variants | where: 'available'
+                  if product_check == product.id or product.available == false
+                    continue
+                  endif
+                -%}
+                {%- unless forloop.first -%}
+                  <div class="icon-plus flex align-center mx-8">
+                    <svg width="14" height="14" fill="none">
+                      <path fill="#111" d="M1.16 8.001a.838.838 0 0 1-.586-.234.862.862 0 0 1-.234-.606c0-.221.078-.41.234-.566a.805.805 0 0 1 .586-.254h5v-5c0-.235.078-.43.235-.586A.827.827 0 0 1 7 .5c.234 0 .43.085.586.254.17.156.254.351.254.586v5h5c.221 0 .41.084.566.254.17.156.254.345.254.566a.827.827 0 0 1-.254.606.772.772 0 0 1-.566.234h-5v5a.826.826 0 0 1-.254.605.795.795 0 0 1-.586.235.862.862 0 0 1-.605-.235.862.862 0 0 1-.235-.605v-5h-5Z"/>
+                    </svg>
+                  </div>
+                {%- endunless -%}
+                <div class="product-bought-image-item flex align-center  {{ product.handle }}{% if forloop.first == true %} main-product pointer-none{% endif %} select">
+                  <div class="product-image flex-1">
+                    {%- liquid
+                      assign current_variant = product.selected_or_first_available_variant
+                      assign image = current_variant.featured_image | default: product.featured_image
+                    -%}
+                    <a class="img-url" href="{{ product.url | within: collection }}" title=" {{ product.title }}">
+                      {% assign product_media = product.featured_media %}
+                      {%- if product_media -%}
+                        {%- liquid
+                          assign ratio = ''
+                          if product_image_ratio != 'adapt'
+                            case product_image_ratio
+                              when 'square'
+                                assign ratio = '1/1'
+                              when 'landscape'
+                                assign ratio = '4/3'
+                              when 'portrait'
+                                assign ratio = '3/4'
+                              else
+                                assign ratio = '3/4'
+                            endcase
+                          else
+                            if product_media.media_type == 'model'
+                              assign ratio = '3/4'
+                            else
+                              assign ratio = product_media.aspect_ratio
+                            endif
+                          endif
+                          assign alt_features = product_media.alt | default: product.title | escape
+                        -%}
+                        <div
+                          class="product-item__media--ratio rounded hover-effect"
+                          style="--aspect-ratio: {{ ratio }};"
+                        >
+                          {%- assign image_alt = alt_features | default: 'product' | escape -%}
+                          {% render 'responsive-image',
+                            type: 'product',
+                            class: 'product-image',
+                            image: product_media,
+                            image_alt: image_alt
+                          %}
+                          {%- liquid
+                            if product.media[1] != blank and show_secondary_image
+                              assign alt_features = product.media[1].alt | default: product.title | escape
+                              render 'responsive-image', type: 'product', class: 'secondary-image invisible product-image', image: product.media[1], image_alt: alt_features
+                            endif
+                          -%}
+                        </div>
+                      {%- else -%}
+                        {%- liquid
+                          assign ratio = ''
+                          if product_image_ratio != 'adapt'
+                            case product_image_ratio
+                              when 'square'
+                                assign ratio = '1/1'
+                              when 'landscape'
+                                assign ratio = '4/3'
+                              when 'portrait'
+                                assign ratio = '3/4'
+                              else
+                                assign ratio = '3/4'
+                            endcase
+                          else
+                            assign ratio = '3/4'
+                          endif
+                        -%}
+                        <div
+                          class="product-item__media--ratio rounded"
+                          style="--aspect-ratio: {{ ratio }};"
+                        >
+                          {% render 'placeholder-render', class: 'rounded' %}
+                        </div>
+                      {% endif %}
+                    </a>
+                  </div>
+                </div>
+              {%- endfor -%}
+            {% endif %}
+          </div>
+          {% if hidden_price == false %}
+            <div
+              class="col-sm-w-custom box-total flex flex-column justify-center px-30 py-50 grey-bg rounded-10 text-center w-custom max-w-100"
+            >
+              {%- liquid
+                assign price = 0
+                assign compare_at_price = 0
+              -%}
+              {%- for product in search.results -%}
+                {%- liquid
+                  assign product_available = product.variants | where: 'available'
+                  assign current_variant = product.selected_or_first_available_variant
+                  if product_check == product.id or product.available == false
+                    continue
+                  endif
+                  assign price = current_variant.price | plus: price
+                  assign compare_at_price = current_variant.compare_at_price | default: current_variant.price | plus: compare_at_price
+                -%}
+              {%- endfor -%}
+              <div class="total-price{% if compare_at_price > price %} price--on-sale{% endif %}">
+                <h5 class="fs-16 mt-0 mb-2">{{ 'products.product.bought_together.total' | t }}:</h5>
+                <span class="price__sale">
+                  <s class="price-item compare-price fs-16 light-dark-grey subheading_weight">
+                    {% if settings.currency_code_enabled %}
+                      {{ compare_at_price | money_with_currency }}
+                    {% else %}
+                      {{ compare_at_price | money }}
+                    {% endif %}
+                  </s>
+                </span>
+                <span class="heading_weight h4 price{%- if compare_at_price > price %} special-price primary-color{% endif -%}">
+                  {% if settings.currency_code_enabled %}
+                    {{ price | money_with_currency }}
+                  {% else %}
+                    {{ price | money }}
+                  {% endif %}
+                </span>
+              </div>
+              {%- if theme_st.enable_catalog_mode == false -%}
+                <button
+                  class="mt-20 product-form__submit bought-together-submit w-full mx-auto max-w-custom relative btn-primary"
+                  style="--max-width: 85%;"
+                >
+                  <span class="fw-600 hidden-on-load">{{ 'products.product.bought_together.add_cart' | t }}</span>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin opacity-0 icon-load">
+                    <use href="#icon-load"></use>
+                  </svg>
+                </button>
+              {% endif %}
+              <div class="mt-12 saved-price{% if compare_at_price <= price %} hidden{% endif %}">
+                <span class="lable">{{ 'products.product.bought_together.save' | t }}:</span>
+                <span class="price heading_weight primary-color">
+                  {% if compare_at_price > price %}
+                    {% if settings.currency_code_enabled %}
+                      {{ compare_at_price | minus: price | money_with_currency }}
+                    {% else %}
+                      {{ compare_at_price | minus: price | money }}
+                    {% endif %}
+                  {% else %}
+                    {{ 0 | money }}
+                  {% endif %}
+                </span>
+              </div>
+            </div>
+          {% endif %}
+        </div>
+        {%- if search.results != blank -%}
+          {%- assign array = search.terms | remove: 'id:' | split: ' OR ' | uniq -%}
+          <div class="w-full sf-prod__block info-bought-together">
+            <form
+              method="post"
+              action="/cart/add"
+              accept-charset="UTF-8"
+              id="bought-together-form"
+              enctype="multipart/form-data"
+              novalidate="novalidate"
+              data-type="add-to-cart-form"
+              style="--input-color: var(--color-heading);"
+            >
+              <input type="hidden" name="form_type" value="product">
+              <input type="hidden" name="utf8" value="✓">
+              <div class="product-bought-together-list">
+                {%- for i in array -%}
+                  {%- assign j = i | plus: 0 -%}
+                  {%- assign item = search.results | where: 'id', j -%}
+                  {%- liquid
+                    assign product = item[0]
+                    assign product_available = product.variants | where: 'available'
+                    if product_check == product.id or product.available == false
+                      continue
+                    endif
+                  -%}
+                  <div class="product-bought-together-item{% if forloop.first == true %} main-product {% endif %} select">
+                    <div class="product-info flex flex-wrap align-center gap-10{% if forloop.first != true %} mt-15{% endif %}">
+                      <div class="heading-color flex align-center">
+                        <div class="product-item-checkbox checkbox-group relative">
+                          <input
+                            type="checkbox"
+                            class="bought-together-checkbox input w-20 rounded-50 h-20 m-0 opacity-0 absolute inset-0 pointer"
+                            data-handle="{{ product.handle }}"
+                            checked
+                          >
+                          <span
+                            class="checkbought checkmark relative me-10  rounded-50  pointer inline-flex"
+                          ></span>
+                        </div>
+                        <a
+                          class="heading-style heading-letter-spacing no-underline"
+                          href="{{ product.url | within: collection }}"
+                        >
+                          {{ product.title }}
+                        </a>
+                      </div>
+                      <div class="variant-select mr-15">
+                        {%- if product.variants.size > 1 -%}
+                          <select
+                            name="items[][id]"
+                            class="
+                              product-variant-option text-size
+                              capitalize
+                            "
+                            data-compare-price="{{ product.compare_at_price | default: product.price }}"
+                            data-price="{{ product.price }}"
+                            data-handle="{{ product.handle }}"
+                          >
+                            {% for variant in product_available %}
+                              {%- liquid
+                                assign selected = false
+                              -%}
+                              {% assign quantity = variant.inventory_quantity %}
+                              {%- if quantity < 1 and variant.available == false -%}
+                                {% continue %}
+                              {% endif %}
+                              {%- if variant.id == product.selected_or_first_available_variant.id -%}
+                                {% assign selected = true %}
+                              {% endif %}
+                              <option
+                                value="{{ variant.id }}"
+                                {% if selected %}
+                                  selected="true"
+                                {% endif %}
+                                data-image="{{ variant.featured_image | default: image | image_url }}"
+                                data-compare-price="{{ variant.compare_at_price | default: variant.price }}"
+                                data-price="{{ variant.price }}"
+                                data-option="{{ variant.title }}"
+                              >
+                                {{ variant.title }}
+                              </option>
+                            {% endfor %}
+                          </select>
+                        {%- else -%}
+                          <input
+                            type="hidden"
+                            class="
+                              product-variant-option text-size
+                              capitalize
+                            "
+                            name="items[][id]"
+                            value="{{ product.selected_or_first_available_variant.id }}"
+                            data-compare-price="{{ product.compare_at_price | default: product.price }}"
+                            data-price="{{ product.price }}"
+                          >
+                        {% endif %}
+                        <input type="hidden" name="items[][quantity]" class="quantity" value="1">
+                      </div>
+                      {% if hidden_price != true %}
+                        <div
+                          class="product-item__price justify-content-{{ settings.product_alignment }} flex gap-custom lh-normal fs-custom"
+                          style="--font-size: {{ settings.price_size }}; --gap: 3px;--product-item__price-top: 0;"
+                        >
+                          {%- render 'price', scope: 'item', product: product, show_badges: false -%}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                {%- endfor -%}
+              </div>
+            </form>
+          </div>
+        {% endif %}
+      </div>
+    </motion-element>
+  </div>
+</div>

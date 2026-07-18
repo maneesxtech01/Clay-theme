@@ -1,0 +1,247 @@
+{%- liquid
+  assign section_st = section.settings
+  assign list_product_fake = section_st.fake_product
+  assign product_available = list_product_fake | where: 'available'
+  assign products = product_available.first
+  assign delay_time = section_st.delay_time
+  assign display_time = section_st.display_time
+  assign hidden_mobile = section_st.disable_mobile
+  assign show_fake_order = section_st.show_fake_order
+  if hidden_mobile == null
+    assign hidden_mobile = hidden_mobile
+  endif
+  if show_fake_order == null
+    assign show_fake_order = show_fake_order
+  endif
+  assign list_user = section_st.fake_user | replace: ' | ', '|' | replace: ' |', '|' | replace: '| ', '|' | split: '|'
+-%}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+{% if show_fake_order %}
+  {%- if product_available.size > 0 -%}
+    <div
+      id="fake-order"
+      class="fake-order animated w-custom max-w-100{% if hidden_mobile == true %} hidden block-md{% endif %} rounded p-10 shadow color-default fixed z-10 bottom-30{% if enable_rtl %} right-30{% else %} left-30{% endif %}"
+      style="display: none;--custom-width: 32rem"
+      data-time-delay="{{ delay_time }}"
+      data-time-display="{{ display_time }}"
+    >
+      <a
+        role="link"
+        class="absolute fake-order-close absolute pointer top-10{% if enable_rtl %} left-15{% else %} right-15{% endif %} light-dark-grey hover-heading-color"
+        aria-label="Close fake order"
+      >
+        <svg width="10" height="11" viewBox="0 0 10 11" fill="none" class="transition">
+          <use href="#icon-close" />
+        </svg>
+      </a>
+      <div class="product-fake-order flex gap-10">
+        <div class="fake-order-image rounded-5 overflow-hidden w-custom" style="--custom-width: 6rem;">
+          {%- if products.featured_image != blank -%}
+            <a data-url href="{{ products.url }}" aria-label="{{ products.title }}">
+              <img
+                data-img
+                src="{{ products.featured_image | image_url }}"
+                width="60"
+                height="80"
+                alt="{{ products.title }}"
+                loading="lazy"
+              >
+            </a>
+          {%- else -%}
+            <a data-url href="#" aria-label="{{ products.title }}">
+              {%- render 'placeholder-render', class: 'rounded-5 overflow-hidden' -%}
+            </a>
+          {% endif %}
+        </div>
+        <div class="fake-order-info">
+          <div class="flex fake-list fs-small mb-3">
+            <span data-user class="user-purchase heading-color me-5">{{ list_user[0] }}</span>
+            <span class="light-dark-grey">{{ 'fake_order.purchased' | t }}</span>
+          </div>
+          <a
+            data-url
+            data-title-fake
+            href="#"
+            aria-label="{{ products.title }}"
+            class="no-underline heading-style block lh-normal mb-12"
+          >
+            {{- 'fake_order.product_name' | t -}}
+          </a>
+          <div class="flex light-dark-grey gap-15 fs-small align-center">
+            <div class="minutes-ago">
+              <span data-time class="minutes-number">8</span> {{ 'fake_order.time_minutes' | t }}
+            </div>
+            <span class="text-verify inline-flex align-center" aria-label="{{ products.title }}">
+              <svg width="12" height="11" fill="none" class="heading-color me-5">
+                <path fill="currentColor" d="M10.5 5.04a.496.496 0 0 1 .504-.504c.133 0 .246.05.34.151.101.094.152.211.152.352v.457c0 .383-.035.754-.105 1.113-.079.36-.188.704-.329 1.032-.14.328-.308.64-.503.937-.196.29-.418.559-.668.809-.25.25-.524.472-.82.668-.29.203-.602.37-.938.504-.328.14-.672.25-1.031.328-.36.07-.727.105-1.102.105-.383 0-.754-.035-1.113-.105a5.667 5.667 0 0 1-1.032-.328c-.328-.133-.64-.301-.937-.504a5.483 5.483 0 0 1-.809-.668 5.194 5.194 0 0 1-.668-.82 5.099 5.099 0 0 1-.515-.926 6.707 6.707 0 0 1-.317-1.043 5.724 5.724 0 0 1-.105-1.102c0-.383.035-.754.105-1.113.079-.36.188-.703.329-1.031.14-.329.308-.641.503-.938.196-.289.418-.559.668-.809.25-.25.524-.472.82-.667a4.62 4.62 0 0 1 .926-.504A5.99 5.99 0 0 1 4.898.105C5.258.035 5.625 0 6 0c.406 0 .797.043 1.172.129.383.078.738.195 1.066.351a.46.46 0 0 1 .258.282c.055.125.05.25-.012.375a.502.502 0 0 1-.28.27.451.451 0 0 1-.376-.024 4.7 4.7 0 0 0-.867-.281A4.262 4.262 0 0 0 6 .996c-.617 0-1.2.117-1.746.352A4.515 4.515 0 0 0 1.852 3.75 4.331 4.331 0 0 0 1.5 5.496c0 .617.117 1.2.352 1.746.234.547.554 1.024.96 1.43A4.42 4.42 0 0 0 6 9.996c.617 0 1.2-.117 1.746-.351a4.515 4.515 0 0 0 1.43-.961A4.42 4.42 0 0 0 10.5 5.496V5.04Zm.152-3.892a.446.446 0 0 1 .34-.152c.14 0 .262.05.363.152.094.094.141.211.141.352 0 .14-.047.258-.14.352L6.351 6.855A.459.459 0 0 1 6 7.008a.459.459 0 0 1-.352-.153l-1.5-1.5a.459.459 0 0 1-.152-.351c0-.14.05-.258.152-.352A.459.459 0 0 1 4.5 4.5c.14 0 .258.05.352.152L6 5.801l4.652-4.653Z"/>
+              </svg>
+              {{ section_st.text_verify }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="fake-order-progressbar absolute inset-x-0 bottom-0 pointer-none"><span data-progressbar></span></div>
+      <script type="application/json" id="data-title">
+        {{- product_available | map: 'title' | json -}}
+      </script>
+      <script type="application/json" id="data-url">
+        {{- product_available | map: 'url' | json -}}
+      </script>
+      <script type="application/json" id="data-img">
+        {{- product_available | map: 'featured_image' | json -}}
+      </script>
+      <script type="application/json" id="data-user">
+        {{- list_user | json -}}
+      </script>
+      <script>
+        var BlsFakeOrder = (function () {
+          return {
+            init: function () {
+              this.showFakeOrder();
+            },
+            showFakeOrder: function (e) {
+              const prd = document.querySelector('#fake-order');
+              const delayTime = prd?.dataset.timeDelay;
+              const displayTime = prd?.dataset.timeDisplay;
+              var randomNumber = 0;
+              var randomImg = 0;
+              var lastRandomNumber = 0;
+              if (prd != null) {
+                const u = document.querySelector('#data-url').innerHTML;
+                const t = document.querySelector('#data-title').innerHTML;
+                const i = document.querySelector('#data-img').innerHTML;
+                const c = document.querySelector('#data-user').innerHTML;
+                const title = prd.querySelector('[data-title-fake]');
+                const url = prd.querySelectorAll('[data-url]');
+                const image = prd.querySelector('[data-img]');
+                const user = prd.querySelector('[data-user]');
+                const time = prd.querySelector('[data-time]');
+                const prog = prd.querySelector('[data-progressbar]');
+                const j = JSON.parse(u);
+                const k = JSON.parse(t);
+                const l = JSON.parse(i);
+                const m = JSON.parse(c);
+                const close = document.querySelector('.fake-order-close');
+                const invail_fake_data = setInterval(randomData, delayTime);
+                close.addEventListener('click', () => {
+                  clearInterval(invail_fake_data);
+                  prd.classList.remove('animate__fadeInUp');
+                  prd.classList.add('animate__fadeInDown');
+                  prog.style.animationDuration = '';
+                  prog.style.animationName = '';
+                  prog.style.animationFillMode = '';
+                  prog.style.background = '';
+                  prog.style.animationTimingFunction = '';
+                });
+                function randomData() {
+                  if (!prd.classList.contains('animate__fadeInUp')) {
+                    if (j.length > 0) {
+                      prd.style.removeProperty('display');
+                      prd.classList.add('animate__fadeInUp');
+                      prd.classList.remove('animate__fadeInDown');
+                      do {
+                        randomNumber = Math.floor(Math.random() * (m.length - 1) + 0);
+                        randomImg = Math.floor(Math.random() * (l.length - 1) + 0);
+                      } while (randomNumber == lastRandomNumber && randomImg == lastRandomNumber);
+                      title.innerText = k[randomImg];
+                      user.innerText = m[randomNumber];
+                      if (image) {
+                        image.src = l[randomImg];
+                        image.alt = k[randomImg];
+                      }
+                      url.forEach((e) => {
+                        e.href = j[randomImg];
+                      });
+                      var fakeTimeOrder = Math.floor(Math.random() * 60 + randomNumber);
+                      time.innerText = fakeTimeOrder;
+                      prog.style.animationDuration = `${displayTime}ms`;
+                      prog.style.animationName = 'progressbar';
+                      prog.style.animationFillMode = 'forwards';
+                      prog.style.animationTimingFunction = 'linear';
+                      prog.style.background = '#111111';
+                      setTimeout(function () {
+                        prd.classList.remove('animate__fadeInUp');
+                        prd.classList.add('animate__fadeInDown');
+                        prog.style.animationDuration = '';
+                        prog.style.animationName = '';
+                        prog.style.animationFillMode = '';
+                        prog.style.animationTimingFunction = '';
+                        prog.style.background = '';
+                      }, displayTime);
+                    }
+                  }
+                }
+              }
+            },
+          };
+        })();
+        BlsFakeOrder.init();
+      </script>
+    </div>
+  {% endif %}
+{% endif %}
+{% schema %}
+{
+  "name": "t:sections.fake-order.name",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_fake_order",
+      "label": "t:sections.fake-order.settings.show_fake_order.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "disable_mobile",
+      "label": "t:sections.fake-order.settings.disable_mobile.label",
+      "default": false
+    },
+    {
+      "type": "product_list",
+      "id": "fake_product",
+      "label": "t:sections.fake-order.settings.fake_product.label"
+    },
+    {
+      "type": "textarea",
+      "id": "fake_user",
+      "label": "t:sections.fake-order.settings.fake_user.label",
+      "default": "Jonson (California) | Tony (Texas) | Bruno (New York) | Eren (Ohio) | Lauren (Washington) | Flortino (California) | Blue (Ohio)"
+    },
+    {
+      "type": "text",
+      "id": "text_verify",
+      "label": "t:sections.fake-order.settings.text_verify.label",
+      "default": "Verify"
+    },
+    {
+      "type": "text",
+      "id": "delay_time",
+      "label": "t:sections.fake-order.settings.delay_time.label",
+      "default": "5000",
+      "info": "t:sections.fake-order.settings.delay_time.info"
+    },
+    {
+      "type": "text",
+      "id": "display_time",
+      "label": "t:sections.fake-order.settings.display_time.label",
+      "default": "6000",
+      "info": "t:sections.fake-order.settings.delay_time.info"
+    }
+  ]
+}
+{% endschema %}

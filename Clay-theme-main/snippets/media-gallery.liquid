@@ -1,0 +1,205 @@
+{% liquid
+  assign layout = 'grid'
+
+  if desktop_layout == 'thumbnail_left' or desktop_layout == 'thumbnail_bottom' or desktop_layout == 'hidden_thumbnail'
+    assign layout = 'thumbnail'
+  elsif desktop_layout == 'stack'
+    assign layout = 'stack'
+  else
+    assign layout = 'grid'
+  endif
+  assign zoom_option = 'inner-1'
+  assign mobile_options = 'hidden_thumbnail'
+  if section_st != null
+    assign mobile_options = section_st.mobile_options
+  endif
+  assign image_zoom = 'no_zoom'
+  if section_st != null
+    assign image_zoom = section_st.image_zoom
+  endif
+  if image_zoom == 'external_zoom'
+    assign zoom_option = 'external'
+  elsif image_zoom == 'inner_zoom_circle'
+    assign zoom_option = 'inner-2'
+  endif
+  if type == 'single' or type == 'quickview'
+    assign image_zoom = 'no_zoom'
+    if type == 'quickview'
+      assign layout = 'thumbnail'
+      assign desktop_layout = 'hidden_thumbnail'
+    endif
+  endif
+  assign enable_sticky_content_on_desktop = section_st.enable_sticky_content_on_desktop
+  assign image_list = ''
+  assign filtered_images = ''
+  assign product_ar = false
+  assign class_prodcut_mobile = ''
+  for image in images
+    if image.media_type == 'model'
+      assign product_ar = true
+    endif
+  endfor
+%}
+{% for image in images %}
+  {% if image.alt == 'image-360' and image.media_type == 'image' %}
+    {% capture filtered_images %}{{ filtered_images }}{{ image.preview_image | image_url }},{% endcapture %}
+  {% endif %}
+{% endfor %}
+{% assign filtered_images = filtered_images | split: ',' | compact %}
+{% for image in filtered_images %}
+  {% capture image_json %}"{{ image }}"{%- unless forloop.last -%},{%- endunless -%}{% endcapture %}
+  {% capture image_list %}{{ image_list }}{{ image_json }}{% endcapture %}
+{% endfor %}
+{% if mobile_options == 'hidden_thumbnail' or desktop_layout == 'hidden_thumbnail' %}
+  {% if  product_ar or image_list.size != 0 %}
+    {% assign class_prodcut_mobile = 'show-on-mobile' %}
+  {% endif %}
+{% endif %}
+<media-gallery
+  class="block{% if enable_sticky_content_on_desktop %} sticky top-30{% endif %}"
+  data-layout="{{ layout }}"
+>
+  {% if type != 'single' and type != 'quickview' %}
+    <zoom-action
+      class="block"
+      data-type="{{ image_zoom }}"
+      {% if zoom_type != 'open_lightbox' and zoom_type != 'no_zoom' %}
+        data-zoom-option="{{ zoom_option }}"
+      {% endif %}
+    >
+  {% endif %}
+  {% comment %} Case product has more than one media {% endcomment %}
+  {% case layout %}
+    {% when 'thumbnail' %}
+      {% comment %} Case carousel layout {% endcomment %}
+      <slide-with-thumbs
+        class="block relative {% if desktop_layout == 'thumbnail_left' %}justify-content-right {{ desktop_layout }} flex-md gap-10 overflow-hidden{% endif %}"
+        data-section-id="{{ section.id }}"
+        data-effect="slide"
+        data-speed="500"
+        data-mobile="{% if type == 'quickview' %}1.5{% else %}1{% endif %}"
+        data-tablet="1"
+        data-desktop="1"
+        data-thumb-direction="{% if desktop_layout == 'thumbnail_left' %}vertical{% else %}horizontal{% endif %}"
+        data-thumb-slides-per-view="4"
+        {%- if type == 'quickview' -%}
+          data-nothumb="true"
+        {%- endif -%}
+        {% if desktop_layout == 'thumbnail_left' %}
+          style="--col-gap: 1rem; --col-gap-desktop: 1rem;"
+        {% endif %}
+        data-auto-play-video="{%- if type == "quickview"  -%} true {%- else -%}{{ section_st.enable_video_autoplay }}{%- endif -%}"
+        {% if type == 'quickview' %}data-spacing="10"{% endif %}
+      >
+        {%- if type == 'quickview' -%}
+          {%- render 'swiper-navigation', class: 'original-style' -%}
+        {% endif %}
+        <div class="media-main-swiper skeleton-loading">
+          <div class="swiper-wrapper-preview swiper">
+            <div class="swiper-wrapper">
+              {% assign is_shopable_video = false %}
+              {% if section_st == null %}
+                {% assign is_shopable_video = true %}
+              {% endif %}
+              {% render 'product-media-layout',
+                images: images,
+                section_st: section_st,
+                theme_st: theme_st,
+                section: section,
+                custom_class: ' swiper-slide media-item',
+                is_thumbnail: is_shopable_video,
+                zoom_type: image_zoom,
+                type: type
+              %}
+            </div>
+            {%- render 'swiper-navigation', class: 'main-slide__navigation', class_prodcut_mobile: class_prodcut_mobile -%}
+          </div>
+        </div>
+        {% comment %} {%- render 'swiper-navigation' -%} {% endcomment %}
+        {% if desktop_layout == 'thumbnail_left' or desktop_layout == 'thumbnail_bottom' %}
+          <div class="media-thumb-swiper{% if desktop_layout == 'thumbnail_left' %} mt-10{% endif %}{% if mobile_options == 'hidden_thumbnail' %} thumbnail-slide__mobile--hidden{% endif %}">
+            <div
+              class="thumbnail-slide swiper{% if desktop_layout == 'thumbnail_bottom' %} mt-10 thumb-bottom{% endif %}"
+              {% if desktop_layout == 'thumbnail_bottom' %}
+                style="--gap: 15px;"
+              {% endif %}
+            >
+              <div class="swiper-wrapper">
+                {% render 'product-media-layout',
+                  images: images,
+                  section_st: section_st,
+                  theme_st: theme_st,
+                  section: section,
+                  custom_class: 'swiper-slide',
+                  zoom_type: 'no_zoom',
+                  is_thumbnail: true,
+                  type: type
+                %}
+              </div>
+            </div>
+          </div>
+          {% if section_st.mobile_options == 'hidden_thumbnail' and is_shopable_video == false %}
+            <div
+              class="swiper-pagination hidden-md"
+            ></div>
+          {% endif %}
+        {% else %}
+          {% if is_shopable_video == false %}
+            <div
+              class="swiper-pagination hidden-md"
+            ></div>
+          {% endif %}
+        {% endif %}
+      </slide-with-thumbs>
+    {% when 'grid' %}
+      {% comment %} Case grid layout {% endcomment %}
+      <div
+        id="GalleryViewer-{{ section.id }}"
+        class="grid grid-cols gap grid_scroll"
+        style="{%- if desktop_layout == 'grid_1_column' -%}--col-number: 1.2;--col-desktop: 1;--col-tablet: 1;--col-gap: 10px;{%- else -%}--col-number: 1.2;--col-tablet: 2;--col-desktop: 2;--col-gap: 10px;{%- endif -%}"
+      >
+        {% render 'product-media-layout',
+          images: images,
+          section_st: section_st,
+          theme_st: theme_st,
+          section: section,
+          zoom_type: image_zoom,
+          type: type,
+          layout: layout
+        %}
+      </div>
+    {% else %}
+      {% comment %} Case stack layout {% endcomment %}
+      <div
+        class="stacked gap-10 grid grid-cols grid_scroll"
+        id="GalleryViewer-{{ section.id }}"
+        style="--col-number: 1.2;"
+      >
+        {% render 'product-media-layout',
+          images: images,
+          section_st: section_st,
+          theme_st: theme_st,
+          section: section,
+          zoom_type: image_zoom,
+          type: type,
+          layout: layout
+        %}
+      </div>
+  {% endcase %}
+  {% comment %} Case product has only one image {% endcomment %}
+  {% comment %}
+    {%- if images.size == 1 -%}
+      {% render 'product-media-layout',
+        images: images,
+        section_st: section_st,
+        section: section,
+        theme_st: theme_st,
+        zoom_type: image_zoom,
+        type: type
+      %}
+    {%- endif -%}
+  {% endcomment %}
+  {% if type != 'single' and type != 'quickview' %}
+    </zoom-action>
+  {% endif %}
+</media-gallery>

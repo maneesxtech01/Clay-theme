@@ -1,0 +1,52 @@
+/* Marquee */
+.animation-marquee {
+  animation: ticker var(--speed, 6s) infinite linear;
+  -webkit-animation: ticker var(--speed, 6s) infinite linear;
+}
+
+.animation-marquee.right {
+  animation: ticker-right var(--speed, 6s) infinite linear;
+  -webkit-animation: ticker-right var(--speed, 6s) infinite linear;
+}
+.marquee:hover > * {
+  animation-play-state: paused;
+}
+.animation-marquee :is(.spacing, svg, .image_icon_scroll) {
+  margin-inline-end: var(--col-gap-desktop, var(--col-gap));
+}
+@keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+@-webkit-keyframes ticker {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+@keyframes ticker-right {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+@-webkit-keyframes ticker-right {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+.image_icon_scroll{
+   width: 70px;
+}

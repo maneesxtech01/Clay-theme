@@ -1,0 +1,308 @@
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin theme editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
+{
+  "sections": {
+    "page-heading": {
+      "type": "page-heading",
+      "blocks": {
+        "breadcrumb_kg6gTP": {
+          "type": "breadcrumb",
+          "settings": {
+          }
+        },
+        "heading_fmyy8C": {
+          "type": "heading",
+          "settings": {
+            "page_title": "Our Stores",
+            "header_size": "default"
+          }
+        },
+        "description_TfxHmk": {
+          "type": "description",
+          "settings": {
+            "description": "<p>Please use the below form. You can also call customer service on +1 (973) 435-3638.<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "breadcrumb_kg6gTP",
+        "heading_fmyy8C",
+        "description_TfxHmk"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "alignment": "center",
+        "overlay_opacity": 0,
+        "height": "adapt",
+        "padding_top": 68,
+        "padding_bottom": 0
+      }
+    },
+    "multi_content_JCebza": {
+      "type": "multi-content",
+      "blocks": {
+        "image_with_text_below_cYRABr": {
+          "type": "image_with_text_below",
+          "settings": {
+            "color_scheme": "scheme-1",
+            "content_width": "33.3333%",
+            "vertical_align": "start",
+            "image": "shopify:\/\/shop_images\/ours-stores-1.jpg",
+            "image_link": "",
+            "subheading": "",
+            "heading": "South Fulton",
+            "description": "<p>100 Street, Chicago, State, Zip Code: 10005, United States.<br\/>+1 (973) 435-3638<br\/>info@fashionwomen.com<\/p><p>Mon - Friday:  8:00am - 5:00pm<br\/>Saturday - Sunday:  10:00am - 5:00pm<\/p>",
+            "first_button_label": "Get Directions",
+            "first_button_link": "https:\/\/www.google.com\/maps\/place\/184+Main+Rd+E,+St+Albans+VIC+3021,+Australia\/@-37.7456374,144.8137714,16z\/data=!4m19!1m12!4m11!1m3!2m2!1d144.8139001!2d-37.7452811!1m6!1m2!1s0x6ad65fa6debeb781:0xe1d23f5d1759961e!2s184+Main+Rd+E+St+Albans+VIC+3021+%C3%9Ac!2m2!1d144.8137714!2d-37.7456374!3m5!1s0x6ad65fa6debeb781:0xe1d23f5d1759961e!8m2!3d-37.7456374!4d144.8137714!16s%2Fg%2F11c2737npp",
+            "first_button_type": "outline",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "left",
+            "spacing_top": 30,
+            "spacing_bottom": 0,
+            "content_padding_inline": 0,
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 15,
+            "heading_font_size": 20,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 20,
+            "des_font_size": 15,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 20
+          }
+        },
+        "image_with_text_below_aKEbcF": {
+          "type": "image_with_text_below",
+          "settings": {
+            "color_scheme": "scheme-1",
+            "content_width": "33.3333%",
+            "vertical_align": "start",
+            "image": "shopify:\/\/shop_images\/ours-stores-2.jpg",
+            "image_link": "",
+            "subheading": "",
+            "heading": "Place Ste-Foy",
+            "description": "<p>100 Street, Chicago, State, Zip Code: 10005, United States.<br\/>+1 (973) 435-3638<br\/>info@fashionwomen.com<\/p><p><\/p><p>Mon - Friday:  8:00am - 5:00pm<br\/>Saturday - Sunday:  10:00am - 5:00pm<\/p>",
+            "first_button_label": "Get Directions",
+            "first_button_link": "https:\/\/www.google.com\/maps\/place\/184+Main+Rd+E,+St+Albans+VIC+3021,+Australia\/@-37.7456374,144.8137714,16z\/data=!4m19!1m12!4m11!1m3!2m2!1d144.8139001!2d-37.7452811!1m6!1m2!1s0x6ad65fa6debeb781:0xe1d23f5d1759961e!2s184+Main+Rd+E+St+Albans+VIC+3021+%C3%9Ac!2m2!1d144.8137714!2d-37.7456374!3m5!1s0x6ad65fa6debeb781:0xe1d23f5d1759961e!8m2!3d-37.7456374!4d144.8137714!16s%2Fg%2F11c2737npp",
+            "first_button_type": "outline",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "left",
+            "spacing_top": 30,
+            "spacing_bottom": 0,
+            "content_padding_inline": 0,
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 15,
+            "heading_font_size": 20,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 20,
+            "des_font_size": 15,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 20
+          }
+        },
+        "image_with_text_below_7cQa8r": {
+          "type": "image_with_text_below",
+          "settings": {
+            "color_scheme": "scheme-1",
+            "content_width": "33.3333%",
+            "vertical_align": "start",
+            "image": "shopify:\/\/shop_images\/ours-stores-3.jpg",
+            "image_link": "",
+            "subheading": "",
+            "heading": "Santiago Store",
+            "description": "<p>100 Street, Chicago, State, Zip Code: 10005, United States.<br\/>+1 (973) 435-3638<br\/>info@fashionwomen.com<\/p><p><\/p><p>Mon - Friday:  8:00am - 5:00pm<br\/>Saturday - Sunday:  10:00am - 5:00pm<\/p>",
+            "first_button_label": "Get Directions",
+            "first_button_link": "https:\/\/www.google.com\/maps\/place\/184+Main+Rd+E,+St+Albans+VIC+3021,+Australia\/@-37.7456374,144.8137714,16z\/data=!4m19!1m12!4m11!1m3!2m2!1d144.8139001!2d-37.7452811!1m6!1m2!1s0x6ad65fa6debeb781:0xe1d23f5d1759961e!2s184+Main+Rd+E+St+Albans+VIC+3021+%C3%9Ac!2m2!1d144.8137714!2d-37.7456374!3m5!1s0x6ad65fa6debeb781:0xe1d23f5d1759961e!8m2!3d-37.7456374!4d144.8137714!16s%2Fg%2F11c2737npp",
+            "first_button_type": "outline",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "left",
+            "spacing_top": 30,
+            "spacing_bottom": 0,
+            "content_padding_inline": 0,
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 15,
+            "heading_font_size": 20,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 20,
+            "des_font_size": 15,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 20
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_below_cYRABr",
+        "image_with_text_below_aKEbcF",
+        "image_with_text_below_7cQa8r"
+      ],
+      "custom_css": [
+        ".sec__content-des br {display: block !important;}",
+        ".row-gap {row-gap: 30px;}"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "column_gap": 30,
+        "equal_height_adjustment": false,
+        "carousel_on_mobile": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 0,
+        "padding_bottom": 50,
+        "reset_spacing": true
+      }
+    },
+    "multi_content_KGdTiR": {
+      "type": "multi-content",
+      "blocks": {
+        "image_with_text_below_9e4JTF": {
+          "type": "image_with_text_below",
+          "settings": {
+            "color_scheme": "scheme-1",
+            "content_width": "33.3333%",
+            "vertical_align": "start",
+            "image": "shopify:\/\/shop_images\/ours-stores-4.jpg",
+            "image_link": "",
+            "subheading": "",
+            "heading": "Sydney Store",
+            "description": "<p>100 Street, Chicago, State, Zip Code: 10005, United States.<br\/>+1 (973) 435-3638<br\/>info@fashionwomen.com<\/p><p><\/p><p>Mon - Friday:  8:00am - 5:00pm<br\/>Saturday - Sunday:  10:00am - 5:00pm<\/p>",
+            "first_button_label": "Get Directions",
+            "first_button_link": "https:\/\/www.google.com\/maps\/place\/184+Main+Rd+E,+St+Albans+VIC+3021,+Australia\/@-37.7456374,144.8137714,16z\/data=!4m19!1m12!4m11!1m3!2m2!1d144.8139001!2d-37.7452811!1m6!1m2!1s0x6ad65fa6debeb781:0xe1d23f5d1759961e!2s184+Main+Rd+E+St+Albans+VIC+3021+%C3%9Ac!2m2!1d144.8137714!2d-37.7456374!3m5!1s0x6ad65fa6debeb781:0xe1d23f5d1759961e!8m2!3d-37.7456374!4d144.8137714!16s%2Fg%2F11c2737npp",
+            "first_button_type": "outline",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "left",
+            "spacing_top": 30,
+            "spacing_bottom": 0,
+            "content_padding_inline": 0,
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 15,
+            "heading_font_size": 20,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 20,
+            "des_font_size": 15,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 20
+          }
+        },
+        "image_with_text_below_MWBqbL": {
+          "type": "image_with_text_below",
+          "settings": {
+            "color_scheme": "scheme-1",
+            "content_width": "33.3333%",
+            "vertical_align": "start",
+            "image": "shopify:\/\/shop_images\/ours-stores-5.jpg",
+            "image_link": "",
+            "subheading": "",
+            "heading": "Southland Park",
+            "description": "<p>100 Street, Chicago, State, Zip Code: 10005, United States.<br\/>+1 (973) 435-3638<br\/>info@fashionwomen.com<\/p><p><\/p><p>Mon - Friday:  8:00am - 5:00pm<br\/>Saturday - Sunday:  10:00am - 5:00pm<\/p>",
+            "first_button_label": "Get Directions",
+            "first_button_link": "https:\/\/www.google.com\/maps\/place\/184+Main+Rd+E,+St+Albans+VIC+3021,+Australia\/@-37.7456374,144.8137714,16z\/data=!4m19!1m12!4m11!1m3!2m2!1d144.8139001!2d-37.7452811!1m6!1m2!1s0x6ad65fa6debeb781:0xe1d23f5d1759961e!2s184+Main+Rd+E+St+Albans+VIC+3021+%C3%9Ac!2m2!1d144.8137714!2d-37.7456374!3m5!1s0x6ad65fa6debeb781:0xe1d23f5d1759961e!8m2!3d-37.7456374!4d144.8137714!16s%2Fg%2F11c2737npp",
+            "first_button_type": "outline",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "left",
+            "spacing_top": 30,
+            "spacing_bottom": 0,
+            "content_padding_inline": 0,
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 15,
+            "heading_font_size": 20,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 20,
+            "des_font_size": 15,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 20
+          }
+        },
+        "image_with_text_below_ng4MCH": {
+          "type": "image_with_text_below",
+          "settings": {
+            "color_scheme": "scheme-1",
+            "content_width": "33.3333%",
+            "vertical_align": "start",
+            "image": "shopify:\/\/shop_images\/ours-stores-6.jpg",
+            "image_link": "",
+            "subheading": "",
+            "heading": "Stockholm Town",
+            "description": "<p>100 Street, Chicago, State, Zip Code: 10005, United States.<br\/>+1 (973) 435-3638<br\/>info@fashionwomen.com<\/p><p><\/p><p>Mon - Friday:  8:00am - 5:00pm<br\/>Saturday - Sunday:  10:00am - 5:00pm<\/p>",
+            "first_button_label": "Get Directions",
+            "first_button_link": "https:\/\/www.google.com\/maps\/place\/184+Main+Rd+E,+St+Albans+VIC+3021,+Australia\/@-37.7456374,144.8137714,16z\/data=!4m19!1m12!4m11!1m3!2m2!1d144.8139001!2d-37.7452811!1m6!1m2!1s0x6ad65fa6debeb781:0xe1d23f5d1759961e!2s184+Main+Rd+E+St+Albans+VIC+3021+%C3%9Ac!2m2!1d144.8137714!2d-37.7456374!3m5!1s0x6ad65fa6debeb781:0xe1d23f5d1759961e!8m2!3d-37.7456374!4d144.8137714!16s%2Fg%2F11c2737npp",
+            "first_button_type": "outline",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "primary",
+            "content_alignment": "left",
+            "spacing_top": 30,
+            "spacing_bottom": 0,
+            "content_padding_inline": 0,
+            "subheading_font_size": 12,
+            "subheading_font_weight": "subheading_weight",
+            "subheading_spacing_bottom": 15,
+            "heading_font_size": 20,
+            "heading_font_weight": "heading_weight",
+            "heading_uppercase": false,
+            "heading_spacing_bottom": 20,
+            "des_font_size": 15,
+            "des_font_weight": "body_weight",
+            "des_spacing_bottom": 20
+          }
+        }
+      },
+      "block_order": [
+        "image_with_text_below_9e4JTF",
+        "image_with_text_below_MWBqbL",
+        "image_with_text_below_ng4MCH"
+      ],
+      "custom_css": [
+        ".sec__content-des br {display: block !important;}"
+      ],
+      "settings": {
+        "section_width": "fluid_container",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "center",
+        "column_gap": 30,
+        "equal_height_adjustment": false,
+        "carousel_on_mobile": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    }
+  },
+  "order": [
+    "page-heading",
+    "multi_content_JCebza",
+    "multi_content_KGdTiR"
+  ]
+}

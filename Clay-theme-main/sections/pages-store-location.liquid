@@ -1,0 +1,275 @@
+<script src="{{ 'mapbox-gl.js' | asset_url }}" defer="defer"></script>
+{{ 'mapbox-gl.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'mapbox-gl-geocoder.min.js' | asset_url }}" defer="defer"></script>
+{{ 'mapbox-gl-geocoder.css' | asset_url | stylesheet_tag }}
+{{ 'store-location.css' | asset_url | stylesheet_tag }}
+{% liquid
+  assign section_st = section.settings
+  assign container = section_st.section_width
+  assign heading = section_st.heading
+  assign description = section_st.description
+  assign header_size = ''
+  if section_st.header_size == 'small'
+    assign header_size = 'h3'
+  elsif section_st.header_size == 'large'
+    assign header_size = 'h1-size'
+  endif
+  assign scroll_animation = settings.scroll_animation
+%}
+{%- capture style -%}
+  --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};
+{%- endcapture -%}
+
+<div
+  class="bls__section section bls__location-page"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ container }} section-full">
+    {%- if heading != blank or description != blank -%}
+      <div class="section__header mb-60 mb-sm-20 text-{{ section_st.header_alignment }}{% if section_st.section_width == 'full_width' %} px-20{% endif %}">
+        {%- if section_st.heading != blank -%}
+          <motion-element
+            data-motion="fade-up-lg"
+            {% if scroll_animation != 'slide_in' %}
+              hold
+            {% endif %}
+            data-motion-delay="50"
+            class="block {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}"
+            style="
+              {%- if scroll_animation != 'none' -%}
+                --animation-order: 0;
+              {% endif %}
+            "
+          >
+            <h2 class="section__header-heading heading-letter-spacing {{ header_size  }} mt-0{% if section_st.description != blank %} mb-10{% else %} mb-0{% endif %}">
+              {{ section_st.heading }}
+            </h2>
+          </motion-element>
+        {% endif %}
+        {%- if section_st.description != blank -%}
+          <motion-element
+            data-motion="fade-up-lg"
+            data-motion-delay="150"
+            {% if scroll_animation != 'slide_in' %}
+              hold
+            {% endif %}
+            class="section__header-des block rich__text-m0"
+            style="
+              {%- if scroll_animation != 'none' -%}
+                --animation-order: 1
+              {% endif %}
+            "
+          >
+            {{ section_st.description }}
+          </motion-element>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="flex store-wrapper">
+      <div class="store-infor">
+        {% for block in section.blocks %}
+          {% if section.blocks.size > 0 %}
+            <div
+              {{ block.shopify_attributes }}
+              class="store-infor__items"
+              data-lng="{{ block.settings.store_lng }}"
+              data-lat="{{ block.settings.store_lat }}"
+              data-name="{{ block.settings.store_name }}"
+              data-address="{{ block.settings.store_address }}"
+              data-phone="{{ block.settings.store_phone }}"
+            >
+              {% if block.settings.store_name != blank %}
+                <a
+                  href="#"
+                  id="infor-store_{{ forloop.index | minus: 1 }}"
+                  class="store-infor__name"
+                >
+                  {{ block.settings.store_name }}
+                </a>
+              {% endif %}
+              {% if block.settings.store_address != blank or block.settings.store_phone %}
+                <div class="store-infor__information">
+                  {{ block.settings.store_address }}
+                  <br>
+                  {{ block.settings.store_phone }}
+                </div>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+      <div class="store-map">
+        <div id="map" data-access-token="{{ section.settings.mapbox_token }}"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="{{ 'page-store-location.js' | asset_url }}" defer="defer"></script>
+
+{% schema %}
+{
+  "name": "t:sections.store-location-page.name",
+  "class": "bls-store-location-page",
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:sections.all.section_width.label",
+      "default": "fluid_container",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "mapbox_token",
+      "label": "Mapbox Access Token",
+      "info": "Enter your Mapbox public access token."
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_header.label"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.all.section_header.heading.label",
+      "default": "Store Locator"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:sections.all.section_header.description.label"
+    },
+    {
+      "type": "select",
+      "id": "header_size",
+      "label": "t:sections.all.section_header.header_size.label",
+      "default": "medium",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:sections.all.section_header.header_size.small.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.all.section_header.header_size.medium.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.section_header.header_size.large.label"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "t:sections.all.section_header.alignment.label",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.section_header.alignment.left.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.section_header.alignment.center.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.section_header.alignment.right.label"
+        }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "t:sections.store-location-page.blocks.item.name",
+      "settings": [
+        {
+          "type": "header",
+          "content": "t:sections.store-location-page.blocks.item.settings.header.content2"
+        },
+        {
+          "type": "text",
+          "id": "store_lng",
+          "label": "t:sections.store-location-page.blocks.item.settings.store_lng.label",
+          "info": "t:sections.store-location-page.blocks.item.settings.store_lng.info",
+          "default": "105.77925"
+        },
+        {
+          "type": "text",
+          "id": "store_lat",
+          "label": "t:sections.store-location-page.blocks.item.settings.store_lat.label",
+          "info": "t:sections.store-location-page.blocks.item.settings.store_lat.info",
+          "default": "21.0075"
+        },
+        {
+          "type": "paragraph",
+          "content": "t:sections.store-location-page.blocks.item.settings.paragraph.label"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.store-location-page.blocks.item.settings.header.content2"
+        },
+        {
+          "type": "text",
+          "id": "store_name",
+          "label": "t:sections.store-location-page.blocks.item.settings.store_name.label",
+          "default": "Umino"
+        },
+        {
+          "type": "textarea",
+          "id": "store_address",
+          "label": "t:sections.store-location-page.blocks.item.settings.store_address.label",
+          "default": "268 St, South New York/NY 98944, United States."
+        },
+        {
+          "type": "text",
+          "id": "store_phone",
+          "label": "t:sections.store-location-page.blocks.item.settings.store_phone.label",
+          "default": "+222-1800-2628"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

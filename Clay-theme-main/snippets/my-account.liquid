@@ -1,0 +1,105 @@
+{%- liquid
+  assign section_st = section.settings
+  assign enable_login_popup = section_st.enable_login_popup
+  assign routes_login = routes.account_login_url
+  assign login_one_time = true
+  if routes_login contains 'login'
+    assign login_one_time = false
+  endif
+-%}
+{% # theme-check-disable UnclosedHTMLElement %}
+{% if type != 'header_mega' %}
+  <div class="header_account hidden block-1025">
+    {% if customer %}
+      <div
+        aria-label="header icon account"
+        class="btn-reset pointer header-icon header-color w-44 h-44 inline-flex content-center header__icon-account header-color {% if customer.email == blank %}action-login{% endif %}"
+      >
+    {%- else -%}
+      {%- if enable_login_popup and login_one_time == false -%}
+        <button
+          aria-label="account"
+          class="btn-reset pointer action-login-popup header-icon transition header-color w-44 h-44 inline-flex content-center header__icon-account header-color"
+        >
+      {%- else -%}
+        <a
+          href="{{ routes.account_login_url }}"
+          aria-label="account"
+          class="btn-reset pointer header-icon transition header-color w-44 h-44 inline-flex content-center header__icon-account header-color lh-1"
+        >
+      {%- endif -%}
+    {%- endif -%}
+    {%- if customer -%}
+      <a class="header-color lh-1" href="{{ routes.account_url }}" aria-label="{{ 'customer.account.title' | t }}">
+    {%- endif -%}
+    <svg width="16" height="16" fill="none">
+      <use href="#icon-account" />
+    </svg>
+    {%- if customer -%}
+      </a>
+    {%- endif -%}
+    {%- if customer -%}
+      </div>
+    {%- else -%}
+      {%- if enable_login_popup and login_one_time == false -%}</button>{%- else -%}</a>{%- endif -%}
+    {%- endif -%}
+  </div>
+{% else %}
+  <div class="header_account header-account__mega hidden block-1025">
+    {% if customer %}
+      <div
+        aria-label="header icon account"
+        class="btn-reset pointer header-icon header-color flex content-center header__icon-account header-color {% if customer.email == blank %}action-login{% endif %}"
+      >
+    {%- else -%}
+      {%- if enable_login_popup and login_one_time == false -%}
+        <button
+          aria-label="account"
+          class="btn-reset pointer action-login-popup header-icon transition header-color flex content-center header__icon-account header-color"
+        >
+      {%- else -%}
+        <a
+          href="{{ routes.account_login_url }}"
+          aria-label="account"
+          class="btn-reset pointer header-icon transition header-color flex content-center header__icon-account header-color lh-1"
+        >
+      {%- endif -%}
+    {%- endif -%}
+    {%- if customer -%}
+      <a class="header-color lh-1" href="{{ routes.account_url }}" aria-label="{{ 'customer.account.title' | t }}">
+    {%- endif -%}
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+      <path d="M22.8743 21.8337C21.7111 19.8659 20.0513 18.2344 18.0593 17.1009C16.0673 15.9674 13.8123 15.3711 11.5174 15.3711C9.22257 15.3711 6.96751 15.9674 4.97554 17.1009C2.98358 18.2344 1.3238 19.8659 0.160556 21.8337C0.0181459 22.089 -0.0181103 22.3895 0.059556 22.671C0.0961871 22.8144 0.163198 22.9483 0.256099 23.0638C0.349 23.1794 0.465646 23.2738 0.598222 23.3408C0.769252 23.4372 0.962746 23.4873 1.15933 23.4859C1.35428 23.4941 1.5477 23.4484 1.71808 23.3538C1.88846 23.2592 2.02913 23.1195 2.12444 22.9501C3.08736 21.3202 4.46164 19.9688 6.11116 19.0299C7.76068 18.091 9.62817 17.597 11.5287 17.597C13.4291 17.597 15.2966 18.091 16.9461 19.0299C18.5957 19.9688 19.9699 21.3202 20.9329 22.9501C21.0828 23.2035 21.3271 23.3879 21.6129 23.4632C21.8987 23.5384 22.2028 23.4985 22.4591 23.352C22.5867 23.2843 22.6986 23.1907 22.7875 23.0772C22.8765 22.9637 22.9404 22.833 22.9753 22.6933C23.0168 22.5506 23.0293 22.401 23.0119 22.2534C22.9946 22.1058 22.9478 21.9631 22.8743 21.8337Z" fill="currentColor"/>
+      <path d="M11.5211 14.3C13.3294 14.3003 15.0655 13.5842 16.3559 12.3057C17.6464 11.0272 18.3879 9.28854 18.4211 7.46384C18.4211 5.61691 17.6941 3.84563 16.4001 2.53966C15.1061 1.23369 13.3511 0.5 11.5211 0.5C9.6911 0.5 7.93606 1.23369 6.64206 2.53966C5.34806 3.84563 4.62109 5.61691 4.62109 7.46384C4.65425 9.28854 5.39582 11.0272 6.68624 12.3057C7.97667 13.5842 9.71281 14.3003 11.5211 14.3ZM6.92109 7.46384C6.92109 6.23255 7.40574 5.0517 8.2684 4.18105C9.13107 3.3104 10.3011 2.82128 11.5211 2.82128C12.7411 2.82128 13.9111 3.3104 14.7738 4.18105C15.6365 5.0517 16.1211 6.23255 16.1211 7.46384C16.1211 8.69512 15.6365 9.87597 14.7738 10.7466C13.9111 11.6173 12.7411 12.1064 11.5211 12.1064C10.3011 12.1064 9.13107 11.6173 8.2684 10.7466C7.40574 9.87597 6.92109 8.69512 6.92109 7.46384Z" fill="currentColor"/>
+      </svg>
+    {% if type == 'header_mega' %}
+      <span class="text-icon">
+        <a class="no-underline" href="{{ routes.account_logout_url }}" aria-label="{{ 'customer.account.title' | t }}">
+          <span class="text-icons-top">
+            {%- liquid
+              if customer
+                echo 'customer.log_out' | t
+              else
+                echo 'customer.log_in' | t
+              endif
+            -%}
+          </span>
+        </a>
+        <a class="no-underline" href="{{ routes.account_url }}" aria-label="{{ 'customer.account.title' | t }}">
+          <span>
+            {{ 'customer.account.title' | t }}
+          </span>
+        </a>
+      </span>
+    {% endif %}
+    {%- if customer -%}
+      </a>
+    {%- endif -%}
+    {%- if customer -%}
+      </div>
+    {%- else -%}
+      {%- if enable_login_popup and login_one_time == false -%}</button>{%- else -%}</a>{%- endif -%}
+    {%- endif -%}
+  </div>
+{% endif %}
+{% # theme-check-disable UnclosedHTMLElement %}

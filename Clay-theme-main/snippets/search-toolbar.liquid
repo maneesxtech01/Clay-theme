@@ -1,0 +1,115 @@
+{%- liquid
+  assign enable_filtering = enable_filtering
+  assign filter_layout = filter_layout
+  assign number_products_per_page = section_st.number_products_per_page
+  assign sorting = section_st.sorting
+-%}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+<div class="toolbar toolbar-products flex gap-15 gap-md-30 align-center mb-20{% if filter_layout == 'horizontal' %} mt-1025-60{% endif %}">
+  {%- if enable_filtering -%}
+    <btn-filter class="btn-filter btn-primary inline-flex content-center gap-5 subheading_weight rounded-3 px-10 py-5 {{ filter_layout }} overlay{% if enable_filtering and filter_layout != 'drawer' %} inline-flex hidden-1025{% endif %}">
+      <svg width="14" height="13" fill="none">
+        <path fill="#fff" d="M11.58 1.5H2.42l3.855 4.553a.474.474 0 0 1 .096.191.482.482 0 0 1 .041.192v3.459l1.176.574V6.436c0-.073.009-.142.027-.206a.72.72 0 0 1 .11-.177L11.58 1.5ZM12.838.338c.064 0 .128.014.191.04.064.02.123.051.178.097.128.1.196.232.205.396a.533.533 0 0 1-.137.424L8.75 6.655v4.757a.695.695 0 0 1-.014.137.587.587 0 0 1-.383.424.598.598 0 0 1-.45-.041L5.577 10.77a.597.597 0 0 1-.246-.205.648.648 0 0 1-.082-.315V6.654L.725 1.294a.719.719 0 0 1-.11-.177.743.743 0 0 1-.027-.205.54.54 0 0 1 .164-.396.563.563 0 0 1 .41-.178h11.676Z"/>
+      </svg>
+      {{ 'collections.toolbar.filter' | t }}
+    </btn-filter>
+  {%- endif -%}
+  {%- if number_products_per_page and search.results.size > 0 -%}
+    <div class="toolbar-amount hidden block-1025" id="toolbar-amount">
+      {%- if search.results_count -%}
+        {{ 'templates.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+      {%- elsif search.products_count == search.all_products_count -%}
+        {{ 'products.facets.product_count_simple' | t: count: search.products_count }}
+      {%- else -%}
+        {{
+          'products.facets.product_count'
+          | t: product_count: search.products_count, count: search.all_products_count
+        }}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+  {%- if sorting and enable_filtering -%}
+    <div class="toolbar-sorter sorter flex gap-10 align-center relative flex-1 flex-end">
+      <div class="select-custom pointer user-select-none">
+        {%- assign sort_by = search.sort_by | default: search.default_sort_by -%}
+        {%- liquid
+          assign current_sort_name = 'Best Selling'
+          case sort_by
+            when 'best-selling'
+              assign current_sort_name = 'Best Selling'
+            when 'created-descending'
+              assign current_sort_name = 'Newest'
+            when 'title-ascending'
+              assign current_sort_name = 'A-Z'
+            when 'title-descending'
+              assign current_sort_name = 'Z-A'
+            when 'price-ascending'
+              assign current_sort_name = 'Price (low to high)'
+            when 'price-descending'
+              assign current_sort_name = 'Price (high to low)'
+            else
+              for option in search.sort_options
+                if option.value == sort_by
+                  assign current_sort_name = option.name
+                endif
+              endfor
+          endcase
+        -%}
+        <select-sorter class="select-selected user-select-none inline-flex align-center gap-10 gap-lg-20 lh-normal pointer overlay">
+          <div class="flex flex-column align-start">
+            <span class="sort-by-label">{{- 'products.facets.sort_by_label' | t -}}</span>
+            <span class="sort-by-active heading-color subheading_weight">
+              {{ current_sort_name }}
+            </span>
+          </div>
+          <svg class="icon-down transition active-rotated" width="10" height="6">
+            <use href="#icon-arrow-down"></use>
+          </svg>
+        </select-sorter>
+        <div
+          class="select-custom__content facet-filters__sort invisible transition rounded-5 select__select absolute shadow list-none z-2 py-20 px-25 color-default{% if enable_rtl %} left-0{% else %} right-0{% endif %}"
+          id="SortBy"
+          aria-describedby="a11y-refresh-page-message"
+        >
+          <icon-close class="pointer-none border bg-white inline-flex hidden-sm mx-auto rounded-50 overflow-hidden absolute top-0 inset-x-0 w-50 h-50 content-center heading-color">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" class="transition">
+              <use href="#icon-close"></use>
+            </svg>
+          </icon-close>
+          <div class="h-full overflow-auto sort-by-radio-list">
+            {%- assign sort_options = "best-selling|Best Selling,created-descending|Newest,title-ascending|A-Z,title-descending|Z-A,price-ascending|Price (low to high),price-descending|Price (high to low)" | split: ',' -%}
+            {%- for option in sort_options -%}
+              {%- assign option_parts = option | split: '|' -%}
+              {%- assign val = option_parts[0] -%}
+              {%- assign label = option_parts[1] -%}
+              
+              <filter-sort
+                class="filter-sort-option flex align-center gap-10 py-8 pointer text-color hover-heading-color transition body_weight"
+                value="{{ val }}"
+                {% if val == sort_by %}
+                  selected="selected"
+                {% endif %}
+              >
+                <span class="custom-radio-button inline-flex content-center rounded-50 border relative {% if val == sort_by %}checked{% endif %}" style="width: 18px; height: 18px; flex-shrink: 0;">
+                  <span class="custom-radio-dot absolute rounded-50" style="width: 8px; height: 8px; top: 4px; left: 4px; display: {% if val == sort_by %}block{% else %}none{% endif %};"></span>
+                </span>
+                <span>{{ label }}</span>
+              </filter-sort>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+</div>

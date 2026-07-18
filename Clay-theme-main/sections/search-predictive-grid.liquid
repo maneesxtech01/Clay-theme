@@ -1,0 +1,188 @@
+{%- liquid
+  assign theme_st = settings
+  assign show_search_price = theme_st.show_search_price
+  assign search_type = theme_st.search_type
+  assign predictive_type = predictive_search
+  assign results_count = predictive_type.resources.products.size
+  assign results = predictive_type.resources.products
+  assign product_grid_list = ''
+  if search_type == 'default' or search_type == 'popup'
+    assign product_grid_list = 'normal'
+  else
+    assign product_grid_list = 'list'
+  endif
+-%}
+{%- if predictive_type.performed -%}
+  {%- liquid
+    assign theme_st = settings
+    assign search_terms = predictive_type.terms
+    assign key_terms = search_terms
+    if search_terms contains 'product_type:'
+      assign arr_terms = search_terms | remove: 'product_type:' | split: ' AND '
+      assign product_type = arr_terms[0] | strip
+      assign search_terms = arr_terms[1] | strip
+      if search_terms == blank
+        assign key_terms = key_terms | remove: ' AND '
+        assign search_terms = product_type
+      endif
+    endif
+    assign search_result = theme_st.search_result
+  -%}
+  <div
+    class="search-list-item{% if search_type == 'default' or search_type == 'popup' %} mt-25{% endif %}{% if search_result == 'all' and search_type != 'drawer' %}{% if predictive_search.resources.pages.size > 0 or predictive_search.resources.articles.size > 0 or predictive_search.resources.collections.size > 0 %}  flex gap-30 flex-wrap{% endif %}{% endif %}"
+    style="--col-width: 27rem"
+  >
+    {%- if results_count > 0 -%}
+      {% if search_result == 'all' and search_type != 'drawer' %}
+        {% # theme-check-disable UnclosedHTMLElement %}
+        {%- if predictive_search.resources.pages.size > 0 or predictive_search.resources.articles.size > 0 -%}
+          <div class="search_product w-full col-md-remaining">
+        {% endif %}
+        {% # theme-check-disable UnclosedHTMLElement %}
+      {% endif %}
+      <div class="fs-18 subheading_weight mb-22 heading-letter-spacing lh-normal">
+        {{ 'templates.search.search_for_html' | t: terms: search_terms }}
+      </div>
+      {%- if predictive_search.resources.queries.size > 0 -%}
+        <div class="mb-24">
+          <h3 class="h5 mt-0 mb-8">
+            {{ 'templates.search.suggestions' | t }}
+          </h3>
+          <ul
+            role="group"
+            aria-labelledby="predictive-search-queries"
+            class="list-unstyled flex flex-wrap gap-10 row-gap-custom"
+            style="--row-gap: 5px;"
+          >
+            {%- for query in predictive_search.resources.queries -%}
+              <li role="option" aria-selected="false">
+                <a
+                  href="{{ query.url }}"
+                  class="predictive-search__item no-underline"
+                >
+                  <span aria-label="{{ query.text }}">{{ query.styled_text }}</span>
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {% endif %}
+      <div id="search-results">
+        <div
+          id="search-results-list"
+          class="search-results-list{% if search_type == 'default' or search_type == 'popup' %} grid grid-cols gap-15 gap-lg-20{% endif %}"
+          style="{% if search_type == 'default' or search_type == 'popup' %}--col-number: 1;--col-tablet: 1;--col-desktop-small:3;--col-desktop: 5;{% endif %}"
+        >
+          {%- for product in results limit: 5 -%}
+            {% render 'product-item',
+              card_product: product,
+              section_id: section.id,
+              template_enable_action: false,
+              template_enable_product_vendor: false,
+              template_enable_rate: true,
+              template_enable_price: show_search_price,
+              template_enable_product_short_description: false,
+              template_enable_color_swatches: false,
+              type: product_grid_list
+            %}
+          {%- endfor -%}
+        </div>
+      </div>
+      {% # theme-check-disable UnclosedHTMLElement %}
+      {% if search_result == 'all' and search_type != 'drawer' %}
+        {%- if predictive_search.resources.pages.size > 0
+          or predictive_search.resources.articles.size > 0
+          or predictive_search.resources.collections.size > 0
+        -%}
+          </div>
+        {% endif %}
+      {% endif %}
+      {% # theme-check-disable UnclosedHTMLElement %}
+      {% if search_result == 'all' %}
+        {%- if predictive_search.resources.pages.size > 0
+          or predictive_search.resources.articles.size > 0
+          or predictive_search.resources.collections.size > 0
+        -%}
+          <div class="w-full{% if search_type == 'default' or search_type == 'popup' %} col-md-w-custom{% else %} mt-30{% endif %}">
+            {%- if predictive_search.resources.pages.size > 0 -%}
+              <div class="mb-20">
+                <h3 class="h5 mt-0 mb-8 heading-letter-spacing">
+                  {{ 'templates.search.pages' | t }}
+                </h3>
+                {%- for page in predictive_search.resources.pages -%}
+                  <a
+                    class="predictive-search__item no-underline heading-color subheading_weight block"
+                    href="{{ page.url }}"
+                    aria-label="{{ page.title }}"
+                    aria-selected="false"
+                    role="option"
+                  >
+                    {{ page.title }}
+                  </a>
+                {%- endfor -%}
+              </div>
+            {% endif %}
+            {%- if predictive_search.resources.articles.size > 0 -%}
+              <div class="mb-20">
+                <h3 class="h5 mt-0 mb-8 heading-letter-spacing">
+                  {{ 'templates.search.article' | t }}
+                </h3>
+                {%- for articles in predictive_search.resources.articles -%}
+                  <a
+                    class="predictive-search__item no-underline heading-color subheading_weight block"
+                    href="{{ articles.url }}"
+                    aria-label="{{ articles.title }}"
+                    aria-selected="false"
+                    role="option"
+                  >
+                    {{ articles.title }}
+                  </a>
+                {%- endfor -%}
+              </div>
+            {% endif %}
+            {%- if predictive_search.resources.collections.size > 0 -%}
+              <div class="mb-20">
+                <h3 class="h5 mt-0 mb-8 heading-letter-spacing">
+                  {{ 'templates.search.pages' | t }}
+                </h3>
+
+                {%- for collection in predictive_search.resources.collections -%}
+                  <a
+                    class="predictive-search__item no-underline heading-color subheading_weight block"
+                    href="{{ collection.url }}"
+                    aria-label="{{ collection.title }}"
+                    aria-selected="false"
+                    role="option"
+                  >
+                    {{ collection.title }}
+                  </a>
+                {%- endfor -%}
+              </div>
+            {% endif %}
+          </div>
+        {% endif %}
+      {% endif %}
+      {% if results_count > 0 %}
+        <div class="view-all text-center mt-30 w-full">
+          <a
+            class="btn btn-primary no-underline inline-block"
+            href="{{ routes.search_url }}?type=product&options%5Bfields%5D=title,vendor,product_type,variants.title,variants.sku&options%5Bunavailable_products%5D=last&options%5Bprefix%5D=last&q={{ key_terms | url_escape }}"
+          >
+            {{- 'general.search.more_results' | t -}}
+          </a>
+        </div>
+      {% endif %}
+    {%- else -%}
+      <div id="search-results-empty" class="text-center">
+        <svg width="26" height="25" viewBox="0 0 26 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13 25C10.5277 25 8.11099 24.2669 6.05538 22.8934C3.99976 21.5199 2.39761 19.5676 1.45151 17.2835C0.505416 14.9995 0.257874 12.4861 0.74019 10.0614C1.2225 7.63661 2.41301 5.40933 4.16117 3.66117C5.90933 1.91301 8.13661 0.722505 10.5614 0.24019C12.9861 -0.242126 15.4995 0.00541617 17.7835 0.951511C20.0676 1.89761 22.0199 3.49976 23.3934 5.55538C24.7669 7.61099 25.5 10.0277 25.5 12.5C25.5 15.8152 24.183 18.9946 21.8388 21.3388C19.4946 23.683 16.3152 25 13 25ZM13 1.66667C10.8574 1.66667 8.76286 2.30204 6.98133 3.49242C5.19979 4.6828 3.81126 6.37473 2.99131 8.35427C2.17136 10.3338 1.95682 12.512 2.37483 14.6135C2.79284 16.7149 3.82461 18.6453 5.33968 20.1603C6.85475 21.6754 8.78506 22.7072 10.8865 23.1252C12.988 23.5432 15.1662 23.3286 17.1457 22.5087C19.1253 21.6887 20.8172 20.3002 22.0076 18.5187C23.198 16.7371 23.8333 14.6426 23.8333 12.5C23.8333 9.62682 22.692 6.87132 20.6603 4.83968C18.6287 2.80804 15.8732 1.66667 13 1.66667Z" fill="#111111"/>
+          <path d="M7.8166 11.2083C8.53457 11.2083 9.1166 10.6263 9.1166 9.90834C9.1166 9.19037 8.53457 8.60834 7.8166 8.60834C7.09863 8.60834 6.5166 9.19037 6.5166 9.90834C6.5166 10.6263 7.09863 11.2083 7.8166 11.2083Z" fill="#111111"/>
+          <path d="M18.1838 11.2083C18.9018 11.2083 19.4838 10.6263 19.4838 9.90834C19.4838 9.19037 18.9018 8.60834 18.1838 8.60834C17.4658 8.60834 16.8838 9.19037 16.8838 9.90834C16.8838 10.6263 17.4658 11.2083 18.1838 11.2083Z" fill="#111111"/>
+          <path d="M17.5827 17.8667C17.473 17.8673 17.3643 17.8463 17.2628 17.8048C17.1612 17.7634 17.0689 17.7022 16.991 17.625C15.9317 16.5676 14.4961 15.9737 12.9994 15.9737C11.5026 15.9737 10.067 16.5676 9.00769 17.625C8.93022 17.7031 8.83805 17.7651 8.73651 17.8074C8.63496 17.8497 8.52603 17.8715 8.41602 17.8715C8.30602 17.8715 8.19709 17.8497 8.09554 17.8074C7.99399 17.7651 7.90183 17.7031 7.82436 17.625C7.66915 17.4689 7.58203 17.2577 7.58203 17.0375C7.58203 16.8174 7.66915 16.6062 7.82436 16.45C9.19877 15.0811 11.0596 14.3126 12.9994 14.3126C14.9392 14.3126 16.7999 15.0811 18.1744 16.45C18.3296 16.6062 18.4167 16.8174 18.4167 17.0375C18.4167 17.2577 18.3296 17.4689 18.1744 17.625C18.0965 17.7022 18.0041 17.7634 17.9026 17.8048C17.8011 17.8463 17.6924 17.8673 17.5827 17.8667Z" fill="#111111"/>
+        </svg>
+        <p>{{ 'templates.search.search_empty_html' | t: terms: search_terms }}</p>
+      </div>
+    {% endif %}
+
+  </div>
+{% endif %}

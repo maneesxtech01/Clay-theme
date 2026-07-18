@@ -1,0 +1,154 @@
+{{ 'blog.css' | asset_url | stylesheet_tag }}
+<div class="blog_sidebar w-full col-md-w-custom">
+  <div class="sticky top-30">
+    {%- for block in section.blocks -%}
+      {%- liquid
+        assign block_st = block.settings
+      -%}
+      {%- case block.type -%}
+        {%- when 'categories' -%}
+          <div {{ block.shopify_attributes }} class="widget mb-30 pb-30 mb-xl-40 pb-xl-40 border-bottom last-0">
+            <h4 class="widget-title h6 mb-20 mt-0">{{ block_st.title | escape }}</h4>
+            <div class="widget-content">
+              {%- if linklists[block_st.menu].links.size > 0 -%}
+                <ul class="blogSidebar-items-categories list-none p-0 m-0">
+                  {%- for link in block_st.menu.links -%}
+                    <li class="pb-8 last-0">
+                      <a
+                        href="{{ link.url }}"
+                        aria-label="{{ link.title }}"
+                        class="no-underline word-break"
+                      >
+                        {{ link.title }}
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- when 'tags' -%}
+          <div {{ block.shopify_attributes }} class="widget mb-30 pb-30 mb-xl-40 pb-xl-40 border-bottom last-0">
+            <h4 class="widget-title h6 mb-20 mt-0">{{ block_st.title | escape }}</h4>
+            <div class="widget-content">
+              <ul class="blogTagsList list-inline p-0 list-none my-0 flex flex-wrap gap-10">
+                {% for tag in blog.all_tags limit: 8 %}
+                  {% if current_tags contains tag %}
+                    <li class="no-underline py-8 px-15 btn-rounded inline-flex content-center lh-normal active">
+                      {{ tag }}
+                    </li>
+                  {% else %}
+                    <li class="blog-tag">
+                      {{ tag | link_to_tag: tag }}
+                    </li>
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {%- when 'recent_post' -%}
+          {%- liquid
+            assign block_st = block.settings
+          -%}
+          {%- capture style_ratio -%}
+          {%- liquid
+            assign ratio = ''
+            if block_st.image_ratio != 'adapt'
+              case block_st.image_ratio
+                when 'square'
+                  assign ratio = '1/1'
+                when 'landscape'
+                  assign ratio = '4/3'
+                when 'portrait'
+                  assign ratio = '3/4'
+                else
+                  if block_st.custom_ratio != empty
+                    assign ratio = block_st.custom_ratio | replace: ':', '/'
+                  else
+                    assign ratio = '3/2'
+                  endif
+              endcase
+            else
+              if article.image != blank
+                assign ratio = article.image.aspect_ratio
+              else
+                assign ratio = '3/2'
+              endif
+            endif
+          -%}
+          --aspect-ratio: {{ ratio }};
+        {%- endcapture -%}
+          <div {{ block.shopify_attributes }} class="widget mb-30 pb-30 mb-xl-40 pb-xl-40 border-bottom last-0">
+            <h4 class="widget-title h6 mb-20 mt-0">{{ block_st.title | escape }}</h4>
+            <div class="widget-content">
+              <div class="listSidebarBlog">
+                {% for article in blogs[blog.handle].articles limit: block_st.maximum %}
+                  <div class="flex flex-nowrap mb-20 last-0 gap-15 align-center">
+                    <div class="blog-posts-image w-custom" style="--custom-width: 7.5rem;">
+                      <a href="{{ article.url }}" style="{{ style_ratio | strip | strip_newlines }}" class="block">
+                        {%- if article.image != blank -%}
+                          {%- assign image_alt = article.image.alt | default: article.title | escape -%}
+                          {% render 'responsive-image',
+                            type: 'blog',
+                            class: 'rounded-5',
+                            image: article.image,
+                            image_alt: image_alt
+                          %}
+                        {%- else -%}
+                          {%- render 'placeholder-render', class: 'rounded-5' -%}
+                        {%- endif -%}
+                      </a>
+                    </div>
+                    <div class="post-info media-body flex-1">
+                      <a class="post-title block heading-style mb-5 lh-normal no-underline" href="{{ article.url }}">
+                        {{ article.title }}
+                      </a>
+                      <span class="post-date fs-small">
+                        <time datetime="{{ article.published_at | date: '%b %d %Y' }}">
+                          {{ article.published_at | date: '%b %d %Y' }}
+                        </time>
+                      </span>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        {%- when 'image_banner' -%}
+          {%- liquid
+            assign featured_image = block_st.image
+            assign url = block_st.url
+            assign open_link = block_st.open_link
+            if featured_image
+              assign ratio = featured_image.aspect_ratio
+            else
+              assign ratio = '1/1'
+            endif
+          -%}
+          <div {{ block.shopify_attributes }} class="banner mb-30 pb-30 mb-xl-40 pb-xl-40 last-0">
+            <a
+              href="{% if url == blank %}#{% else %}{{ url }}{% endif %}"
+              class="banner-link"
+              {%- if open_link != blank -%}
+                target="_blank"
+              {%- endif -%}
+            >
+              <div class="image" style="--aspect-ratio: {{ ratio }}">
+                {%- if featured_image != blank -%}
+                  {%- assign image_alt = featured_image.alt | escape -%}
+                  {% render 'responsive-image',
+                    type: 'other',
+                    image: featured_image,
+                    image_alt: image_alt,
+                    class: 'rounded'
+                  %}
+                {%- else -%}
+                  {%- render 'placeholder-render', class: 'rounded' -%}
+                {%- endif -%}
+              </div>
+            </a>
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</div>

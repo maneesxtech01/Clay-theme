@@ -1,0 +1,256 @@
+{% comment %} This snippet is not done {% endcomment %}
+
+{%- if product != blank -%}
+  {%- liquid
+    assign gift_card_recipient_feature_active = false
+    assign show_dynamic_checkout = false
+    if block != blank
+      if block.settings.show_gift_card_recipient and product.gift_card?
+        assign gift_card_recipient_feature_active = true
+      endif
+      if block.settings.show_dynamic_checkout
+        assign show_dynamic_checkout = true
+      endif
+    endif
+    assign wishlist = pages.wishlist
+    assign compare = pages.compare
+    assign action_when_click_added_wishlist = theme_st.action_when_click_added_wishlist
+    assign show_quantity = settings.show_quantity_input
+  -%}
+  {% if settings.enable_catalog_mode == false %}
+    <div class="product__submit-form buy-btn-js d-flex flex-wrap btn-large">
+      <product-form
+        class="d-block product-form flex-1"
+        data-hide-errors="{{ gift_card_recipient_feature_active }}"
+        data-section-id="{{ section.id }}"
+      >
+        {% if type != 'sticky' %}
+          <div class="product-form__error-message-wrapper" role="alert" hidden>
+            <div class="form__message error inline-flex align-center">
+              {%- render 'icon-error' -%}
+              <span class="product-form__error-message ml-5"></span>
+            </div>
+          </div>
+        {% endif %}
+        {%- form 'product',
+          product,
+          id: product_form_id,
+          class: formClass,
+          novalidate: 'novalidate',
+          data-type: 'add-to-cart-form'
+        -%}
+          <input
+            type="hidden"
+            name="id"
+            value="{{ product.selected_or_first_available_variant.id }}"
+            disabled
+            class="product-variant-id"
+          >
+          {%- if gift_card_recipient_feature_active -%}
+            {% comment %} add gift card recipient form {% endcomment %}
+            {%- render 'gift-card-recipient-form',
+              product: product,
+              form: form,
+              section: section
+            -%}
+          {%- endif -%}
+          <div class="product-form__buttons btn-large flex flex-wrap gap-10">
+            <div class="product__submit-form-cart flex flex-wrap gap-10 gap-lg-20 align-center grow-1">
+              <label class="btn-text-transform heading-color mb-0 visually-hidden" for="Quantity-{{ section.id }}">
+                {{- 'products.product.quantity.label' | t -}}
+              </label>
+              {% if show_quantity == true %}
+                <div class="product-form__input product-form__quantity skeleton-loading">
+                  <quantity-input class="quantity btn-rounded overflow-hidden border inline-flex text-center grey-bg">
+                    <button
+                      class="quantity__button inline-flex content-center pointer border-0 no-js-hidden w-custom grey-bg"
+                      name="minus"
+                      type="button"
+                      style="--custom-width: 4.5rem"
+                    >
+                      <span class="visually-hidden">
+                        {{- 'products.product.quantity.decrease' | t: product: product.title | escape -}}
+                      </span>
+                      {% render 'icon-minus' %}
+                    </button>
+                    <label class="visually-hidden" for="quantity">
+                      {{ 'general.cart.headings.quantity' | t }}
+                    </label>
+                    <input
+                      class="quantity-input bg-unset text-center appearance-none p-0-important w-custom"
+                      type="number"
+                      name="quantity"
+                      style="--input-padding: 0;--inputs-border-width: 0;--input-height: 4.8rem;--custom-width: 3.8rem;--input-border-radius: 0;--input-bg: transparent"
+                      min="{{ product.selected_or_first_available_variant.quantity_rule.min | default: '1' }}"
+                      {% if product.selected_or_first_available_variant.quantity_rule.max != null %}
+                        max="{{ product.selected_or_first_available_variant.quantity_rule.max }}"
+                      {% endif -%}
+                      step="{{ product.selected_or_first_available_variant.quantity_rule.increment | default: '1' }}"
+                      value="{{ product.selected_or_first_available_variant.quantity_rule.min | default: '1' }}"
+                      form="{{ product_form_id }}"
+                      id="quantity"
+                    >
+                    <button
+                      class="quantity__button inline-flex content-center pointer border-0 no-js-hidden w-custom grey-bg"
+                      name="plus"
+                      type="button"
+                      style="--custom-width: 4.5rem"
+                    >
+                      <span class="visually-hidden">
+                        {{- 'products.product.quantity.increase' | t: product: product.title | escape -}}
+                      </span>
+                      {% render 'icon-plus' %}
+                    </button>
+                  </quantity-input>
+                </div>
+              {% endif %}
+              <div class="button_buy-now grow-1 skeleton-loading">
+                <button
+                  type="submit"
+                  name="add"
+                  class="btn btn-primary w-full product_submit_button product-form__submit word-wrap relative"
+                  style="--btn-padding-x: 2.5rem;"
+                  {% if product.selected_or_first_available_variant.available == false %}
+                    disabled
+                  {% endif %}
+                >
+                  <span class="btn-label hidden-on-load">
+                    {%- if product.selected_or_first_available_variant.inventory_management == null -%}
+                      {{ 'products.product.general.add_to_cart' | t }}
+                    {%- else -%}
+                      {%- if product.selected_or_first_available_variant.available == false -%}
+                        {{ 'products.product.general.outstock' | t }}
+                      {%- else -%}
+                        {%- if product.selected_or_first_available_variant.inventory_quantity < 1 -%}
+                          {{ 'products.product.general.pre_order' | t }}
+
+                        {%- else -%}
+                          {{ 'products.product.general.add_to_cart' | t }}
+                        {%- endif -%}
+                      {%- endif -%}
+                    {%- endif -%}
+                  </span>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin opacity-0 icon-load">
+                    <use href="#icon-load"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            {% if show_wishlist == true %}
+              {% if wishlist == empty %}
+                {% assign action_when_click_added_wishlist = 'remove' %}
+              {% endif %}
+              <button-wishlist
+                tabindex="0"
+                class="product-item__button pointer product-item__button-wishlist tooltip relative btn-hover transition btn-hover transition bg-white rounded-50 border w-50 h-50 inline-flex content-center skeleton-loading"
+                data-product-id="{{ product.id }}"
+                data-action="{{ action_when_click_added_wishlist }}"
+                data-tooltip-remove="{{ 'products.product.actions.wishlist.remove' | t }}"
+                data-tooltip-add="{{ 'products.product.actions.wishlist.add' | t }}"
+                data-tooltip-redirect="{{ 'products.product.actions.wishlist.redirect' | t }}"
+              >
+                <svg width="14" height="13" fill="none">
+                  <use href="#icon-wishlist" />
+                </svg>
+                <span class="tooltip-content invisible rounded-3 absolute pointer-none">
+                  {{- 'products.product.actions.wishlist.add' | t -}}
+                </span>
+              </button-wishlist>
+            {% endif %}
+            {% if show_compare == true %}
+              {% assign action_when_click_added_compare = 'go_to_page' %}
+              {% if compare == empty %}
+                {% assign action_when_click_added_compare = 'remove' %}
+              {% endif %}
+              <button-compare
+                tabindex="0"
+                class="product-item__button pointer product-item__button-compare tooltip relative btn-hover transition bg-white rounded-50 border w-50 h-50 inline-flex content-center skeleton-loading"
+                data-product-id="{{ product.id }}"
+                data-action="{{ action_when_click_added_compare }}"
+                data-tooltip-remove="{{ 'products.product.actions.compare.remove' | t }}"
+                data-tooltip-add="{{ 'products.product.actions.compare.add' | t }}"
+                data-tooltip-redirect="{{ 'products.product.actions.compare.redirect' | t }}"
+              >
+                <svg width="14" height="14" fill="none">
+                  <use href="#icon-compare" />
+                </svg>
+                <span class="tooltip-content invisible rounded-3 absolute pointer-none">
+                  {{- 'products.product.actions.compare.add' | t -}}
+                </span>
+              </button-compare>
+            {% endif %}
+            {%- if show_dynamic_checkout -%}
+              
+              {%- if settings.show_checkbox_in_product_page and type == 'single' or type == 'main_product' -%}
+              
+                <terms-conditions
+                  class="w-full terms-conditions flex mt-12 mb-10 skeleton-loading"
+                  data-custom-class="term-and-condition"
+                >
+                  <div class="checkbox-group relative">
+                    <input
+                      class="input w-20 h-20 m-0 opacity-0 absolute inset-0 pointer conditions_form_product"
+                      type="checkbox"
+                      name="conditions"
+                      id="conditions_form_product-{{ product_form_id }}"
+                    >
+                    <span class="checkmark relative me-10  pointer-none pointer inline-flex"></span>
+                  </div>
+                  <label
+                    class="label pointer rich__text-m0"
+                    for="conditions_form_product-{{ product_form_id }}"
+                    style="--color-link: var(--color-heading);"
+                  >
+                    {{ settings.text_terms_conditions }}
+                  </label>
+                </terms-conditions>
+              {%- endif -%}
+              {%- if settings.show_check_box_in_quick_view and type == 'quickview' -%}
+                <terms-conditions
+                  class="w-full terms-conditions flex mt-12 mb-10"
+                  data-custom-class="term-and-condition"
+                >
+                  <div class="checkbox-group relative">
+                    <input
+                      class="input w-20 h-20 m-0 opacity-0 absolute inset-0 pointer conditions_form_product"
+                      type="checkbox"
+                      name="conditions"
+                      id="conditions_form_product-{{ product_form_id }}"
+                    >
+                    <span class="checkmark relative me-10  pointer-none pointer inline-flex"></span>
+                  </div>
+                  <label
+                    class="label pointer rich__text-m0"
+                    for="conditions_form_product-{{ product_form_id }}"
+                    style="--color-link: var(--color-heading);"
+                  >
+                    {{ settings.text_terms_conditions }}
+                  </label>
+                </terms-conditions>
+              {%- endif -%}
+              <div class="btn-checkout-dynamic w-full  {% if settings.show_check_box_in_quick_view and type == 'quickview' %} disabled {% elsif  settings.show_checkbox_in_product_page  and type == 'single' or type == 'main_product' %}    disabled{% endif %}">
+                {{ form | payment_button }}
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endform -%}
+      </product-form>
+    </div>
+  {% endif %}
+
+{%- else -%}
+  {% if settings.enable_catalog_mode == false %}
+    <div class="product-form">
+      <div class="product-form__buttons form mt-20">
+        <button
+          type="submit"
+          name="add"
+          class="product_buy_now_button product-form__submit button button--full-width btn-primary"
+          disabled
+        >
+          {{ 'products.product.general.outstock' | t }}
+        </button>
+      </div>
+    </div>
+  {% endif %}
+{%- endif -%}

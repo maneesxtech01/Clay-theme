@@ -1,0 +1,83 @@
+{%- liquid
+  assign shop_name = shop.name
+  assign theme_st = settings
+  assign logo_image = theme_st.logo
+  assign transparent = theme_st.logo_on_transparent
+  assign logo_width = theme_st.desktop_logo_width
+  assign mobile_logo_width = theme_st.mobile_logo_width
+  assign logo_transparent = blank
+  if isTransparent and request.page_type == 'index' and transparent != blank
+    assign logo_transparent = transparent | default: logo_image
+  endif
+-%}
+
+{% if request.page_type == 'index' %}
+  <h1 class="my-0 inline-flex align-center">
+{%- endif -%}
+<a
+  class="logo-img no-underline inline-flex align-center{% if request.page_type != 'index' %} h1 my-0{% endif %}"
+  href="{{ routes.root_url }}"
+  aria-label="{{ shop_name }}"
+  {{ block.shopify_attributes }}
+>
+  {%- if logo_image != blank or logo_transparent != blank -%}
+    {%- assign logo_height = logo_width | divided_by: logo_image.aspect_ratio | round -%}
+    <span
+      class="header__normal-logo inline-flex align-center"
+      style="--header-logo-width: {{ logo_width }}px; --header-logo-width-mobile: {{ mobile_logo_width }}px;"
+    >
+      {%- if logo_image != blank -%}
+        <img
+          srcset="
+            {%- if logo_image.width >= 165 -%}
+              {{ logo_image | image_url: width: 165 }} 165w,{%- endif -%}
+            {%- if logo_image.width >= 330 -%}
+              {{ logo_image | image_url: width: 330 }} 330w,{%- endif -%}
+            {%- if logo_image.width >= 535 -%}
+              {{ logo_image | image_url: width: 535 }} 535w,{%- endif -%}
+            {%- if logo_image.width >= 750 -%}
+              {{ logo_image | image_url: width: 750 }} 750w,{%- endif -%}
+            {{ logo_image | image_url }} {{ logo_image.width }}w
+          "
+          src="{{ logo_image | image_url: width: 330 }}"
+          sizes="{{ logo_width }}px"
+          loading="lazy"
+          fetchpriority="high"
+          class="header__normal-logo{% if isTransparent and request.page_type == 'index' and transparent != blank %} hidden{% endif %}"
+          width="{{ logo_width }}"
+          height="{{ logo_height }}"
+          alt="{{ logo_height.alt | default: shop.name | escape }}"
+        >
+      {%- else -%}
+        <span class="text-logo">{{- shop.name -}}</span>
+      {%- endif -%}
+      {%- if isTransparent and request.page_type == 'index' and logo_transparent != blank -%}
+        <img
+          srcset="
+            {%- if logo_transparent.width >= 165 -%}
+              {{ logo_transparent | image_url: width: 165 }} 165w,{%- endif -%}
+            {%- if logo_transparent.width >= 330 -%}
+              {{ logo_transparent | image_url: width: 330 }} 330w,{%- endif -%}
+            {%- if logo_transparent.width >= 535 -%}
+              {{ logo_transparent | image_url: width: 535 }} 535w,{%- endif -%}
+            {%- if logo_transparent.width >= 750 -%}
+              {{ logo_transparent | image_url: width: 750 }} 750w,{%- endif -%}
+            {{ logo_transparent | image_url }} {{ logo_transparent.width }}w
+          "
+          src="{{ logo_transparent | image_url: width: 330 }}"
+          sizes="{{ logo_width }}px"
+          loading="lazy"
+          class="header__transparent-logo"
+          width="{{ logo_width }}"
+          height="{{ logo_height }}"
+          alt="{{ logo_height.alt | default: shop.name | escape }}"
+        >
+      {%- endif -%}
+    </span>
+  {%- else -%}
+    <span class="text-logo">{{- shop.name -}}</span>
+  {%- endif -%}
+</a>
+{% if request.page_type == 'index' %}
+  </h1>
+{%- endif -%}

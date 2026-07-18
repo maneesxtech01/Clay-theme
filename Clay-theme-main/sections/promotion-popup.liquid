@@ -1,0 +1,206 @@
+{%- liquid
+  assign section_st = section.settings
+  assign show_promotion_mobile = section_st.show_promotion_mobile
+  assign code = section_st.promotion_code
+  assign width = section_st.promotion_width
+  assign heading = section_st.promotion_title
+  assign sub_title = section_st.promotion_sub_title
+  assign background_image = section_st.promotion_banner
+  assign promotion_content = section_st.promotion_content
+  assign show_promotion_select = section_st.show_promotion_select
+
+  assign show = 'hidden'
+  if show_promotion_select == 'show_promotion_homepage'
+    if request.page_type == 'index'
+      assign show = 'show-on-homepage'
+    endif
+  elsif show_promotion_select == 'hide_promotion'
+    assign show = 'hidden'
+  else
+    assign show = 'show-on-all-pages'
+  endif
+-%}
+{%- capture style -%}
+--popup-max-width: {{ width }}px;
+{%- endcapture -%}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+<promotion-popup
+  id="promotion-popup"
+  data-show="{{ show }}"
+  data-show-mb="{{ show_promotion_mobile }}"
+  style="display: none;"
+  {% if show_promotion_mobile != blank %}
+    class="hidden block-md"
+  {% endif %}
+>
+  <div
+    class="popup-content flex{% if enable_rtl %} flex-row-reverse{% endif %}"
+    style="{{ style | strip | strip_newlines }}"
+  >
+    {% if background_image != blank %}
+      <div
+        class="newsletter-popup__banner relative hidden block-md col-w-custom"
+        style="--col-width: {{ section.settings.banner_width }}%;--aspect-ratio: {{ background_image.aspect_ratio }}"
+      >
+        {%- assign image_alt = background_image.alt | default: 'product' | escape -%}
+        {% render 'responsive-image',
+          type: 'other',
+          image: background_image,
+          image_alt: image_alt,
+          class: 'absolute inset-0 w-full h-full object-fit-cover'
+        %}
+      </div>
+    {% endif %}
+    <div class="promotion__popup-content flex-1 relative">
+      <div class="content-promotion text-center p-1025-40 p-30 {% if background_image != blank %}absolute-md inset-0 flex flex-column{% endif %} overflow-y-auto custom-scrollbar h-full w-full">
+        <div class="my-auto">
+          <div class="section-header">
+            {%- if sub_title != blank -%}
+              <div class="section-des mb-10 lh-normal h6 mt-0">
+                {{ sub_title }}
+              </div>
+            {% endif %}
+            {%- if heading != blank -%}
+              <h2 class="section-heading mt-0 mb-15 heading-letter-spacing">{{ heading }}</h2>
+            {% endif %}
+          </div>
+          {%- if promotion_content != blank -%}
+            <div class="promotion-content">
+              {{ promotion_content | replace: '[promotion_code]', code }}
+            </div>
+          {% endif %}
+          <a
+            href="#"
+            class="btn-primary w-full discount btn-promotion my-25 inline-flex content-center gap-5 no-underline uppercase"
+            data-code="{{ code }}"
+            aria-label="{{ 'popup.copy' | t }}"
+          >
+            <svg width="16" height="14" fill="none">
+              <path fill="currentColor" fill-rule="evenodd" d="M14.286 4.667v7.583H4.57V4.667h9.715ZM16 4.375c0-.805-.64-1.458-1.429-1.458H4.286c-.79 0-1.429.653-1.429 1.458v8.167c0 .805.64 1.458 1.429 1.458H14.57c.79 0 1.429-.653 1.429-1.458V4.375Z" clip-rule="evenodd"/><path fill="currentColor" fill-rule="evenodd" d="M13.43.875A.866.866 0 0 0 12.573 0H1.43C1.05 0 .687.154.42.427A1.474 1.474 0 0 0 0 1.458V10.5c0 .484.384.875.857.875a.866.866 0 0 0 .857-.875V1.75h10.857a.866.866 0 0 0 .858-.874Z" clip-rule="evenodd"/>
+            </svg>
+            <span class="text relative">
+              <span class="copied-action">
+                {{ code }}
+              </span>
+              <span class="copied-success absolute invisible inset-y-0 left-0 inline-flex content-center">
+                {{- 'popup.copied' | t -}}
+              </span>
+            </span>
+          </a>
+          <div class="do-not-show-again pointer fs-small">
+            <span class="border-bottom">{{ 'popup.do_not' | t }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</promotion-popup>
+{% schema %}
+{
+  "name": "t:sections.promotion-popup.name",
+  "tag": "section",
+  "enabled_on": {
+    "groups": ["custom.overlay"]
+  },
+  "limit": 1,
+  "settings": [
+    {
+      "type": "select",
+      "id": "show_promotion_select",
+      "label": "t:sections.promotion-popup.settings.show.label",
+      "default": "show_promotion_homepage",
+      "options": [
+        {
+          "value": "show_promotion_homepage",
+          "label": "t:sections.promotion-popup.settings.show.show_homepage.label"
+        },
+        {
+          "value": "show_promotion_all_page",
+          "label": "t:sections.promotion-popup.settings.show.show_all_page.label"
+        },
+        {
+          "value": "hide_promotion",
+          "label": "t:sections.promotion-popup.settings.show.hide.label"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_promotion_mobile",
+      "label": "t:sections.promotion-popup.settings.show_on_mobile.label",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "promotion_code",
+      "label": "t:sections.promotion-popup.settings.promotion_code.label"
+    },
+    {
+      "type": "range",
+      "id": "promotion_width",
+      "label": "t:sections.promotion-popup.settings.width.label",
+      "max": 800,
+      "min": 400,
+      "step": 10,
+      "unit": "px",
+      "default": 690
+    },
+
+    {
+      "type": "text",
+      "id": "promotion_sub_title",
+      "label": "t:sections.all.contents.subheading.label",
+      "default": "Special Offer"
+    },
+    {
+      "type": "text",
+      "id": "promotion_title",
+      "label": "t:sections.all.contents.heading.label",
+      "default": "Cyber <br\/> Monday"
+    },
+    {
+      "type": "textarea",
+      "id": "promotion_content",
+      "label": "t:sections.promotion-popup.settings.promotion_content.label",
+      "default": "Up to <span>50% Off<\/span> when using code [promotion_code]",
+      "info": "t:sections.promotion-popup.settings.promotion_content.info"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.newsletter_popup.header.banner_image"
+    },
+    {
+      "type": "image_picker",
+      "id": "promotion_banner",
+      "label": "t:sections.newsletter_popup.settings.banner_image",
+      "info": "t:sections.newsletter_popup.settings.info"
+    },
+    {
+      "type": "range",
+      "id": "banner_width",
+      "label": "t:sections.newsletter_popup.settings.banner_width",
+      "max": 50,
+      "min": 20,
+      "step": 0.5,
+      "unit": "%",
+      "default": 36.5
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.promotion-popup.name"
+    }
+  ]
+}
+{% endschema %}

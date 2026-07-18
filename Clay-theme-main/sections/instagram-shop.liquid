@@ -1,0 +1,939 @@
+{{ 'lookbook.css' | asset_url | stylesheet_tag }}
+{% # theme-check-disable ContentForHeaderModification %}
+{%- capture content_for_query_string -%}
+  {{ content_for_header }}
+{%- endcapture -%}
+{% # theme-check-enable ContentForHeaderModification %}
+{%- assign page_url = content_for_query_string
+  | split: '"pageurl":"'
+  | last
+  | split: '"'
+  | first
+  | split: request.host
+  | last
+  | replace: '\/', '/'
+  | replace: '%20', ' '
+  | replace: '\u0026', '&'
+-%}
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  assign color_scheme = section_st.color_scheme
+  if section_st.reset_spacing
+    assign reset_spacing = ' remove_spacing'
+  endif
+  assign column_gap = section_st.column_gap
+  assign items_per_row_mobile = section_st.items_per_row_mobile
+  assign heading = section_st.heading
+  assign description = section_st.description
+  assign header_size = ''
+  if section_st.header_size == 'small'
+    assign header_size = 'h3'
+  elsif section_st.header_size == 'large'
+    assign header_size = 'h1-size'
+  endif
+  assign hotspot_style = section_st.hotspot_style
+  assign image_ratio = section_st.image_ratio
+  assign custom_ratio = section_st.custom_ratio
+  assign items_per_row = section_st.items_per_row
+  assign column_gap = section_st.column_gap
+
+  assign show_arrow = section_st.show_arrow
+  assign carousel_pagination = section_st.carousel_pagination
+  assign infinite = section_st.infinite
+  assign autoplay = section_st.autoplay
+  assign autorotate_speed = section_st.autorotate_speed
+  assign reveal = section_st.reveal
+  if section_st.items_per_row_mobile > 1 and section_st.items_per_row_mobile < 2
+    assign data_free_scroll = 'true'
+  endif
+  assign scroll_animation = settings.scroll_animation
+  assign page_query_string = page_url | split: '?' | last
+-%}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+{%- capture style -%}
+  --section-pt: {{ section_st.padding_top }}; --section-pb: {{ section_st.padding_bottom }};
+{%- endcapture -%}
+{%- capture col_style -%}
+--col-desktop: {{ items_per_row }};--col-number:{{ items_per_row_mobile }};{% if items_per_row > 3 %}--col-tablet: 3;{% else %}--col-tablet: {{ items_per_row }};{% endif %}
+{% if column_gap < 15 %}--col-gap: {{ column_gap }}px;{% else %}--col-gap: 15px;--col-gap-desktop: {{  column_gap }}px;{% endif %}--col-mobile: {{ items_per_row_mobile }}
+{%- endcapture -%}
+<div
+  class="section{% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} sec__instagram color-{{ color_scheme }} gradient{{ reset_spacing }} {{ settings.hover_effect }}{% if reveal %} overflow-hidden{% endif %}"
+  style="{{ style | strip | strip_newlines }}"
+>
+  <div class="{{ section_width }}">
+    {%- if heading != blank or description != blank -%}
+      <div class="section__header mb-33 mb-sm-20 text-{{ section_st.header_alignment }}{% if section_st.section_width == 'full_width' %} px-20{% endif %}">
+        {%- if section_st.heading != blank -%}
+          <motion-element
+            data-motion="fade-up-lg"
+            data-motion-delay="50"
+            {% if scroll_animation != 'slide_in' %}
+              hold
+            {% endif %}
+            class="block  {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}"
+            style="
+              {%- if scroll_animation != 'none' -%}
+                --animation-order: 0;
+              {% endif %}
+            "
+          >
+            <h2
+              class="section__header-heading heading-letter-spacing  {{ header_size  }} mt-0{% if section_st.description != blank %} mb-10{% else %} mb-0{% endif %}"
+            >
+              {{ section_st.heading }}
+            </h2>
+          </motion-element>
+        {% endif %}
+        {%- if section_st.description != blank -%}
+          <motion-element
+            data-motion="fade-up-lg"
+            data-motion-delay="150"
+            {% if scroll_animation != 'slide_in' %}
+              hold
+            {% endif %}
+            class="section__header-des block {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }} {% endif %} rich__text-m0"
+            tyle="{%- if scroll_animation != 'none' -%}--animation-order: 1{% endif %}"
+          >
+            {{ section_st.description }}
+          </motion-element>
+        {% endif %}
+      </div>
+    {% endif %}
+    <svg hidden>
+      <symbol id="icon-lookbook-plus">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M5 0C4.44772 0 4 0.447715 4 1V4L1 4C0.447715 4 0 4.44771 0 5C0 5.55228 0.447715 6 1 6H4V9C4 9.55229 4.44772 10 5 10C5.55228 10 6 9.55228 6 9V6H9C9.55228 6 10 5.55229 10 5C10 4.44772 9.55228 4 9 4L6 4V1C6 0.447715 5.55228 0 5 0Z" fill="currentColor"></path>
+      </symbol>
+      <symbol id="icon-instagram-shop">
+        <rect width="30" height="30" fill="#111" rx="15"/><path fill="#fff" d="m18.501 11.503-.75-1.007h-5.503l-.75 1.007h7.003Zm1.394.188v.011h.011c.024.047.043.094.059.14a.336.336 0 0 1 .035.153V19c0 .204-.043.399-.129.586-.078.18-.183.336-.316.469-.133.14-.293.25-.48.328-.18.078-.37.117-.574.117H11.5a1.39 1.39 0 0 1-.586-.129 1.502 1.502 0 0 1-.468-.316A1.41 1.41 0 0 1 10 19v-7.005a.669.669 0 0 1 .047-.21l.023-.047a.184.184 0 0 0 .035-.047l1.5-1.992a.44.44 0 0 1 .175-.14.451.451 0 0 1 .222-.059h5.996c.078 0 .152.02.222.059a.44.44 0 0 1 .176.14l1.499 1.992Zm-8.888.808V19a.53.53 0 0 0 .035.188.456.456 0 0 0 .27.27.53.53 0 0 0 .187.035H18.5c.07 0 .133-.012.188-.036a.456.456 0 0 0 .269-.269.53.53 0 0 0 .035-.188V12.5h-7.986Zm5.492 1.5a.495.495 0 0 1 .504-.504c.132 0 .245.05.339.152.101.094.152.21.152.351 0 .344-.066.668-.199.973-.125.304-.3.57-.527.796a2.561 2.561 0 0 1-.796.54 2.536 2.536 0 0 1-.972.187c-.344 0-.667-.063-.972-.188a2.563 2.563 0 0 1-.796-.539 2.564 2.564 0 0 1-.539-.796 2.538 2.538 0 0 1-.187-.973c0-.14.047-.257.14-.351a.482.482 0 0 1 .703 0c.101.094.152.21.152.351 0 .211.04.407.117.586.078.18.188.336.328.469a1.411 1.411 0 0 0 1.054.445 1.411 1.411 0 0 0 1.054-.445c.14-.133.25-.29.328-.469.078-.18.117-.375.117-.586Z"/>
+        </symbol>
+    </svg>
+    {% if section.blocks.size > 0 %}
+      {% if section_st.items_per_row_mobile > 1 and section_st.items_per_row_mobile < 2 %}
+        <div class="free-scroll">
+      {% endif %}
+      <slide-section
+        class="swiper{% if reveal %} reveal_on_scroll{% endif %}"
+        data-section-id="{{ section.id }}"
+        data-autoplay="{{ autoplay }}"
+        data-effect="slide"
+        data-loop="{{ infinite }}"
+        data-speed="500"
+        data-autoplay-speed="{{ autorotate_speed }}"
+        data-spacing="{{ column_gap }}"
+        data-mobile="{{ items_per_row_mobile }}"
+        data-desktop="{{ items_per_row }}"
+        data-pagination-progressbar="{% if carousel_pagination == 'show_progress_bar' %}true{% else %}false{% endif %}"
+        data-free-scroll="{{ data_free_scroll }}"
+        style="{{ col_style | strip | strip_newlines }}"
+        data-arrow-centerimage="1"
+      >
+        {% if show_arrow %}
+          {%- render 'swiper-navigation' -%}
+        {% endif %}
+        <div class="swiper-wrapper">
+          {% for block in section.blocks %}
+            {% liquid
+              assign block_st = block.settings
+              assign image = block_st.image
+              assign local_video = block_st.local_video
+              assign link = block_st.link
+              assign ratio = ''
+              if image_ratio != 'adapt'
+                case image_ratio
+                  when 'square'
+                    assign ratio = '1/1'
+                  when 'landscape'
+                    assign ratio = '4/3'
+                  when 'portrait'
+                    assign ratio = '3/4'
+                  else
+                    if custom_ratio != empty
+                      assign ratio = custom_ratio | replace: ':', '/'
+                    else
+                      assign ratio = '3/4'
+                    endif
+                endcase
+              else
+                if image != blank
+                  assign ratio = image.aspect_ratio
+                  assign video_ratio = local_video.aspect_ratio
+                else
+                  assign ratio = '3/4'
+                endif
+              endif
+            %}
+            <instagram-shop
+              data-custom-class="instagram-shop"
+              data-section-id="{{ section.id }}"
+              data-index="{{ forloop.index }}"
+              class="instagram-item instagram-item__media--ratio swiper-slide pointer "
+            >
+              {%- for i in (1..5) -%}
+                {% liquid
+                  assign offset_top = 'offset_top__' | append: i
+                  assign position_top = block_st[offset_top]
+                  assign offset_left = 'offset_left__' | append: i
+                  assign position_left = block_st[offset_left]
+                  assign product_item = 'product__' | append: i
+                  assign item = block_st[product_item]
+                %}
+                {%- if item != blank -%}
+                  {%- liquid
+                    assign product = all_products[item]
+                  -%}
+                  {% if request.design_mode %}
+                    <lookbook-item
+                      class="z-3 absolute pointer"
+                      style="--top: {{ position_top }}%; --left: {{ position_left }}%;--transform: translate(-{{ position_left }}%,-{{ position_top }}%); {%- if scroll_animation != 'none' -%}--animation-order: {{  forloop.index }}{% endif %}"
+                    >
+                      <span
+                        class="lookbook-animation heading-color w-44 h-44 inline-flex content-center relative"
+                      >
+                        <span class="rounded-50 bg-white w-30 h-30 inline-flex content-center">
+                          {% if hotspot_style == 'plus' %}
+                            <svg
+                              width="10"
+                              height="10"
+                              viewBox="0 0 10 10"
+                              fill="none"
+                            >
+                              <use href="#icon-lookbook-plus" />
+                            </svg>
+                          {% else %}
+                            {% render 'icon-dot' %}
+                          {% endif %}
+                        </span>
+                      </span>
+                    </lookbook-item>
+                  {% endif %}
+                {% endif %}
+              {%- endfor -%}
+              <motion-element
+                data-motion="fade-up-lg"
+                {% if scroll_animation != 'slide_in' %}
+                  hold
+                {% endif %}
+                data-motion-delay="{{ forloop.index0 | times: 50 }}"
+                class="w-full rounded block  {% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }} {% endif %}"
+                style="--aspect-ratio:{% if image_ratio == 'adapt' %}{% if local_video != blank %}{{ video_ratio }}{% else %}{{ ratio }}{% endif %}{% else %}{{ ratio }}{%  endif %};{%- if scroll_animation != 'none' -%}--animation-order: {{  forloop.index }}{% endif %}"
+              >
+                {% if local_video != blank %}
+                  {%- liquid
+                    assign source = local_video.sources
+                    assign source_url = ''
+                    for s in source
+                      if s.format == 'mp4'
+                        assign source_url = s.url
+                        break
+                      endif
+                    endfor
+                  -%}
+                  <video
+                    loop="true"
+                    muted="true"
+                    playsinline="true"
+                    autoplay="true"
+                    data-src="{{ source_url }}"
+                    data-poster="{{ local_video.preview_image | image_url: width: 600 }}"
+                    class="rounded lazy-video"
+                  ></video>
+                {% elsif image != blank %}
+                  {% assign image_alt = image.alt | default: 'Instagram shop' %}
+                  {% render 'responsive-image',
+                    class: 'rounded',
+                    image: image,
+                    image_alt: image_alt,
+                    container: section_width,
+                    colunm: items_per_row,
+                    colunm_mobile: section_st.items_per_row_mobile,
+                    padding: column_gap
+                  %}
+                {% else %}
+                  {% render 'placeholder-render', class: 'rounded', image_alt: image_alt %}
+                {% endif %}
+                <svg
+                  width="30"
+                  height="30"
+                  fill="none"
+                  class="absolute top-10 z-1 pointer-none{% if enable_rtl %} left-10{% else %} right-10{% endif %}"
+                >
+                  <use href="#icon-instagram-shop" />
+                </svg>
+              </motion-element>
+
+              {%- if page_query_string contains 'ajax=1' -%}
+                <div class="instagram-item__media--ratio popup-content popup-index-{{ forloop.index }} hidden">
+                  <div
+                    class="flex flex-wrap{% if enable_rtl %} flex-row-reverse{% endif %}"
+                    style="--col-width: 55%;--col-gap: 0px;"
+                  >
+                    <div
+                      class="w-full col-sm-w-custom media-instagram__shop"
+                      style="--aspect-ratio:{% if image_ratio == 'adapt' %}{% if local_video != blank %}{{ video_ratio }}{% else %}{{ ratio }}{% endif %}{% else %}{{ ratio }}{%  endif %};"
+                    >
+                      {% if local_video != blank %}
+                        {%- liquid
+                          assign video_url = local_video.preview_image.src | replace: 'files/preview_images/', '' | split: '.'
+                          assign video_url = 'https://cdn.shopify.com/videos/c/o/v/' | append: video_url[0] | append: '.mp4'
+                        -%}
+                        <video
+                          class="rounded"
+                          loop="true"
+                          muted="true"
+                          playsinline="true"
+                          autoplay="true"
+                          src="{{ video_url }}"
+                          poster="{{ local_video.preview_image | image_url: width: 1100 }}"
+                          class="rounded lazy-video"
+                        ></video>
+                      {% elsif image != blank %}
+                        {% assign image_alt = image.alt | default: 'Instagram shop' %}
+                        {% render 'responsive-image', image: image, image_alt: image_alt, sizes: '100vw' %}
+                      {% else %}
+                        {% render 'placeholder-render', image_alt: image_alt %}
+                      {% endif %}
+                      {%- for i in (1..5) -%}
+                        {% liquid
+                          assign offset_top = 'offset_top__' | append: i
+                          assign position_top = block_st[offset_top]
+                          assign offset_left = 'offset_left__' | append: i
+                          assign position_left = block_st[offset_left]
+                          assign product_item = 'product__' | append: i
+                          assign item = block_st[product_item]
+                        %}
+                        {%- if item != blank -%}
+                          {%- liquid
+                            assign product = all_products[item]
+                          -%}
+                          <lookbook-item
+                            data-type="slide"
+                            data-product-position="{{ forloop.index }}"
+                            class="z-3 absolute pointer {% if scroll_animation != 'none' and scroll_animation != "slide_in" %} scroll-trigger {{ scroll_animation }} {% endif %}"
+                            style="--top: {{ position_top }}%; --left: {{ position_left }}%;--transform: translate(-{{ position_left }}%,-{{ position_top }}%); {%- if scroll_animation != 'none' -%}--animation-order: {{  forloop.index }}{% endif %}"
+                          >
+                            <a
+                              class="lookbook-animation heading-color w-44 h-44 inline-flex content-center relative"
+                              role="link"
+                              aria-label="{{- 'general.hotspot.plus' | t -}}"
+                            >
+                              <span
+                                class="rounded-50 bg-white w-custom h-custom inline-flex content-center"
+                                style="--custom-height: 31px; --custom-width: 31px;"
+                              >
+                                {% if hotspot_style == 'plus' %}
+                                  <svg
+                                    width="10"
+                                    height="10"
+                                    viewBox="0 0 10 10"
+                                    fill="none"
+                                  >
+                                    <use href="#icon-lookbook-plus" />
+                                  </svg>
+                                {% else %}
+                                  {% render 'icon-dot' %}
+                                {% endif %}
+                              </span>
+                            </a>
+                            <template>
+                              <div class="lookbook-item__hover bg-white absolute z-20 rounded-10 p-10">
+                                {% render 'product-item',
+                                  card_product: item,
+                                  section_id: section.id,
+                                  template_enable_action: false,
+                                  template_enable_product_vendor: false,
+                                  template_enable_product_short_description: false,
+                                  template_enable_color_swatches: false,
+                                  template_enable_rate: true,
+                                  template_enable_price: true,
+                                  custom_widths: '160, 80',
+                                  sizes: '80px',
+                                  type: 'list'
+                                %}
+                              </div>
+                            </template>
+                          </lookbook-item>
+                        {% endif %}
+                      {%- endfor -%}
+                    </div>
+                    {%- for i in (1..5) -%}
+                      {% liquid
+                        assign product_item = 'product__' | append: i
+                        assign item = block_st[product_item]
+                      %}
+                      {%- if item != blank -%}
+                        {% assign check_product = true %}
+                      {% endif %}
+                    {%- endfor -%}
+                    {% if check_product or block_st.more_info != blank or block_st.instagram_post_name != blank %}
+                      <div class="w-full col-sm-remaining relative white-gradient">
+                        <div class="absolute-sm inset-0 overflow-y-auto custom-scrollbar px-15 px-md-30 py-30 ">
+                          <slide-section-instagram
+                            class="swiper block"
+                            data-section-id="{{ section.id }}"
+                            data-effect="slide"
+                            data-speed="600"
+                            data-mobile="2"
+                            data-tablet="2"
+                            data-desktop="2"
+                            data-spacing="20"
+                            data-pagination-progressbar="true"
+                          >
+                            <div class="swiper-wrapper">
+                              {%- for i in (1..5) -%}
+                                {% liquid
+                                  assign offset_top = 'offset_top__' | append: i
+                                  assign position_top = block_st[offset_top]
+                                  assign offset_left = 'offset_left__' | append: i
+                                  assign position_left = block_st[offset_left]
+                                  assign product_item = 'product__' | append: i
+                                  assign item = block_st[product_item]
+                                %}
+                                {%- if item != blank -%}
+                                  {%- liquid
+                                    assign product = all_products[item]
+                                  -%}
+                                  {% render 'product-item',
+                                    card_product: product,
+                                    section_id: section.id,
+                                    template_enable_action: false,
+                                    template_enable_product_vendor: false,
+                                    template_enable_product_short_description: false,
+                                    template_enable_color_swatches: false,
+                                    template_enable_price: true,
+                                    template_enable_rate: true,
+                                    class: 'swiper-slide',
+                                    scroll_animation: scroll_animation,
+                                    indexFor: i
+                                  %}
+                                {% endif %}
+                              {%- endfor -%}
+                            </div>
+                            <div
+                              class="swiper-pagination"
+                            ></div>
+                          </slide-section-instagram>
+                          {% if block_st.more_info != blank %}
+                            <div class="more-info mt-25">{{ block_st.more_info }}</div>
+                          {% endif %}
+                          {% if link != blank %}
+                            <a
+                              {% if link == blank %}
+                                role="link" aria-disabled="true"
+                              {% else %}
+                                href="{{ link | default: "#" }}"
+                              {% endif %}
+                              aria-label="{{ 'sections.instagram.label' | t }}"
+                              class="flex align-center gap-10 no-underline heading-color heading_weight lh-normal mt-20"
+                            >
+                              <svg width="15" height="15" fill="none">
+                                <path fill="currentColor" d="M14.959 4.41c-.035-.797-.164-1.345-.349-1.82a3.66 3.66 0 0 0-.867-1.33 3.691 3.691 0 0 0-1.328-.864c-.477-.185-1.022-.314-1.82-.35C9.794.01 9.539 0 7.502 0 5.465 0 5.21.009 4.41.044c-.797.035-1.345.164-1.82.349a3.66 3.66 0 0 0-1.33.867c-.38.375-.677.83-.864 1.327-.185.478-.314 1.023-.35 1.82C.01 5.21 0 5.465 0 7.501c0 2.037.009 2.292.044 3.092.035.797.164 1.345.349 1.82a3.7 3.7 0 0 0 .867 1.33c.375.38.83.677 1.327.864.478.185 1.023.314 1.82.349.8.035 1.055.044 3.092.044 2.036 0 2.291-.009 3.091-.044.797-.035 1.345-.164 1.82-.349a3.837 3.837 0 0 0 2.194-2.194c.185-.478.314-1.023.35-1.82.034-.8.043-1.055.043-3.092 0-2.036-.003-2.291-.038-3.091Zm-1.35 6.124c-.033.733-.156 1.128-.259 1.392a2.489 2.489 0 0 1-1.424 1.424c-.264.103-.662.226-1.392.258-.79.035-1.028.044-3.03.044-2 0-2.241-.009-3.03-.044-.732-.032-1.128-.155-1.391-.258a2.308 2.308 0 0 1-.862-.56 2.331 2.331 0 0 1-.56-.86c-.102-.265-.225-.663-.257-1.393-.036-.79-.044-1.028-.044-3.03 0-2.001.008-2.241.044-3.03.032-.732.155-1.128.257-1.391.12-.326.311-.622.563-.862.243-.249.536-.44.862-.56.263-.102.662-.225 1.391-.257.792-.036 1.029-.044 3.03-.044 2.005 0 2.242.008 3.03.044.733.032 1.128.155 1.392.257.325.12.621.311.862.56.249.243.44.536.56.862.102.263.225.662.257 1.391.035.792.044 1.029.044 3.03 0 2.002-.009 2.236-.044 3.027Z"/><path fill="currentColor" d="M7.506 3.648a3.854 3.854 0 0 0 0 7.707 3.854 3.854 0 0 0 0-7.707Zm0 6.353a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5ZM12.405 3.496a.9.9 0 1 1-1.8 0 .9.9 0 0 1 1.8 0Z"/>
+                              </svg>
+                              {{ block_st.instagram_post_name }}
+                            </a>
+                          {% endif %}
+                        </div>
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endif %}
+            </instagram-shop>
+          {% endfor %}
+        </div>
+        {%- if carousel_pagination == 'show_dots'
+          or carousel_pagination == 'show_dots_on_mobile'
+          or carousel_pagination == 'show_progress_bar'
+        -%}
+          <motion-element
+            data-motion="fade-up-sm"
+            {% if scroll_animation != 'slide_in' %}
+              hold
+            {% endif %}
+            data-motion-delay="150"
+            class="swiper-pagination  flex flex-wrap  {% if scroll_animation == 'slide_in' %} slide_in scroll-trigger {% endif %}   px-15 lh-1 bottom-30 {% if carousel_pagination == 'show_dots_on_mobile' %} hidden-md{% endif %} justify-content-center{% if section_st.content_below_image %} absolute-md-impo{% endif %}"
+            style="--swiper-pagination-bottom: 3rem;--swiper-pagination-position: static;z-index: 2"
+          >
+          </motion-element>
+        {% endif %}
+      </slide-section>
+      {% if section_st.items_per_row_mobile > 1 and section_st.items_per_row_mobile < 2 %}
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:sections.instagram-shop.name",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:sections.all.section_width.label",
+      "default": "fluid_container",
+      "options": [
+        {
+          "value": "container",
+          "label": "t:sections.all.section_width.container.label"
+        },
+        {
+          "value": "fluid_container",
+          "label": "t:sections.all.section_width.fluid_container.label"
+        },
+        {
+          "value": "stretch_width",
+          "label": "t:sections.all.section_width.stretch_width.label"
+        },
+        {
+          "value": "full_width",
+          "label": "t:sections.all.section_width.full_width.label"
+        }
+      ]
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.color_scheme.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_header.label"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:sections.all.section_header.heading.label",
+      "default": "Shop by Gram"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "t:sections.all.section_header.description.label"
+    },
+    {
+      "type": "select",
+      "id": "header_size",
+      "label": "t:sections.all.section_header.header_size.label",
+      "default": "medium",
+      "options": [
+        {
+          "value": "small",
+          "label": "t:sections.all.section_header.header_size.small.label"
+        },
+        {
+          "value": "medium",
+          "label": "t:sections.all.section_header.header_size.medium.label"
+        },
+        {
+          "value": "large",
+          "label": "t:sections.all.section_header.header_size.large.label"
+        }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "t:sections.all.section_header.alignment.label",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.all.section_header.alignment.left.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.all.section_header.alignment.center.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.all.section_header.alignment.right.label"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "t:sections.instagram-shop.settings.instagram_settings.header"
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "t:sections.all.image.image_ratio.label",
+      "options": [
+        {
+          "value": "adapt",
+          "label": "t:sections.all.image.image_ratio.adapt.label"
+        },
+        {
+          "value": "square",
+          "label": "t:sections.all.image.image_ratio.square.label"
+        },
+        {
+          "value": "portrait",
+          "label": "t:sections.all.image.image_ratio.portrait.label"
+        },
+        {
+          "value": "landscape",
+          "label": "t:sections.all.image.image_ratio.landscape.label"
+        },
+        {
+          "value": "custom",
+          "label": "t:sections.all.image.image_ratio.custom.label"
+        }
+      ],
+      "default": "adapt"
+    },
+    {
+      "type": "text",
+      "id": "custom_ratio",
+      "label": "t:sections.all.image.image_ratio.custom_ratio.label"
+    },
+    {
+      "type": "select",
+      "id": "hotspot_style",
+      "label": "t:sections.lookbook-image.settings.lookbook_image.hotspot_style.label",
+      "options": [
+        {
+          "value": "plus",
+          "label": "t:sections.lookbook-image.settings.lookbook_image.hotspot_style.plus"
+        },
+        {
+          "value": "dot",
+          "label": "t:sections.lookbook-image.settings.lookbook_image.hotspot_style.dot"
+        }
+      ],
+      "default": "plus"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row",
+      "label": "t:sections.all.items.items_per_row.label",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "t:sections.all.items.column_gap.label",
+      "min": 0,
+      "max": 50,
+      "step": 5,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.carousel_settings.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_arrow",
+      "label": "t:sections.all.carousel_settings.show-next-back.label",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "carousel_pagination",
+      "label": "t:sections.all.carousel_settings.pagination.label",
+      "options": [
+        {
+          "value": "disable",
+          "label": "t:sections.all.carousel_settings.pagination.disable.label"
+        },
+        {
+          "value": "show_dots",
+          "label": "t:sections.all.carousel_settings.pagination.show_dots.label"
+        },
+        {
+          "value": "show_dots_on_mobile",
+          "label": "t:sections.all.carousel_settings.pagination.show_dots_on_mobile.label"
+        },
+        {
+          "value": "show_progress_bar",
+          "label": "t:sections.all.carousel_settings.pagination.show_progress_bar.label"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "infinite",
+      "label": "t:sections.all.carousel_settings.infinite.label",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "t:sections.all.carousel_settings.auto_change.label",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "autorotate_speed",
+      "label": "t:sections.all.carousel_settings.change_slides_every.label",
+      "max": 6,
+      "min": 2,
+      "step": 1,
+      "unit": "s",
+      "default": 5
+    },
+    {
+      "type": "checkbox",
+      "id": "reveal",
+      "label": "t:sections.all.carousel_settings.reveal.label",
+      "info": "t:sections.all.carousel_settings.reveal.info",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.mobile_options.label"
+    },
+    {
+      "type": "range",
+      "id": "items_per_row_mobile",
+      "label": "t:sections.all.items.items_per_row.label",
+      "min": 1,
+      "max": 2,
+      "step": 0.5,
+      "default": 2
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.section_padding.label"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "t:sections.all.section_padding.top.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "t:sections.all.section_padding.bottom.label",
+      "default": 0,
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px"
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_spacing",
+      "label": "t:sections.all.section_padding.reset_spacing.label",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "instagram_manual_upload",
+      "name": "t:sections.instagram-shop.blocks.name",
+      "limit": 10,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "t:sections.instagram-shop.blocks.image"
+        },
+        {
+          "type": "video",
+          "id": "local_video",
+          "label": "t:sections.instagram-shop.blocks.local_video"
+        },
+        {
+          "type": "richtext",
+          "id": "more_info",
+          "label": "t:sections.instagram-shop.blocks.more_info"
+        },
+        {
+          "type": "text",
+          "id": "instagram_post_name",
+          "label": "t:sections.instagram-shop.blocks.instagram_post_name"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.instagram-shop.blocks.link"
+        },
+        {
+          "type": "header",
+          "content": "t:sections.instagram-shop.blocks.product__1.name"
+        },
+        {
+          "type": "product",
+          "id": "product__1",
+          "label": "t:sections.instagram-shop.blocks.product__1.product"
+        },
+        {
+          "type": "range",
+          "id": "offset_top__1",
+          "label": "t:sections.instagram-shop.blocks.product__1.offset_top",
+          "default": 12,
+          "min": 1,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "type": "range",
+          "id": "offset_left__1",
+          "label": "t:sections.instagram-shop.blocks.product__1.offset_left",
+          "default": 32,
+          "min": 1,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "type": "header",
+          "content": "t:sections.instagram-shop.blocks.product__2.name"
+        },
+        {
+          "type": "product",
+          "id": "product__2",
+          "label": "t:sections.instagram-shop.blocks.product__2.product"
+        },
+        {
+          "type": "range",
+          "id": "offset_top__2",
+          "label": "t:sections.instagram-shop.blocks.product__2.offset_top",
+          "default": 1,
+          "min": 1,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "type": "range",
+          "id": "offset_left__2",
+          "label": "t:sections.instagram-shop.blocks.product__2.offset_left",
+          "default": 43,
+          "min": 1,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "type": "header",
+          "content": "t:sections.instagram-shop.blocks.product__3.name"
+        },
+        {
+          "type": "product",
+          "id": "product__3",
+          "label": "t:sections.instagram-shop.blocks.product__3.product"
+        },
+        {
+          "type": "range",
+          "id": "offset_top__3",
+          "label": "t:sections.instagram-shop.blocks.product__3.offset_top",
+          "default": 10,
+          "min": 1,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "type": "range",
+          "id": "offset_left__3",
+          "label": "t:sections.instagram-shop.blocks.product__3.offset_left",
+          "default": 40,
+          "min": 1,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "type": "header",
+          "content": "t:sections.instagram-shop.blocks.product__4.name"
+        },
+        {
+          "type": "product",
+          "id": "product__4",
+          "label": "t:sections.instagram-shop.blocks.product__4.product"
+        },
+        {
+          "type": "range",
+          "id": "offset_top__4",
+          "label": "t:sections.instagram-shop.blocks.product__4.offset_top",
+          "default": 60,
+          "min": 1,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "type": "range",
+          "id": "offset_left__4",
+          "label": "t:sections.instagram-shop.blocks.product__4.offset_left",
+          "default": 70,
+          "min": 1,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "type": "header",
+          "content": "t:sections.instagram-shop.blocks.product__5.name"
+        },
+        {
+          "type": "product",
+          "id": "product__5",
+          "label": "t:sections.instagram-shop.blocks.product__5.product"
+        },
+        {
+          "type": "range",
+          "id": "offset_top__5",
+          "label": "t:sections.instagram-shop.blocks.product__5.offset_top",
+          "default": 1,
+          "min": 1,
+          "max": 100,
+          "step": 1
+        },
+        {
+          "type": "range",
+          "id": "offset_left__5",
+          "label": "t:sections.instagram-shop.blocks.product__5.offset_left",
+          "default": 4,
+          "min": 1,
+          "max": 100,
+          "step": 1
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.instagram-shop.name",
+      "blocks": [
+        {
+          "type": "instagram_manual_upload"
+        },
+        {
+          "type": "instagram_manual_upload"
+        },
+        {
+          "type": "instagram_manual_upload"
+        },
+        {
+          "type": "instagram_manual_upload"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

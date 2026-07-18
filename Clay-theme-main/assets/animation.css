@@ -1,0 +1,164 @@
+/* Zoom in image on scroll */
+.animate--zoom-in {
+  --zoom-in-ratio: 1;
+}
+
+.animate--zoom-in  img ,.animate--zoom-in  picture,
+.animate--zoom-in > svg {
+  transition: scale var(--duration-short) linear;
+  scale: var(--zoom-in-ratio);
+}
+:root {
+  --duration-announcement-bar: 250ms;
+  --duration-medium: 300ms;
+  --duration-long: 500ms;
+  --duration-extra-long: 600ms;
+  --duration-extra-longer: 750ms;
+  --duration-extended: 3s;
+  --animation-slide-in: slideIn var(--duration-extra-long) ease forwards;
+  --animation-fade-in: fadeIn var(--duration-extra-long) ease forwards;
+  --animation-zoom-in: zoomIn var(--duration-extra-longer) ease forwards;
+}
+
+/* Animations */
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate--ambient > img,
+  .animate--ambient > svg {
+    animation: animateAmbient 30s linear infinite;
+  }
+
+  @keyframes animateAmbient {
+    0% {
+      transform: rotate(0deg) translateX(1em) rotate(0deg) scale(1.2);
+    }
+
+    100% {
+      transform: rotate(360deg) translateX(1em) rotate(-360deg) scale(1.2);
+    }
+  }
+  .scroll-trigger:is(.zoom_in, .fade_in,.slide_in) {
+    opacity: 0.01;
+  }
+
+  .scroll-trigger:not(.scroll-trigger--offscreen).zoom_in {
+    animation: var(--animation-zoom-in);
+    animation-delay: calc(var(--animation-order) * 75ms);
+  }
+  .scroll-trigger:not(.scroll-trigger--offscreen).fade_in {
+    animation: var(--animation-fade-in);
+  }
+
+  .scroll-trigger.scroll-trigger--design-mode.fade_in,
+  .scroll-trigger.scroll-trigger--design-mode .slider,
+  .scroll-trigger:not(.scroll-trigger--offscreen).scroll-trigger--cancel {
+    opacity: 1;
+    animation: none;
+    transition: none;
+  }
+  .scroll-trigger[animation-end] {
+    opacity: 1;
+    animation: none !important;
+    transition: none;
+  }
+  /* .collection-tab__tab-content
+    .scroll-trigger:not(.scroll-trigger--offscreen).zoom_in {
+    animation-delay: calc(0.5s + var(--animation-order) * 75ms);
+  } */
+
+  @keyframes slideIn {
+    from {
+      transform: translateY(1rem);
+      opacity: 0.01;
+    }
+
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes zoomIn {
+    from {
+      opacity: 0;
+      transform: scale(1.02);
+    }
+
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+@media screen and (max-width: 989px) {
+  .scroll-trigger:not(.scroll-trigger--offscreen) .slider--tablet {
+    animation: var(--animation-slide-in);
+  }
+}
+
+@media screen and (min-width: 990px) {
+  .scroll-trigger:not(.scroll-trigger--offscreen) .slider--desktop {
+    animation: var(--animation-slide-in);
+  }
+}
+.scroll-trigger.scroll-trigger--design-mode.fade_in,
+.scroll-trigger.scroll-trigger--design-mode .slider,
+.scroll-trigger:not(.scroll-trigger--offscreen).scroll-trigger--cancel {
+  opacity: 1;
+  animation: none;
+  transition: none;
+}
+
+
+@keyframes slideIn {
+  from {
+    transform: translateY(2rem);
+    opacity: 0.01;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0.01;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .animate--ambient > img,.animate--ambient > picture,
+  .animate--ambient > .svg-wrapper {
+    animation: animateAmbient 30s linear infinite;
+  }
+
+  @keyframes animateAmbient {
+    0% {
+      transform: rotate(0deg) translateX(1em) rotate(0deg) scale(1.2);
+    }
+    100% {
+      transform: rotate(360deg) translateX(1em) rotate(-360deg) scale(1.2);
+    }
+  }
+
+}
+.animate-fixed-parent {
+  display: initial !important;
+}
+
+/* Fixed background */
+.animate--fixed {
+  clip-path: inset(0);
+}
+
+.animate--fixed > img:not(.zoom),.animate--fixed > picture:not(.zoom),
+.animate--fixed > svg:not(.zoom) {
+  position: fixed;
+  height: 100vh;
+}

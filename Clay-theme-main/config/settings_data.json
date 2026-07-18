@@ -1,0 +1,361 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "purchase_code": "",
+    "purchase_code_action": "remove",
+    "favicon": "shopify://shop_images/rb-mitti.png",
+    "logo": "shopify://shop_images/rb-mitti.png",
+    "logo_on_transparent": "shopify://shop_images/rb-mitti.png",
+    "desktop_logo_width": 90,
+    "page_width": 1200,
+    "fluid_container_width": 1410,
+    "spacing_desktop": 90,
+    "space_mobile": 50,
+    "font_type_body": "default_font",
+    "font_body_system": "poppins_n4",
+    "body_font_size": 15,
+    "heading_text_transform": "unset",
+    "heading_letter_spacing": "negative",
+    "menu_font": "heading_font",
+    "sale_background": "#B65B2B",
+    "sale_badge_type": "percent",
+    "sale_badge_addons": "countdown",
+    "scrolling_background": "#B65B2B",
+    "new_background": "#3456e6",
+    "pre_order_background": "#6a33d8",
+    "sold_out_background": "#666666",
+    "custom_badge_background": "#14854e",
+    "product_style": "card",
+    "product_alignment": "center",
+    "product_size": 15,
+    "price_size": 15,
+    "show_vendor": false,
+    "show_secondary_image": true,
+    "product_image_ratio": "landscape",
+    "show_action_on_mobile": true,
+    "enable_color_swatches": false,
+    "swatch_item_type": "variant_images",
+    "search_type": "drawer",
+    "search_result": "products",
+    "enable_search_suggestion": true,
+    "popular_key_word": "matka, handi, karahi, cookware, toys",
+    "collection_suggestion": "frontpage",
+    "show_search_price": true,
+    "show_message_when_remove": true,
+    "action_after_add_cart": "open_drawer",
+    "free_shipping_minimum": "150",
+    "enable_discount_code": true,
+    "enable_gift_wrap": true,
+    "choose_gift_wrap_product": "digital-gift-card",
+    "product_recommendations_heading": "You may also like...",
+    "minicart_type": "show_beside",
+    "show_on_cart_page": true,
+    "select_product_recommendations": [
+      "balloon-sleeve-blouse-square-neck",
+      "cotton-long-sleeve-striped-t-shirt",
+      "plain-cotton-undershirt-wide-neck"
+    ],
+    "show_estimate_shipping_rates": false,
+    "show_delivery_day": false,
+    "facebook": "https://www.instagram.com/rbmittistore",
+    "instagram": "https://www.instagram.com/rbmittistore",
+    "twitter": "",
+    "youtube": "",
+    "tiktok": "https://www.instagram.com/rbmittistore",
+    "pinterest": "",
+    "vimeo": "",
+    "linkedin": "",
+    "whatsapp": "",
+    "enable_preload": false,
+    "zoom_image": true,
+    "scroll_animation": "fade_in",
+    "store_phone": "+92 3368145851",
+    "store_email": "rbmittistore@gmail.com",
+    "store_page": "our-store",
+    "heading_cookies": "",
+    "content_cookies": "<p>We use cookies to enhance your browsing experience, serve personalized ads or content, and analyze our traffics. By clicking \"<strong>Allow Cookies</strong>\" you consent to our use of cookie.</p>",
+    "label_allow": "Allow Cookies",
+    "label_refuse": "",
+    "page_terms_conditions": "term-and-conditions",
+    "rate_color": "#ea0606",
+    "sections": {
+      "custom-colors": {
+        "type": "custom-colors",
+        "blocks": {
+          "color_aQceXa": {
+            "type": "color",
+            "settings": {
+              "heading": "azure",
+              "color_code": ""
+            }
+          }
+        },
+        "block_order": [
+          "color_aQceXa"
+        ],
+        "settings": {}
+      },
+      "product-quickview": {
+        "type": "product-quickview",
+        "blocks": {
+          "badges_NhM4GM": {
+            "type": "badges",
+            "settings": {}
+          },
+          "title_txJBrx": {
+            "type": "title",
+            "settings": {
+              "show_vendor": false
+            }
+          },
+          "rate_QwRHyp": {
+            "type": "rate",
+            "settings": {}
+          },
+          "price_NNg9B8": {
+            "type": "price",
+            "settings": {}
+          },
+          "description_pKXRJa": {
+            "type": "description",
+            "settings": {}
+          },
+          "variant_picker_MQYkTJ": {
+            "type": "variant_picker",
+            "settings": {}
+          },
+          "buy_buttons_pDYNX9": {
+            "type": "buy_buttons",
+            "settings": {
+              "show_dynamic_checkout": true
+            }
+          }
+        },
+        "block_order": [
+          "badges_NhM4GM",
+          "title_txJBrx",
+          "rate_QwRHyp",
+          "price_NNg9B8",
+          "description_pKXRJa",
+          "variant_picker_MQYkTJ",
+          "buy_buttons_pDYNX9"
+        ],
+        "settings": {}
+      },
+      "mobile-navigation-bar": {
+        "type": "mobile-navigation-bar",
+        "settings": {}
+      },
+      "fake-order": {
+        "type": "fake-order",
+        "settings": {
+          "show_fake_order": true,
+          "disable_mobile": false,
+          "fake_product": [
+            "5-piece-premium-wooden-kitchen-spoon-set",
+            "5l-clay-water-cooler-matka-with-tap",
+            "clay-handi-bowl-with-lid",
+            "clay-kulhad-chai-cup",
+            "handmade-clay-handi-bowl-1",
+            "kids-clay-toy-set",
+            "marble-mortar-pestle-set-stone-spice-grinder",
+            "large-clay-water-cooler-with-tap-12-15l",
+            "handmade-clay-handi-bowl",
+            "premium-10l-clay-water-cooler-handcrafted-matka",
+            "premium-clay-drink-set",
+            "premium-clay-tea-cup-set-6-pieces",
+            "premium-clay-water-dispenser-matka",
+            "premium-clay-water-glass-set-6-pieces",
+            "premium-marble-mortar-pestle",
+            "premium-wooden-spatula-set-3-pieces",
+            "small-handcrafted-terracotta-serving-bowl-natural-clay-bowl",
+            "traditional-hand-painted-clay-serving-bowl",
+            "wooden-chakla-belan-set-rolling-pin-board"
+          ],
+          "fake_user": "Ayesha (Karachi) | Bilal (Lahore) | Hassan (Islamabad) | Fatima (Faisalabad) | Usman (Rawalpindi) | Zainab (Multan) | Ahmed (Peshawar) | Sana (Hyderabad) | Ali (Sialkot) | Mehak (Quetta) | Hamza (Gujranwala) | Amina (Sukkur) | Bilquis (Bahawalpur) | Farhan (Sargodha)",
+          "text_verify": "Verify",
+          "delay_time": "5000",
+          "display_time": "6000"
+        }
+      },
+      "top-search": {
+        "type": "top-search",
+        "settings": {}
+      }
+    },
+    "content_for_index": [],
+    "color_schemes": {
+      "default": {
+        "settings": {
+          "background": "#ffffff",
+          "background_gradient": "",
+          "primary_color": "#b65b2b",
+          "text_color": "#111111",
+          "heading_color": "#000000",
+          "border_color": "#ebebeb",
+          "btn_primary_color": "#ffffff",
+          "btn_primary_background": "#b65b2b",
+          "btn_primary_gradient": "",
+          "btn_primary_hover_color": "#ffffff",
+          "btn_primary_hover_background": "#46200f",
+          "btn_primary_hover_background_gradient": "",
+          "btn_outline_color": "#111111",
+          "btn_outline_border_color": "#111111",
+          "button_link_color": "#111111",
+          "button_link_hover_color": "#111111"
+        }
+      },
+      "scheme-4faf0e4d-27f4-4d02-bc51-617383bab1a9": {
+        "settings": {
+          "background": "#111111",
+          "background_gradient": "",
+          "primary_color": "#999999",
+          "text_color": "#ffffff",
+          "heading_color": "#ffffff",
+          "border_color": "#ebebeb",
+          "btn_primary_color": "#ffffff",
+          "btn_primary_background": "#b65b2b",
+          "btn_primary_gradient": "",
+          "btn_primary_hover_color": "#ffffff",
+          "btn_primary_hover_background": "#46200f",
+          "btn_primary_hover_background_gradient": "",
+          "btn_outline_color": "#111111",
+          "btn_outline_border_color": "#111111",
+          "button_link_color": "#111111",
+          "button_link_hover_color": "#111111"
+        }
+      },
+      "scheme-bb1431b0-be4a-4b03-a450-f572c07e3904": {
+        "settings": {
+          "background": "#253230",
+          "background_gradient": "",
+          "primary_color": "#d0473e",
+          "text_color": "#f3fc81",
+          "heading_color": "#f3fc81",
+          "border_color": "#ebebeb",
+          "btn_primary_color": "#ffffff",
+          "btn_primary_background": "#111111",
+          "btn_primary_gradient": "",
+          "btn_primary_hover_color": "#ffffff",
+          "btn_primary_hover_background": "#111111",
+          "btn_primary_hover_background_gradient": "",
+          "btn_outline_color": "#111111",
+          "btn_outline_border_color": "#111111",
+          "button_link_color": "#111111",
+          "button_link_hover_color": "#111111"
+        }
+      },
+      "scheme-3d10de96-a479-49bd-819c-e044746b4f3e": {
+        "settings": {
+          "background": "#ffffff",
+          "background_gradient": "",
+          "primary_color": "#d0473e",
+          "text_color": "#ffffff",
+          "heading_color": "#ffffff",
+          "border_color": "#ebebeb",
+          "btn_primary_color": "#111111",
+          "btn_primary_background": "#ffffff",
+          "btn_primary_gradient": "",
+          "btn_primary_hover_color": "#ffffff",
+          "btn_primary_hover_background": "#111111",
+          "btn_primary_hover_background_gradient": "",
+          "btn_outline_color": "#111111",
+          "btn_outline_border_color": "#111111",
+          "button_link_color": "#111111",
+          "button_link_hover_color": "#111111"
+        }
+      },
+      "scheme-2b5c6c91-201d-4fb1-aba3-e6d562656976": {
+        "settings": {
+          "background": "#f5f5f5",
+          "background_gradient": "",
+          "primary_color": "#d0473e",
+          "text_color": "#444444",
+          "heading_color": "#111111",
+          "border_color": "#ebebeb",
+          "btn_primary_color": "#ffffff",
+          "btn_primary_background": "#111111",
+          "btn_primary_gradient": "",
+          "btn_primary_hover_color": "#ffffff",
+          "btn_primary_hover_background": "#111111",
+          "btn_primary_hover_background_gradient": "",
+          "btn_outline_color": "#111111",
+          "btn_outline_border_color": "#111111",
+          "button_link_color": "#111111",
+          "button_link_hover_color": "#111111"
+        }
+      },
+      "scheme-accf3b11-ba40-4a3e-bafb-243ece6683ec": {
+        "settings": {
+          "background": "#76310f",
+          "background_gradient": "",
+          "primary_color": "#ffffff",
+          "text_color": "#ffffff",
+          "heading_color": "#ffffff",
+          "border_color": "#ebebeb",
+          "btn_primary_color": "#ffffff",
+          "btn_primary_background": "#a24c24",
+          "btn_primary_gradient": "",
+          "btn_primary_hover_color": "#ffffff",
+          "btn_primary_hover_background": "#111111",
+          "btn_primary_hover_background_gradient": "",
+          "btn_outline_color": "#111111",
+          "btn_outline_border_color": "#111111",
+          "button_link_color": "#ffffff",
+          "button_link_hover_color": "#111111"
+        }
+      },
+      "scheme-c78bfb21-5aff-497b-be68-98f01962f564": {
+        "settings": {
+          "background": "#ffffff",
+          "background_gradient": "",
+          "primary_color": "#d0473e",
+          "text_color": "#111111",
+          "heading_color": "#111111",
+          "border_color": "#ebebeb",
+          "btn_primary_color": "#ffffff",
+          "btn_primary_background": "#111111",
+          "btn_primary_gradient": "",
+          "btn_primary_hover_color": "#ffffff",
+          "btn_primary_hover_background": "#111111",
+          "btn_primary_hover_background_gradient": "",
+          "btn_outline_color": "#111111",
+          "btn_outline_border_color": "#111111",
+          "button_link_color": "#111111",
+          "button_link_hover_color": "#111111"
+        }
+      },
+      "scheme-e2434dd4-80ca-43a1-909b-8a9f7b57a7ab": {
+        "settings": {
+          "background": "#ffffff",
+          "background_gradient": "",
+          "primary_color": "#b65b2b",
+          "text_color": "#46200f",
+          "heading_color": "#46200f",
+          "border_color": "#ebebeb",
+          "btn_primary_color": "#ffffff",
+          "btn_primary_background": "#111111",
+          "btn_primary_gradient": "",
+          "btn_primary_hover_color": "#ffffff",
+          "btn_primary_hover_background": "#46200f",
+          "btn_primary_hover_background_gradient": "",
+          "btn_outline_color": "#111111",
+          "btn_outline_border_color": "#111111",
+          "button_link_color": "#111111",
+          "button_link_hover_color": "#111111"
+        }
+      }
+    }
+  },
+  "presets": {
+    "Default": {}
+  }
+}

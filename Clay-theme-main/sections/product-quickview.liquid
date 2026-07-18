@@ -1,0 +1,251 @@
+{% # theme-check-disable ContentForHeaderModification %}
+{%- capture content_for_query_string -%}
+  {{ content_for_header }}
+{%- endcapture -%}
+{% # theme-check-enable ContentForHeaderModification %}
+{%- assign page_url = content_for_query_string
+  | split: '"pageurl":"'
+  | last
+  | split: '"'
+  | first
+  | split: request.host
+  | last
+  | replace: '\/', '/'
+  | replace: '%20', ' '
+  | replace: '\u0026', '&'
+-%}
+{% liquid
+  assign first_3_d_model = product.media | where: 'media_type', 'model' | first
+  assign image_list = ''
+  assign filtered_images = ''
+  assign page_query_string = page_url | split: '?' | last
+%}
+{%- if page_query_string contains 'ajax=1' -%}
+  {% for image in product.media %}
+    {% if image.alt == 'image-360' and image.media_type == 'image' %}
+      {% capture filtered_images %}{{ filtered_images }}{{ image.preview_image | image_url }},{% endcapture %}
+    {% endif %}
+  {% endfor %}
+  {% assign filtered_images = filtered_images | split: ',' | compact %}
+  {% for image in filtered_images %}
+    {% capture image_json %}"{{ image }}"{%- unless forloop.last -%},{%- endunless -%}{% endcapture %}
+    {% capture image_list %}{{ image_list }}{{ image_json }}{% endcapture %}
+  {% endfor %}
+  <div
+    class="product-quickview__content hidden bls-image-js product__item-js"
+    data-color-trigger="{{ settings.color_swatch_trigger }}"
+    data-section="{{ section.id }}"
+    data-zoom="no_zoom"
+    data-type-element="feature_product"
+    data-desktop-layout="hidden_thumbnail"
+  >
+    {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
+    {%- if first_3_d_model -%}
+      {{ 'component-product-model.css' | asset_url | stylesheet_tag }}
+      <link
+        id="ModelViewerStyle"
+        rel="stylesheet"
+        href="https://cdn.shopify.com/shopifycloud/model-viewer-ui/assets/v1.0/model-viewer-ui.css"
+        media="print"
+        onload="this.media='all'"
+      >
+      <link
+        id="ModelViewerOverride"
+        rel="stylesheet"
+        href="{{ 'component-model-viewer-ui.css' | asset_url }}"
+        media="print"
+        onload="this.media='all'"
+      >
+    {% endif %}
+    {% if image_list.size != 0 %}
+      <script src="{{ 'js-cloudimage-360-view.min.js' | asset_url }}" defer="defer"></script>
+    {% endif %}
+    {% render 'product-single-layout', section: section, type: 'quickview' %}
+    {%- unless product.has_only_default_variant -%}
+      <script type="application/json" class="productVariantsQty">
+        [
+        {%- for variant in product.variants -%}
+          {%- assign op = variant.option1 | replace: '"', '\"' -%}
+          {%- liquid
+              assign id = '"id":' | append: variant.id
+              assign option = '"option":"' | append: op | append: '"'
+              assign quantity = '"qty":' | append: variant.inventory_quantity
+              assign available = '"available":' | append: variant.available
+              assign mamagement = '"mamagement":"' | append: variant.inventory_management | append: '"'
+          -%}
+          { {{ id }},{{ option }},{{ quantity }},{{ available }},{{ mamagement }}}
+          {%- unless forloop.last -%},{%- endunless forloop.last -%}
+        {%- endfor -%}
+        ]
+      </script>
+    {%- endunless -%}
+    {%- if first_3_d_model -%}
+      <script type="application/json" id="ProductJSON-{{ product.id }}">
+        {{ product.media | where: 'media_type', 'model' | json }}
+      </script>
+      <script src="{{ 'product-model.js' | asset_url }}" defer></script>
+    {% endif %}
+  </div>
+{% endif %}
+{% schema %}
+{
+  "name": "t:sections.quickview.name",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "t:sections.quickview.settings.paragraph"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.main-product.settings.color_swatches.header"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "t:sections.product-single-layout.blocks.title.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_vendor",
+          "label": "t:sections.product-single-layout.blocks.product_meta.settings.show_vendor"
+        },
+          
+      ]
+    },
+    {
+      "type": "price",
+      "name": "t:sections.product-single-layout.blocks.price.name",
+      "limit": 1
+    },
+    {
+      "type": "badges",
+      "name": "t:sections.main-product.blocks.badges.name",
+      "limit": 1
+    },
+    {
+      "type": "rate",
+      "name": "t:sections.product-single-layout.blocks.rate.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "t:sections.product-single-layout.blocks.rate.settings.paragraph"
+        }
+      ]
+    },
+    {
+      "type": "variant_picker",
+      "name": "t:sections.product-single-layout.blocks.variant_picker.name",
+      "limit": 1
+    },
+    {
+      "type": "buy_buttons",
+      "name": "t:sections.product-single-layout.blocks.buy_buttons.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "label": "t:sections.product-single-layout.blocks.buy_buttons.settings.show_dynamic_checkout_buttons.label",
+          "info": "t:sections.product-single-layout.blocks.buy_buttons.settings.show_dynamic_checkout_buttons.info",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "t:sections.product-single-layout.blocks.description.name",
+      "limit": 1
+    },
+    {
+      "type": "custom_liquid",
+      "name": "t:sections.product-single-layout.blocks.custom_liquid.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "t:sections.product-single-layout.blocks.custom_liquid.settings.custom_liquid.label",
+          "info": "t:sections.product-single-layout.blocks.custom_liquid.settings.custom_liquid.info"
+        }
+      ]
+    },
+    {
+      "type": "product_meta",
+      "name": "t:sections.product-single-layout.blocks.product_meta.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_available",
+          "label": "t:sections.product-single-layout.blocks.product_meta.settings.show_available"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_sku",
+          "label": "t:sections.product-single-layout.blocks.product_meta.settings.show_sku"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_collections",
+          "label": "t:sections.product-single-layout.blocks.product_meta.settings.show_collections"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_tags",
+          "label": "t:sections.product-single-layout.blocks.product_meta.settings.show_tags"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_type",
+          "label": "t:sections.product-single-layout.blocks.product_meta.settings.show_type"
+        }
+      ]
+    },
+    {
+      "type": "countdown",
+      "name": "t:sections.product-single-layout.blocks.countdown.name",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "countdown_message",
+          "label": "t:sections.product-single-layout.blocks.countdown.settings.countdown_message"
+        },
+        {
+          "type": "select",
+          "id": "timer_style",
+          "label": "t:sections.product-single-layout.blocks.countdown.settings.timer_style.label",
+          "options": [
+            {
+              "value": "default",
+              "label": "t:sections.product-single-layout.blocks.countdown.settings.timer_style.default"
+            },
+            {
+              "value": "highlight",
+              "label": "t:sections.product-single-layout.blocks.countdown.settings.timer_style.highlight"
+            }
+          ],
+          "default": "default"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "t:sections.product-single-layout.blocks.text.name",
+      "limit": 5,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "text",
+          "default": "Text block",
+          "label": "t:sections.product-single-layout.blocks.text.settings.text"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

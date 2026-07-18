@@ -1,0 +1,155 @@
+lookbook-item {
+  left: var(--left);
+  top: var(--top);
+  right: var(--right);
+  bottom: var(--bottom);
+  transform: var(--transform);
+}
+lookbook-item .product-item__inner {
+  flex: 0 0 auto;
+  width: 6rem;
+}
+.lookbook-item__hover{
+  min-width: 29rem;
+}
+.lookbook-item__popup {
+  min-width: 29rem;
+  top: calc(100% + 27px);
+  left: 50%;
+  transform: translateX(-50%);
+}
+.lookbook-item__popup .product-item__wrapper{
+  --gap: 10 !important;
+}
+.lookbook-item__popup .product-item__name{
+  --font-size: 14 !important;
+}
+.vertical-bottom {
+  top: auto;
+  bottom: calc(100% + 27px);
+}
+.horizontal-left {
+  left: 0;
+  transform: translateX(0);
+}
+.horizontal-right {
+  right: 0;
+  left: auto;
+  transform: translateX(0);
+}
+.rounded-style .lookbook-item__popup {
+  --rounded-radius: 5px;
+}
+.lookbook-item__popup::after,
+.lookbook-item__hover::after {
+  content: "";
+  height: 0;
+  position: absolute;
+  width: 0;
+  top: 1px;
+  left: 50%;
+  -webkit-transform: translateX(-50%) translateY(-100%);
+  transform: translateX(-50%) translateY(-100%);
+  border: solid transparent;
+  border-width: 7px;
+  border-bottom-color: var(--color-white);
+  will-change: transform;
+}
+.vertical-bottom:after {
+  top: auto;
+  bottom: 0;
+  -webkit-transform: translateX(-50%) translateY(91%);
+  transform: translateX(-50%) translateY(91%);
+  border-top-color: var(--color-white);
+  border-bottom-color: transparent;
+}
+.horizontal-left::after {
+  left: 15px;
+}
+.horizontal-right::after {
+  right: 15px;
+  left: auto;
+}
+lookbook-item.open {
+  z-index: 4;
+}
+lookbook-item .lookbook-animation > span {
+  color: var(--color-heading);
+  transition: var(--transition);
+}
+lookbook-item.open .lookbook-animation > span {
+  background-color: var(--color-primary);
+  color: var(--color-white);
+}
+lookbook-item.open .lookbook-animation > span :is(svg, path) {
+  color: var(--color-white);
+}
+lookbook-item.open .lookbook-item__popup {
+  top: calc(100% + 12px);
+}
+lookbook-item.open .lookbook-item__popup.vertical-bottom {
+  top: auto;
+  bottom: calc(100% + 12px);
+}
+lookbook-item svg {
+  transition: all 0.2s linear;
+}
+lookbook-item.open svg {
+  transform: rotate(45deg);
+}
+.lookbook-animation:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: block;
+  -webkit-animation: ripple 1s ease infinite;
+  animation: ripple 2s ease infinite;
+  border-radius: 50%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-perspective: 800px;
+  perspective: 800px;
+  background-color: #ffffff80;
+  z-index: -1;
+}
+@keyframes ripple {
+  0% {
+    opacity: 0;
+    -webkit-transform: scale(0.2);
+    transform: scale(0.2);
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+}
+.lookbook-modal {
+  --popup-max-width: 39rem;
+  --tingle-padding: 1.5rem;
+}
+.lookbook-product__product{
+     background-color: var(--bg-content);
+     padding-top: calc(var(--section-pt-content)* 1px);
+     padding-bottom: calc(var(--section-pt-content)* 1px);
+     padding-left: calc(var(--section-pb--content)* 1px);
+     padding-right: calc(var(--section-pb--content)* 1px);
+}
+.product-tooltip {
+  min-width: 34rem;
+  position: absolute;
+}
+.lookbook-item__hover {
+  transform: translateY(15px);
+  transition: transform 0.25s cubic-bezier(0.25, 0.46, 0.4, 1);
+  padding-top: 1rem;
+}
+.active.lookbook-item__hover {
+  transform: translateY(0);
+}

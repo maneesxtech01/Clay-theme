@@ -1,0 +1,38 @@
+{%- if recommendations.products_count > 0 -%}
+  <div class="swiper-wrapper">
+    {%- for product in recommendations.products -%}
+      <div
+        class="swiper-slide"
+      >
+        {% render 'product-item',
+          card_product: product,
+          template_enable_price: true,
+          template_enable_add_cart: true,
+          template_enable_product_vendor: false,
+          template_enable_rate: false,
+          template_enable_product_short_description: false,
+          template_enable_color_swatches: false,
+          type: 'list'
+        %}
+      </div>
+    {%- endfor -%}
+  </div>
+  <div class="cart-upsell-wrapper">
+    {%- for product in recommendations.products -%}
+      <div
+        class="cart-upsell-item w-full"
+      >
+        {% render 'product-item',
+          card_product: product,
+          template_enable_price: true,
+          template_enable_add_cart: true,
+          template_enable_product_vendor: false,
+          template_enable_rate: false,
+          template_enable_product_short_description: false,
+          template_enable_color_swatches: false,
+          type: 'list'
+        %}
+      </div>
+    {%- endfor -%}
+  </div>
+{% endif %}

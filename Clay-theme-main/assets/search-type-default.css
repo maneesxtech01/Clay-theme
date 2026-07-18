@@ -1,0 +1,102 @@
+.search__type-popup {
+  --transition-popup: all 0.6s cubic-bezier(0.7, 0, 0.2, 1);
+}
+.bls__drawer.search__type-popup {
+  transition: var(--transition-popup);
+}
+header-inner.show-search-form {
+  grid-template-columns: 1fr auto 1fr;
+}
+/* .open-search .search_type_default{
+  position: relative;
+  z-index: 11;
+} */
+.content-search-form {
+  max-height: 80vh;
+  overflow: auto;
+  position: relative;
+  z-index: 10;
+  background-color: var(--color-white);
+}
+.popup-search-form {
+  visibility: hidden;
+  top:0;
+  transform: translateY(-105%);
+  opacity: 1;
+  z-index: 5;
+}
+.overlay_search {
+  position: fixed;
+  visibility: visible;
+  background-color: var(--overlay-bg);
+  transition: 0.5s cubic-bezier(0.7, 0, 0.2, 1);
+  transition-property: opacity, visibility, background-color;
+  opacity: 0;
+  inset: 0;
+  left: 0;
+  cursor: url(cursor-close.png), pointer;
+  right: 17px;
+  pointer-events: none;
+  z-index: 4;
+  height: auto;
+}
+.overlay_search.open{
+  pointer-events: auto;
+}
+.open-search .search_type_popup ~ .overlay_search, .open-search .search_type_drawer ~ .overlay_search {
+  pointer-events: auto;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+.search_type_drawer ~ .overlay_search{
+   z-index: 11;
+}
+
+@media screen and (max-width: 767.98px) {
+  .overlay_search {
+    z-index: 11;
+    right: 0;
+  }
+  .open-search .search_type_default ~ .overlay_search {
+    pointer-events: auto;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+}
+@media screen and (max-width: 575.98px) {
+  .popup-search-form {
+    left: calc(var(--bs-gutter-x) * -1);
+    right: calc(var(--bs-gutter-x) * -1);
+  }
+}
+@media screen and (max-width: 767.98px) {
+  .header_search .product-item__wrapper {
+    display: flex;
+    gap: 15px;
+    --product-item__price-top: 3px;
+    --col-width: 8rem;
+  }
+  .header_search .product-item__information {
+    margin-top: 0;
+    text-align: start;
+    align-self: center;
+  }
+  .header_search .product-item__inner {
+    width: 7rem;
+  }
+  .header_search .product-item:not(:last-child) {
+    border-bottom: 1px dashed var(--color-border);
+    padding-bottom: 1.5rem;
+  }
+  .header_search .product-item .product-item__price {
+    justify-content: flex-start;
+  }
+  .search-type-default .search__button.light-dark-grey {
+    color: var(--color-heading);
+  }
+}
+@media screen and (min-width: 768px) {
+  .bls__drawer.search__type-popup {
+    max-width: 100%;
+  }
+}

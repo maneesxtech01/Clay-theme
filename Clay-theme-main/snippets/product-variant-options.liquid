@@ -1,0 +1,128 @@
+{%- liquid
+  assign variants_available_arr = product.variants | map: 'available'
+  assign variants_option_1_arr = product.variants | map: 'option1'
+  assign variants_option_2_arr = product.variants | map: 'option2'
+  assign variants_option_3_arr = product.variants | map: 'option3'
+  assign product_form_id = 'product-form-' | append: section.id
+-%}
+{%- for value in option.values -%}
+  {%- liquid
+    assign option_disabled = true
+    for option1_name in variants_option_1_arr
+      case option.position
+        when 1
+          if variants_option_1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 2
+          if option1_name == product.selected_or_first_available_variant.option1 and variants_option_2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+        when 3
+          if option1_name == product.selected_or_first_available_variant.option1 and variants_option_2_arr[forloop.index0] == product.selected_or_first_available_variant.option2 and variants_option_3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+            assign option_disabled = false
+          endif
+      endcase
+    endfor
+  -%}
+  {% if variant_type == 'dropdown' %}
+    <swatch-dropdown-item class="block text-color hover-heading-color transition body_weight">
+      <input
+        type="radio"
+        id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+        name="{{ option.name }}"
+        value="{{ value | escape }}"
+        form="{{ product_form_id }}"
+        {% if option.selected_value == value %}
+          checked
+        {% endif %}
+        class="{% if option_disabled -%}option-disabled{%- endif %} visually-hidden"
+      >
+      {%- liquid
+        assign op = 'option' | append: option.position
+        assign variant = product.variants | where: op, value
+        assign img = ''
+        for i in variant
+          if i.featured_image.src
+            assign img = i.featured_image.src
+            break
+          endif
+        endfor
+      -%}
+      <label
+        for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+        value="{{ value | escape }}"
+        data-value="{{ value | replace: '"', "'" }}"
+        {% if option.selected_value == value %}
+          selected="selected"
+        {% endif %}
+        data-option-swatch-value="{{ value }}"
+        class="product__color-swatches--js w-full rounded-3 px-15 h-45 inline-flex align-center capitalize"
+      >
+        {% if option_disabled -%}
+          {{- 'products.product.value_unavailable' | t: option_value: value -}}
+        {%- else -%}
+          {{- value -}}
+        {%- endif %}
+      </label>
+    </swatch-dropdown-item>
+  {% else %}
+    <input
+      type="radio"
+      id="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+      name="{{ option.name }}"
+      value="{{ value | escape }}"
+      form="{{ product_form_id }}"
+      {% if option.selected_value == value %}
+        checked
+      {% endif %}
+      class="{% if option_disabled -%}option-disabled {%- endif %} visually-hidden"
+    >
+    {%- if isColorOption != true or settings.enable_color_swatches == false -%}
+      <label
+        class="tooltip pointer product__color-swatches--js product__item-option inline-flex align-center border rounded-3 subheading_weight btn-hover lh-normal px-20 py-10 transition relative"
+        for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+      >
+        <span class="relative z-2 uppercase-first-letter">
+          {{ value -}}
+        </span>
+      </label>
+    {%- else -%}
+      {%- liquid
+        assign op = 'option' | append: option.position
+        assign variant = product.variants | where: op, value
+        assign img = ''
+        for i in variant
+          if i.featured_image.src
+            assign img = i.featured_image.src
+            break
+          endif
+        endfor
+
+        if value.swatch.image
+          assign image_url = value.swatch.image | image_url
+          assign swatch_value = 'url(' | append: image_url | append: ')'
+        elsif value.swatch.color
+          assign swatch_value = 'rgb(' | append: value.swatch.color.rgb | append: ')'
+        else
+          assign swatch_value = null
+        endif
+      -%}
+      <label
+        class="product__color-swatches--js relative tooltip product__color-swatch inline-flex align-center rounded-50 swatch-large pointer"
+        for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}"
+        data-value="{{ value | replace: '"', "'" }}"
+        data-color="{{ value | downcase | replace: ' ', '-' | replace: '"', "'" }}"
+        data-custom-value="custom__color-swatches--{{ value | downcase | replace: ' ', '-' | replace: '"', "'" }}"
+        data-swatch-type="{{ swatch_item_type }}"
+        data-position="{{ option.position }}"
+        {% if img != blank %}
+          data-image="{{ img | image_url }}"
+        {% endif %}
+        data-option-swatch-value="{{ swatch_value }}"
+      >
+        <span class="tooltip-content invisible rounded-3 absolute pointer-none">{{ value }}</span>
+      </label>
+    {%- endif -%}
+  {% endif %}
+{%- endfor -%}

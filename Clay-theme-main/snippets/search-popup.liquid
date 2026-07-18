@@ -1,0 +1,188 @@
+{% # theme-check-disable ContentForHeaderModification %}
+{%- capture content_for_query_string -%}
+  {{ content_for_header }}
+{%- endcapture -%}
+{% # theme-check-enable ContentForHeaderModification %}
+{%- assign pageurl = content_for_query_string
+  | split: '"pageurl":"'
+  | last
+  | split: '"'
+  | first
+  | split: request.host
+  | last
+  | replace: '\/', '/'
+  | replace: '%20', ' '
+  | replace: '\u0026', '&'
+-%}
+{%- assign page_query_string = pageurl | split: '?' | last -%}
+{%- liquid
+  assign theme_st = settings
+  assign show_search_price = theme_st.show_search_price
+  assign search_type = theme_st.search_type
+  assign popular_key_word = theme_st.popular_key_word
+  assign enable_search_suggestion = theme_st.enable_search_suggestion
+  assign search_terms = search.terms
+  assign key_terms = search_terms
+  assign collection_suggestion = theme_st.collection_suggestion
+  assign search_result = theme_st.search_result
+  if search_terms contains 'product_type:'
+    assign arr_terms = search_terms | remove: 'product_type:' | split: ' AND '
+    assign product_type = arr_terms[0] | strip
+    assign search_terms = arr_terms[1] | strip
+    if search_terms == blank
+      assign key_terms = key_terms | remove: ' AND '
+      assign search_terms = product_type
+    endif
+  endif
+  if page_query_string contains 'ajax=1' and page_query_string contains 'type=popup'
+    assign search_type = 'popup'
+  endif
+-%}
+{% liquid
+  assign enable_rtl = settings.rtl
+  assign iso_code = request.locale.iso_code
+  assign lis_language_rtl = settings.language_rtl
+  if lis_language_rtl != blank
+    if lis_language_rtl contains iso_code
+      assign enable_rtl = true
+    else
+      assign enable_rtl = false
+    endif
+  endif
+%}
+
+<div class="search__type-popup color-default py-60 h-full overflow-auto px-15 custom-scrollbar">
+  <div class="{% if section_width == 'container' %}container{% else %}fluid_container{% endif %}">
+    <h3 class="search-title text-center h4 m-0 hidden block-sm">{{ 'templates.search.title' | t }}</h3>
+    <div class="relative static-sm flex block-sm align-center{% if enable_rtl %} flex-row-reverse{% endif %}">
+      <form
+        action="{{ routes.search_url }}"
+        id="search_mini_form"
+        method="get"
+        role="search"
+        class="search search-modal__form mt-sm-15 grow-1 max-w-custom mx-auto"
+        style="--max-width: 70rem;"
+      >
+        <div class="field flex relative btn-rounded">
+          <input
+            class="search__input field__input flex-1 {% if mobile %} search_popup_mobile {% endif %}"
+            type="search"
+            name="q"
+            id="search-template"
+            value="{{ search.terms | escape }}"
+            placeholder="{{ 'general.search.search' | t }}"
+            maxlength="128"
+            role="combobox"
+            aria-expanded="false"
+            aria-owns="predictive-search-results"
+            aria-controls="predictive-search-results"
+            aria-haspopup="listbox"
+            aria-autocomplete="list"
+            autocorrect="off"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            style="{% if enable_rtl %}--input-padding: 1rem 2rem 1rem 4rem;{% else %}--input-padding: 1rem 4rem 1rem 2rem;{% endif %}"
+          >
+          <label class="field__label visually-hidden" for="search-template">
+            {{- 'general.search.search' | t -}}
+          </label>
+          <input type="hidden" name="options[unavailable_products]" value="last">
+          <input type="hidden" name="options[prefix]" value="last">
+          <input type="hidden" name="options[fields]" value="title,vendor,product_type,variants.title">
+          <input type="hidden" name="type" value="{{ search_result }}">
+          <span class="loading-icon absolute inline-flex align-center inset-y-0 invisible{% if enable_rtl %} left-45{% else %} right-45{% endif %}">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="spin">
+              <use href="#icon-load"></use>
+            </svg>
+          </span>
+          <button
+            class="search__button field__button header-color btn-reset w-44 inline-flex content-center absolute inset-y-0 pointer{% if enable_rtl %} left-5{% else %} right-5{% endif %}"
+            aria-label="{{ 'general.search.search' | t }}"
+          >
+            <svg width="17" height="17" viewBox="0 0 17 17" fill="currentColor">
+              <use href="#icon-search" />
+            </svg>
+          </button>
+        </div>
+      </form>
+      <button
+        class="dark-grey btn-search-close btn-reset button-close absolute-sm top-0 border-0 top-sm-15 pointer rounded-50 hover-heading-color overflow-hidden transition w-30 w-sm-44 h-44 inline-flex align-center justify-sm-center hover-svg-zoom{% if enable_rtl %} left-0 left-sm-15 flex-start{% else %} right-0 right-sm-15 flex-end{% endif %}"
+        aria-label="{{ 'general.search.search' | t }}"
+      >
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="transition">
+          <use href="#icon-close" />
+        </svg>
+      </button>
+    </div>
+    {%- if enable_search_suggestion and popular_key_word != blank -%}
+      {%- capture link_quick_search -%}
+        {{ routes.search_url }}?type=product&options%5Bfields%5D=title,tag,vendor,product_type,variants.title,variants.sku&options%5Bunavailable_products%5D=last&options%5Bprefix%5D=last&q=
+      {%- endcapture -%}
+      <div id="quick-search" class="quick-search mt-25">
+        <h3 class="quick-search-title h5 m-0">{{ 'general.search.quick_search' | t }}</h3>
+        <ul class="quick-search-list mt-15 list-unstyled flex flex-wrap gap-10">
+          {%- assign popular_key_word = popular_key_word | replace: ' ,', ',' | replace: ', ', ',' | split: ',' -%}
+          {%- for qr in popular_key_word -%}
+            {%- assign quick_text = qr | strip -%}
+            {%- if quick_text -%}
+              <li>
+                <a
+                  class="quick-url btn-rounded no-underline lh-normal px-20 py-8 border hover-heading-color hover-grey-bg inline-block"
+                  href="{{ link_quick_search }}{{ quick_text }}"
+                  aria-label="{{ quick_text }}"
+                >
+                  {{ quick_text }}
+                </a>
+              </li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+    <div id="predictive-search" class="predictive-search--header mt-25">
+      <div class="predictive-search" data-predictive-search>
+        {%- if enable_search_suggestion and collection_suggestion -%}
+          {%- assign collection = collections[collection_suggestion] -%}
+          {%- if collection.products.size > 0 -%}
+            <div class="search-suggest search-list-item">
+              <span class="h5 m-0">
+                {{ 'general.search.popular_products' | t }}
+              </span>
+              <div id="search-results">
+                <div class="search__grid mt-15 {{ product_style }}">
+                  <div
+                    id="search-results-list"
+                    class="search-results-list{% if search_type == 'default' or search_type == 'popup' %} grid grid-cols gap-15 gap-lg-20{% endif %}"
+                    style="{% if search_type == 'default' or search_type == 'popup' %}--col-number: 1;--col-tablet: 1;--col-desktop-small:3;--col-desktop: 5;{% endif %}"
+                  >
+                    {%- assign sizes = '(min-width: 1200px) calc((1200px -  30px * 3) * 0.2), (min-width: 768px) calc( (100vw - 30px - 30px * 2 ) * 0.33), 80px' -%}
+                    {%- for product in collection.products limit: 5 -%}
+                      {% render 'product-item',
+                        card_product: product,
+                        section_id: section.id,
+                        template_enable_action: false,
+                        template_enable_product_vendor: false,
+                        template_enable_rate: true,
+                        template_enable_price: show_search_price,
+                        template_enable_product_short_description: false,
+                        template_enable_color_swatches: false,
+                        type: 'normal',
+                        sizes: sizes
+                      %}
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+  
+      </div>
+      <span class="predictive-search-status visually-hidden" role="status" aria-hidden="true"></span>
+    </div>
+    <div class="search__loading-state mt-15 ">
+      {%- render 'skeleton', type: 'popup' -%}  
+    </div>
+  </div>
+</div>

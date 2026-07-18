@@ -1,0 +1,139 @@
+{%- liquid
+  assign section_st = section.settings
+  assign show_category = show_category
+  assign show_date = show_date
+  assign show_excerpt = show_excerpt
+  assign show_readmore = show_readmore
+  assign show_author = show_author
+  assign custom_ratio = custom_ratio
+  assign column_gap = column_gap
+  assign readmore_type = readmore_type | default: 'primary'
+  assign content_alignment = section_st.content_alignment | default: 'left'
+-%}
+{%- capture style_ratio -%}
+  {%- liquid
+    assign ratio = ''
+    if image_ratio != 'adapt'
+      case image_ratio
+        when 'square'
+          assign ratio = '1/1'
+        when 'landscape'
+          assign ratio = '4/3'
+        when 'portrait'
+          assign ratio = '3/4'
+        else
+          if custom_ratio != empty
+            assign ratio = custom_ratio | replace: ':', '/'
+          else
+            assign ratio = '3/2'
+          endif
+      endcase
+    else
+      if article.image != blank
+        assign ratio = article.image.aspect_ratio
+      else
+        assign ratio = '3/2'
+      endif
+    endif
+  -%}
+  --aspect-ratio: {{ ratio }};
+{%- endcapture -%}
+<motion-element
+  data-motion="fade-up-lg"
+  {% if scroll_animation != 'slide_in' or search_card == true %}
+    hold
+  {% endif %}
+  data-motion-delay="{{ indexFor | times:  75  }}"
+  class="blog-posts-item  {% if pagination == 'load_more_button' or pagination == 'infinit_scrolling' %} loadmore-item{% endif %}{% if layout == 'list' %} flex gap align-center flex-wrap flex-sm-nowrap {% else %} block {% endif %}{% if scroll_animation != 'none' %} scroll-trigger {{ scroll_animation }}{% endif %}"
+  {% if indexFor and scroll_animation %}
+    data-cascade
+    style="--animation-order: {{ indexFor }};"
+  {% endif %}
+>
+  {% assign blog_name = article.handle | split: '/' | first %}
+  <div class="blog-posts-image hover-effect{% if layout == 'list' %} w-full col-sm-w-custom{% endif %}">
+    <a
+      class="rounded overflow-hidden block"
+      href="{{ article.url }}"
+      arial-label="{{ blog_name | capitalize }}"
+      style="{{ style_ratio | strip | strip_newlines }}"
+    >
+      {%- if article.image != blank -%}
+        {%- assign image_alt = article.image.alt | default: article.title | escape -%}
+        {% render 'responsive-image',
+          type: 'blog',
+          class: 'rounded',
+          container: section_width,
+          image: article.image,
+          colunm: items_per_row,
+          colunm_mobile: items_per_row_mobile,
+          padding: column_gap,
+          image_alt: image_alt
+        %}
+      {%- else -%}
+        {%- render 'placeholder-render', class: 'rounded transition' -%}
+      {%- endif -%}
+    </a>
+  </div>
+  <div class="blog-posts-info text-{{ content_alignment }}{% if layout == 'list' %} col-md-remaining{% else %} mt-30{% endif %}">
+    {%- if show_category -%}
+      {% if blog_name != blank %}
+        <div class="blog-posts-category fs-13 subheading_weight mb-15 text-{{ content_alignment }}">
+          <a
+            href="{{ blog.url }}"
+            aria-label="{{ blog_name | capitalize }}"
+            class="inline-flex btn-rounded border py-8 px-20 lh-normal no-underline heading-color"
+          >
+            <span>{{ blog_name | capitalize }}</span>
+          </a>
+        </div>
+      {% endif %}
+    {%- endif -%}
+    {%- if article.title != blank -%}
+      <h3 class="blog-posts-title fs-20 mt-0 mb-10 heading-letter-spacing">
+        <a href="{{ article.url }}" arial-label="{{ article.title }}" class="no-underline heading-color">
+          {{ article.title }}
+        </a>
+      </h3>
+    {%- endif -%}
+    {%- if show_excerpt -%}
+      <div class="blog-posts-content mb-20 word-break">
+        {{ article.content | strip_html | truncatewords: 24, '...' }}
+      </div>
+    {%- endif -%}
+    <div class="blog-posts-bottom flex gap-10 flex-wrap justify-content-{{ content_alignment }}">
+      {%- if show_date or show_author -%}
+        {%- if show_author -%}
+          <div class="blog-posts-author">
+            <span>
+              {{- 'blog_post.post_by' | t }}
+              <span class="primary-color heading_weight">{{ article.author }}</span>
+            </span>
+          </div>
+        {%- endif -%}
+        {%- if show_date -%}
+          <div class="blog-posts-date">
+            <span>
+              {{ article.published_at | date: '%b %d %Y' }}
+            </span>
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+      {%- if show_comment_count -%}
+        <div class="article-card__footer">
+          {%- if blog.comments_enabled? -%}
+            <span>{{ 'blogs.article.comments' | t: count: article.comments_count }}</span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+    {%- if show_readmore -%}
+      <a
+        class="mt-30 inline-flex blog-posts-readmore no-underline btn-{{ readmore_type }}"
+        href="{{ article.url }}"
+      >
+        {{- 'blog_post.read_more' | t -}}
+      </a>
+    {%- endif -%}
+  </div>
+</motion-element>

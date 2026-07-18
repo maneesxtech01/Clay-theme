@@ -1,0 +1,95 @@
+{% liquid
+  assign total_active_values = 0
+%}
+{% for filter in collection.filters %}
+  {% liquid
+    assign total_active_values = total_active_values | plus: filter.active_values.size
+  %}
+  {% if filter.type == 'price_range' %}
+    {% if filter.min_value.value != null or filter.max_value.value != null %}
+      {% liquid
+        assign total_active_values = total_active_values | plus: 1
+      %}
+    {% endif %}
+  {% endif %}
+{% endfor %}
+{% if current_tags.size > 0 or total_active_values > 0 %}
+  <div
+    class="filter-current {{ class }}"
+  >
+    <ol
+      class="filters list-none my-0 px-0 flex gap-10 flex-wrap"
+    >
+      {%- for filter in collection.filters -%}
+        {%- if filter.type == 'price_range' -%}
+          {%- if filter.min_value.value != null or filter.max_value.value != null -%}
+            <li
+              class="filter_remove_item"
+            >
+              <filter-item
+                data-href="{{ filter.url_to_remove }}"
+                class="link-filter inline-flex align-center gap-20 grey-bg rounded-5 btn-hover lh-normal px-20 py-10 transition-short pointer uppercase-first-letter"
+              >
+                {%- assign min_value = filter.min_value.value | default: 0 -%}
+                {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
+                {% if settings.currency_code_enabled %}
+                  {{ min_value | money_with_currency }} - {{ max_value | money_with_currency }}
+                {% else %}
+                  {{ min_value | money }} - {{ max_value | money }}
+                {% endif %}
+                <svg width="9" height="9" viewBox="0 0 9 9" fill="none" class="transition">
+                  <use href="#icon-close" />
+                </svg>
+              </filter-item>
+            </li>
+          {%- endif -%}
+        {%- else -%}
+          {%- for filter_value in filter.active_values -%}
+            <li
+              class="filter_remove_item"
+            >
+              <filter-item
+                data-href="{{ filter_value.url_to_remove }}"
+                class="link-filter inline-flex align-center gap-20 grey-bg rounded-5 btn-hover lh-normal px-20 py-10 transition-short pointer uppercase-first-letter"
+              >
+                {{- filter_value.label }}
+                <svg width="9" height="9" viewBox="0 0 9 9" fill="none" class="transition">
+                  <use href="#icon-close" />
+                </svg>
+              </filter-item>
+            </li>
+          {%- endfor -%}
+        {%- endif %}
+      {%- endfor -%}
+      {%- for tag in current_tags -%}
+        <li
+          class="filter_remove_item"
+        >
+          {% capture tag_link %}
+            {{ tag | link_to_remove_tag: tag }}
+          {% endcapture %}
+          {% assign tag_link_parts = tag_link | remove_first: '<a href="' | split: '" title="' %}
+          {% assign tag_link = tag_link_parts[0] | strip %}
+          <filter-item
+            data-href="{{ tag_link }}"
+            class="link-filter inline-flex align-center gap-20 grey-bg btn-rounded btn-hover lh-normal px-20 py-10 transition"
+          >
+            {{- tag }}
+            <svg width="9" height="9" viewBox="0 0 9 9" fill="none" class="transition">
+              <use href="#icon-close" />
+            </svg>
+          </filter-item>
+        </li>
+      {%- endfor -%}
+      <li>
+        <filter-item
+          class="filters_clear border-0 link-filter inline-flex align-center gap-20 rounded-5 btn-active lh-normal px-20 py-10 transition btn-primary body_weight"
+          aria-label="{{ 'collections.sidebar.clear_all' | t }}"
+          data-href="{{ collection.url }}"
+        >
+          {{ 'collections.sidebar.clear_all' | t }}
+        </filter-item>
+      </li>
+    </ol>
+  </div>
+{% endif %}
