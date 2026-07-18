@@ -40,7 +40,7 @@
     </div>
   {%- endif -%}
   {%- if sorting and enable_filtering -%}
-    <div class="toolbar-sorter sorter flex gap-10 align-center relative flex-1 flex-end">
+    <div class="toolbar-sorter sorter flex gap-10 align-center relative flex-1 flex-end hidden-1025">
       <div class="select-custom pointer user-select-none">
         {%- assign sort_by = search.sort_by | default: search.default_sort_by -%}
         {%- liquid

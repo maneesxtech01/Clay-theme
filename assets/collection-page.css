@@ -507,3 +507,13 @@ filter-sort[selected="selected"] {
 .filter-action-bottom .facet-clear-all {
   display: none !important;
 }
+
+/* Mobile grid columns switcher */
+@media screen and (max-width: 1024.98px) {
+  .grid-columns-1 {
+    --col-number: 1 !important;
+  }
+  .grid-columns-2 {
+    --col-number: 2 !important;
+  }
+}

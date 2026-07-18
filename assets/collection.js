@@ -65,7 +65,6 @@ class GridMode extends HTMLElement {
   async gridMode() {
     if (this.classList.contains('active')) return;
     const view_mode = this.getAttribute('data-grid-mode');
-    if (view_mode == 1) return;
   await Motion.animate(
       document.querySelectorAll(
         'motion-element.product-item__wrapper.slide_in'
