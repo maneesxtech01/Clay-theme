@@ -508,12 +508,20 @@ filter-sort[selected="selected"] {
   display: none !important;
 }
 
-/* Mobile grid columns switcher */
-@media screen and (max-width: 1024.98px) {
-  .grid-columns-1 {
-    --col-number: 1 !important;
-  }
-  .grid-columns-2 {
-    --col-number: 2 !important;
-  }
+/* Fix price slider cut off */
+.price-range.drop-range {
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+  width: calc(100% - 20px) !important;
+}
+
+/* Fix PKR/Rs currency symbol overlap in input fields */
+.field-currency {
+  left: 12px !important;
+  font-weight: 500;
+  color: var(--color-text, #555);
+}
+.min-price-range, .max-price-range {
+  padding-left: 4.5rem !important; /* give enough space so Rs. doesn't overlap text */
+  padding-right: 1rem !important;
 }

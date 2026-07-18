@@ -58,81 +58,35 @@
     {% endif %}
   {%- endif -%}
   {%- if grid_list -%}
-    {%- assign items_per_row_mobile = section_st.items_per_row_mobile -%}
-    <div class="show-type-products flex grow-1 gap-5{% if number_products_per_page and sorting  %} justify-content-center{% endif %}{% if number_products_per_page and sorting == false  %} justify-content-end{% endif %}">
-      {%- if pageurl == 'list' -%}
-        <view-mode class="grid-mode view-mode pointer tooltip relative w-30 h-30 inline-flex content-center" data-view="grid">
-          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" fill="none">
-            <g fill="currentColor"><path d="M2.073 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM2.073 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM2.073 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM7.073 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM7.073 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM7.073 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM12.073 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM12.073 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM12.073 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/></g>
-          </svg>
-          <span class="visually-hidden">{{ 'collections.toolbar.progress_bar.grid' | t }}</span>
-          <span class="tooltip-content invisible rounded-3 absolute pointer-none">
-            {{- 'collections.toolbar.progress_bar.grid' | t -}}
-          </span>
-        </view-mode>
-      {%- else -%}
-        <grid-mode
-          class="grid-mode pointer hover-heading-color transition w-30 h-30 hidden inline-flex-1025 content-center tooltip relative grid-mode-2{% if products_column == 2 %} active{% endif %}"
-          data-grid-mode="2"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" fill="none">
-            <g fill="currentColor"><path d="M11.073 6a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM4.07 6a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM11.073 14a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3.927 14a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></g>
-          </svg>
-          <span class="visually-hidden">{{ 'collections.toolbar.progress_bar.columns' | t: amount: 2 }}</span>
-          <span class="tooltip-content invisible rounded-3 absolute pointer-none">
-            {{- 'collections.toolbar.progress_bar.columns' | t: amount: 2 -}}
-          </span>
-        </grid-mode>
-        <grid-mode
-          class="grid-mode pointer hover-heading-color transition w-30 h-30 hidden inline-flex-1025 content-center tooltip relative grid-mode-3{% if products_column == 3 %} active{% endif %}"
-          data-grid-mode="3"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" fill="none">
-            <g fill="currentColor"><path d="M2.073 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM2.073 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM2.073 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM7.073 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM7.073 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM7.073 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM12.073 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM12.073 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM12.073 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM17.073 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM17.073 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM17.073 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/></g>
-          </svg>
-          <span class="visually-hidden">{{ 'collections.toolbar.progress_bar.columns' | t: amount: 3 }}</span>
-          <span class="tooltip-content invisible rounded-3 absolute pointer-none">
-            {{- 'collections.toolbar.progress_bar.columns' | t: amount: 3 -}}
-          </span>
-        </grid-mode>
-        <grid-mode
-          class="grid-mode pointer hover-heading-color transition w-30 h-30 hidden inline-flex-1025 content-center tooltip relative grid-mode-4{% if products_column == 4 %} active{% endif %}"
-          data-grid-mode="4"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" fill="none">
-            <g fill="currentColor"><path d="M2.073 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM2.073 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM2.073 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM7.073 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM7.073 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM7.073 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM12.073 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM12.073 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM12.073 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM17.073 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM17.073 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM17.073 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z"/></g>
-          </svg>
-          <span class="visually-hidden">{{ 'collections.toolbar.progress_bar.columns' | t: amount: 4 }}</span>
-          <span class="tooltip-content invisible rounded-3 absolute pointer-none">
-            {{- 'collections.toolbar.progress_bar.columns' | t: amount: 4 -}}
-          </span>
-        </grid-mode>
-        <grid-mode
-          class="grid-mode pointer hover-heading-color transition w-30 h-30 inline-flex hidden-1025 content-center tooltip relative mobile-grid-mode-1{% if items_per_row_mobile == 1 %} active{% endif %}"
-          data-grid-mode="1"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" viewBox="0 0 14 14">
-            <rect width="12" height="12" x="1" y="1" stroke="currentColor" stroke-width="2" rx="1"/>
-          </svg>
-          <span class="visually-hidden">1 Column</span>
-          <span class="tooltip-content invisible rounded-3 absolute pointer-none">1 Column</span>
-        </grid-mode>
-        <grid-mode
-          class="grid-mode pointer hover-heading-color transition w-30 h-30 inline-flex hidden-1025 content-center tooltip relative mobile-grid-mode-2{% if items_per_row_mobile == 2 or items_per_row_mobile == blank %} active{% endif %}"
-          data-grid-mode="2"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="14" fill="none" viewBox="0 0 18 14">
-            <rect width="6" height="12" x="1" y="1" stroke="currentColor" stroke-width="2" rx="1"/>
-            <rect width="6" height="12" x="11" y="1" stroke="currentColor" stroke-width="2" rx="1"/>
-          </svg>
-          <span class="visually-hidden">2 Columns</span>
-          <span class="tooltip-content invisible rounded-3 absolute pointer-none">2 Columns</span>
-        </grid-mode>
-      {%- endif -%}
+    <!-- View Switcher (Visible only on Mobile) -->
+    <div class="show-type-products flex grow-1 gap-15 justify-content-end hidden-1025">
+      <!-- 2 Cards per Row (Grid View) -->
+      <view-mode
+        class="grid-mode view-mode pointer tooltip relative w-30 h-30 inline-flex content-center {% if view != 'list' %}active{% endif %}"
+        data-view="grid"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="14" fill="none">
+          <g fill="currentColor"><path d="M11.073 6a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM4.07 6a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM11.073 14a3 3 0 1 0 0-6 3 3 0 0 0 0 6ZM3.927 14a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></g>
+        </svg>
+        <span class="visually-hidden">2 Cards per Row</span>
+        <span class="tooltip-content invisible rounded-3 absolute pointer-none">2 Cards per Row</span>
+      </view-mode>
+      
+      <!-- 1 Card per Row (List View) -->
+      <view-mode
+        class="grid-mode view-mode pointer tooltip relative w-30 h-30 inline-flex content-center {% if view == 'list' %}active{% endif %}"
+        data-view="list"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" fill="none">
+          <g fill="currentColor"><path d="M2.073 4a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM2.073 9a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM2.073 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4ZM19.073 2a1 1 0 0 1-1 1h-12a1 1 0 0 1 0-2h12a1 1 0 0 1 1 1ZM19.073 7a1 1 0 0 1-1 1h-12a1 1 0 0 1 0-2h12a1 1 0 0 1 1 1ZM19.073 12a1 1 0 0 1-1 1h-12a1 1 0 0 1 0-2h12a1 1 0 0 1 1 1Z"/></g>
+        </svg>
+        <span class="visually-hidden">1 Card per Row</span>
+        <span class="tooltip-content invisible rounded-3 absolute pointer-none">1 Card per Row</span>
+      </view-mode>
     </div>
   {%- endif -%}
   {%- if sorting -%}
-    <div class="toolbar-sorter sorter flex gap-10 align-center relative flex-1 flex-end hidden-1025">
+    <div class="toolbar-sorter sorter flex gap-10 align-center relative flex-1 flex-end hidden block-1025">
       <div class="select-custom pointer user-select-none">
         {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
         {%- liquid

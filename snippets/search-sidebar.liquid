@@ -323,41 +323,33 @@
                           >
                           <input
                             class="min-price-range w-full rounded-3 text-size"
-                            style="--input-height: 4rem;{% if enable_rtl %} --input-padding: 1rem 2.5rem 1rem 2rem;{% else %} --input-padding: 1rem 2rem 1rem 2.5rem{% endif %}"
+                            style="--input-height: 4rem;{% if enable_rtl %} --input-padding: 1rem 4.5rem 1rem 2rem;{% else %} --input-padding: 1rem 2rem 1rem 4.5rem{% endif %}"
                             name="{{ filter.min_value.param_name }}"
                             type="text"
                             placeholder="0"
                             min="0"
                             {%- if filter.min_value.value -%}
                               {%- if uses_comma_decimals -%}
-                                value="{{ filter.min_value.value | money_without_currency | replace: '.', '' | remove: cart.currency.symbol | remove: 'R$' | remove: 'Rs.' | remove: '$' | strip }}"
+                                value="{{ filter.min_value.value | money_without_currency | replace: '.', ''  }}"
                                 {%- assign min_price = filter.min_value.value
                                   | money_without_currency
                                   | replace: '.', ''
                                   | replace: ',', '.'
-                                  | remove: cart.currency.symbol
-                                  | remove: 'R$'
-                                  | remove: 'Rs.'
-                                  | remove: '$'
                                   | round
                                 -%}
                               {%- else -%}
-                                value="{{ filter.min_value.value | money_without_currency | remove: cart.currency.symbol | remove: 'R$' | remove: 'Rs.' | remove: '$' | strip }}"
+                                value="{{ filter.min_value.value | money_without_currency  }}"
                                 {%- assign min_price = filter.min_value.value
                                   | money_without_currency
                                   | replace: ',', ''
-                                  | remove: cart.currency.symbol
-                                  | remove: 'R$'
-                                  | remove: 'Rs.'
-                                  | remove: '$'
                                   | round
                                 -%}
                               {% endif %}
                             {%- else -%}
                               {%- assign min_price = 0 -%}
-                              value="{{  min_price  | money_without_currency | remove: cart.currency.symbol | remove: 'R$' | remove: 'Rs.' | remove: '$' | strip }}"
+                              value="{{  min_price  | money_without_currency }}"
                             {%- endif -%}
-                            max="{{ filter.range_max | money_without_currency | replace: ',', '' | remove: cart.currency.symbol | remove: 'R$' | remove: 'Rs.' | remove: '$' | strip }}"
+                            max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
                           >
                         </div>
                         <svg
@@ -379,32 +371,24 @@
                           <input
                             id="max-price-range"
                             class="max-price-range w-full rounded-3"
-                            style="--input-height: 4rem;{% if enable_rtl %} --input-padding: 1rem 2.5rem 1rem 2rem;{% else %} --input-padding: 1rem 2rem 1rem 2.5rem{% endif %}"
+                            style="--input-height: 4rem;{% if enable_rtl %} --input-padding: 1rem 4.5rem 1rem 2rem;{% else %} --input-padding: 1rem 2rem 1rem 4.5rem{% endif %}"
                             name="{{ filter.max_value.param_name }}"
                             type="text"
                             min="0"
                             {%- if filter.max_value.value -%}
                               {%- if uses_comma_decimals -%}
-                                value="{{ filter.max_value.value | money_without_currency | replace: '.', '' | remove: cart.currency.symbol | remove: 'R$' | remove: 'Rs.' | remove: '$' | strip }}"
+                                value="{{ filter.max_value.value | money_without_currency | replace: '.', ''  }}"
                                 {%- assign max_price = filter.max_value.value
                                   | money_without_currency
                                   | replace: '.', ''
                                   | replace: ',', '.'
-                                  | remove: cart.currency.symbol
-                                  | remove: 'R$'
-                                  | remove: 'Rs.'
-                                  | remove: '$'
                                   | round
                                 -%}
                               {%- else -%}
-                                value="{{ filter.max_value.value | money_without_currency | remove: cart.currency.symbol | remove: 'R$' | remove: 'Rs.' | remove: '$' | strip }}"
+                                value="{{ filter.max_value.value | money_without_currency }}"
                                 {%- assign max_price = filter.max_value.value
                                   | money_without_currency
                                   | replace: ',', ''
-                                  | remove: cart.currency.symbol
-                                  | remove: 'R$'
-                                  | remove: 'Rs.'
-                                  | remove: '$'
                                   | round
                                 -%}
                               {%- endif %}
@@ -413,19 +397,15 @@
                                 | money_without_currency
                                 | replace: ',', ''
                                 | replace: '.', ''
-                                | remove: cart.currency.symbol
-                                | remove: 'R$'
-                                | remove: 'Rs.'
-                                | remove: '$'
                               -%}
-                              value="{{ max_price | money_without_currency | remove: cart.currency.symbol | remove: 'R$' | remove: 'Rs.' | remove: '$' | strip }}"
+                              value="{{ max_price | money_without_currency }}"
                             {%- endif -%}
                             {%- if uses_comma_decimals -%}
-                              placeholder="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' | remove: cart.currency.symbol | remove: 'R$' | remove: 'Rs.' | remove: '$' | strip }}"
-                              max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' | remove: cart.currency.symbol | remove: 'R$' | remove: 'Rs.' | remove: '$' | strip }}"
+                              placeholder="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
+                              max="{{ filter.range_max | money_without_currency | replace: '.', '' | replace: ',', '.' }}"
                             {%- else -%}
-                              placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' | replace: '.00', '' | remove: cart.currency.symbol | remove: 'R$' | remove: 'Rs.' | remove: '$' | strip }}"
-                              max="{{ filter.range_max | money_without_currency | replace: ',', '' | remove: cart.currency.symbol | remove: 'R$' | remove: 'Rs.' | remove: '$' | strip }}"
+                              placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' | replace: '.00', '' }}"
+                              max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
                             {% endif %}
                           >
                         </div>
