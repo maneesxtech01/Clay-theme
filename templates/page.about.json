@@ -31,54 +31,60 @@
         "padding_bottom": 60
       }
     },
-    "rich_text_qMbJGD": {
-      "type": "rich-text",
+    "custom_our_story_h9UCMz": {
+      "type": "custom-our-story",
       "blocks": {
-        "subheading_aXhCec": {
+        "subheading_8cGMnf": {
           "type": "subheading",
           "settings": {
-            "subheading": "Welcome to Glozin",
-            "font_size": 15,
-            "font_weight": "heading_weight",
-            "uppercase": false,
-            "spacing_bottom": 10
+            "text": "FOUNDER'S STORY",
+            "color": "#f63208"
           }
         },
-        "heading_LbN4kp": {
+        "heading_HkaLdp": {
           "type": "heading",
           "settings": {
-            "heading": "Best Store<br> Available to Everyone!",
-            "font_size": 50,
-            "font_weight": "heading_weight",
-            "uppercase": false,
-            "spacing_bottom": 10
+            "text": "FROM INDUSTRY INSIDERS TO NATURAL REBELS",
+            "color": "#1d211e"
           }
         },
-        "description_4JjTUX": {
-          "type": "description",
+        "quote_box_43AwQQ": {
+          "type": "quote_box",
           "settings": {
-            "description": "<p>Over 15 years of experience, we have meticulously curated collections that transcend fleeting trends, <br/>embodying a timeless elegance that resonates with our discerning clientele.</p>",
-            "font_size": 15,
-            "font_weight": "body_weight",
-            "spacing_bottom": 10
+            "text": "\"We couldn't find skincare that met our standards, so we created it ourselves\"",
+            "bg_color": "#fbf7e6",
+            "border_color": "#2c2609",
+            "text_color": "#2c2609"
+          }
+        },
+        "text_9AGHNn": {
+          "type": "text",
+          "settings": {
+            "text": "<p>After spending over a decade in the commercial skincare industry, we witnessed firsthand the disturbing reality behind \"premium\" products. What consumers didn't see were the cheap fillers, synthetic additives, and harmful preservatives hidden behind scientific-sounding names and clever marketing.</p><p>Our breaking point came when we realized that even \"natural\" brands were cutting corners. We began researching truly natural alternatives and discovered something our ancestors knew for centuries—tallow from grass-fed cattle contains bioidentical nutrients that human skin recognizes and absorbs effortlessly.</p><p>The \"aha moment\" happened during a countryside retreat when we experienced the remarkable healing properties of homemade tallow balm on our chronically dry skin. What started as a personal solution evolved into a mission: to create skincare with integrity, using only ingredients we could proudly list on our labels.</p>",
+            "color": "#121212"
           }
         }
       },
       "block_order": [
-        "subheading_aXhCec",
-        "heading_LbN4kp",
-        "description_4JjTUX"
+        "subheading_8cGMnf",
+        "heading_HkaLdp",
+        "quote_box_43AwQQ",
+        "text_9AGHNn"
       ],
+      "name": "Custom Our Story",
       "settings": {
         "section_width": "container",
         "color_scheme": "",
-        "content_alignment": "center",
-        "content_max_width": 70,
-        "enable_expand_content": false,
-        "expand_content_button": "See all Information",
-        "padding_top": 0,
-        "padding_bottom": 43,
-        "reset_spacing": true
+        "layout_desktop": "image_left",
+        "max_width": 1200,
+        "bg_color": "#ffffff",
+        "show_border_bottom": false,
+        "border_bottom_color": "#2c2609",
+        "image_aspect_ratio": "square",
+        "image_border_radius": 8,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "reset_spacing": false
       }
     },
     "multi_content_mBYATd": {
@@ -730,7 +736,7 @@
   },
   "order": [
     "page-heading",
-    "rich_text_qMbJGD",
+    "custom_our_story_h9UCMz",
     "multi_content_mBYATd",
     "counter_bjDJxc",
     "divider_jTBGQJ",
