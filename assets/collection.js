@@ -516,3 +516,51 @@ document.addEventListener('click', function (e) {
     }
   }
 });
+
+class MobileColumnSwitch extends HTMLElement {
+  constructor() {
+    super();
+    this.addEventListener('click', this.toggleColumns.bind(this), false);
+  }
+  
+  connectedCallback() {
+    const cols = this.getAttribute('data-columns');
+    const savedCols = sessionStorage.getItem('mobile-columns') || '2';
+    
+    // Set active class accordingly
+    if (cols === savedCols) {
+      this.classList.add('active');
+    } else {
+      this.classList.remove('active');
+    }
+    
+    // Apply layout style property to grid
+    const grid = document.querySelector('.products-grid__items, .grid.grid-cols');
+    if (grid) {
+      grid.style.setProperty('--col-number', savedCols);
+      grid.style.setProperty('--col-mobile', savedCols);
+    }
+  }
+
+  toggleColumns() {
+    const cols = this.getAttribute('data-columns');
+    sessionStorage.setItem('mobile-columns', cols);
+    
+    // Set columns on the product grid
+    const grid = document.querySelector('.products-grid__items, .grid.grid-cols');
+    if (grid) {
+      grid.style.setProperty('--col-number', cols);
+      grid.style.setProperty('--col-mobile', cols);
+    }
+    
+    // Toggle active class on buttons
+    document.querySelectorAll('mobile-column-switch').forEach(btn => {
+      if (btn.getAttribute('data-columns') === cols) {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+  }
+}
+customElements.define('mobile-column-switch', MobileColumnSwitch);

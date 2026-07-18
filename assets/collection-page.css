@@ -525,3 +525,13 @@ filter-sort[selected="selected"] {
   padding-left: 4.5rem !important; /* give enough space so Rs. doesn't overlap text */
   padding-right: 1rem !important;
 }
+
+/* Custom mobile columns switcher styles */
+mobile-column-switch {
+  color: var(--color-text, #767676);
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+mobile-column-switch.active {
+  color: var(--color-heading, #000) !important;
+}
