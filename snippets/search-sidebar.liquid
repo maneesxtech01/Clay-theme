@@ -56,6 +56,7 @@
     </div>
     {%- assign filters = search.filters -%}
     {%- assign total_active_values = 0 -%}
+    <div class="filter-blocks pb-30 pb-1025-0{% if filter_layout == 'horizontal' %} flex flex-wrap w-full gap-10{% endif %}">
       <!-- Mobile-only Sort by dropdown -->
       <div class="filter-item mobile-sort-by-wrapper hidden-1025 px-30">
         <collapsible-block class="collection border-bottom block pb-5">
