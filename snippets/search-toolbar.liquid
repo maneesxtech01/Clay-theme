@@ -1,8 +1,10 @@
 {%- liquid
   assign enable_filtering = enable_filtering
+  assign default_filter = default_filter
   assign filter_layout = filter_layout
   assign number_products_per_page = section_st.number_products_per_page
   assign sorting = section_st.sorting
+  assign products_column = products_column
 -%}
 {% liquid
   assign enable_rtl = settings.rtl
@@ -16,31 +18,27 @@
     endif
   endif
 %}
-<div class="toolbar toolbar-products flex gap-15 gap-md-30 align-center mb-20{% if filter_layout == 'horizontal' %} mt-1025-60{% endif %}">
-  {%- if enable_filtering -%}
-    <btn-filter class="btn-filter btn-primary inline-flex content-center gap-5 subheading_weight rounded-3 px-10 py-5 {{ filter_layout }} overlay hidden-1025">
-      <svg width="14" height="13" fill="none">
-        <path fill="#fff" d="M11.58 1.5H2.42l3.855 4.553a.474.474 0 0 1 .096.191.482.482 0 0 1 .041.192v3.459l1.176.574V6.436c0-.073.009-.142.027-.206a.72.72 0 0 1 .11-.177L11.58 1.5ZM12.838.338c.064 0 .128.014.191.04.064.02.123.051.178.097.128.1.196.232.205.396a.533.533 0 0 1-.137.424L8.75 6.655v4.757a.695.695 0 0 1-.014.137.587.587 0 0 1-.383.424.598.598 0 0 1-.45-.041L5.577 10.77a.597.597 0 0 1-.246-.205.648.648 0 0 1-.082-.315V6.654L.725 1.294a.719.719 0 0 1-.11-.177.743.743 0 0 1-.027-.205.54.54 0 0 1 .164-.396.563.563 0 0 1 .41-.178h11.676Z"/>
-      </svg>
-      {{ 'collections.toolbar.filter' | t }}
-    </btn-filter>
-  {%- endif -%}
-  {%- if number_products_per_page and search.results.size > 0 -%}
-    <div class="toolbar-amount hidden block-1025" id="toolbar-amount">
-      {%- if search.results_count -%}
-        {{ 'templates.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
-      {%- elsif search.products_count == search.all_products_count -%}
-        {{ 'products.facets.product_count_simple' | t: count: search.products_count }}
-      {%- else -%}
-        {{
-          'products.facets.product_count'
-          | t: product_count: search.products_count, count: search.all_products_count
-        }}
-      {%- endif -%}
-    </div>
-  {%- endif -%}
+
+<!-- Desktop Search Toolbar -->
+<div class="toolbar toolbar-products toolbar-desktop hidden-md gap-30 align-center mb-20{% if filter_layout == 'horizontal' %} mt-1025-60{% endif %}" style="display: none;">
+  <!-- Left Side: Results Count -->
+  <div class="toolbar-left flex align-center">
+    {%- if number_products_per_page and search.results.size > 0 -%}
+      <div class="toolbar-amount relative" id="toolbar-amount">
+        {%- if search.results_count -%}
+          {{ 'templates.search.results_with_count' | t: terms: search.terms, count: search.results_count }}
+        {%- elsif search.products_count == search.all_products_count -%}
+          {{ 'products.facets.product_count_simple' | t: count: search.products_count }}
+        {%- else -%}
+          {{ 'products.facets.product_count' | t: product_count: search.products_count, count: search.all_products_count }}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <!-- Right Side: Sort By Dropdown -->
   {%- if sorting and enable_filtering -%}
-    <div class="toolbar-sorter sorter flex gap-10 align-center relative flex-1 flex-end hidden block-1025">
+    <div class="toolbar-sorter sorter flex gap-10 align-center relative flex-1 flex-end">
       <div class="select-custom pointer user-select-none">
         {%- assign sort_by = search.sort_by | default: search.default_sort_by -%}
         {%- liquid
@@ -111,5 +109,21 @@
         </div>
       </div>
     </div>
+  {%- endif -%}
+</div>
+
+<!-- Mobile Search Toolbar -->
+<div class="toolbar toolbar-products toolbar-mobile hidden block-md align-center justify-content-between mb-20" style="display: flex;">
+  <!-- Left Side: Filter button -->
+  {%- if enable_filtering -%}
+    <btn-filter
+      class="btn-filter border flex gap-10 align-center px-15 py-10 pointer rounded-5 heading-style transition mr-15"
+      data-filter-layout="{{ filter_layout }}"
+    >
+      <svg width="14" height="15" viewBox="0 0 14 15" fill="none">
+        <path d="M12.8333 2.16666H1.16663L5.83329 7.67499V11.5L8.16663 12.6667V7.67499L12.8333 2.16666Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      {{ 'collections.toolbar.filter' | t }}
+    </btn-filter>
   {%- endif -%}
 </div>

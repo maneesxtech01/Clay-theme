@@ -52,7 +52,40 @@
         </svg>
       </close-filter>
     </div>
-    <div class="filter-blocks pb-30 pb-1025-0{% if filter_layout == 'horizontal' %} flex flex-wrap w-full gap-10{% endif %}">
+      <!-- Mobile-only Sort by dropdown -->
+      <div class="filter-item mobile-sort-by-wrapper hidden-1025 px-30">
+        <collapsible-block class="collection border-bottom block pb-5">
+          {%- assign sort_by = collection.sort_by | default: collection.default_sort_by -%}
+          <h3 class="collapsible-heading w-full relative my-0 heading-letter-spacing h6 pt-25 pb-20">
+            <span>{{- 'products.facets.sort_by_label' | t -}}</span>
+            <span class="open-children-toggle absolute inset-0 flex flex-end pointer">
+              <span class="icon_plus-animation"> </span>
+            </span>
+          </h3>
+          <div class="collapsible-content filter-content custom-scrollbar pb-20" style="display: none;">
+            <div class="sort-by-radio-list">
+              {%- assign sort_options = "best-selling|Best Selling,created-descending|Newest,title-ascending|A-Z,title-descending|Z-A,price-ascending|Price (low to high),price-descending|Price (high to low)" | split: ',' -%}
+              {%- for option in sort_options -%}
+                {%- assign option_parts = option | split: '|' -%}
+                {%- assign val = option_parts[0] -%}
+                {%- assign label = option_parts[1] -%}
+                <filter-sort
+                  class="filter-sort-option flex align-center gap-10 py-8 pointer text-color hover-heading-color transition body_weight"
+                  value="{{ val }}"
+                  {% if val == sort_by %}
+                    selected="selected"
+                  {% endif %}
+                >
+                  <span class="custom-radio-button inline-flex content-center rounded-50 border relative {% if val == sort_by %}checked{% endif %}" style="width: 18px; height: 18px; flex-shrink: 0;">
+                    <span class="custom-radio-dot absolute rounded-50" style="width: 8px; height: 8px; top: 4px; left: 4px; display: {% if val == sort_by %}block{% else %}none{% endif %};"></span>
+                  </span>
+                  <span>{{ label }}</span>
+                </filter-sort>
+              {%- endfor -%}
+            </div>
+          </div>
+        </collapsible-block>
+      </div>
       {%- for block in section.blocks -%}
         {%- liquid
           assign block_st = block.settings

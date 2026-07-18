@@ -536,27 +536,38 @@ mobile-column-switch.active {
   color: var(--color-heading, #000) !important;
 }
 
-/* Align desktop toolbar elements: Left, Center, Right */
+/* Responsive Toolbar Toggles */
+@media screen and (max-width: 1024.98px) {
+  .toolbar-desktop {
+    display: none !important;
+  }
+  .toolbar-mobile {
+    display: flex !important;
+  }
+}
 @media screen and (min-width: 1025px) {
-  .toolbar-products {
-    display: grid !important;
+  .toolbar-desktop {
+    display: grid !important; /* desktop layout uses grid */
     grid-template-columns: 1fr auto 1fr !important;
     align-items: center !important;
     gap: 0 !important;
     width: 100% !important;
   }
-  .toolbar-products .toolbar-left {
+  .toolbar-mobile {
+    display: none !important;
+  }
+  .toolbar-desktop .toolbar-left {
     display: flex !important;
     justify-content: flex-start !important;
     flex: none !important;
   }
-  .toolbar-products .show-type-products {
+  .toolbar-desktop .show-type-products {
     display: flex !important;
     justify-content: center !important;
     flex: none !important;
     margin: 0 auto !important;
   }
-  .toolbar-products .toolbar-sorter {
+  .toolbar-desktop .toolbar-sorter {
     display: flex !important;
     justify-content: flex-end !important;
     flex: none !important;
