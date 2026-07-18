@@ -1,0 +1,40 @@
+{
+  "sections": {
+    "page-heading": {
+      "type": "page-heading",
+      "blocks": {
+        "breadcrumb": {
+          "type": "breadcrumb",
+          "settings": {}
+        },
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "page_title": "B2B / Bulk Order Request",
+            "header_size": "default"
+          }
+        }
+      },
+      "block_order": [
+        "breadcrumb",
+        "heading"
+      ],
+      "settings": {
+        "section_width": "stretch_width",
+        "color_scheme": "",
+        "alignment": "center",
+        "height": "based_on_content",
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
+    "main": {
+      "type": "b2b-bulk-order-form",
+      "settings": {}
+    }
+  },
+  "order": [
+    "page-heading",
+    "main"
+  ]
+}

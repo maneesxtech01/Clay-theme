@@ -1,0 +1,279 @@
+<div class="b2b-form-wrap" id="b2bFormWrap">
+  <div class="b2b-form-card">
+    <h2 class="b2b-title">B2B / bulk order request</h2>
+    <p class="b2b-subtitle">Fill in your business details and we'll get back to you with pricing.</p>
+
+    <form id="b2bForm" method="post" action="/contact#ContactForm" accept-charset="UTF-8" novalidate>
+      <input type="hidden" name="form_type" value="contact">
+      <input type="hidden" name="utf8" value="✓">
+
+      <div class="b2b-row">
+        <div class="b2b-field">
+          <label for="b2bBusinessName">Business name <span class="req">*</span></label>
+          <input type="text" id="b2bBusinessName" name="contact[Business Name]" placeholder="Your business name" required>
+        </div>
+        <div class="b2b-field">
+          <label for="b2bContactName">Contact name <span class="req">*</span></label>
+          <input type="text" id="b2bContactName" name="contact[name]" placeholder="Full name" required>
+        </div>
+      </div>
+
+      <div class="b2b-row">
+        <div class="b2b-field">
+          <label for="b2bCity">City / location <span class="req">*</span></label>
+          <input type="text" id="b2bCity" name="contact[City]" placeholder="e.g. Karachi" required>
+        </div>
+        <div class="b2b-field">
+          <label for="b2bPhone">WhatsApp / phone <span class="req">*</span></label>
+          <div class="b2b-phone-group">
+            <select id="b2bPhoneCode" name="contact[Phone Code]">
+              <option value="+92">PK +92</option>
+              <option value="+91">IN +91</option>
+              <option value="+971">UAE +971</option>
+              <option value="+966">KSA +966</option>
+              <option value="+1">US +1</option>
+              <option value="+44">UK +44</option>
+            </select>
+            <input type="tel" id="b2bPhone" name="contact[phone]" placeholder="300 1234567" required>
+          </div>
+        </div>
+      </div>
+
+      <div class="b2b-field">
+        <label for="b2bEmail">Email address <span class="req">*</span></label>
+        <input type="email" id="b2bEmail" name="contact[email]" placeholder="name@business.com" required>
+      </div>
+
+      <div class="b2b-field">
+        <label for="b2bBusinessType">Type of business <span class="req">*</span></label>
+        <select id="b2bBusinessType" name="contact[Business Type]" required>
+          <option value="" disabled selected>Select one</option>
+          <option>Retail store</option>
+          <option>Restaurant / cafe</option>
+          <option>E-commerce</option>
+          <option>Distributor</option>
+          <option>Corporate gifting</option>
+          <option>Other</option>
+        </select>
+      </div>
+
+      <div class="b2b-field">
+        <label>Products you're interested in <span class="req">*</span></label>
+        <div class="b2b-checkbox-grid" id="b2bProductsGrid">
+          <label><input type="checkbox" name="contact[Products][]" value="All products"> All products</label>
+          <label><input type="checkbox" name="contact[Products][]" value="Clay handi"> Clay handi</label>
+          <label><input type="checkbox" name="contact[Products][]" value="Tawa"> Tawa</label>
+          <label><input type="checkbox" name="contact[Products][]" value="Cups"> Cups</label>
+          <label><input type="checkbox" name="contact[Products][]" value="Sauce pan"> Sauce pan</label>
+          <label><input type="checkbox" name="contact[Products][]" value="Water bottles"> Water bottles</label>
+          <label><input type="checkbox" name="contact[Products][]" value="Dinner sets"> Dinner sets</label>
+          <label><input type="checkbox" name="contact[Products][]" value="Kitchen tools"> Kitchen tools</label>
+          <label><input type="checkbox" name="contact[Products][]" value="Others"> Others</label>
+        </div>
+      </div>
+
+      <div class="b2b-field">
+        <label for="b2bSocial">Social media link</label>
+        <input type="text" id="b2bSocial" name="contact[Social Media]" placeholder="instagram.com/yourbusiness">
+      </div>
+
+      <div class="b2b-field">
+        <label for="b2bWebsite">Website (if available)</label>
+        <input type="text" id="b2bWebsite" name="contact[Website]" placeholder="www.yourbusiness.com">
+      </div>
+
+      <div class="b2b-field">
+        <label>Do you own or partner with an existing business? <span class="req">*</span></label>
+        <div class="b2b-radio-group">
+          <label><input type="radio" name="contact[Own Business]" value="Yes" required> Yes</label>
+          <label><input type="radio" name="contact[Own Business]" value="No"> No</label>
+        </div>
+      </div>
+
+      <div class="b2b-field">
+        <label for="b2bMessage">Your message</label>
+        <textarea id="b2bMessage" name="contact[Body]" placeholder="Tell us about the quantities and timeline you need" rows="4"></textarea>
+      </div>
+
+      <button type="submit" class="b2b-submit-btn" id="b2bSubmitBtn">Submit request</button>
+      <p class="b2b-error-msg" id="b2bErrorMsg">Please fill in all required fields.</p>
+    </form>
+  </div>
+
+  <div class="b2b-popup-overlay" id="b2bPopupOverlay">
+    <div class="b2b-popup-box">
+      <div class="b2b-popup-icon">✓</div>
+      <h3>Thank you!</h3>
+      <p>Your bulk order request has been received. Our team will contact you shortly on WhatsApp or email.</p>
+      <button type="button" class="b2b-popup-close" id="b2bPopupClose">Close</button>
+    </div>
+  </div>
+</div>
+
+<style>
+.b2b-form-wrap { max-width: 640px; margin: 40px auto; padding: 0 16px; font-family: inherit; }
+.b2b-form-card { background: #fff; border: 1px solid #eee; border-radius: 14px; padding: 28px 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.04); }
+.b2b-title { font-size: 22px; font-weight: 600; margin: 0 0 4px; color: #2c2c2a; }
+.b2b-subtitle { font-size: 13px; color: #6b6b68; margin: 0 0 24px; }
+.b2b-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.b2b-field { margin-bottom: 16px; }
+.b2b-field label { display: block; font-size: 13px; color: #444; margin-bottom: 6px; font-weight: 500; }
+.b2b-field .req { color: #d85a30; }
+.b2b-field input[type="text"],
+.b2b-field input[type="email"],
+.b2b-field input[type="tel"],
+.b2b-field select,
+.b2b-field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+  background: #fafafa;
+}
+.b2b-field input:focus, .b2b-field select:focus, .b2b-field textarea:focus {
+  outline: none;
+  border-color: #d85a30;
+  background: #fff;
+}
+.b2b-phone-group { display: flex; gap: 8px; }
+.b2b-phone-group select { width: 110px; flex-shrink: 0; }
+.b2b-phone-group input { flex: 1; }
+.b2b-checkbox-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; font-size: 13px; color: #444; }
+.b2b-checkbox-grid label, .b2b-radio-group label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.b2b-radio-group { display: flex; gap: 20px; font-size: 13px; color: #444; }
+.b2b-submit-btn {
+  width: 100%;
+  background: #712B13;
+  color: #FAECE7;
+  border: none;
+  border-radius: 8px;
+  padding: 13px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 6px;
+}
+.b2b-submit-btn:hover { background: #5a2210; }
+.b2b-submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.b2b-error-msg { display: none; color: #b3261e; font-size: 12px; margin-top: 10px; text-align: center; }
+
+.b2b-popup-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 16px;
+}
+.b2b-popup-overlay.active { display: flex; }
+.b2b-popup-box {
+  background: #fff;
+  border-radius: 14px;
+  padding: 32px 24px;
+  max-width: 340px;
+  text-align: center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+.b2b-popup-icon {
+  width: 48px; height: 48px;
+  background: #639922;
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  margin: 0 auto 16px;
+}
+.b2b-popup-box h3 { margin: 0 0 8px; font-size: 18px; color: #2c2c2a; }
+.b2b-popup-box p { margin: 0 0 20px; font-size: 13px; color: #6b6b68; line-height: 1.6; }
+.b2b-popup-close {
+  background: #712B13;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 24px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  .b2b-row { grid-template-columns: 1fr; }
+  .b2b-checkbox-grid { grid-template-columns: 1fr 1fr; }
+}
+</style>
+
+<script>
+(function () {
+  var form = document.getElementById('b2bForm');
+  var submitBtn = document.getElementById('b2bSubmitBtn');
+  var errorMsg = document.getElementById('b2bErrorMsg');
+  var overlay = document.getElementById('b2bPopupOverlay');
+  var closeBtn = document.getElementById('b2bPopupClose');
+  var productsGrid = document.getElementById('b2bProductsGrid');
+
+  function productChecked() {
+    return productsGrid.querySelectorAll('input[type="checkbox"]:checked').length > 0;
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    errorMsg.style.display = 'none';
+
+    if (!form.checkValidity() || !productChecked()) {
+      errorMsg.textContent = !productChecked()
+        ? 'Please select at least one product.'
+        : 'Please fill in all required fields.';
+      errorMsg.style.display = 'block';
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    var formData = new FormData(form);
+
+    fetch(form.action, {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'text/html' }
+    })
+      .then(function () {
+        overlay.classList.add('active');
+        form.reset();
+      })
+      .catch(function () {
+        overlay.classList.add('active');
+        form.reset();
+      })
+      .finally(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit request';
+      });
+  });
+
+  closeBtn.addEventListener('click', function () {
+    overlay.classList.remove('active');
+  });
+
+  overlay.addEventListener('click', function (e) {
+    if (e.target === overlay) overlay.classList.remove('active');
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "B2B bulk order form",
+  "settings": [],
+  "presets": [
+    {
+      "name": "B2B bulk order form"
+    }
+  ]
+}
+{% endschema %}
