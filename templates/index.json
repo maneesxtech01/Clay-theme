@@ -232,10 +232,32 @@
             "btn_hover_text_color": "#ffffff",
             "btn_hover_border_color": "#76310F"
           }
+        },
+        "card_QVqYNg": {
+          "type": "card",
+          "settings": {
+            "desktop_image": "shopify://shop_images/03_77e9f6d4-df8d-43af-925a-3a5af279df1a.webp",
+            "title": "Limited Time Offer — Up to 30% Off",
+            "card_title_color": "#ffffff",
+            "subtitle": "Best Seller",
+            "description": "<p>Selected clay & drinkware pieces at their lowest price — while stock lasts.</p>",
+            "button_label": "Shop the Sale",
+            "button_link": "",
+            "info_bg_color": "rgba(255, 255, 255, 0.75)",
+            "info_border_color": "rgba(255, 255, 255, 0.3)",
+            "info_text_color": "#000000",
+            "btn_bg_color": "#A24C24",
+            "btn_text_color": "#ffffff",
+            "btn_border_color": "#A24C24",
+            "btn_hover_bg_color": "#76310F",
+            "btn_hover_text_color": "#ffffff",
+            "btn_hover_border_color": "#76310F"
+          }
         }
       },
       "block_order": [
-        "card_7jYDVq"
+        "card_7jYDVq",
+        "card_QVqYNg"
       ],
       "name": "Expanding Cards",
       "settings": {
