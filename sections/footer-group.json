@@ -52,7 +52,7 @@
         "section_width": "container",
         "color_scheme": "",
         "type": "default",
-        "column_gap": 30,
+        "column_gap": 15,
         "icon_position": "top",
         "icon_size": 32,
         "spacing": 11,
@@ -62,15 +62,15 @@
         "content_alignment": "center",
         "heading_font_size": 16,
         "heading_font_weight": "heading_weight",
-        "heading_uppercase": false,
+        "heading_uppercase": true,
         "heading_spacing_bottom": 10,
         "des_font_size": 14,
         "des_font_weight": "body_weight",
-        "carousel_on_mobile": false,
+        "carousel_on_mobile": true,
         "items_per_row_mobile": "1",
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "reset_spacing": false
+        "padding_top": 70,
+        "padding_bottom": 70,
+        "reset_spacing": true
       }
     },
     "footer": {
