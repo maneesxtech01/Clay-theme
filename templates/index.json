@@ -125,11 +125,24 @@
             "font_weight": "body_weight",
             "spacing_bottom": 10
           }
+        },
+        "button_BGUF4g": {
+          "type": "button",
+          "settings": {
+            "first_button_label": "Read Our Story",
+            "first_button_link": "shopify://pages/about-us",
+            "first_button_type": "primary",
+            "second_button_label": "",
+            "second_button_link": "",
+            "second_button_type": "outline",
+            "spacing_bottom": 10
+          }
         }
       },
       "block_order": [
         "heading_ryCmzp",
-        "description_Ng9KK3"
+        "description_Ng9KK3",
+        "button_BGUF4g"
       ],
       "name": "t:sections.rich_text.name",
       "settings": {
