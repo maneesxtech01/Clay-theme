@@ -199,20 +199,6 @@
     "collection_packery_4fmjXL": {
       "type": "collection-packery",
       "blocks": {
-        "collection_4wFAGQ": {
-          "type": "collection",
-          "settings": {
-            "collection": "",
-            "collection_title": ""
-          }
-        },
-        "collection_cPPWzP": {
-          "type": "collection",
-          "settings": {
-            "collection": "",
-            "collection_title": ""
-          }
-        },
         "collection_MeYjxb": {
           "type": "collection",
           "settings": {
@@ -229,8 +215,6 @@
         }
       },
       "block_order": [
-        "collection_4wFAGQ",
-        "collection_cPPWzP",
         "collection_MeYjxb",
         "collection_3NUrj4"
       ],
@@ -252,9 +236,9 @@
         "font_weight": "heading_weight",
         "carousel_on_mobile": false,
         "items_per_row_mobile": 1,
-        "padding_top": 0,
+        "padding_top": 80,
         "padding_bottom": 0,
-        "reset_spacing": false
+        "reset_spacing": true
       }
     },
     "collection_list_xmGiTx": {
@@ -317,9 +301,7 @@
         "collection_xMd3n6",
         "collection_4VfYMk"
       ],
-      "custom_css": [
-        "a.block.collection-item__media--ratio.hover-effect {border-radius: 50%;}"
-      ],
+      "custom_css": [],
       "name": "t:sections.collection-list.name",
       "settings": {
         "section_width": "fluid_container",
@@ -341,7 +323,7 @@
         "autorotate_speed": 5,
         "reveal": false,
         "items_per_row_mobile": 2,
-        "design": "morden",
+        "design": "default",
         "collection_information_position": "below_image",
         "text_alignment": "center",
         "show_product_count": false,
