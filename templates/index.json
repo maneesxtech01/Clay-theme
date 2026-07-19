@@ -205,35 +205,52 @@
         "reset_spacing": false
       }
     },
-    "products_carousel_LRkFG7": {
-      "type": "products-carousel",
-      "name": "t:sections.products-carousel.name",
+    "collection_tab_AMweAV": {
+      "type": "collection-tab",
+      "blocks": {
+        "collection_nwabnq": {
+          "type": "collection",
+          "settings": {
+            "collection": "frontpage",
+            "collection_title": "Best Sellers"
+          }
+        },
+        "collection_BLXcN8": {
+          "type": "collection",
+          "settings": {
+            "collection": "drinkware",
+            "collection_title": "New"
+          }
+        }
+      },
+      "block_order": [
+        "collection_nwabnq",
+        "collection_BLXcN8"
+      ],
+      "name": "t:sections.collection-tab.name",
       "settings": {
         "section_width": "fluid_container",
-        "color_scheme": "default",
-        "heading": "Best Selling Products",
+        "color_scheme": "",
+        "heading": "Our Products",
         "description": "",
-        "show_view_all_button": false,
-        "header_size": "medium",
+        "header_size": "large",
         "header_alignment": "left",
-        "collection": "frontpage",
+        "tab_header_style": "horizontal",
+        "horizontal_tab_style": "underline",
+        "display_mode": "grid",
         "items_to_show": 8,
         "items_per_row": 4,
-        "column_gap": 10,
-        "show_banner": false,
-        "sticky_banner": false,
-        "banner_width": 30,
-        "position": "left",
-        "banner_link": "",
-        "banner_type": "image",
-        "video_url": "",
-        "video_autoplay": true,
+        "column_gap": 30,
         "show_arrow": false,
-        "carousel_pagination": "show_dots",
-        "infinite": true,
-        "autoplay": true,
+        "carousel_pagination": "disable",
+        "infinite": false,
+        "autoplay": false,
         "autorotate_speed": 5,
         "reveal": false,
+        "rows": 2,
+        "show_load_more_button": false,
+        "button_label": "Load more",
+        "carousel_on_mobile": false,
         "items_per_row_mobile": 1,
         "padding_top": 0,
         "padding_bottom": 0,
@@ -244,6 +261,6 @@
   "order": [
     "slideshow",
     "collection_list_xmGiTx",
-    "products_carousel_LRkFG7"
+    "collection_tab_AMweAV"
   ]
 }
