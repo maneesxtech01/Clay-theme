@@ -101,7 +101,59 @@
         "content_below_image": false,
         "padding_top": 0,
         "padding_bottom": 0,
-        "reset_spacing": false
+        "reset_spacing": true
+      }
+    },
+    "collection_tab_AMweAV": {
+      "type": "collection-tab",
+      "blocks": {
+        "collection_nwabnq": {
+          "type": "collection",
+          "settings": {
+            "collection": "frontpage",
+            "collection_title": "Best Sellers"
+          }
+        },
+        "collection_BLXcN8": {
+          "type": "collection",
+          "settings": {
+            "collection": "drinkware",
+            "collection_title": "New"
+          }
+        }
+      },
+      "block_order": [
+        "collection_nwabnq",
+        "collection_BLXcN8"
+      ],
+      "name": "Product Slider Tab",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "default",
+        "heading": "Our Products",
+        "description": "",
+        "header_size": "large",
+        "header_alignment": "left",
+        "tab_header_style": "horizontal",
+        "horizontal_tab_style": "underline",
+        "display_mode": "carousel",
+        "items_to_show": 8,
+        "items_per_row": 4,
+        "column_gap": 15,
+        "show_arrow": true,
+        "carousel_pagination": "show_dots",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 5,
+        "reveal": true,
+        "rows": 2,
+        "show_load_more_button": false,
+        "button_label": "Load more",
+        "carousel_on_mobile": true,
+        "items_per_row_mobile": 1,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "reset_spacing": true
       }
     },
     "collection_list_xmGiTx": {
@@ -205,58 +257,6 @@
         "reset_spacing": false
       }
     },
-    "collection_tab_AMweAV": {
-      "type": "collection-tab",
-      "blocks": {
-        "collection_nwabnq": {
-          "type": "collection",
-          "settings": {
-            "collection": "frontpage",
-            "collection_title": "Best Sellers"
-          }
-        },
-        "collection_BLXcN8": {
-          "type": "collection",
-          "settings": {
-            "collection": "drinkware",
-            "collection_title": "New"
-          }
-        }
-      },
-      "block_order": [
-        "collection_nwabnq",
-        "collection_BLXcN8"
-      ],
-      "name": "Product Slider Tab",
-      "settings": {
-        "section_width": "fluid_container",
-        "color_scheme": "default",
-        "heading": "Our Products",
-        "description": "",
-        "header_size": "large",
-        "header_alignment": "left",
-        "tab_header_style": "horizontal",
-        "horizontal_tab_style": "underline",
-        "display_mode": "carousel",
-        "items_to_show": 8,
-        "items_per_row": 4,
-        "column_gap": 15,
-        "show_arrow": true,
-        "carousel_pagination": "show_dots",
-        "infinite": true,
-        "autoplay": true,
-        "autorotate_speed": 5,
-        "reveal": true,
-        "rows": 2,
-        "show_load_more_button": false,
-        "button_label": "Load more",
-        "carousel_on_mobile": true,
-        "items_per_row_mobile": 1,
-        "padding_top": 60,
-        "padding_bottom": 60,
-        "reset_spacing": false
-      }
-    },
     "shopable_video_BjwdnD": {
       "type": "shopable-video",
       "blocks": {
@@ -321,8 +321,8 @@
   },
   "order": [
     "slideshow",
-    "collection_list_xmGiTx",
     "collection_tab_AMweAV",
+    "collection_list_xmGiTx",
     "shopable_video_BjwdnD"
   ]
 }
