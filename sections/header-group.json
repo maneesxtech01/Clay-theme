@@ -17,17 +17,13 @@
         "announcement_1": {
           "type": "announcement",
           "settings": {
-            "text": "Summer sale discount off 50%. <strong>Shop Sale</strong>",
-            "text_mobile": "",
-            "link": ""
+            "text": "Summer sale discount off 50%. <strong>Shop Sale</strong>"
           }
         },
         "announcement_2": {
           "type": "announcement",
           "settings": {
-            "text": "Sign up for 10% off your first order. <strong>Sign Up</strong>",
-            "text_mobile": "",
-            "link": ""
+            "text": "Sign up for 10% off your first order. <strong>Sign Up</strong>"
           }
         }
       },
@@ -36,11 +32,7 @@
         "announcement_2"
       ],
       "settings": {
-        "announcement_bg": "#111111",
-        "announcement_text_color": "#ffffff",
         "font_size": 13,
-        "auto_rotate": true,
-        "change_slides_speed": 5,
         "padding_top": 10,
         "padding_bottom": 10
       }
@@ -168,7 +160,7 @@
         "show_account_icon": true,
         "show_wishlist_icon": true,
         "show_shopping_cart": true,
-        "show_currency": false,
+        "show_currency": true,
         "show_language": false,
         "show_recently_viewed": false,
         "padding_top": 10,

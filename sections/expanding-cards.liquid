@@ -25,11 +25,47 @@
   <div class="{{ section_width }}">
     <div class="content">
       
-      {%- if section_st.heading != blank -%}
-        <div class="header text-{{ section_st.heading_alignment }}">
-          <h2 class="title h2">
-            {{ section_st.heading }}
-          </h2>
+      {%- if section_st.heading != blank or section_st.header_description != blank or section_st.header_button_label != blank -%}
+        <div class="header layout-{{ section_st.header_layout }} text-{{ section_st.heading_alignment }}">
+          {%- if section_st.header_layout == 'split' -%}
+            <div class="header-split-grid">
+              <div class="header-left">
+                {%- if section_st.heading != blank -%}
+                  <h2 class="title h2">
+                    {{ section_st.heading }}
+                  </h2>
+                {%- endif -%}
+              </div>
+              <div class="header-right">
+                {%- if section_st.header_description != blank -%}
+                  <div class="header-desc">
+                    {{ section_st.header_description }}
+                  </div>
+                {%- endif -%}
+                {%- if section_st.header_button_label != blank -%}
+                  <a class="btn header-btn" href="{{ section_st.header_button_link | default: '#' }}">
+                    {{ section_st.header_button_label }}
+                  </a>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- else -%}
+            {%- if section_st.heading != blank -%}
+              <h2 class="title h2">
+                {{ section_st.heading }}
+              </h2>
+            {%- endif -%}
+            {%- if section_st.header_description != blank -%}
+              <div class="header-desc standard-desc">
+                {{ section_st.header_description }}
+              </div>
+            {%- endif -%}
+            {%- if section_st.header_button_label != blank -%}
+              <a class="btn header-btn standard-btn" href="{{ section_st.header_button_link | default: '#' }}">
+                {{ section_st.header_button_label }}
+              </a>
+            {%- endif -%}
+          {%- endif -%}
         </div>
       {%- endif -%}
 
@@ -221,6 +257,37 @@
           "label": "Right"
         }
       ]
+    },
+    {
+      "type": "select",
+      "id": "header_layout",
+      "label": "Header Layout Style",
+      "default": "standard",
+      "options": [
+        {
+          "value": "standard",
+          "label": "Standard Stacked"
+        },
+        {
+          "value": "split",
+          "label": "Split (Heading Left, Text/Button Right)"
+        }
+      ]
+    },
+    {
+      "type": "richtext",
+      "id": "header_description",
+      "label": "Header Description Text"
+    },
+    {
+      "type": "text",
+      "id": "header_button_label",
+      "label": "Header Button Label"
+    },
+    {
+      "type": "url",
+      "id": "header_button_link",
+      "label": "Header Button Link"
     },
     {
       "type": "header",

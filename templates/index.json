@@ -209,69 +209,48 @@
         "reset_spacing": true
       }
     },
-    "expanding_cards_nmiyA6": {
-      "type": "expanding-cards",
+    "collection_packery_4fmjXL": {
+      "type": "collection-packery",
       "blocks": {
-        "card_LqNqYq": {
-          "type": "card",
+        "collection_MeYjxb": {
+          "type": "collection",
           "settings": {
-            "desktop_image": "shopify://shop_images/04_6f8eec9b-864a-49c0-9e57-ef1e88f62a58.webp",
-            "title": "Our Best Seller, Loved by Every Home",
-            "card_title_color": "#ffffff",
-            "subtitle": "Best Seller",
-            "description": "<p>The clay pieces our customers keep coming back for — tried, tested, and trusted.</p>",
-            "button_label": "Shop Best Sellers",
-            "button_link": "",
-            "info_bg_color": "rgba(255, 255, 255, 0.75)",
-            "info_border_color": "rgba(255, 255, 255, 0.3)",
-            "info_text_color": "#222222",
-            "btn_bg_color": "#A24C24",
-            "btn_text_color": "#ffffff",
-            "btn_border_color": "#B1552B",
-            "btn_hover_bg_color": "#76310F",
-            "btn_hover_text_color": "#ffffff",
-            "btn_hover_border_color": "#76310F"
+            "collection": "frontpage",
+            "collection_image": "shopify://shop_images/Serving_Bowl_Natural_Clay.webp",
+            "collection_title": ""
           }
         },
-        "card_CnVjpY": {
-          "type": "card",
+        "collection_3NUrj4": {
+          "type": "collection",
           "settings": {
-            "desktop_image": "shopify://shop_images/Kids_Clay_Toy_Set.webp",
-            "title": "Limited Time Offer — Up to 15% Off",
-            "card_title_color": "#ffffff",
-            "subtitle": "Limited Time Offer",
-            "description": "<p>Selected clay & drinkware pieces at their lowest price — while stock lasts.</p>",
-            "button_label": "Shop the Sale",
-            "button_link": "",
-            "info_bg_color": "rgba(255, 255, 255, 0.75)",
-            "info_border_color": "rgba(255, 255, 255, 0.3)",
-            "info_text_color": "#222222",
-            "btn_bg_color": "#A24C24",
-            "btn_text_color": "#ffffff",
-            "btn_border_color": "#B1552B",
-            "btn_hover_bg_color": "#76310F",
-            "btn_hover_text_color": "#ffffff",
-            "btn_hover_border_color": "#76310F"
+            "collection": "",
+            "collection_title": ""
           }
         }
       },
       "block_order": [
-        "card_LqNqYq",
-        "card_CnVjpY"
+        "collection_MeYjxb",
+        "collection_3NUrj4"
       ],
-      "name": "Expanding Cards",
+      "name": "t:sections.collection-packery.name",
       "settings": {
         "section_width": "fluid_container",
-        "heading": "New to DIBS? Start Here",
-        "heading_alignment": "left",
-        "card_height": 540,
-        "card_mobile_height": 480,
-        "hover_grow_ratio": 1.8,
-        "overlay_color": "#000000",
-        "overlay_opacity": 15,
-        "dot_color_inactive": "#cccccc",
-        "dot_color_active": "#222222",
-        "padding_top": 80,
+        "color_scheme": "",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "left",
+        "design": "morden",
+        "image_ratio": "square",
+        "custom_ratio": "",
+        "show_product_count": false,
+        "text_alignment": "center",
+        "column_gap": 30,
+        "font_size": 14,
+        "font_weight": "heading_weight",
+        "carousel_on_mobile": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 100,
         "padding_bottom": 0,
         "reset_spacing": true
       }
@@ -339,7 +318,7 @@
       "custom_css": [],
       "name": "t:sections.collection-list.name",
       "settings": {
-        "section_width": "container",
+        "section_width": "fluid_container",
         "color_scheme": "default",
         "heading": "",
         "description": "",
@@ -350,7 +329,7 @@
         "image_ratio": "adapt",
         "custom_ratio": "",
         "items_per_row": 6,
-        "column_gap": 20,
+        "column_gap": 30,
         "show_arrow": true,
         "carousel_pagination": "disable",
         "infinite": false,
@@ -370,7 +349,7 @@
         "rounded_image": false,
         "image_custom_width": false,
         "image_width": 200,
-        "padding_top": 40,
+        "padding_top": 80,
         "padding_bottom": 80,
         "reset_spacing": true
       }
@@ -414,7 +393,7 @@
       "name": "t:sections.shopable-video.name",
       "settings": {
         "section_width": "full_width",
-        "color_scheme": "scheme-2b5c6c91-201d-4fb1-aba3-e6d562656976",
+        "color_scheme": "",
         "heading": "The Community",
         "description": "",
         "header_size": "medium",
@@ -431,132 +410,9 @@
         "autorotate_speed": 5,
         "reveal": true,
         "items_per_row_mobile": 1,
-        "padding_top": 80,
-        "padding_bottom": 80,
-        "reset_spacing": true
-      }
-    },
-    "product_testimonials_8r3mxM": {
-      "type": "product-testimonials",
-      "blocks": {
-        "testimonials_items_WFfYEm": {
-          "type": "testimonials_items",
-          "settings": {
-            "author_rating": 5,
-            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
-            "select_product": "",
-            "author_name": "Author's name"
-          }
-        },
-        "testimonials_items_yRdkxg": {
-          "type": "testimonials_items",
-          "settings": {
-            "author_rating": 5,
-            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
-            "select_product": "",
-            "author_name": "Author's name"
-          }
-        },
-        "testimonials_items_XdaAdf": {
-          "type": "testimonials_items",
-          "settings": {
-            "author_rating": 5,
-            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
-            "select_product": "",
-            "author_name": "Author's name"
-          }
-        },
-        "testimonials_items_RKAKyc": {
-          "type": "testimonials_items",
-          "settings": {
-            "author_rating": 5,
-            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
-            "select_product": "",
-            "author_name": "Author's name"
-          }
-        },
-        "testimonials_items_YT3cmk": {
-          "type": "testimonials_items",
-          "settings": {
-            "author_rating": 5,
-            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
-            "select_product": "",
-            "author_name": "Author's name"
-          }
-        }
-      },
-      "block_order": [
-        "testimonials_items_WFfYEm",
-        "testimonials_items_yRdkxg",
-        "testimonials_items_XdaAdf",
-        "testimonials_items_RKAKyc",
-        "testimonials_items_YT3cmk"
-      ],
-      "name": "t:sections.testimonials_product.presets.name",
-      "settings": {
-        "section_width": "fluid_container",
-        "color_scheme": "",
-        "heading": "Testimonials",
-        "description": "",
-        "header_alignment": "center",
-        "header_size": "medium",
-        "design": "default",
-        "show_image": true,
-        "show_verified_buyer": true,
-        "img_position": "left",
-        "image_ratio": "square",
-        "custom_ratio": "",
-        "img_width": 30,
-        "framed": true,
-        "rate_color": "#FF9C05",
-        "items_per_row": 2,
-        "column_gap": 30,
-        "show_arrow": false,
-        "carousel_pagination": "disable",
-        "infinite": false,
-        "autoplay": false,
-        "autorotate_speed": 5,
-        "reveal": false,
-        "items_per_row_mobile": 1,
-        "padding_top": 80,
-        "padding_bottom": 80,
-        "reset_spacing": true
-      }
-    },
-    "blog_posts_HhPETf": {
-      "type": "blog-posts",
-      "name": "t:sections.blog-post.presets.name",
-      "settings": {
-        "section_width": "fluid_container",
-        "color_scheme": "scheme-2b5c6c91-201d-4fb1-aba3-e6d562656976",
-        "heading": "Blog post",
-        "description": "",
-        "show_view_all": true,
-        "header_size": "medium",
-        "header_alignment": "center",
-        "blog": "news",
-        "image_ratio": "square",
-        "custom_ratio": "",
-        "show_category": true,
-        "show_author": true,
-        "show_date": true,
-        "show_comment_count": true,
-        "show_excerpt": true,
-        "content_alignment": "left",
-        "design": "default",
-        "items_to_show": 3,
-        "items_per_row": 3,
-        "column_gap": 15,
-        "show_arrow": false,
-        "carousel_pagination": "disable",
-        "infinite": false,
-        "autoplay": false,
-        "autorotate_speed": 5,
-        "reveal": false,
-        "items_per_row_mobile": 1,
-        "padding_top": 80,
-        "padding_bottom": 80,
-        "reset_spacing": true
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
       }
     }
   },
@@ -564,10 +420,8 @@
     "slideshow",
     "rich_text_BrjW7p",
     "collection_tab_AMweAV",
-    "expanding_cards_nmiyA6",
+    "collection_packery_4fmjXL",
     "collection_list_xmGiTx",
-    "shopable_video_BjwdnD",
-    "product_testimonials_8r3mxM",
-    "blog_posts_HhPETf"
+    "shopable_video_BjwdnD"
   ]
 }
