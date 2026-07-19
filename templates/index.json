@@ -215,6 +215,7 @@
         "card_7jYDVq": {
           "type": "card",
           "settings": {
+            "desktop_image": "shopify://shop_images/03_77e9f6d4-df8d-43af-925a-3a5af279df1a.webp",
             "title": "Our Best Seller, Loved by Every Home",
             "card_title_color": "#ffffff",
             "subtitle": "Best Seller",
@@ -231,31 +232,10 @@
             "btn_hover_text_color": "#ffffff",
             "btn_hover_border_color": "#76310F"
           }
-        },
-        "card_fz8dGf": {
-          "type": "card",
-          "settings": {
-            "title": "The only brush<br>you need.",
-            "card_title_color": "#ffffff",
-            "subtitle": "Duo Brush Face",
-            "description": "<p>The original cream and powder duo brush.</p>",
-            "button_label": "Shop Duo Brush Face",
-            "button_link": "",
-            "info_bg_color": "rgba(255, 255, 255, 0.75)",
-            "info_border_color": "rgba(255, 255, 255, 0.3)",
-            "info_text_color": "#222222",
-            "btn_bg_color": "#222222",
-            "btn_text_color": "#ffffff",
-            "btn_border_color": "#222222",
-            "btn_hover_bg_color": "#000000",
-            "btn_hover_text_color": "#ffffff",
-            "btn_hover_border_color": "#000000"
-          }
         }
       },
       "block_order": [
-        "card_7jYDVq",
-        "card_fz8dGf"
+        "card_7jYDVq"
       ],
       "name": "Expanding Cards",
       "settings": {
