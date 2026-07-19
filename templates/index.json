@@ -209,6 +209,52 @@
         "reset_spacing": true
       }
     },
+    "collection_packery_4fmjXL": {
+      "type": "collection-packery",
+      "blocks": {
+        "collection_MeYjxb": {
+          "type": "collection",
+          "settings": {
+            "collection": "frontpage",
+            "collection_image": "shopify://shop_images/Serving_Bowl_Natural_Clay.webp",
+            "collection_title": ""
+          }
+        },
+        "collection_3NUrj4": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_MeYjxb",
+        "collection_3NUrj4"
+      ],
+      "name": "t:sections.collection-packery.name",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "left",
+        "design": "morden",
+        "image_ratio": "square",
+        "custom_ratio": "",
+        "show_product_count": false,
+        "text_alignment": "center",
+        "column_gap": 30,
+        "font_size": 14,
+        "font_weight": "heading_weight",
+        "carousel_on_mobile": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 100,
+        "padding_bottom": 0,
+        "reset_spacing": true
+      }
+    },
     "collection_list_xmGiTx": {
       "type": "collection-list",
       "blocks": {
@@ -374,6 +420,7 @@
     "slideshow",
     "rich_text_BrjW7p",
     "collection_tab_AMweAV",
+    "collection_packery_4fmjXL",
     "collection_list_xmGiTx",
     "shopable_video_BjwdnD"
   ]

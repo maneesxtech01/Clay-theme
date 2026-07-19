@@ -18,7 +18,6 @@
     },
     "product-grid": {
       "type": "main-collection-product",
-      "disabled": false,
       "blocks": {
         "categories_Gk8d": {
           "type": "categories",
