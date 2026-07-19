@@ -69,6 +69,56 @@
   .select-collection-tab {
     border-bottom: 2px solid var(--color-heading);
   }
+
+  .shop-all-btn {
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 10px 24px;
+    border-radius: 6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+  .btn-outline.shop-all-btn {
+    border: 1.5px solid var(--color-heading, #222222);
+    color: var(--color-heading, #222222);
+    background: transparent;
+  }
+  .btn-outline.shop-all-btn:hover {
+    background: var(--color-heading, #222222);
+    color: var(--color-white, #ffffff);
+  }
+  .btn-primary.shop-all-btn {
+    background: var(--color-heading, #222222);
+    color: var(--color-white, #ffffff);
+    border: 1.5px solid var(--color-heading, #222222);
+  }
+  .btn-primary.shop-all-btn:hover {
+    background: #000000;
+    border-color: #000000;
+  }
+
+  .collection-tab__shop-all-mobile {
+    display: none;
+  }
+  .collection-tab__shop-all-desktop {
+    display: block;
+  }
+
+  @media (max-width: 66em) {
+    .collection-tab__shop-all-desktop {
+      display: none !important;
+    }
+    .collection-tab__shop-all-mobile {
+      display: block !important;
+      text-align: center;
+      margin-top: 30px;
+    }
+  }
 {%- endstyle -%}
 <div
   class="section{% if section_st.padding_top < 30 %} pt-min{% endif %}{% if section_st.padding_bottom < 30 %} pb-min{% endif %} sec__collection-tab {% if show_load_more_button == true %}sec__products-loadmore {% endif %}color-{{ color_scheme }} gradient{{ reset_spacing }}{% if reveal %} overflow-hidden{% endif %}"
@@ -141,60 +191,69 @@
               {% endif %}
             </div>
           {% endif %}
-          <div class="mt-30 inline-flex align-center max-w-100 {% if tab_header_style == 'horizontal' %} collection-tab__ta overflow-auto{% else %} collection-tab__select align-center gap-10{% endif %}{% if tab_header_style != 'horizontal' %} h4 my-0{% endif %}{% if tab_header_style == 'horizontal' and horizontal_tab_style == 'underline' %} border-bottom{% endif %}{% if tab_header_style == 'horizontal' and horizontal_tab_style != 'underline' %} gap-15{% endif %}">
-            {% if tab_header_style != 'horizontal' %}
-              <span>{{ 'sections.collection_tab.tab_header_select' | t }} </span>
-              <div class="select-collection-tab relative select-custom">
-                {% for block in section.blocks %}
-                  {% liquid
-                    assign block_st = block.settings
-                    assign collection_title = block_st.collection.title
-                    assign collection_title = block_st.collection_title | default: collection_title
-                  %}
-                  {% if forloop.first == true %}
-                    <div class="select__selected select__selected_title inline-flex align-center gap-10 pointer">
-                      {{ collection_title }}
-                      <svg class="icon-down transition active-rotated" width="10" height="6">
-                        <use href="#icon-arrow-down"></use>
-                      </svg>
-                    </div>
-                  {% endif %}
-                {% endfor %}
+          <div class="collection-tab__nav-row flex align-center justify-content-between flex-wrap gap-15 mt-30 w-full" style="width: 100%;">
+            <div class="inline-flex align-center max-w-100 {% if tab_header_style == 'horizontal' %} collection-tab__ta overflow-auto{% else %} collection-tab__select align-center gap-10{% endif %}{% if tab_header_style != 'horizontal' %} h4 my-0{% endif %}{% if tab_header_style == 'horizontal' and horizontal_tab_style == 'underline' %} border-bottom{% endif %}{% if tab_header_style == 'horizontal' and horizontal_tab_style != 'underline' %} gap-15{% endif %}" style="margin-top: 0 !important;">
+              {% if tab_header_style != 'horizontal' %}
+                <span>{{ 'sections.collection_tab.tab_header_select' | t }} </span>
+                <div class="select-collection-tab relative select-custom">
+                  {% for block in section.blocks %}
+                    {% liquid
+                      assign block_st = block.settings
+                      assign collection_title = block_st.collection.title
+                      assign collection_title = block_st.collection_title | default: collection_title
+                    %}
+                    {% if forloop.first == true %}
+                      <div class="select__selected select__selected_title inline-flex align-center gap-10 pointer">
+                        {{ collection_title }}
+                        <svg class="icon-down transition active-rotated" width="10" height="6">
+                          <use href="#icon-arrow-down"></use>
+                        </svg>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
 
-                <div class="select-custom__content invisible transition-short top-100 absolute shadow list-none z-2 py-20 px-25 color-default{% if enable_rtl %} right-0{% else %} left-0{% endif %}">
-                  <ul class="list-none p-0 my-0">
-            {% endif %}
-            {% for block in section.blocks %}
-              {% liquid
-                assign block_st = block.settings
-                assign collection_title = block_st.collection.title
-                assign collection_title = block_st.collection_title | default: collection_title
-              %}
-
-              {% if tab_header_style == 'horizontal' -%}
-                <div
-                  data-block-id="{{ block.id }}"
-                  class="collection-tab__tab-item whitespace-nowrap pointer px-20 pb-8 transition text-center heading-style{% if horizontal_tab_style == 'underline' %} fs-16 border-animation{% else %} grey-bg btn-hover btn-rounded px-20 py-10 btn-active{% endif %}{% if forloop.first %} active{% endif %}"
-                  {{ block.shopify_attributes }}
-                  style="--height: 2px;"
-                >
-                  {% if collection_title != blank %}
-                    {{ collection_title }}
-                  {% else %}
-                    {{- 'onboarding.collection_title' | t -}}
-                  {% endif %}
-                </div>
-              {%- else %}
-                <li class="py-5 hover-heading-color pointer collection_title_input" data-id="{{ block.id }}">
-                  {{ collection_title }}
-                </li>
+                  <div class="select-custom__content invisible transition-short top-100 absolute shadow list-none z-2 py-20 px-25 color-default{% if enable_rtl %} right-0{% else %} left-0{% endif %}">
+                    <ul class="list-none p-0 my-0">
               {% endif %}
-            {% endfor %}
-            {% if tab_header_style != 'horizontal' %}
-              </ul>
+              {% for block in section.blocks %}
+                {% liquid
+                  assign block_st = block.settings
+                  assign collection_title = block_st.collection.title
+                  assign collection_title = block_st.collection_title | default: collection_title
+                %}
+
+                {% if tab_header_style == 'horizontal' -%}
+                  <div
+                    data-block-id="{{ block.id }}"
+                    class="collection-tab__tab-item whitespace-nowrap pointer px-20 pb-8 transition text-center heading-style{% if horizontal_tab_style == 'underline' %} fs-16 border-animation{% else %} grey-bg btn-hover btn-rounded px-20 py-10 btn-active{% endif %}{% if forloop.first %} active{% endif %}"
+                    {{ block.shopify_attributes }}
+                    style="--height: 2px;"
+                  >
+                    {% if collection_title != blank %}
+                      {{ collection_title }}
+                    {% else %}
+                      {{- 'onboarding.collection_title' | t -}}
+                    {% endif %}
+                  </div>
+                {%- else %}
+                  <li class="py-5 hover-heading-color pointer collection_title_input" data-id="{{ block.id }}">
+                    {{ collection_title }}
+                  </li>
+                {% endif %}
+              {% endfor %}
+              {% if tab_header_style != 'horizontal' %}
+                </ul>
+                </div>
+                </div>
+              {% endif %}
+            </div>
+            {%- if section_st.shop_all_label != blank -%}
+              <div class="collection-tab__shop-all-desktop">
+                <a href="{{ section_st.shop_all_link | default: '#' }}" class="shop-all-btn {{ section_st.shop_all_style | default: 'btn-outline' }}">
+                  {{ section_st.shop_all_label }}
+                </a>
               </div>
-              </div>
-            {% endif %}
+            {%- endif -%}
           </div>
         </motion-element>
         <div class="relative tab-content">
@@ -549,6 +608,13 @@
           {% endif %}
         </div>
       </tab-items>
+      {%- if section_st.shop_all_label != blank -%}
+        <div class="collection-tab__shop-all-mobile">
+          <a href="{{ section_st.shop_all_link | default: '#' }}" class="shop-all-btn {{ section_st.shop_all_style | default: 'btn-outline' }}">
+            {{ section_st.shop_all_label }}
+          </a>
+        </div>
+      {%- endif -%}
     {% endif %}
   </div>
 </div>
@@ -811,6 +877,38 @@
       "id": "button_label",
       "label": "t:sections.collection-tab.settings.grid_settings.button_label",
       "default": "Load more"
+    },
+    {
+      "type": "header",
+      "content": "Shop All Navigation Button"
+    },
+    {
+      "type": "text",
+      "id": "shop_all_label",
+      "label": "Shop All Button Label",
+      "default": "SHOP ALL",
+      "info": "Leave blank to hide the Shop All button next to the tabs."
+    },
+    {
+      "type": "url",
+      "id": "shop_all_link",
+      "label": "Shop All Button Link"
+    },
+    {
+      "type": "select",
+      "id": "shop_all_style",
+      "label": "Shop All Button Style",
+      "default": "btn-outline",
+      "options": [
+        {
+          "value": "btn-outline",
+          "label": "Outline"
+        },
+        {
+          "value": "btn-primary",
+          "label": "Primary/Solid"
+        }
+      ]
     },
     {
       "type": "header",
