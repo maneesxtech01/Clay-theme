@@ -230,7 +230,7 @@
       "name": "t:sections.collection-tab.name",
       "settings": {
         "section_width": "fluid_container",
-        "color_scheme": "",
+        "color_scheme": "scheme-2b5c6c91-201d-4fb1-aba3-e6d562656976",
         "heading": "Our Products",
         "description": "",
         "header_size": "large",
@@ -253,7 +253,7 @@
         "carousel_on_mobile": true,
         "items_per_row_mobile": 1,
         "padding_top": 60,
-        "padding_bottom": 0,
+        "padding_bottom": 60,
         "reset_spacing": false
       }
     }
