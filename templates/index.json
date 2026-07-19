@@ -263,8 +263,8 @@
       "settings": {
         "section_width": "fluid_container",
         "color_scheme": "default",
-        "heading": "Shop RB Mitti Collections",
-        "description": "<p>From handmade clay cookware to dinnerware, drinkware, marble kitchen, wooden utensils, and kids collection every piece is crafted with 100% natural materials and delivered right to your doorstep.</p>",
+        "heading": "",
+        "description": "",
         "show_view_all_button": false,
         "header_size": "medium",
         "header_alignment": "center",
@@ -292,9 +292,9 @@
         "rounded_image": false,
         "image_custom_width": false,
         "image_width": 200,
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "reset_spacing": false
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "reset_spacing": true
       }
     },
     "shopable_video_BjwdnD": {
