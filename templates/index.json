@@ -250,7 +250,7 @@
         "rows": 2,
         "show_load_more_button": false,
         "button_label": "Load more",
-        "carousel_on_mobile": false,
+        "carousel_on_mobile": true,
         "items_per_row_mobile": 1,
         "padding_top": 0,
         "padding_bottom": 0,
