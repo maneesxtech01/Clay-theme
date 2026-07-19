@@ -435,6 +435,93 @@
         "padding_bottom": 0,
         "reset_spacing": false
       }
+    },
+    "product_testimonials_8r3mxM": {
+      "type": "product-testimonials",
+      "blocks": {
+        "testimonials_items_WFfYEm": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "select_product": "",
+            "author_name": "Author's name"
+          }
+        },
+        "testimonials_items_yRdkxg": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "select_product": "",
+            "author_name": "Author's name"
+          }
+        },
+        "testimonials_items_XdaAdf": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "select_product": "",
+            "author_name": "Author's name"
+          }
+        },
+        "testimonials_items_RKAKyc": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "select_product": "",
+            "author_name": "Author's name"
+          }
+        },
+        "testimonials_items_YT3cmk": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_rating": 5,
+            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
+            "select_product": "",
+            "author_name": "Author's name"
+          }
+        }
+      },
+      "block_order": [
+        "testimonials_items_WFfYEm",
+        "testimonials_items_yRdkxg",
+        "testimonials_items_XdaAdf",
+        "testimonials_items_RKAKyc",
+        "testimonials_items_YT3cmk"
+      ],
+      "name": "t:sections.testimonials_product.presets.name",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "heading": "Testimonials",
+        "description": "",
+        "header_alignment": "center",
+        "header_size": "medium",
+        "design": "default",
+        "show_image": true,
+        "show_verified_buyer": true,
+        "img_position": "left",
+        "image_ratio": "square",
+        "custom_ratio": "",
+        "img_width": 30,
+        "framed": true,
+        "rate_color": "#FF9C05",
+        "items_per_row": 2,
+        "column_gap": 30,
+        "show_arrow": false,
+        "carousel_pagination": "disable",
+        "infinite": false,
+        "autoplay": false,
+        "autorotate_speed": 5,
+        "reveal": false,
+        "items_per_row_mobile": 1,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
     }
   },
   "order": [
@@ -443,6 +530,7 @@
     "collection_tab_AMweAV",
     "expanding_cards_nmiyA6",
     "collection_list_xmGiTx",
-    "shopable_video_BjwdnD"
+    "shopable_video_BjwdnD",
+    "product_testimonials_8r3mxM"
   ]
 }
