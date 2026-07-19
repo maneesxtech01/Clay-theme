@@ -414,7 +414,7 @@
       "name": "t:sections.shopable-video.name",
       "settings": {
         "section_width": "full_width",
-        "color_scheme": "",
+        "color_scheme": "scheme-2b5c6c91-201d-4fb1-aba3-e6d562656976",
         "heading": "The Community",
         "description": "",
         "header_size": "medium",
@@ -431,9 +431,9 @@
         "autorotate_speed": 5,
         "reveal": true,
         "items_per_row_mobile": 1,
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "reset_spacing": false
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "reset_spacing": true
       }
     },
     "product_testimonials_8r3mxM": {
