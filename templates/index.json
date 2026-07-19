@@ -257,57 +257,63 @@
         "reset_spacing": false
       }
     },
-    "rich_text_Y8ewyF": {
-      "type": "rich-text",
+    "shopable_video_BjwdnD": {
+      "type": "shopable-video",
       "blocks": {
-        "heading_6DaBJg": {
-          "type": "heading",
+        "video_jKPtyL": {
+          "type": "video",
           "settings": {
-            "heading": "Talk about your brand",
-            "font_size": 36,
-            "font_weight": "heading_weight",
-            "uppercase": false,
-            "spacing_bottom": 24
+            "product": ""
           }
         },
-        "description_LVBJK4": {
-          "type": "description",
+        "video_fhrA4B": {
+          "type": "video",
           "settings": {
-            "description": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
-            "font_size": 14,
-            "font_weight": "body_weight",
-            "spacing_bottom": 10
+            "product": ""
           }
         },
-        "button_PrEyYA": {
-          "type": "button",
+        "video_DfiBTj": {
+          "type": "video",
           "settings": {
-            "first_button_label": "Button label",
-            "first_button_link": "",
-            "first_button_type": "primary",
-            "second_button_label": "",
-            "second_button_link": "",
-            "second_button_type": "primary",
-            "spacing_bottom": 10
+            "product": ""
+          }
+        },
+        "video_7cCcGp": {
+          "type": "video",
+          "settings": {
+            "product": ""
           }
         }
       },
       "block_order": [
-        "heading_6DaBJg",
-        "description_LVBJK4",
-        "button_PrEyYA"
+        "video_jKPtyL",
+        "video_fhrA4B",
+        "video_DfiBTj",
+        "video_7cCcGp"
       ],
-      "name": "t:sections.rich_text.name",
+      "name": "t:sections.shopable-video.name",
       "settings": {
-        "section_width": "container",
+        "section_width": "full_width",
         "color_scheme": "",
-        "content_alignment": "center",
-        "content_max_width": 100,
-        "enable_expand_content": false,
-        "expand_content_button": "See all Information",
+        "heading": "The Community",
+        "description": "",
+        "header_size": "medium",
+        "header_alignment": "left",
+        "image_ratio": "adapt",
+        "custom_ratio": "",
+        "video_autoplay": true,
+        "items_per_row": 4,
+        "column_gap": 20,
+        "show_arrow": true,
+        "carousel_pagination": "disable",
+        "infinite": true,
+        "autoplay": true,
+        "autorotate_speed": 5,
+        "reveal": true,
+        "items_per_row_mobile": 1,
         "padding_top": 0,
         "padding_bottom": 0,
-        "reset_spacing": true
+        "reset_spacing": false
       }
     }
   },
@@ -315,6 +321,6 @@
     "slideshow",
     "collection_list_xmGiTx",
     "collection_tab_AMweAV",
-    "rich_text_Y8ewyF"
+    "shopable_video_BjwdnD"
   ]
 }
