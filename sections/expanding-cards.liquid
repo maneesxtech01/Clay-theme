@@ -1,0 +1,479 @@
+{{ 'expanding-cards.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'expanding-cards.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign section_st = section.settings
+  assign section_width = section_st.section_width
+  if section_st.reset_spacing
+    assign reset_spacing = ' remove_spacing'
+  endif
+-%}
+
+{%- style -%}
+  .section-{{ section.id }} {
+    --section-padding-top: {{ section_st.padding_top }}px;
+    --section-padding-bottom: {{ section_st.padding_bottom }}px;
+    --card-height: {{ section_st.card_height }}px;
+    --card-mobile-height: {{ section_st.card_mobile_height }}px;
+    --hover-grow-ratio: {{ section_st.hover_grow_ratio }};
+    --dot-color-active: {{ section_st.dot_color_active }};
+    --dot-color-inactive: {{ section_st.dot_color_inactive }};
+  }
+{%- endstyle -%}
+
+<div class="expanding-cards-container section-{{ section.id }}{{ reset_spacing }}">
+  <div class="{{ section_width }}">
+    <div class="content">
+      
+      {%- if section_st.heading != blank -%}
+        <div class="header text-{{ section_st.heading_alignment }}">
+          <h2 class="title h2">
+            {{ section_st.heading }}
+          </h2>
+        </div>
+      {%- endif -%}
+
+      <div class="expanding-cards-scroll-wrap" data-expanding-cards-row="">
+        <div class="cards-container flex">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign block_st = block.settings
+              assign desktop_img = block_st.desktop_image
+              assign mobile_img = block_st.mobile_image | default: desktop_img
+            -%}
+            
+            <expanding-card 
+              class="expanding-card flex direction-column justify-content-between block-{{ block.id }}" 
+              {{ block.shopify_attributes }}
+            >
+              {%- style -%}
+                .block-{{ block.id }} {
+                  --card-title-color: {{ block_st.card_title_color }};
+                  --overlay-color: {{ section_st.overlay_color }};
+                  --overlay-opacity: {{ section_st.overlay_opacity | divided_by: 100.0 }};
+                  --info-bg-color: {{ block_st.info_bg_color }};
+                  --info-border-color: {{ block_st.info_border_color }};
+                  --info-text-color: {{ block_st.info_text_color }};
+                  --btn-bg-color: {{ block_st.btn_bg_color }};
+                  --btn-text-color: {{ block_st.btn_text_color }};
+                  --btn-border-color: {{ block_st.btn_border_color }};
+                  --btn-hover-bg-color: {{ block_st.btn_hover_bg_color }};
+                  --btn-hover-text-color: {{ block_st.btn_hover_text_color }};
+                  --btn-hover-border-color: {{ block_st.btn_hover_border_color }};
+                }
+              {%- endstyle -%}
+
+              <!-- Background Images -->
+              <div class="media-wrap">
+                {%- if mobile_img != blank -%}
+                  <img 
+                    class="lazyload large--hide" 
+                    src="{{ mobile_img | image_url: width: 300 }}" 
+                    data-src="{{ mobile_img | image_url: width: 1000 }}"
+                    data-srcset="
+                      {{ mobile_img | image_url: width: 375 }} 375w,
+                      {{ mobile_img | image_url: width: 550 }} 550w,
+                      {{ mobile_img | image_url: width: 750 }} 750w,
+                      {{ mobile_img | image_url: width: 1100 }} 1100w
+                    " 
+                    alt="{{ mobile_img.alt | default: block_st.title | escape }}"
+                    loading="lazy"
+                    width="{{ mobile_img.width }}"
+                    height="{{ mobile_img.height }}"
+                  >
+                {%- endif -%}
+                
+                {%- if desktop_img != blank -%}
+                  <img 
+                    class="lazyload medium-down--hide" 
+                    src="{{ desktop_img | image_url: width: 600 }}" 
+                    data-src="{{ desktop_img | image_url: width: 1800 }}"
+                    data-srcset="
+                      {{ desktop_img | image_url: width: 750 }} 750w,
+                      {{ desktop_img | image_url: width: 1100 }} 1100w,
+                      {{ desktop_img | image_url: width: 1500 }} 1500w,
+                      {{ desktop_img | image_url: width: 1780 }} 1780w,
+                      {{ desktop_img | image_url: width: 2000 }} 2000w
+                    "
+                    alt="{{ desktop_img.alt | default: block_st.title | escape }}"
+                    loading="lazy"
+                    width="{{ desktop_img.width }}"
+                    height="{{ desktop_img.height }}"
+                  >
+                {%- else -%}
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg medium-down--hide' }}
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg large--hide' }}
+                {%- endif -%}
+              </div>
+
+              <!-- Top Heading -->
+              {%- if block_st.title != blank -%}
+                <h2>{{ block_st.title }}</h2>
+              {%- endif -%}
+
+              <!-- Bottom Glassmorphism Info capsule -->
+              {%- if block_st.subtitle != blank or block_st.description != blank or block_st.button_label != blank -%}
+                <div class="info flex flex-wrap one-whole">
+                  <div class="left-info">
+                    {%- if block_st.subtitle != blank -%}
+                      <div class="subtitle">{{ block_st.subtitle }}</div>
+                    {%- endif -%}
+                    {%- if block_st.description != blank -%}
+                      <div class="text">
+                        {{ block_st.description }}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                  {%- if block_st.button_label != blank -%}
+                    <div class="right-info">
+                      <a class="btn" href="{{ block_st.button_link | default: '#' }}">
+                        {{ block_st.button_label }}
+                      </a>
+                    </div>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+              
+            </expanding-card>
+          {%- endfor -%}
+        </div>
+
+        <!-- Pagination Dots -->
+        {%- if section.blocks.size > 1 -%}
+          <div 
+            class="expanding-cards-dots circle false shadow large--hide" 
+            role="group" 
+            aria-label="Cards Pagination" 
+            hidden
+          >
+            {%- for block in section.blocks -%}
+              <button 
+                type="button" 
+                class="keen-dots-dot{% if forloop.first %} active{% endif %}" 
+                data-expanding-cards-dot="{{ forloop.index0 }}" 
+                aria-label="Go to card {{ forloop.index }} of {{ section.blocks.size }}" 
+                aria-current="{% if forloop.first %}true{% else %}false{% endif %}"
+              ></button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Expanding Cards",
+  "tag": "section",
+  "class": "expanding-cards",
+  "disabled_on": {
+    "groups": ["header", "footer", "custom.overlay"]
+  },
+  "settings": [
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "Section Width",
+      "default": "container",
+      "options": [
+        {
+          "value": "container",
+          "label": "Container"
+        },
+        {
+          "value": "fluid_container",
+          "label": "Fluid Container"
+        },
+        {
+          "value": "stretch_width",
+          "label": "Stretch Width"
+        },
+        {
+          "value": "full_width",
+          "label": "Full Width"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "New to DIBS? Start Here"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "Heading Alignment",
+      "default": "center",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Card Dimensions"
+    },
+    {
+      "type": "range",
+      "id": "card_height",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "label": "Desktop Card Height",
+      "default": 535
+    },
+    {
+      "type": "range",
+      "id": "card_mobile_height",
+      "min": 300,
+      "max": 800,
+      "step": 10,
+      "unit": "px",
+      "label": "Mobile Card Height",
+      "default": 480
+    },
+    {
+      "type": "range",
+      "id": "hover_grow_ratio",
+      "min": 1.2,
+      "max": 2.5,
+      "step": 0.1,
+      "label": "Desktop Hover Grow Ratio",
+      "default": 1.8,
+      "info": "Controls how much a card expands when hovered on desktop screens."
+    },
+    {
+      "type": "header",
+      "content": "Global Overlay & Navigation Colors"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Card Image Overlay Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay Opacity",
+      "default": 15
+    },
+    {
+      "type": "color",
+      "id": "dot_color_inactive",
+      "label": "Mobile Pagination Inactive Dot Color",
+      "default": "#cccccc"
+    },
+    {
+      "type": "color",
+      "id": "dot_color_active",
+      "label": "Mobile Pagination Active Dot Color",
+      "default": "#222222"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 150,
+      "step": 5,
+      "unit": "px",
+      "label": "Padding Bottom",
+      "default": 40
+    },
+    {
+      "type": "checkbox",
+      "id": "reset_spacing",
+      "label": "Reset Spacing (Remove Padding)",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card Item",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Card Media"
+        },
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop Image",
+          "info": "Recommended: 1500 x 1400px"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile Image (Optional)",
+          "info": "Falls back to Desktop Image if left empty. Recommended: 650 x 1000px"
+        },
+        {
+          "type": "header",
+          "content": "Card Headline"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card Headline Title",
+          "default": "Swipe it.<br>Tap it. Blend It.",
+          "info": "Allows HTML code (e.g. use <br> to break lines)."
+        },
+        {
+          "type": "color",
+          "id": "card_title_color",
+          "label": "Headline Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "header",
+          "content": "Bottom Capsule (Info Panel)"
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Subtitle / Product Name",
+          "default": "Desert Island Duo"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description Text",
+          "default": "<p>Blush + bronzer in one. Your fastest full-face essential.</p>"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button Label",
+          "default": "Shop Desert Island Duo"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button Link"
+        },
+        {
+          "type": "header",
+          "content": "Capsule Background & Text Styling"
+        },
+        {
+          "type": "color",
+          "id": "info_bg_color",
+          "label": "Info Capsule Background Color",
+          "default": "rgba(255, 255, 255, 0.75)",
+          "info": "Supports solid colors or translucent RGBA colors."
+        },
+        {
+          "type": "color",
+          "id": "info_border_color",
+          "label": "Info Capsule Border Color",
+          "default": "rgba(255, 255, 255, 0.3)"
+        },
+        {
+          "type": "color",
+          "id": "info_text_color",
+          "label": "Info Capsule Text Color",
+          "default": "#222222"
+        },
+        {
+          "type": "header",
+          "content": "Capsule Button Color Styling"
+        },
+        {
+          "type": "color",
+          "id": "btn_bg_color",
+          "label": "Button Background Color",
+          "default": "#222222"
+        },
+        {
+          "type": "color",
+          "id": "btn_text_color",
+          "label": "Button Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "btn_border_color",
+          "label": "Button Border Color",
+          "default": "#222222"
+        },
+        {
+          "type": "color",
+          "id": "btn_hover_bg_color",
+          "label": "Button Hover Background Color",
+          "default": "#000000"
+        },
+        {
+          "type": "color",
+          "id": "btn_hover_text_color",
+          "label": "Button Hover Text Color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "btn_hover_border_color",
+          "label": "Button Hover Border Color",
+          "default": "#000000"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Expanding Cards",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "title": "Swipe it.<br>Tap it. Blend It.",
+            "subtitle": "Desert Island Duo",
+            "description": "<p>Blush + bronzer in one. Your fastest full-face essential.</p>",
+            "button_label": "Shop Desert Island Duo"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "The only brush<br>you need.",
+            "subtitle": "Duo Brush Face",
+            "description": "<p>The original cream and powder duo brush.</p>",
+            "button_label": "Shop Duo Brush Face"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
