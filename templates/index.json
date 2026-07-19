@@ -538,7 +538,7 @@
         "show_view_all": true,
         "header_size": "medium",
         "header_alignment": "center",
-        "blog": "",
+        "blog": "resources",
         "image_ratio": "square",
         "custom_ratio": "",
         "show_category": true,
