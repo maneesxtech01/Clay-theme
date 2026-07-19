@@ -417,7 +417,7 @@
       ],
       "name": "t:sections.shopable-video.name",
       "settings": {
-        "section_width": "full_width",
+        "section_width": "fluid_container",
         "color_scheme": "",
         "heading": "The Community",
         "description": "",
