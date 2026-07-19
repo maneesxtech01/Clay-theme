@@ -562,6 +562,68 @@
         "padding_bottom": 80,
         "reset_spacing": true
       }
+    },
+    "icon_box_VbRbAN": {
+      "type": "icon-box",
+      "blocks": {
+        "icon_box_WypTwQ": {
+          "type": "icon_box",
+          "settings": {
+            "icon_svg": "free_shipping",
+            "custom_svg": "",
+            "heading": "Free Shipping",
+            "description": "<p>Enjoy free worldwide shipping and returns, with customs and duties taxes included.</p>"
+          }
+        },
+        "icon_box_hDGKNH": {
+          "type": "icon_box",
+          "settings": {
+            "icon_svg": "check_badge",
+            "custom_svg": "",
+            "heading": "Free Returns",
+            "description": "<p>Free returns within 15 days, please make sure the itemsare in undamaged condition.</p>"
+          }
+        },
+        "icon_box_GyybTL": {
+          "type": "icon_box",
+          "settings": {
+            "icon_svg": "message_communications",
+            "custom_svg": "",
+            "heading": "Support Online",
+            "description": "<p>We support customers 24/7, send questions we willsolve for you immediately.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "icon_box_WypTwQ",
+        "icon_box_hDGKNH",
+        "icon_box_GyybTL"
+      ],
+      "name": "t:sections.icon_box.name",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "type": "default",
+        "column_gap": 30,
+        "icon_position": "top",
+        "icon_size": 32,
+        "spacing": 11,
+        "show_border": false,
+        "enable_background": false,
+        "background": "",
+        "content_alignment": "center",
+        "heading_font_size": 16,
+        "heading_font_weight": "heading_weight",
+        "heading_uppercase": false,
+        "heading_spacing_bottom": 10,
+        "des_font_size": 14,
+        "des_font_weight": "body_weight",
+        "carousel_on_mobile": false,
+        "items_per_row_mobile": "1",
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
     }
   },
   "order": [
@@ -572,6 +634,7 @@
     "collection_list_xmGiTx",
     "shopable_video_BjwdnD",
     "product_testimonials_6p7NRB",
-    "blog_posts_ixmmRL"
+    "blog_posts_ixmmRL",
+    "icon_box_VbRbAN"
   ]
 }
