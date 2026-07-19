@@ -191,8 +191,8 @@
               {% endif %}
             </div>
           {% endif %}
-          <div class="collection-tab__nav-row flex align-center justify-content-between flex-wrap gap-15 mt-30 w-full" style="width: 100%;">
-            <div class="inline-flex align-center max-w-100 {% if tab_header_style == 'horizontal' %} collection-tab__ta overflow-auto{% else %} collection-tab__select align-center gap-10{% endif %}{% if tab_header_style != 'horizontal' %} h4 my-0{% endif %}{% if tab_header_style == 'horizontal' and horizontal_tab_style == 'underline' %} border-bottom{% endif %}{% if tab_header_style == 'horizontal' and horizontal_tab_style != 'underline' %} gap-15{% endif %}" style="margin-top: 0 !important;">
+          <div class="flex align-center flex-wrap gap-20 mt-30 justify-content-start" style="width: 100%;">
+            <div class="inline-flex align-center max-w-100 {% if tab_header_style == 'horizontal' %} collection-tab__ta overflow-auto{% else %} collection-tab__select align-center gap-10{% endif %}{% if tab_header_style != 'horizontal' %} h4 my-0{% endif %}{% if tab_header_style == 'horizontal' and horizontal_tab_style == 'underline' %} border-bottom{% endif %}{% if tab_header_style == 'horizontal' and horizontal_tab_style != 'underline' %} gap-15{% endif %}" style="margin-top: 0 !important; margin-bottom: 0 !important;">
               {% if tab_header_style != 'horizontal' %}
                 <span>{{ 'sections.collection_tab.tab_header_select' | t }} </span>
                 <div class="select-collection-tab relative select-custom">

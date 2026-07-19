@@ -18,6 +18,10 @@
     --hover-grow-ratio: {{ section_st.hover_grow_ratio }};
     --dot-color-active: {{ section_st.dot_color_active }};
     --dot-color-inactive: {{ section_st.dot_color_inactive }};
+    --section-heading-size: {{ section_st.section_heading_size }}px;
+    --card-title-size: {{ section_st.card_title_size }}px;
+    --card-subtitle-size: {{ section_st.card_subtitle_size }}px;
+    --card-desc-size: {{ section_st.card_desc_size }}px;
   }
 {%- endstyle -%}
 
@@ -162,7 +166,7 @@
                   </div>
                   {%- if block_st.button_label != blank -%}
                     <div class="right-info">
-                      <a class="btn" href="{{ block_st.button_link | default: '#' }}">
+                      <a class="btn {% if block_st.button_style == 'primary' %}btn-primary{% elsif block_st.button_style == 'outline' %}btn-outline{% endif %}" href="{{ block_st.button_link | default: '#' }}">
                         {{ block_st.button_label }}
                       </a>
                     </div>
@@ -325,6 +329,50 @@
     },
     {
       "type": "header",
+      "content": "Typography Settings (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "section_heading_size",
+      "min": 20,
+      "max": 80,
+      "step": 2,
+      "unit": "px",
+      "label": "Section Heading Font Size",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "min": 16,
+      "max": 60,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Title Font Size",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "card_subtitle_size",
+      "min": 12,
+      "max": 30,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Subtitle Font Size",
+      "default": 16
+    },
+    {
+      "type": "range",
+      "id": "card_desc_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Card Description Font Size",
+      "default": 14
+    },
+    {
+      "type": "header",
       "content": "Global Overlay & Navigation Colors"
     },
     {
@@ -450,6 +498,26 @@
           "type": "url",
           "id": "button_link",
           "label": "Button Link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button Style",
+          "default": "primary",
+          "options": [
+            {
+              "value": "primary",
+              "label": "Theme Primary (Solid)"
+            },
+            {
+              "value": "outline",
+              "label": "Theme Outline"
+            },
+            {
+              "value": "custom",
+              "label": "Custom Colors"
+            }
+          ]
         },
         {
           "type": "header",

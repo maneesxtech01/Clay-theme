@@ -168,15 +168,18 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border-radius: 0.6rem;
-  border: 1.5px solid var(--btn-border-color, #222222);
-  background-color: var(--btn-bg-color, #222222);
-  color: var(--btn-text-color, #ffffff);
   text-decoration: none;
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
   cursor: pointer;
 }
 
-.expanding-card .btn:hover {
+.expanding-card .btn:not(.btn-primary):not(.btn-outline) {
+  border: 1.5px solid var(--btn-border-color, #222222);
+  background-color: var(--btn-bg-color, #222222);
+  color: var(--btn-text-color, #ffffff);
+}
+
+.expanding-card .btn:not(.btn-primary):not(.btn-outline):hover {
   background-color: var(--btn-hover-bg-color, #000000);
   color: var(--btn-hover-text-color, #ffffff);
   border-color: var(--btn-hover-border-color, #000000);
@@ -184,6 +187,10 @@
 
 /* Large screen expansion effect & Font size updates */
 @media (min-width: 66.001em) {
+  .expanding-cards-container .title {
+    font-size: var(--section-heading-size, 2.5rem);
+  }
+
   .expanding-card:hover {
     flex: var(--hover-grow-ratio, 1.8) 0 0;
   }
@@ -194,17 +201,17 @@
 
   /* Desktop card title / headline overlay font increase */
   .expanding-card h2 {
-    font-size: clamp(2.2rem, 3.2vw, 3.5rem) !important;
+    font-size: var(--card-title-size, clamp(2.2rem, 3.2vw, 3.5rem)) !important;
   }
 
   /* Desktop bottom info capsule typography adjustments */
   .expanding-card .subtitle {
-    font-size: 1.25rem;
+    font-size: var(--card-subtitle-size, 1.25rem);
     margin-bottom: 0.5rem;
   }
 
   .expanding-card .text {
-    font-size: 1.05rem;
+    font-size: var(--card-desc-size, 1.05rem);
     line-height: 1.5;
   }
 }
