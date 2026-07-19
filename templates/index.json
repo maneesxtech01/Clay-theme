@@ -620,8 +620,8 @@
         "des_font_weight": "body_weight",
         "carousel_on_mobile": false,
         "items_per_row_mobile": "1",
-        "padding_top": 0,
-        "padding_bottom": 0,
+        "padding_top": 60,
+        "padding_bottom": 60,
         "reset_spacing": false
       }
     }
