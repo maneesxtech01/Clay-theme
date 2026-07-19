@@ -522,9 +522,9 @@
         "autorotate_speed": 5,
         "reveal": false,
         "items_per_row_mobile": 1,
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "reset_spacing": false
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "reset_spacing": true
       }
     }
   },
