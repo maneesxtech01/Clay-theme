@@ -225,39 +225,39 @@
             "info_bg_color": "rgba(255, 255, 255, 0.75)",
             "info_border_color": "rgba(255, 255, 255, 0.3)",
             "info_text_color": "#222222",
-            "btn_bg_color": "#222222",
+            "btn_bg_color": "#A24C24",
             "btn_text_color": "#ffffff",
-            "btn_border_color": "#222222",
-            "btn_hover_bg_color": "#000000",
+            "btn_border_color": "#B1552B",
+            "btn_hover_bg_color": "#76310F",
             "btn_hover_text_color": "#ffffff",
-            "btn_hover_border_color": "#000000"
+            "btn_hover_border_color": "#76310F"
           }
         },
-        "card_xzqgTU": {
+        "card_CnVjpY": {
           "type": "card",
           "settings": {
-            "desktop_image": "shopify://shop_images/02.png",
-            "title": "The only brushyou need.",
+            "desktop_image": "shopify://shop_images/Kids_Clay_Toy_Set.webp",
+            "title": "Limited Time Offer — Up to 15% Off",
             "card_title_color": "#ffffff",
-            "subtitle": "Duo Brush Face",
-            "description": "<p>The original cream and powder duo brush.</p>",
-            "button_label": "Shop Duo Brush Face",
+            "subtitle": "Limited Time Offer",
+            "description": "<p>Selected clay & drinkware pieces at their lowest price — while stock lasts.</p>",
+            "button_label": "Shop Best Sellers",
             "button_link": "",
             "info_bg_color": "rgba(255, 255, 255, 0.75)",
             "info_border_color": "rgba(255, 255, 255, 0.3)",
             "info_text_color": "#222222",
-            "btn_bg_color": "#222222",
+            "btn_bg_color": "#A24C24",
             "btn_text_color": "#ffffff",
-            "btn_border_color": "#222222",
-            "btn_hover_bg_color": "#000000",
+            "btn_border_color": "#B1552B",
+            "btn_hover_bg_color": "#76310F",
             "btn_hover_text_color": "#ffffff",
-            "btn_hover_border_color": "#000000"
+            "btn_hover_border_color": "#76310F"
           }
         }
       },
       "block_order": [
         "card_LqNqYq",
-        "card_xzqgTU"
+        "card_CnVjpY"
       ],
       "name": "Expanding Cards",
       "settings": {
