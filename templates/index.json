@@ -160,11 +160,19 @@
             "collection": "drinkware",
             "collection_title": "New"
           }
+        },
+        "collection_WeLWKj": {
+          "type": "collection",
+          "settings": {
+            "collection": "",
+            "collection_title": ""
+          }
         }
       },
       "block_order": [
         "collection_nwabnq",
-        "collection_BLXcN8"
+        "collection_BLXcN8",
+        "collection_WeLWKj"
       ],
       "name": "Product Slider Tab",
       "settings": {
@@ -196,13 +204,26 @@
         "reset_spacing": true
       }
     },
+    "slideshow_with_banner_QMdnde": {
+      "type": "slideshow-with-banner",
+      "name": "t:sections.slideshow-with-banner.name",
+      "settings": {
+        "section_width": "full_width",
+        "column_gap": 30,
+        "slide_width": 50,
+        "padding_top": 0,
+        "padding_bottom": 0,
+        "reset_spacing": false
+      }
+    },
     "collection_packery_4fmjXL": {
       "type": "collection-packery",
       "blocks": {
         "collection_MeYjxb": {
           "type": "collection",
           "settings": {
-            "collection": "",
+            "collection": "frontpage",
+            "collection_image": "shopify://shop_images/Serving_Bowl_Natural_Clay.webp",
             "collection_title": ""
           }
         },
@@ -406,6 +427,7 @@
     "slideshow",
     "rich_text_BrjW7p",
     "collection_tab_AMweAV",
+    "slideshow_with_banner_QMdnde",
     "collection_packery_4fmjXL",
     "collection_list_xmGiTx",
     "shopable_video_BjwdnD"
