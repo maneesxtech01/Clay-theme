@@ -152,8 +152,8 @@
         "content_max_width": 72,
         "enable_expand_content": false,
         "expand_content_button": "Three Generations. One Craft. Zero Shortcuts.",
-        "padding_top": 70,
-        "padding_bottom": 70,
+        "padding_top": 60,
+        "padding_bottom": 60,
         "reset_spacing": true
       }
     },
@@ -205,7 +205,7 @@
         "carousel_on_mobile": true,
         "items_per_row_mobile": 1,
         "padding_top": 80,
-        "padding_bottom": 60,
+        "padding_bottom": 80,
         "reset_spacing": true
       }
     },
