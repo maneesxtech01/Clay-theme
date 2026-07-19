@@ -263,7 +263,7 @@
       "settings": {
         "section_width": "fluid_container",
         "heading": "New to DIBS? Start Here",
-        "heading_alignment": "center",
+        "heading_alignment": "left",
         "card_height": 540,
         "card_mobile_height": 480,
         "hover_grow_ratio": 1.8,
