@@ -343,7 +343,7 @@
       "custom_css": [],
       "name": "t:sections.collection-list.name",
       "settings": {
-        "section_width": "container",
+        "section_width": "fluid_container",
         "color_scheme": "default",
         "heading": "",
         "description": "",
