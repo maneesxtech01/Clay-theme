@@ -104,6 +104,46 @@
         "reset_spacing": true
       }
     },
+    "rich_text_BrjW7p": {
+      "type": "rich-text",
+      "blocks": {
+        "heading_ryCmzp": {
+          "type": "heading",
+          "settings": {
+            "heading": "Talk about your brand",
+            "font_size": 36,
+            "font_weight": "heading_weight",
+            "uppercase": false,
+            "spacing_bottom": 24
+          }
+        },
+        "description_Ng9KK3": {
+          "type": "description",
+          "settings": {
+            "description": "<p>Share information about your brand with your customers. Describe a product, make announcements, or welcome customers to your store.</p>",
+            "font_size": 14,
+            "font_weight": "body_weight",
+            "spacing_bottom": 10
+          }
+        }
+      },
+      "block_order": [
+        "heading_ryCmzp",
+        "description_Ng9KK3"
+      ],
+      "name": "t:sections.rich_text.name",
+      "settings": {
+        "section_width": "container",
+        "color_scheme": "",
+        "content_alignment": "center",
+        "content_max_width": 72,
+        "enable_expand_content": false,
+        "expand_content_button": "See all Information",
+        "padding_top": 70,
+        "padding_bottom": 70,
+        "reset_spacing": true
+      }
+    },
     "collection_tab_AMweAV": {
       "type": "collection-tab",
       "blocks": {
@@ -321,6 +361,7 @@
   },
   "order": [
     "slideshow",
+    "rich_text_BrjW7p",
     "collection_tab_AMweAV",
     "collection_list_xmGiTx",
     "shopable_video_BjwdnD"
