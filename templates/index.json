@@ -209,50 +209,71 @@
         "reset_spacing": true
       }
     },
-    "collection_packery_4fmjXL": {
-      "type": "collection-packery",
+    "expanding_cards_nmiyA6": {
+      "type": "expanding-cards",
       "blocks": {
-        "collection_MeYjxb": {
-          "type": "collection",
+        "card_LqNqYq": {
+          "type": "card",
           "settings": {
-            "collection": "frontpage",
-            "collection_image": "shopify://shop_images/Serving_Bowl_Natural_Clay.webp",
-            "collection_title": ""
+            "desktop_image": "shopify://shop_images/04_6f8eec9b-864a-49c0-9e57-ef1e88f62a58.webp",
+            "title": "Swipe it.Tap it. Blend It.",
+            "card_title_color": "#ffffff",
+            "subtitle": "Desert Island Duo",
+            "description": "<p>Blush + bronzer in one. Your fastest full-face essential.</p>",
+            "button_label": "Shop Desert Island Duo",
+            "button_link": "",
+            "info_bg_color": "rgba(255, 255, 255, 0.75)",
+            "info_border_color": "rgba(255, 255, 255, 0.3)",
+            "info_text_color": "#222222",
+            "btn_bg_color": "#222222",
+            "btn_text_color": "#ffffff",
+            "btn_border_color": "#222222",
+            "btn_hover_bg_color": "#000000",
+            "btn_hover_text_color": "#ffffff",
+            "btn_hover_border_color": "#000000"
           }
         },
-        "collection_3NUrj4": {
-          "type": "collection",
+        "card_xzqgTU": {
+          "type": "card",
           "settings": {
-            "collection": "",
-            "collection_title": ""
+            "desktop_image": "shopify://shop_images/02.png",
+            "title": "The only brushyou need.",
+            "card_title_color": "#ffffff",
+            "subtitle": "Duo Brush Face",
+            "description": "<p>The original cream and powder duo brush.</p>",
+            "button_label": "Shop Duo Brush Face",
+            "button_link": "",
+            "info_bg_color": "rgba(255, 255, 255, 0.75)",
+            "info_border_color": "rgba(255, 255, 255, 0.3)",
+            "info_text_color": "#222222",
+            "btn_bg_color": "#222222",
+            "btn_text_color": "#ffffff",
+            "btn_border_color": "#222222",
+            "btn_hover_bg_color": "#000000",
+            "btn_hover_text_color": "#ffffff",
+            "btn_hover_border_color": "#000000"
           }
         }
       },
       "block_order": [
-        "collection_MeYjxb",
-        "collection_3NUrj4"
+        "card_LqNqYq",
+        "card_xzqgTU"
       ],
-      "name": "t:sections.collection-packery.name",
+      "name": "Expanding Cards",
       "settings": {
-        "section_width": "fluid_container",
-        "color_scheme": "",
-        "heading": "",
-        "description": "",
-        "header_size": "medium",
-        "header_alignment": "left",
-        "design": "morden",
-        "image_ratio": "square",
-        "custom_ratio": "",
-        "show_product_count": false,
-        "text_alignment": "center",
-        "column_gap": 30,
-        "font_size": 14,
-        "font_weight": "heading_weight",
-        "carousel_on_mobile": false,
-        "items_per_row_mobile": 1,
-        "padding_top": 100,
-        "padding_bottom": 0,
-        "reset_spacing": true
+        "section_width": "container",
+        "heading": "New to DIBS? Start Here",
+        "heading_alignment": "center",
+        "card_height": 540,
+        "card_mobile_height": 480,
+        "hover_grow_ratio": 1.8,
+        "overlay_color": "#000000",
+        "overlay_opacity": 15,
+        "dot_color_inactive": "#cccccc",
+        "dot_color_active": "#222222",
+        "padding_top": 40,
+        "padding_bottom": 40,
+        "reset_spacing": false
       }
     },
     "collection_list_xmGiTx": {
@@ -420,7 +441,7 @@
     "slideshow",
     "rich_text_BrjW7p",
     "collection_tab_AMweAV",
-    "collection_packery_4fmjXL",
+    "expanding_cards_nmiyA6",
     "collection_list_xmGiTx",
     "shopable_video_BjwdnD"
   ]
