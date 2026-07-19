@@ -376,7 +376,7 @@
         "image_width": 200,
         "padding_top": 40,
         "padding_bottom": 80,
-        "reset_spacing": false
+        "reset_spacing": true
       }
     },
     "shopable_video_BjwdnD": {
