@@ -224,12 +224,12 @@
             "info_bg_color": "rgba(255, 255, 255, 0.75)",
             "info_border_color": "rgba(255, 255, 255, 0.3)",
             "info_text_color": "#000000",
-            "btn_bg_color": "#222222",
+            "btn_bg_color": "#A24C24",
             "btn_text_color": "#ffffff",
-            "btn_border_color": "#222222",
-            "btn_hover_bg_color": "#000000",
+            "btn_border_color": "#A24C24",
+            "btn_hover_bg_color": "#76310F",
             "btn_hover_text_color": "#ffffff",
-            "btn_hover_border_color": "#000000"
+            "btn_hover_border_color": "#76310F"
           }
         },
         "card_fz8dGf": {
