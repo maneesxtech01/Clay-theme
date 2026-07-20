@@ -188,9 +188,9 @@
         "image_border_color": "#d8d8d8",
         "card_title_color": "#1b1b1b",
         "card_desc_color": "#333333",
-        "icon_bg_color": "#FFD23F",
-        "icon_text_color": "#222222",
-        "icon_border_color": "#222222",
+        "icon_bg_color": "#B1552B",
+        "icon_text_color": "#FFFFFF",
+        "icon_border_color": "#54392C",
         "padding_top": 90,
         "padding_bottom": 100,
         "reset_spacing": false
