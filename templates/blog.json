@@ -90,7 +90,7 @@
         "sidebar_position": "left",
         "layout": "grid",
         "items_to_show": 8,
-        "items_per_row": 2,
+        "items_per_row": 3,
         "column_gap": 30,
         "pagination": "load_more_button",
         "button_show_more": "Load more",
