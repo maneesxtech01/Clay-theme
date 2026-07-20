@@ -37,10 +37,11 @@
         "icon_box_HyxeC8": {
           "type": "icon_box",
           "settings": {
+            "icon_image": "shopify://shop_images/Replacement.webp",
             "icon_svg": "message_communications",
             "custom_svg": "",
-            "heading": "Support Online",
-            "description": "<p>We support customers 24/7, send questions we willsolve for you immediately.</p>"
+            "heading": "Easy Replacement",
+            "description": "<p>Hassle-free replacement within 7 days.</p>"
           }
         }
       },
