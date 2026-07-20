@@ -297,6 +297,52 @@
         "border_color": "#ebebeb",
         "reset_spacing": false
       }
+    },
+    "custom_our_story_X39Bec": {
+      "type": "custom-our-story",
+      "blocks": {
+        "subheading_DjUqcd": {
+          "type": "subheading",
+          "settings": {
+            "text": "Handcrafted Quality You Can Trust",
+            "color": "#B1552B"
+          }
+        },
+        "heading_KibNTG": {
+          "type": "heading",
+          "settings": {
+            "text": "WHY CHOOSE RB MITTI Store",
+            "color": "#000000"
+          }
+        },
+        "text_7F3i8X": {
+          "type": "text",
+          "settings": {
+            "text": "<p><br/>From clay cookware that's hand-shaped and naturally fired for authentic dum-style cooking, to water coolers that keep water naturally cool without electricity — every category in our collection reflects the same commitment to natural materials and honest craftsmanship. Our marble kitchen tools are cut from genuine stone for lasting durability, our wooden tools are safe for everyday use with non-stick cookware, and our hand-painted dinner and serving sets bring authentic Pakistani tradition to every table. No shortcuts, no synthetic substitutes — just the same standard, product after product.<br/><br/></p>",
+            "color": "#121212"
+          }
+        }
+      },
+      "block_order": [
+        "subheading_DjUqcd",
+        "heading_KibNTG",
+        "text_7F3i8X"
+      ],
+      "name": "Custom Our Story",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "layout_desktop": "image_left",
+        "max_width": 1200,
+        "bg_color": "#ffffff",
+        "show_border_bottom": false,
+        "border_bottom_color": "#2c2609",
+        "image_aspect_ratio": "square",
+        "image_border_radius": 8,
+        "padding_top": 60,
+        "padding_bottom": 60,
+        "reset_spacing": false
+      }
     }
   },
   "order": [
@@ -305,6 +351,7 @@
     "custom_our_story_KHAtRF",
     "custom_brand_values_hwhrpU",
     "custom_journey_steps_TPLN3H",
-    "divider_jTBGQJ"
+    "divider_jTBGQJ",
+    "custom_our_story_X39Bec"
   ]
 }
