@@ -245,7 +245,7 @@
         "step_BewtDg": {
           "type": "step",
           "settings": {
-            "title": "The Pasture",
+            "title": "Sourcing the Clay",
             "image": "shopify://shop_images/Clay_Serving_Bowl.webp",
             "show_checkmark": true
           }
@@ -253,7 +253,7 @@
         "step_QiYar7": {
           "type": "step",
           "settings": {
-            "title": "Ethical Sourcing",
+            "title": "Shaped by Hand",
             "image": "shopify://shop_images/Clay_Water_Glass_set_77575f5a-8f24-49d9-ab0f-b24bf8c5afbd.jpg",
             "show_checkmark": true
           }
@@ -261,7 +261,15 @@
         "step_By3YxD": {
           "type": "step",
           "settings": {
-            "title": "Artisanal Crafting",
+            "title": "Dried & Fired",
+            "image": "shopify://shop_images/matka10_liter.webp",
+            "show_checkmark": true
+          }
+        },
+        "step_YyQiAV": {
+          "type": "step",
+          "settings": {
+            "title": "Finished & Quality Checked",
             "image": "shopify://shop_images/matka10_liter.webp",
             "show_checkmark": true
           }
@@ -270,7 +278,8 @@
       "block_order": [
         "step_BewtDg",
         "step_QiYar7",
-        "step_By3YxD"
+        "step_By3YxD",
+        "step_YyQiAV"
       ],
       "name": "Custom Journey Steps",
       "settings": {
@@ -280,14 +289,14 @@
         "bg_color": "#faf7ef",
         "show_border_bottom": false,
         "border_bottom_color": "#2c2609",
-        "tag_text": "How Our Products Are Made",
+        "tag_text": "Steps",
         "tag_color": "#a24c24",
         "heading_text": "How Our Products Are Made",
         "heading_color": "#000000",
         "paragraph_text": "All our products are made from natural clay, carefully chosen for cooking use. Local craftsmen shape each piece by hand, dry it, and fire it in a kiln.",
-        "paragraph_color": "#444444",
+        "paragraph_color": "#000000",
         "card_bg_color": "#ffffff",
-        "card_border_color": "#888888",
+        "card_border_color": "#000000",
         "step_bg_color": "#a24c24",
         "step_text_color": "#ffffff",
         "arrow_color": "#a24c24",
