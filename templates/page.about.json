@@ -84,102 +84,7 @@
         "image_border_radius": 8,
         "padding_top": 60,
         "padding_bottom": 60,
-        "reset_spacing": false
-      }
-    },
-    "multi_content_mBYATd": {
-      "type": "multi-content",
-      "blocks": {
-        "image_V9PiPt": {
-          "type": "image",
-          "settings": {
-            "image_link": "",
-            "content_width": "100%",
-            "vertical_align": "start"
-          }
-        }
-      },
-      "block_order": [
-        "image_V9PiPt"
-      ],
-      "settings": {
-        "section_width": "container",
-        "heading": "",
-        "description": "",
-        "header_size": "medium",
-        "header_alignment": "center",
-        "column_gap": 30,
-        "content_background_color": "",
-        "equal_height_adjustment": false,
-        "carousel_on_mobile": true,
-        "items_per_row_mobile": 1,
-        "padding_top": 0,
-        "padding_bottom": 72,
         "reset_spacing": true
-      }
-    },
-    "counter_bjDJxc": {
-      "type": "counter",
-      "blocks": {
-        "counter_3z4qyg": {
-          "type": "counter",
-          "settings": {
-            "starting_number": 10,
-            "ending_number": 53,
-            "unit": "k",
-            "heading": "Products for Sale",
-            "description": "<p>That's why we strive to offer a diverse range of products that cater to all styles.</p>"
-          }
-        },
-        "counter_jQdJhG": {
-          "type": "counter",
-          "settings": {
-            "starting_number": 0,
-            "ending_number": 8.5,
-            "unit": "k",
-            "heading": "Happy Customer",
-            "description": "<p>We pride ourselves on creating great products and experiences with our valued customers.</p>"
-          }
-        },
-        "counter_FmWY3q": {
-          "type": "counter",
-          "settings": {
-            "starting_number": 0,
-            "ending_number": 13,
-            "unit": "k",
-            "heading": "Partner Brand",
-            "description": "<p>Partner with brands that share our values, striving to protect our environment.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "counter_3z4qyg",
-        "counter_jQdJhG",
-        "counter_FmWY3q"
-      ],
-      "settings": {
-        "section_width": "container",
-        "color_scheme": "",
-        "heading": "",
-        "description": "",
-        "header_size": "medium",
-        "header_alignment": "center",
-        "speed": 5,
-        "items_per_row": 3,
-        "column_gap": 30,
-        "content_alignment": "center",
-        "number_font_size": 36,
-        "number_font_weight": "subheading_weight",
-        "number_spacing_bottom": 13,
-        "heading_font_size": 18,
-        "heading_font_weight": "heading_weight",
-        "heading_spacing_bottom": 12,
-        "des_font_size": 15,
-        "des_font_weight": "body_weight",
-        "des_spacing_bottom": 0,
-        "padding_top": 0,
-        "padding_bottom": 0,
-        "reset_spacing": false
       }
     },
     "divider_jTBGQJ": {
@@ -195,8 +100,6 @@
   "order": [
     "page-heading",
     "custom_our_story_h9UCMz",
-    "multi_content_mBYATd",
-    "counter_bjDJxc",
     "divider_jTBGQJ"
   ]
 }
