@@ -101,12 +101,22 @@
             "text": "<p>After spending over a decade in the commercial skincare industry, we witnessed firsthand the disturbing reality behind \"premium\" products. What consumers didn't see were the cheap fillers, synthetic additives, and harmful preservatives hidden behind scientific-sounding names and clever marketing.</p><p>Our breaking point came when we realized that even \"natural\" brands were cutting corners. We began researching truly natural alternatives and discovered something our ancestors knew for centuries—tallow from grass-fed cattle contains bioidentical nutrients that human skin recognizes and absorbs effortlessly.</p>",
             "color": "#121212"
           }
+        },
+        "quote_box_EfjKFz": {
+          "type": "quote_box",
+          "settings": {
+            "text": "\"We couldn't find skincare that met our standards, so we created it ourselves\"",
+            "bg_color": "#A24C24",
+            "border_color": "#FFFFFF",
+            "text_color": "#FFFFFF"
+          }
         }
       },
       "block_order": [
         "subheading_PWEybq",
         "heading_JHf8NJ",
-        "text_rC7RHU"
+        "text_rC7RHU",
+        "quote_box_EfjKFz"
       ],
       "name": "Custom Our Story",
       "settings": {
@@ -114,7 +124,7 @@
         "color_scheme": "default",
         "layout_desktop": "image_right",
         "max_width": 1200,
-        "bg_color": "#FFF4F0",
+        "bg_color": "#fff4f0",
         "show_border_bottom": false,
         "border_bottom_color": "#2c2609",
         "image": "shopify://shop_images/03_77e9f6d4-df8d-43af-925a-3a5af279df1a.webp",
@@ -176,24 +186,83 @@
         "section_width": "fluid_container",
         "color_scheme": "",
         "max_width": 1200,
-        "bg_color": "#F8F4EC",
+        "bg_color": "#ffffff",
         "show_border_bottom": false,
         "border_bottom_color": "#2c2609",
         "tag_text": "SKIN DEEP VALUES",
-        "tag_color": "#A24C24",
+        "tag_color": "#a24c24",
         "heading_text": "OUR UNWAVERING COMMITMENTS",
-        "heading_color": "#1e2530",
+        "heading_color": "#000000",
         "paragraph_text": "We built Evil Goods on four foundational promises that guide every decision we make, from sourcing ingredients to customer care.",
         "paragraph_color": "#333333",
+        "center_image": "shopify://shop_images/Kids_Clay_Toy_Set.webp",
         "image_border_color": "#d8d8d8",
         "card_title_color": "#1b1b1b",
         "card_desc_color": "#333333",
-        "icon_bg_color": "#B1552B",
-        "icon_text_color": "#FFFFFF",
-        "icon_border_color": "#54392C",
-        "padding_top": 90,
-        "padding_bottom": 100,
-        "reset_spacing": false
+        "icon_bg_color": "#b1552b",
+        "icon_text_color": "#ffffff",
+        "icon_border_color": "#54392c",
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "reset_spacing": true
+      }
+    },
+    "custom_journey_steps_TPLN3H": {
+      "type": "custom-journey-steps",
+      "blocks": {
+        "step_BewtDg": {
+          "type": "step",
+          "settings": {
+            "title": "The Pasture",
+            "image": "shopify://shop_images/Clay_Serving_Bowl.webp",
+            "show_checkmark": true
+          }
+        },
+        "step_QiYar7": {
+          "type": "step",
+          "settings": {
+            "title": "Ethical Sourcing",
+            "image": "shopify://shop_images/Clay_Water_Glass_set_77575f5a-8f24-49d9-ab0f-b24bf8c5afbd.jpg",
+            "show_checkmark": true
+          }
+        },
+        "step_By3YxD": {
+          "type": "step",
+          "settings": {
+            "title": "Artisanal Crafting",
+            "image": "shopify://shop_images/matka10_liter.webp",
+            "show_checkmark": true
+          }
+        }
+      },
+      "block_order": [
+        "step_BewtDg",
+        "step_QiYar7",
+        "step_By3YxD"
+      ],
+      "name": "Custom Journey Steps",
+      "settings": {
+        "section_width": "fluid_container",
+        "color_scheme": "",
+        "max_width": 1300,
+        "bg_color": "#faf7ef",
+        "show_border_bottom": false,
+        "border_bottom_color": "#2c2609",
+        "tag_text": "How Our Products Are Made",
+        "tag_color": "#a24c24",
+        "heading_text": "How Our Products Are Made",
+        "heading_color": "#000000",
+        "paragraph_text": "All our products are made from natural clay, carefully chosen for cooking use. Local craftsmen shape each piece by hand, dry it, and fire it in a kiln.",
+        "paragraph_color": "#444444",
+        "card_bg_color": "#ffffff",
+        "card_border_color": "#888888",
+        "step_bg_color": "#a24c24",
+        "step_text_color": "#ffffff",
+        "arrow_color": "#a24c24",
+        "autoplay_delay": 2500,
+        "padding_top": 80,
+        "padding_bottom": 80,
+        "reset_spacing": true
       }
     },
     "divider_jTBGQJ": {
@@ -211,6 +280,7 @@
     "custom_our_story_h9UCMz",
     "custom_our_story_KHAtRF",
     "custom_brand_values_hwhrpU",
+    "custom_journey_steps_TPLN3H",
     "divider_jTBGQJ"
   ]
 }
