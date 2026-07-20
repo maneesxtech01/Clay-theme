@@ -22,25 +22,18 @@
             "page_title": "",
             "header_size": "default"
           }
-        },
-        "description_YRWpkt": {
-          "type": "description",
-          "settings": {
-            "description": "<p>Discover style insights and trends on our fashion lifestyle blog.</p>"
-          }
         }
       },
       "block_order": [
         "breadcrumb_6m9rGB",
-        "heading_xwFKKa",
-        "description_YRWpkt"
+        "heading_xwFKKa"
       ],
       "settings": {
         "section_width": "container",
-        "color_scheme": "",
+        "color_scheme": "scheme-4faf0e4d-27f4-4d02-bc51-617383bab1a9",
         "alignment": "center",
         "background_image": "shopify://shop_images/rbmitti.webp",
-        "overlay_opacity": 0,
+        "overlay_opacity": 40,
         "height": "based_on_content",
         "padding_top": 100,
         "padding_bottom": 100
