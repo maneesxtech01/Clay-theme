@@ -51,14 +51,14 @@
         "text_9AGHNn": {
           "type": "text",
           "settings": {
-            "text": "<p>RB Mitti Store carries forward a tradition that began generations before us. What started with hands shaping raw clay in a small family workshop has grown into a trusted name in natural, handcrafted kitchenware — supplying homes across Pakistan and exporting to customers internationally. Every piece we make, from a simple clay handi to a hand-painted dinner set, carries the same care our family has put into this craft for generations.<br/></p>",
+            "text": "<p>RB Mitti Store carries forward a tradition that began generations before us. What started with hands shaping raw clay in a small family workshop has grown into a trusted name in natural, handcrafted kitchenware — bringing that same craftsmanship to homes across Pakistan.</p>",
             "color": "#121212"
           }
         },
         "text_FVikwA": {
           "type": "text",
           "settings": {
-            "text": "<p>We don't rely on factories or mass production — each item is shaped by hand, dried naturally, and fired the traditional way, exactly as it was taught to us. That knowledge shows in the durability, the finish, and the authenticity of every piece that leaves our workshop, whether it's headed to a kitchen in Lahore or across international borders.</p>",
+            "text": "<p><br/>We don't rely on factories or mass production — each item is shaped by hand, dried naturally, and fired the traditional way, exactly as it was taught to us. That knowledge shows in the durability, the finish, and the authenticity of every piece that leaves our workshop.<br/><br/></p>",
             "color": "#121212"
           }
         }
@@ -99,28 +99,28 @@
         "heading_JHf8NJ": {
           "type": "heading",
           "settings": {
-            "text": "Continuing What Our Family Started",
+            "text": "\"This isn't a business I started — it's a craft I inherited from my great-grandfather, and it runs through everything we make today.\"",
             "color": "#000000"
           }
         },
         "text_rC7RHU": {
           "type": "text",
           "settings": {
-            "text": "<p>RB Mitti Store is run today by Muhammad Shakoor, who continues a craft passed down through three generations of his family. What began with his great-grandfather working clay by hand was carried forward through his grandfather, and now continues under his leadership.</p>",
+            "text": "<p>RB Mitti Store is run today by Muhammad Shakir, who continues a craft passed down through three generations of his family. What began with his great-grandfather working clay by hand was carried forward through his grandfather, and now continues under his leadership.</p>",
             "color": "#121212"
           }
         },
         "text_VRJyt3": {
           "type": "text",
           "settings": {
-            "text": "<p>Growing up around this craft, Muhammad Shakoor learned more than technique — he learned patience, respect for natural materials, and the discipline of doing things the honest way, even as the wider market shifted toward mass-produced, chemical-coated alternatives.</p>",
+            "text": "<p>Growing up around this craft, Muhammad Shakir learned more than technique — he learned patience, respect for natural materials, and the discipline of doing things the honest way, even as the wider market shifted toward mass-produced, chemical-coated alternatives.</p>",
             "color": "#121212"
           }
         },
         "text_NFWMi7": {
           "type": "text",
           "settings": {
-            "text": "<p><br/>Today, that inherited knowledge has expanded beyond a single workshop. RB Mitti Store now serves customers across Pakistan and exports handcrafted clay, marble, and wooden kitchenware internationally — bringing three generations of expertise to kitchens far beyond where this craft began.<br/><br/></p>",
+            "text": "<p>Today, RB Mitti Store brings that inherited craftsmanship to homes across Pakistan — natural clay, marble, and wooden kitchenware, made the same honest way it always has been.<br/></p>",
             "color": "#121212"
           }
         },
@@ -168,7 +168,7 @@
             "icon_class": "ri-search-line",
             "icon_svg": "",
             "title": "Absolute Transparency",
-            "description": "Every ingredient is clearly listed, ethically sourced, and serves a purpose. No hidden fillers, no marketing gimmicks."
+            "description": "Every material is natural and clearly sourced. No hidden fillers, no synthetic coatings, no shortcuts."
           }
         },
         "value_card_XHMfUD": {
@@ -177,7 +177,7 @@
             "icon_class": "ri-plant-line",
             "icon_svg": "",
             "title": "Nature's Wisdom First",
-            "description": "Ancient skincare traditions and naturally-derived ingredients take precedence over laboratory-created compounds."
+            "description": "Traditional techniques passed through three generations take precedence over factory shortcuts, preserving both quality and authenticity in every piece."
           }
         },
         "value_card_zDqMA7": {
@@ -185,8 +185,8 @@
           "settings": {
             "icon_class": "ri-recycle-line",
             "icon_svg": "",
-            "title": "Sustainable Practices",
-            "description": "We partner with regenerative American farms, use minimal packaging, and ensure our process respects both animals and land."
+            "title": "Consistent Quality Control",
+            "description": "Every product that leaves our workshop is hand-checked to meet the same consistent standard, every single time."
           }
         },
         "value_card_WfUExx": {
@@ -195,7 +195,7 @@
             "icon_class": "ri-heart-3-line",
             "icon_svg": "",
             "title": "Customer Satisfaction",
-            "description": "Our 30-day guarantee and 4.9/5 rating from 285,000+ customers reflect our dedication to complete satisfaction."
+            "description": "Easy replacements, honest communication, and responsive support for every customer, every order."
           }
         }
       },
@@ -208,7 +208,7 @@
       "name": "Custom Brand Values",
       "settings": {
         "section_width": "fluid_container",
-        "color_scheme": "",
+        "color_scheme": "scheme-e2434dd4-80ca-43a1-909b-8a9f7b57a7ab",
         "max_width": 1200,
         "bg_color": "#ffffff",
         "show_border_bottom": false,
@@ -217,7 +217,7 @@
         "tag_color": "#a24c24",
         "heading_text": "Our Unwavering Commitments",
         "heading_color": "#000000",
-        "paragraph_text": "We built RB Mitti Store on four foundational promises that guide every decision we make — from sourcing materials to the packaging that reaches customers overseas.",
+        "paragraph_text": "We built RB Mitti Store on four foundational promises that guide every decision we make — from sourcing materials to the care that reaches every customer.",
         "paragraph_color": "#333333",
         "center_image": "shopify://shop_images/Kids_Clay_Toy_Set.webp",
         "image_border_color": "#d8d8d8",
