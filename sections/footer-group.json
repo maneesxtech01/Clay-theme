@@ -21,16 +21,17 @@
             "icon_svg": "free_shipping",
             "custom_svg": "",
             "heading": "Free Shipping",
-            "description": "<p>Enjoy free worldwide shipping and returns, with customs and duties taxes included.</p>"
+            "description": "<p>On all orders above Rs. 10,000, anywhere in Pakistan.</p>"
           }
         },
         "icon_box_fqLDBy": {
           "type": "icon_box",
           "settings": {
+            "icon_image": "shopify://shop_images/ICON.webp",
             "icon_svg": "check_badge",
             "custom_svg": "",
-            "heading": "Free Returns",
-            "description": "<p>Free returns within 15 days, please make sure the itemsare in undamaged condition.</p>"
+            "heading": "100% Natural Clay",
+            "description": "<p>No chemical coatings, no shortcuts — ever.</p>"
           }
         },
         "icon_box_HyxeC8": {
