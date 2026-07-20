@@ -1,12 +1,12 @@
 /*
-* ------------------------------------------------------------
-* IMPORTANT: The contents of this file are auto-generated.
-*
-* This file may be updated by the Shopify admin theme editor
-* or related systems. Please exercise caution as any changes
-* made to this file may be overwritten.
-* ------------------------------------------------------------
-*/
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "heading": {
@@ -14,8 +14,7 @@
       "blocks": {
         "breadcrumb_6m9rGB": {
           "type": "breadcrumb",
-          "settings": {
-          }
+          "settings": {}
         },
         "heading_xwFKKa": {
           "type": "heading",
@@ -27,7 +26,7 @@
         "description_YRWpkt": {
           "type": "description",
           "settings": {
-            "description": "<p>Discover style insights and trends on our fashion lifestyle blog.<\/p>"
+            "description": "<p>Discover style insights and trends on our fashion lifestyle blog.</p>"
           }
         }
       },
@@ -53,7 +52,7 @@
           "type": "categories",
           "settings": {
             "title": "Blog Categories",
-            "menu": "blog-categories"
+            "menu": ""
           }
         },
         "recent_post_KiffBB": {
@@ -74,8 +73,7 @@
         "image_banner_mhPKkQ": {
           "type": "image_banner",
           "settings": {
-            "image": "shopify:\/\/shop_images\/blog_banner.jpg",
-            "url": "shopify:\/\/collections\/all",
+            "url": "shopify://collections/all",
             "open_link": true
           }
         }
@@ -87,14 +85,14 @@
         "image_banner_mhPKkQ"
       ],
       "settings": {
-        "section_width": "fluid_container",
-        "enable_sidebar": true,
+        "section_width": "container",
+        "enable_sidebar": false,
         "sidebar_position": "left",
         "layout": "grid",
         "items_to_show": 8,
         "items_per_row": 2,
         "column_gap": 30,
-        "pagination": "default",
+        "pagination": "load_more_button",
         "button_show_more": "Load more",
         "promotion_link": "",
         "promotion_postion": 3,
