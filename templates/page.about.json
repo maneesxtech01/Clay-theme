@@ -12,12 +12,20 @@
     "page-heading": {
       "type": "page-heading",
       "blocks": {
+        "heading_GKCNkF": {
+          "type": "heading",
+          "settings": {
+            "page_title": "",
+            "header_size": "large"
+          }
+        },
         "breadcrumb_kg6gTP": {
           "type": "breadcrumb",
           "settings": {}
         }
       },
       "block_order": [
+        "heading_GKCNkF",
         "breadcrumb_kg6gTP"
       ],
       "settings": {
