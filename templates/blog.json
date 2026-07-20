@@ -36,13 +36,14 @@
         "description_YRWpkt"
       ],
       "settings": {
-        "section_width": "stretch_width",
+        "section_width": "container",
         "color_scheme": "",
         "alignment": "center",
+        "background_image": "shopify://shop_images/rbmitti.webp",
         "overlay_opacity": 0,
-        "height": "adapt",
-        "padding_top": 80,
-        "padding_bottom": 4
+        "height": "based_on_content",
+        "padding_top": 100,
+        "padding_bottom": 100
       }
     },
     "main": {
