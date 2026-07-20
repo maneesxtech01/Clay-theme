@@ -62,7 +62,7 @@
         "newsletter_Rk8BD6"
       ],
       "settings": {
-        "section_width": "fluid_container",
+        "section_width": "container",
         "color_scheme": "scheme-accf3b11-ba40-4a3e-bafb-243ece6683ec",
         "enable_back_top": true,
         "separator_line": "all-page",
