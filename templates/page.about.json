@@ -32,11 +32,11 @@
         "section_width": "fluid_container",
         "color_scheme": "scheme-4faf0e4d-27f4-4d02-bc51-617383bab1a9",
         "alignment": "center",
-        "background_image": "shopify://shop_images/image-02.webp",
+        "background_image": "shopify://shop_images/rbmittistore.webp",
         "overlay_opacity": 30,
         "height": "based_on_content",
-        "padding_top": 70,
-        "padding_bottom": 70
+        "padding_top": 100,
+        "padding_bottom": 100
       }
     },
     "custom_our_story_h9UCMz": {
