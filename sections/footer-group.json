@@ -11,71 +11,6 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
-    "icon_box_CH9BWd": {
-      "type": "icon-box",
-      "blocks": {
-        "icon_box_gwJ9YU": {
-          "type": "icon_box",
-          "settings": {
-            "icon_image": "shopify://shop_images/Fast_Shipping.webp",
-            "icon_svg": "free_shipping",
-            "custom_svg": "",
-            "heading": "Free Shipping",
-            "description": "<p>On all orders above Rs. 10,000, anywhere in Pakistan.</p>"
-          }
-        },
-        "icon_box_fqLDBy": {
-          "type": "icon_box",
-          "settings": {
-            "icon_image": "shopify://shop_images/ICON.webp",
-            "icon_svg": "check_badge",
-            "custom_svg": "",
-            "heading": "100% Natural Clay",
-            "description": "<p>No chemical coatings, no shortcuts — ever.</p>"
-          }
-        },
-        "icon_box_HyxeC8": {
-          "type": "icon_box",
-          "settings": {
-            "icon_image": "shopify://shop_images/Replacement.webp",
-            "icon_svg": "message_communications",
-            "custom_svg": "",
-            "heading": "Easy Replacement",
-            "description": "<p>Hassle-free replacement within 7 days.</p>"
-          }
-        }
-      },
-      "block_order": [
-        "icon_box_gwJ9YU",
-        "icon_box_fqLDBy",
-        "icon_box_HyxeC8"
-      ],
-      "name": "t:sections.icon_box.name",
-      "settings": {
-        "section_width": "fluid_container",
-        "color_scheme": "",
-        "type": "default",
-        "column_gap": 30,
-        "icon_position": "top",
-        "icon_size": 60,
-        "spacing": 11,
-        "show_border": false,
-        "enable_background": false,
-        "background": "",
-        "content_alignment": "center",
-        "heading_font_size": 16,
-        "heading_font_weight": "heading_weight",
-        "heading_uppercase": true,
-        "heading_spacing_bottom": 10,
-        "des_font_size": 14,
-        "des_font_weight": "body_weight",
-        "carousel_on_mobile": true,
-        "items_per_row_mobile": "1",
-        "padding_top": 80,
-        "padding_bottom": 0,
-        "reset_spacing": true
-      }
-    },
     "footer": {
       "type": "footer",
       "blocks": {
@@ -148,7 +83,6 @@
     }
   },
   "order": [
-    "icon_box_CH9BWd",
     "footer"
   ]
 }
