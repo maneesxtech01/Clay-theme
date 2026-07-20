@@ -17,6 +17,7 @@
         "icon_box_gwJ9YU": {
           "type": "icon_box",
           "settings": {
+            "icon_image": "shopify://shop_images/Fast_Shipping.webp",
             "icon_svg": "free_shipping",
             "custom_svg": "",
             "heading": "Free Shipping",
@@ -54,7 +55,7 @@
         "type": "default",
         "column_gap": 30,
         "icon_position": "top",
-        "icon_size": 32,
+        "icon_size": 60,
         "spacing": 11,
         "show_border": false,
         "enable_background": false,
@@ -62,7 +63,7 @@
         "content_alignment": "center",
         "heading_font_size": 16,
         "heading_font_weight": "heading_weight",
-        "heading_uppercase": false,
+        "heading_uppercase": true,
         "heading_spacing_bottom": 10,
         "des_font_size": 14,
         "des_font_weight": "body_weight",
