@@ -144,7 +144,7 @@
       ],
       "name": "Custom Our Story",
       "settings": {
-        "section_width": "container",
+        "section_width": "fluid_container",
         "color_scheme": "default",
         "layout_desktop": "image_right",
         "max_width": 1200,
