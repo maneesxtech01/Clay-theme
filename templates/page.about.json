@@ -38,20 +38,20 @@
           "type": "subheading",
           "settings": {
             "text": "About RB Mitti Store",
-            "color": "#f63208"
+            "color": "#B1552B"
           }
         },
         "heading_HkaLdp": {
           "type": "heading",
           "settings": {
-            "text": "FROM INDUSTRY INSIDERS TO NATURAL REBELS",
-            "color": "#1d211e"
+            "text": "Three Generations, One Craft",
+            "color": "#000000"
           }
         },
         "text_9AGHNn": {
           "type": "text",
           "settings": {
-            "text": "<p>After spending over a decade in the commercial skincare industry, we witnessed firsthand the disturbing reality behind \"premium\" products. What consumers didn't see were the cheap fillers, synthetic additives, and harmful preservatives hidden behind scientific-sounding names and clever marketing.</p><p>Our breaking point came when we realized that even \"natural\" brands were cutting corners. We began researching truly natural alternatives and discovered something our ancestors knew for centuries—tallow from grass-fed cattle contains bioidentical nutrients that human skin recognizes and absorbs effortlessly.</p>",
+            "text": "<p><br/> RB Mitti Store carries forward a tradition that began generations before us. What started with hands shaping raw clay in a small family workshop has grown into a trusted name in natural, handcrafted kitchenware — supplying homes across Pakistan and exporting to customers internationally. Every piece we make, from a simple clay handi to a hand-painted dinner set, carries the same care our family has put into this craft for generations.<br/></p>",
             "color": "#121212"
           }
         }
@@ -71,7 +71,7 @@
         "show_border_bottom": false,
         "border_bottom_color": "#2c2609",
         "image": "shopify://shop_images/03_77e9f6d4-df8d-43af-925a-3a5af279df1a.webp",
-        "image_aspect_ratio": "portrait",
+        "image_aspect_ratio": "square",
         "image_border_radius": 8,
         "padding_top": 60,
         "padding_bottom": 80,
