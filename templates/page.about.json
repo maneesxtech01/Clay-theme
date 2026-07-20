@@ -51,7 +51,14 @@
         "text_9AGHNn": {
           "type": "text",
           "settings": {
-            "text": "<p><br/> RB Mitti Store carries forward a tradition that began generations before us. What started with hands shaping raw clay in a small family workshop has grown into a trusted name in natural, handcrafted kitchenware — supplying homes across Pakistan and exporting to customers internationally. Every piece we make, from a simple clay handi to a hand-painted dinner set, carries the same care our family has put into this craft for generations.<br/></p>",
+            "text": "<p>RB Mitti Store carries forward a tradition that began generations before us. What started with hands shaping raw clay in a small family workshop has grown into a trusted name in natural, handcrafted kitchenware — supplying homes across Pakistan and exporting to customers internationally. Every piece we make, from a simple clay handi to a hand-painted dinner set, carries the same care our family has put into this craft for generations.<br/></p>",
+            "color": "#121212"
+          }
+        },
+        "text_FVikwA": {
+          "type": "text",
+          "settings": {
+            "text": "<p>We don't rely on factories or mass production — each item is shaped by hand, dried naturally, and fired the traditional way, exactly as it was taught to us. That knowledge shows in the durability, the finish, and the authenticity of every piece that leaves our workshop, whether it's headed to a kitchen in Lahore or across international borders.</p>",
             "color": "#121212"
           }
         }
@@ -59,7 +66,8 @@
       "block_order": [
         "subheading_8cGMnf",
         "heading_HkaLdp",
-        "text_9AGHNn"
+        "text_9AGHNn",
+        "text_FVikwA"
       ],
       "name": "Custom Our Story",
       "settings": {
@@ -85,27 +93,41 @@
           "type": "subheading",
           "settings": {
             "text": "FOUNDER'S STORY",
-            "color": "#f63208"
+            "color": "#B1552B"
           }
         },
         "heading_JHf8NJ": {
           "type": "heading",
           "settings": {
-            "text": "FROM INDUSTRY INSIDERS TO NATURAL REBELS",
-            "color": "#1d211e"
+            "text": "Continuing What Our Family Started",
+            "color": "#000000"
           }
         },
         "text_rC7RHU": {
           "type": "text",
           "settings": {
-            "text": "<p>After spending over a decade in the commercial skincare industry, we witnessed firsthand the disturbing reality behind \"premium\" products. What consumers didn't see were the cheap fillers, synthetic additives, and harmful preservatives hidden behind scientific-sounding names and clever marketing.</p><p>Our breaking point came when we realized that even \"natural\" brands were cutting corners. We began researching truly natural alternatives and discovered something our ancestors knew for centuries—tallow from grass-fed cattle contains bioidentical nutrients that human skin recognizes and absorbs effortlessly.</p>",
+            "text": "<p>RB Mitti Store is run today by Muhammad Shakoor, who continues a craft passed down through three generations of his family. What began with his great-grandfather working clay by hand was carried forward through his grandfather, and now continues under his leadership.</p>",
+            "color": "#121212"
+          }
+        },
+        "text_VRJyt3": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Growing up around this craft, Muhammad Shakoor learned more than technique — he learned patience, respect for natural materials, and the discipline of doing things the honest way, even as the wider market shifted toward mass-produced, chemical-coated alternatives.</p>",
+            "color": "#121212"
+          }
+        },
+        "text_NFWMi7": {
+          "type": "text",
+          "settings": {
+            "text": "<p><br/>Today, that inherited knowledge has expanded beyond a single workshop. RB Mitti Store now serves customers across Pakistan and exports handcrafted clay, marble, and wooden kitchenware internationally — bringing three generations of expertise to kitchens far beyond where this craft began.<br/><br/></p>",
             "color": "#121212"
           }
         },
         "quote_box_EfjKFz": {
           "type": "quote_box",
           "settings": {
-            "text": "\"We couldn't find skincare that met our standards, so we created it ourselves\"",
+            "text": "\"This isn't a business I started — it's a craft I inherited from my great-grandfather, and it runs through everything we make today.\"",
             "bg_color": "#A24C24",
             "border_color": "#FFFFFF",
             "text_color": "#FFFFFF"
@@ -116,6 +138,8 @@
         "subheading_PWEybq",
         "heading_JHf8NJ",
         "text_rC7RHU",
+        "text_VRJyt3",
+        "text_NFWMi7",
         "quote_box_EfjKFz"
       ],
       "name": "Custom Our Story",
@@ -189,11 +213,11 @@
         "bg_color": "#ffffff",
         "show_border_bottom": false,
         "border_bottom_color": "#2c2609",
-        "tag_text": "SKIN DEEP VALUES",
+        "tag_text": "OUR PROMISE",
         "tag_color": "#a24c24",
-        "heading_text": "OUR UNWAVERING COMMITMENTS",
+        "heading_text": "Our Unwavering Commitments",
         "heading_color": "#000000",
-        "paragraph_text": "We built Evil Goods on four foundational promises that guide every decision we make, from sourcing ingredients to customer care.",
+        "paragraph_text": "We built RB Mitti Store on four foundational promises that guide every decision we make — from sourcing materials to the packaging that reaches customers overseas.",
         "paragraph_color": "#333333",
         "center_image": "shopify://shop_images/Kids_Clay_Toy_Set.webp",
         "image_border_color": "#d8d8d8",
