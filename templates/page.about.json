@@ -12,21 +12,21 @@
     "page-heading": {
       "type": "page-heading",
       "blocks": {
+        "breadcrumb_kg6gTP": {
+          "type": "breadcrumb",
+          "settings": {}
+        },
         "heading_GKCNkF": {
           "type": "heading",
           "settings": {
             "page_title": "",
             "header_size": "large"
           }
-        },
-        "breadcrumb_kg6gTP": {
-          "type": "breadcrumb",
-          "settings": {}
         }
       },
       "block_order": [
-        "heading_GKCNkF",
-        "breadcrumb_kg6gTP"
+        "breadcrumb_kg6gTP",
+        "heading_GKCNkF"
       ],
       "settings": {
         "section_width": "fluid_container",
@@ -46,7 +46,7 @@
           "type": "subheading",
           "settings": {
             "text": "About RB Mitti Store",
-            "color": "#B1552B"
+            "color": "#b1552b"
           }
         },
         "heading_HkaLdp": {
@@ -101,7 +101,7 @@
           "type": "subheading",
           "settings": {
             "text": "FOUNDER'S STORY",
-            "color": "#B1552B"
+            "color": "#b1552b"
           }
         },
         "heading_JHf8NJ": {
@@ -136,9 +136,9 @@
           "type": "quote_box",
           "settings": {
             "text": "\"This isn't a business I started — it's a craft I inherited from my great-grandfather, and it runs through everything we make today.\"",
-            "bg_color": "#A24C24",
-            "border_color": "#FFFFFF",
-            "text_color": "#FFFFFF"
+            "bg_color": "#a24c24",
+            "border_color": "#ffffff",
+            "text_color": "#ffffff"
           }
         }
       },
@@ -322,7 +322,7 @@
           "type": "subheading",
           "settings": {
             "text": "Handcrafted Quality You Can Trust",
-            "color": "#B1552B"
+            "color": "#b1552b"
           }
         },
         "heading_KibNTG": {
@@ -367,7 +367,7 @@
       "settings": {
         "section_width": "full_width",
         "border_height": 1,
-        "border_color": "#A9A9A9",
+        "border_color": "#a9a9a9",
         "reset_spacing": true
       }
     }
