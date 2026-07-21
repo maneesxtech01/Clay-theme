@@ -12,6 +12,10 @@
     "banner": {
       "type": "main-collection-heading",
       "blocks": {
+        "breadcrumb_VbVAPG": {
+          "type": "breadcrumb",
+          "settings": {}
+        },
         "heading_E7w9DE": {
           "type": "heading",
           "settings": {
@@ -21,18 +25,19 @@
         }
       },
       "block_order": [
+        "breadcrumb_VbVAPG",
         "heading_E7w9DE"
       ],
       "settings": {
         "section_width": "container",
-        "color_scheme": "scheme-1",
+        "color_scheme": "scheme-4faf0e4d-27f4-4d02-bc51-617383bab1a9",
         "alignment": "center",
         "background_image": "shopify://shop_images/rbmitti.webp",
         "show_collection_image": false,
-        "overlay_opacity": 0,
-        "height": "adapt",
-        "padding_top": 40,
-        "padding_bottom": 40
+        "overlay_opacity": 50,
+        "height": "based_on_content",
+        "padding_top": 100,
+        "padding_bottom": 100
       }
     },
     "product-grid": {
