@@ -1,0 +1,122 @@
+{% comment %}
+  Snippet: Order Status Card
+  Antigravity Theme - Scoped under .track-order
+  Renders detailed customer order overview, shipping info, line items, and financial summary.
+{% endcomment %}
+
+<div class="track-order__details-grid">
+  <!-- Left Column: Order Overview & Line Items -->
+  <div class="track-order__left-col">
+    <!-- Shipping & Courier Card -->
+    <div class="track-order__card">
+      <h3 class="track-order__card-title">
+        {{ section.settings.shipping_details_title | default: 'Shipment & Carrier Details' }}
+      </h3>
+      <div class="track-order__info-list">
+        <div class="track-order__info-item">
+          <span class="track-order__info-label">
+            {{ section.settings.label_courier | default: 'Courier Company' }}
+          </span>
+          <span class="track-order__info-value" data-bind="courier">FedEx Express</span>
+        </div>
+        <div class="track-order__info-item">
+          <span class="track-order__info-label">
+            {{ section.settings.label_tracking_number | default: 'Tracking Number' }}
+          </span>
+          <span class="track-order__info-value" data-bind="tracking_number">N/A</span>
+        </div>
+        <div class="track-order__info-item">
+          <span class="track-order__info-label">
+            {{ section.settings.label_estimated_delivery | default: 'Estimated Delivery' }}
+          </span>
+          <span class="track-order__info-value" data-bind="estimated_delivery">3 - 5 Business Days</span>
+        </div>
+      </div>
+      <a href="#" target="_blank" rel="noopener noreferrer" class="track-order__tracking-btn" data-bind="tracking_url">
+        <span>{{ section.settings.button_track_package | default: 'Track Package on Carrier Site' }}</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+          <polyline points="15 3 21 3 21 9"></polyline>
+          <line x1="10" y1="14" x2="21" y2="3"></line>
+        </svg>
+      </a>
+    </div>
+
+    <!-- Purchased Products Card -->
+    <div class="track-order__card">
+      <h3 class="track-order__card-title">
+        {{ section.settings.items_title | default: 'Items in this Order' }}
+      </h3>
+      <div class="track-order__items-list" data-bind="items_list">
+        <!-- Dynamic line items populated via JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Customer Info & Financial Totals Summary -->
+  <div class="track-order__right-col">
+    <!-- Customer Details Card -->
+    <div class="track-order__card">
+      <h3 class="track-order__card-title">
+        {{ section.settings.customer_info_title | default: 'Order Information' }}
+      </h3>
+      <div class="track-order__info-list" style="grid-template-columns: 1fr;">
+        <div class="track-order__info-item">
+          <span class="track-order__info-label">
+            {{ section.settings.label_customer_name | default: 'Customer Name' }}
+          </span>
+          <span class="track-order__info-value" data-bind="customer_name">John Doe</span>
+        </div>
+        <div class="track-order__info-item">
+          <span class="track-order__info-label">
+            {{ section.settings.label_order_number | default: 'Order Number' }}
+          </span>
+          <span class="track-order__info-value" data-bind="order_number">#1001</span>
+        </div>
+        <div class="track-order__info-item">
+          <span class="track-order__info-label">
+            {{ section.settings.label_order_date | default: 'Order Date' }}
+          </span>
+          <span class="track-order__info-value" data-bind="order_date">Oct 14, 2026</span>
+        </div>
+        <div class="track-order__info-item">
+          <span class="track-order__info-label">
+            {{ section.settings.label_payment_status | default: 'Payment Status' }}
+          </span>
+          <div>
+            <span class="track-order__badge track-order__badge--paid" data-bind="financial_status_badge">Paid</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Order Financial Totals Card -->
+    <div class="track-order__card">
+      <h3 class="track-order__card-title">
+        {{ section.settings.summary_title | default: 'Financial Summary' }}
+      </h3>
+      <div class="track-order__summary">
+        <div class="track-order__summary-row">
+          <span>{{ section.settings.label_subtotal | default: 'Subtotal' }}</span>
+          <span data-bind="subtotal">$0.00</span>
+        </div>
+        <div class="track-order__summary-row">
+          <span>{{ section.settings.label_shipping | default: 'Shipping' }}</span>
+          <span data-bind="shipping">$0.00</span>
+        </div>
+        <div class="track-order__summary-row">
+          <span>{{ section.settings.label_discount | default: 'Discount' }}</span>
+          <span data-bind="discount">-$0.00</span>
+        </div>
+        <div class="track-order__summary-row">
+          <span>{{ section.settings.label_tax | default: 'Tax' }}</span>
+          <span data-bind="tax">$0.00</span>
+        </div>
+        <div class="track-order__summary-row track-order__summary-row--grand">
+          <span>{{ section.settings.label_grand_total | default: 'Grand Total' }}</span>
+          <span data-bind="grand_total">$0.00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

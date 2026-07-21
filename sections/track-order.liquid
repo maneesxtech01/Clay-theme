@@ -1,0 +1,363 @@
+{% comment %}
+  Section: Custom Order Tracking System
+  Theme: Antigravity Theme (Online Store 2.0)
+  Description: Scoped custom order tracking system with Theme Editor controls.
+{% endcomment %}
+
+{{ 'track-order.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'track-order.js' | asset_url }}" defer="defer"></script>
+
+<div class="color-{{ section.settings.color_scheme }} section-padding-{{ section.id }}">
+  <track-order-section
+    class="track-order"
+    data-api-endpoint="{{ section.settings.api_endpoint | escape }}"
+    data-demo-mode="{{ section.settings.enable_demo_mode }}"
+    data-demo-order-number="{{ section.settings.demo_order_number | escape }}"
+    data-demo-email="{{ section.settings.demo_email | escape }}"
+    data-err-empty="{{ section.settings.err_empty | escape }}"
+    data-err-not-found="{{ section.settings.err_not_found | escape }}"
+    data-err-server="{{ section.settings.err_server | escape }}"
+  >
+    <div class="track-order__container">
+      <!-- Hero Header -->
+      <div class="track-order__hero">
+        {%- if section.settings.hero_badge != blank -%}
+          <span class="track-order__badge-tag">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            {{ section.settings.hero_badge | escape }}
+          </span>
+        {%- endif -%}
+
+        {%- if section.settings.heading != blank -%}
+          <h1 class="track-order__heading">{{ section.settings.heading | escape }}</h1>
+        {%- endif -%}
+
+        {%- if section.settings.subheading != blank -%}
+          <p class="track-order__subheading">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </div>
+
+      <!-- Track Order Input Form Card -->
+      <div class="track-order__form-card">
+        <form class="track-order__form" novalidate>
+          <div class="track-order__form-grid">
+            <div class="track-order__field-group">
+              <label for="TrackOrderNumber-{{ section.id }}" class="track-order__label">
+                {{ section.settings.label_order_number | escape }}
+              </label>
+              <input
+                type="text"
+                id="TrackOrderNumber-{{ section.id }}"
+                name="order_number"
+                class="track-order__input"
+                placeholder="{{ section.settings.placeholder_order_number | escape }}"
+                required
+                autocomplete="off"
+              />
+            </div>
+
+            <div class="track-order__field-group">
+              <label for="TrackOrderEmail-{{ section.id }}" class="track-order__label">
+                {{ section.settings.label_email | escape }}
+              </label>
+              <input
+                type="email"
+                id="TrackOrderEmail-{{ section.id }}"
+                name="email"
+                class="track-order__input"
+                placeholder="{{ section.settings.placeholder_email | escape }}"
+                required
+                autocomplete="email"
+              />
+            </div>
+          </div>
+
+          <button type="submit" class="track-order__submit-btn">
+            <span class="track-order__btn-text">{{ section.settings.button_text | escape }}</span>
+            <span class="track-order__spinner" style="display: none;"></span>
+          </button>
+
+          <!-- Error Banner -->
+          <div class="track-order__error-banner" style="display: none;">
+            <svg class="track-order__error-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+            <span class="track-order__error-message"></span>
+          </div>
+        </form>
+      </div>
+
+      <!-- Skeleton Loading State -->
+      <div class="track-order__skeleton-card" style="display: none;">
+        <div class="track-order__skeleton-box" style="height: 30px; width: 40%;"></div>
+        <div class="track-order__skeleton-box" style="height: 60px; width: 100%;"></div>
+        <div class="track-order__skeleton-box" style="height: 180px; width: 100%;"></div>
+      </div>
+
+      <!-- Search Result View -->
+      <div class="track-order__result-wrapper" style="display: none;">
+        {% render 'order-progress' %}
+        {% render 'order-status-card' %}
+      </div>
+    </div>
+  </track-order-section>
+</div>
+
+{% style %}
+  .section-padding-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-padding-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Track Order System",
+  "tag": "section",
+  "class": "section-track-order",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color Scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Backend Proxy Configuration"
+    },
+    {
+      "type": "text",
+      "id": "api_endpoint",
+      "label": "Cloudflare Worker API Endpoint URL",
+      "placeholder": "https://your-worker.yourname.workers.dev",
+      "info": "Enter your deployed Cloudflare Worker endpoint URL."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_demo_mode",
+      "label": "Enable Demo / Test Mode",
+      "default": true,
+      "info": "Allows previewing order tracking with configurable sample order number & email without connecting the backend API."
+    },
+    {
+      "type": "text",
+      "id": "demo_order_number",
+      "label": "Demo Order Number",
+      "default": "#1001",
+      "info": "Order number to trigger demo tracking data (e.g. #1001 or 1001)."
+    },
+    {
+      "type": "text",
+      "id": "demo_email",
+      "label": "Demo Email Address",
+      "default": "demo@example.com",
+      "info": "Email address to trigger demo tracking data."
+    },
+    {
+      "type": "header",
+      "content": "Hero Section Content"
+    },
+    {
+      "type": "text",
+      "id": "hero_badge",
+      "label": "Hero Small Badge Text",
+      "default": "Live Order Tracking"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Main Heading",
+      "default": "Track Your Shipment"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Enter your order number and email address below to view your real-time delivery status and shipment progress."
+    },
+    {
+      "type": "header",
+      "content": "Form Labels & Placeholders"
+    },
+    {
+      "type": "text",
+      "id": "label_order_number",
+      "label": "Order Number Label",
+      "default": "Order Number"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_order_number",
+      "label": "Order Number Placeholder",
+      "default": "e.g. #1001"
+    },
+    {
+      "type": "text",
+      "id": "label_email",
+      "label": "Email Address Label",
+      "default": "Email Address"
+    },
+    {
+      "type": "text",
+      "id": "placeholder_email",
+      "label": "Email Address Placeholder",
+      "default": "your@email.com"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Track Button Text",
+      "default": "Track Order"
+    },
+    {
+      "type": "header",
+      "content": "Error Messages"
+    },
+    {
+      "type": "text",
+      "id": "err_empty",
+      "label": "Empty Inputs Error Message",
+      "default": "Please enter both your Order Number and Email Address."
+    },
+    {
+      "type": "text",
+      "id": "err_not_found",
+      "label": "Order Not Found Error Message",
+      "default": "No matching order found. Please check your order number and email address."
+    },
+    {
+      "type": "text",
+      "id": "err_server",
+      "label": "Server Connection Error Message",
+      "default": "Unable to reach tracking service. Please try again in a few moments."
+    },
+    {
+      "type": "header",
+      "content": "Timeline Stage Labels"
+    },
+    {
+      "type": "text",
+      "id": "timeline_heading",
+      "label": "Timeline Title",
+      "default": "Shipment Progress"
+    },
+    {
+      "type": "text",
+      "id": "step1_label",
+      "label": "Step 1 Label",
+      "default": "Order Confirmed"
+    },
+    {
+      "type": "text",
+      "id": "step2_label",
+      "label": "Step 2 Label",
+      "default": "Payment Accepted"
+    },
+    {
+      "type": "text",
+      "id": "step3_label",
+      "label": "Step 3 Label",
+      "default": "Processing"
+    },
+    {
+      "type": "text",
+      "id": "step4_label",
+      "label": "Step 4 Label",
+      "default": "Packed"
+    },
+    {
+      "type": "text",
+      "id": "step5_label",
+      "label": "Step 5 Label",
+      "default": "Shipped"
+    },
+    {
+      "type": "text",
+      "id": "step6_label",
+      "label": "Step 6 Label",
+      "default": "Out for Delivery"
+    },
+    {
+      "type": "text",
+      "id": "step7_label",
+      "label": "Step 7 Label",
+      "default": "Delivered"
+    },
+    {
+      "type": "header",
+      "content": "Card Headings & Labels"
+    },
+    {
+      "type": "text",
+      "id": "shipping_details_title",
+      "label": "Carrier Card Title",
+      "default": "Shipment & Carrier Details"
+    },
+    {
+      "type": "text",
+      "id": "items_title",
+      "label": "Items Card Title",
+      "default": "Items in this Order"
+    },
+    {
+      "type": "text",
+      "id": "customer_info_title",
+      "label": "Customer Card Title",
+      "default": "Order Information"
+    },
+    {
+      "type": "text",
+      "id": "summary_title",
+      "label": "Totals Card Title",
+      "default": "Financial Summary"
+    },
+    {
+      "type": "text",
+      "id": "button_track_package",
+      "label": "Carrier Button Text",
+      "default": "Track Package on Carrier Site"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top Padding",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom Padding",
+      "default": 40
+    }
+  ],
+  "presets": [
+    {
+      "name": "Track Order System"
+    }
+  ]
+}
+{% endschema %}

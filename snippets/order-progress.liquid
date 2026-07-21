@@ -1,0 +1,104 @@
+{% comment %}
+  Snippet: Order Progress Timeline
+  Antigravity Theme - Scoped under .track-order
+  Renders interactive 7-stage order progress bar with customizable labels.
+{% endcomment %}
+
+<div class="track-order__timeline-card">
+  <div class="track-order__timeline-header">
+    <h3 class="track-order__timeline-title">
+      {{ section.settings.timeline_heading | default: 'Order Timeline' }}
+    </h3>
+    <span class="track-order__badge track-order__badge--processing" data-bind="fulfillment_status_badge">
+      Processing
+    </span>
+  </div>
+
+  <div class="track-order__timeline-track">
+    <div class="track-order__timeline-progress-fill"></div>
+
+    <!-- Step 1: Confirmed -->
+    <div class="track-order__timeline-step" data-step="1">
+      <div class="track-order__step-icon-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <span class="track-order__step-label">
+        {{ section.settings.step1_label | default: 'Order Confirmed' }}
+      </span>
+    </div>
+
+    <!-- Step 2: Payment Accepted -->
+    <div class="track-order__timeline-step" data-step="2">
+      <div class="track-order__step-icon-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <span class="track-order__step-label">
+        {{ section.settings.step2_label | default: 'Payment Accepted' }}
+      </span>
+    </div>
+
+    <!-- Step 3: Processing -->
+    <div class="track-order__timeline-step" data-step="3">
+      <div class="track-order__step-icon-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <span class="track-order__step-label">
+        {{ section.settings.step3_label | default: 'Processing' }}
+      </span>
+    </div>
+
+    <!-- Step 4: Packed -->
+    <div class="track-order__timeline-step" data-step="4">
+      <div class="track-order__step-icon-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <span class="track-order__step-label">
+        {{ section.settings.step4_label | default: 'Packed' }}
+      </span>
+    </div>
+
+    <!-- Step 5: Shipped -->
+    <div class="track-order__timeline-step" data-step="5">
+      <div class="track-order__step-icon-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <span class="track-order__step-label">
+        {{ section.settings.step5_label | default: 'Shipped' }}
+      </span>
+    </div>
+
+    <!-- Step 6: Out for Delivery -->
+    <div class="track-order__timeline-step" data-step="6">
+      <div class="track-order__step-icon-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <span class="track-order__step-label">
+        {{ section.settings.step6_label | default: 'Out for Delivery' }}
+      </span>
+    </div>
+
+    <!-- Step 7: Delivered -->
+    <div class="track-order__timeline-step" data-step="7">
+      <div class="track-order__step-icon-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <span class="track-order__step-label">
+        {{ section.settings.step7_label | default: 'Delivered' }}
+      </span>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+{
+  "sections": {
+    "track-order": {
+      "type": "track-order",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "enable_demo_mode": true,
+        "demo_order_number": "#1001",
+        "demo_email": "demo@example.com",
+        "hero_badge": "Live Order Tracking",
+        "heading": "Track Your Shipment",
+        "subheading": "Enter your order number and email address below to view your real-time delivery status and shipment progress.",
+        "label_order_number": "Order Number",
+        "placeholder_order_number": "e.g. #1001",
+        "label_email": "Email Address",
+        "placeholder_email": "your@email.com",
+        "button_text": "Track Order",
+        "err_empty": "Please enter both your Order Number and Email Address.",
+        "err_not_found": "No matching order found. Please check your order number and email address.",
+        "err_server": "Unable to reach tracking service. Please try again in a few moments.",
+        "padding_top": 40,
+        "padding_bottom": 60
+      }
+    }
+  },
+  "order": [
+    "track-order"
+  ]
+}
