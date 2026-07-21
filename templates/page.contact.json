@@ -78,12 +78,12 @@
         "icon_bg_color": "#b1552b",
         "icon_hover_color": "#ffffff",
         "icon_hover_bg_color": "#111827",
-        "button_bg_color": "#111827",
+        "button_bg_color": "#B1552B",
         "button_text_color": "#ffffff",
         "button_hover_bg_color": "#76310f",
         "input_border_radius": 8,
-        "button_border_radius": 8,
-        "button_font_size": 14,
+        "button_border_radius": 50,
+        "button_font_size": 16,
         "button_font_weight": "600",
         "button_padding_vertical": 14
       }
