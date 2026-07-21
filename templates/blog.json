@@ -33,7 +33,7 @@
         "color_scheme": "scheme-4faf0e4d-27f4-4d02-bc51-617383bab1a9",
         "alignment": "center",
         "background_image": "shopify://shop_images/rbmitti.webp",
-        "overlay_opacity": 40,
+        "overlay_opacity": 50,
         "height": "based_on_content",
         "padding_top": 100,
         "padding_bottom": 100
