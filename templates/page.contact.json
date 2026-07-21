@@ -30,10 +30,10 @@
       ],
       "settings": {
         "section_width": "stretch_width",
-        "color_scheme": "",
+        "color_scheme": "scheme-4faf0e4d-27f4-4d02-bc51-617383bab1a9",
         "alignment": "center",
-        "background_image": "shopify://shop_images/hero_slider_content.png",
-        "overlay_opacity": 75,
+        "background_image": "shopify://shop_images/rbmitti.webp",
+        "overlay_opacity": 50,
         "height": "based_on_content",
         "padding_top": 100,
         "padding_bottom": 100
@@ -74,13 +74,18 @@
       "settings": {
         "section_width": "container",
         "color_scheme": "default",
-        "icon_color": "#FFFFFF",
-        "icon_bg_color": "#B1552B",
+        "icon_color": "#ffffff",
+        "icon_bg_color": "#b1552b",
         "icon_hover_color": "#ffffff",
         "icon_hover_bg_color": "#111827",
         "button_bg_color": "#111827",
         "button_text_color": "#ffffff",
-        "button_hover_bg_color": "#76310F"
+        "button_hover_bg_color": "#76310f",
+        "input_border_radius": 8,
+        "button_border_radius": 8,
+        "button_font_size": 14,
+        "button_font_weight": "600",
+        "button_padding_vertical": 14
       }
     }
   },
