@@ -1,54 +1,56 @@
-# 🚀 How to Enable Real Shopify Order Tracking (Step-by-Step Guide)
+# 🚀 Free Real Order Tracking Setup Guide (Step-by-Step)
 
-Follow these 3 simple steps to connect real Shopify order data (e.g. Order `#1001` with `manees78682@gmail.com`) to your Track Order page.
-
----
-
-## 🔑 Step 1: Get Shopify Admin API Token (2 minutes)
-
-1. Open your **Shopify Admin** (`https://admin.shopify.com`).
-2. Go to **Settings** (bottom left) ⚙️ → **Apps and sales channels**.
-3. Click **Develop apps** (top right) → Click **Create an app**.
-4. App name: `Order Tracking Backend` → Click **Create app**.
-5. Click **Configure Admin API scopes**.
-6. Search for `orders` and check **`read_orders`** permission.
-7. Click **Save** → Click **Install app** (top right) → Confirm **Install**.
-8. Under **Admin API access token**, click **Reveal token once** and COPY the token (it starts with `shpat_...`).
+Hanji! Yeh system **100% FREE** hai. Cloudflare Worker ka free tier daily **100,000 free tracking requests** deta hai (jo kisi bhi store ke liye bahut ziada hai).
 
 ---
 
-## ⚡ Step 2: Deploy Cloudflare Worker Proxy (2 minutes)
+## ❓ Kyun Chahiye Cloudflare Worker Proxy?
 
-1. Open free [Cloudflare Dashboard](https://dash.cloudflare.com/) and log in (or create a free account).
-2. Go to **Workers & Pages** → Click **Create application** → **Create Worker**.
-3. Name your worker: `shopify-order-tracker` → Click **Deploy**.
-4. Click **Edit code** on the top right.
-5. Delete all existing code in the editor, copy the entire code from [`worker/worker.js`](file:///c:/Users/ma567/OneDrive/Documents/Clay-theme-main/worker/worker.js), and paste it into Cloudflare.
-6. Click **Save and deploy**.
-7. Go back to your Worker settings: Click **Settings** tab → **Variables & Secrets** → Click **Add**.
-   - **Key 1**: `SHOPIFY_STORE_DOMAIN` | **Value**: `rbmittistore.myshopify.com` (Your store myshopify domain)
-   - **Key 2**: `SHOPIFY_ADMIN_API_TOKEN` | **Value**: `shpat_xxxxxxxx` (Token copied in Step 1)
-8. Click **Deploy / Save**.
-9. Copy your Worker URL from the top of the page (e.g. `https://shopify-order-tracker.yourname.workers.dev`).
+Shopify security reasons ki waja se frontend browser ko direct customer orders search karne ki permission nahi deta. Is waja se Admin API access token ko secure jagah par rakhna hota hai taaki koi aapka store data hack na kar sake. 
 
 ---
 
-## 🎨 Step 3: Link Worker URL in Shopify Theme Editor (1 minute)
+## 📋 Complete Setup (3 Steps - 5 Minutes)
 
-1. Go to **Shopify Admin → Online Store → Themes** → Click **Customize** on your theme.
-2. In the top page selector dropdown, choose **Pages → track-order**.
-3. On the left sidebar, click **Track Order System** section.
-4. Under **Backend Proxy Configuration**:
-   - Paste your Worker URL in **Cloudflare Worker API Endpoint URL**.
-   - **UNCHECK (Turn OFF) "Enable Demo / Test Mode"**.
-5. Click **Save** (top right).
+### Step 1: Shopify Admin se API Token lein
+
+1. **Shopify Admin** par jayein.
+2. **Settings → Apps and sales channels → Develop apps** par click karein.
+3. **Create an app** button par click karein aur naam rakhein: `Order Tracker`.
+4. **Configure Admin API scopes** par click karein.
+5. Search bar mein `orders` dhoondhein aur **`read_orders`** check-box ko select karein.
+6. **Save** karke top par **Install app** par click karein.
+7. **Admin API access token** ko copy kar lein (yeh `shpat_xxxxxxxx...` jaisa hoga).
 
 ---
 
-## ✅ Step 4: Test Real Orders Live!
+### Step 2: Free Cloudflare Worker Deploy Karein
 
-Go to your store URL `/pages/track-order` and test:
-- **Order Number**: `1001` (or `#1001`)
-- **Email Address**: `manees78682@gmail.com`
+1. [Cloudflare Dashboard](https://dash.cloudflare.com/) par free account banayein ya login karein.
+2. **Workers & Pages** tab mein ja kar **Create Application → Create Worker** par click karein.
+3. Worker ka naam rakhein (e.g. `my-store-tracker`) aur **Deploy** daba dein.
+4. **Edit Code** par click karein aur wahan mojood saara code delete karke is file [`worker/worker.js`](file:///c:/Users/ma567/OneDrive/Documents/Clay-theme-main/worker/worker.js) ka poora code paste kar dein.
+5. Top right par **Save and Deploy** dabayein.
+6. **Settings → Variables** tab par jayein aur **Add variable** karke 2 variables add karein:
 
-Your live Shopify order details, line items, payment status, fulfillment status, and carrier tracking links will now load automatically!
+| Variable Name | Value |
+| :--- | :--- |
+| `SHOPIFY_STORE_DOMAIN` | `rbmittistore.myshopify.com` (apna `.myshopify.com` domain) |
+| `SHOPIFY_ADMIN_API_TOKEN` | `shpat_xxxxxxxx...` (Step 1 wala token) |
+
+7. Save kar lein aur apna Worker URL copy kar lein (e.g. `https://my-store-tracker.yourname.workers.dev`).
+
+---
+
+### Step 3: Theme Editor Mein Endpoint Link Karein
+
+1. **Shopify Admin → Online Store → Themes → Customize** (Editor) kholein.
+2. Top dropdown se **Pages → track-order** select karein.
+3. Left sidebar se **Track Order System** section par click karein.
+4. **Cloudflare Worker API Endpoint URL** box mein apna Worker URL paste karein.
+5. **Enable Demo / Test Mode** box ko **UNCHECK (Off)** kar dein.
+6. Top right par **Save** daba dein!
+
+---
+
+🎉 **Done!** Ab aapka live customer order `#1001` real-time Shopify database se tracking data fetch karega!
