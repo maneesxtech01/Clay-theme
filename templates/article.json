@@ -20,23 +20,19 @@
         },
         "category_FrbYbq": {
           "type": "category",
-          "settings": {
-          }
+          "settings": {}
         },
         "title_8UcLB3": {
           "type": "title",
-          "settings": {
-          }
+          "settings": {}
         },
         "blog_meta_Gdcegm": {
           "type": "blog_meta",
-          "settings": {
-          }
+          "settings": {}
         },
         "content_article_nGLPt4": {
           "type": "content_article",
-          "settings": {
-          }
+          "settings": {}
         },
         "addons_aybBAy": {
           "type": "addons",
@@ -47,17 +43,16 @@
         },
         "prev_next_articles_WKL9q9": {
           "type": "prev_next_articles",
-          "settings": {
-          }
+          "settings": {}
         },
         "related_kzzKw8": {
           "type": "related",
           "settings": {
             "related_title": "Related Posts",
-            "image_ratio": "adapt",
+            "image_ratio": "square",
             "custom_ratio": "",
-            "show_date": true,
-            "show_author": true,
+            "show_date": false,
+            "show_author": false,
             "show_excerpt": true
           }
         }
