@@ -11,10 +11,23 @@
   "sections": {
     "banner": {
       "type": "main-collection-heading",
+      "blocks": {
+        "heading_E7w9DE": {
+          "type": "heading",
+          "settings": {
+            "page_title": "{{ collection.title }}",
+            "header_size": "large"
+          }
+        }
+      },
+      "block_order": [
+        "heading_E7w9DE"
+      ],
       "settings": {
-        "section_width": "stretch_width",
+        "section_width": "container",
         "color_scheme": "scheme-1",
         "alignment": "center",
+        "background_image": "shopify://shop_images/rbmitti.webp",
         "show_collection_image": false,
         "overlay_opacity": 0,
         "height": "adapt",
