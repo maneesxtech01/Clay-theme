@@ -234,30 +234,36 @@
       height: 170px;
     }
 
-    /* Swiper Pagination */
+  @media screen and (max-width: 991px) {
     #custom-journey-steps-{{ section.id }} .swiper-pagination {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      gap: 6px;
+      position: relative !important;
+      bottom: auto !important;
+      left: auto !important;
+      margin-top: 20px !important;
+      width: 100% !important;
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: 8px !important;
+      z-index: 10 !important;
     }
 
     #custom-journey-steps-{{ section.id }} .swiper-pagination-bullet {
-      width: 10px;
-      height: 10px;
-      opacity: 1;
-      background-color: #cfcfcf;
-      border-radius: 50%;
-      cursor: pointer;
-      display: inline-block;
-      transition: background-color 0.3s ease;
+      width: 10px !important;
+      height: 10px !important;
+      opacity: 1 !important;
+      background-color: #dcdcdc !important;
+      border-radius: 50% !important;
+      cursor: pointer !important;
+      display: inline-block !important;
+      margin: 0 !important;
+      transition: all 0.3s ease !important;
     }
 
     #custom-journey-steps-{{ section.id }} .swiper-pagination-bullet-active {
-      background-color: {{ section_st.step_bg_color }};
+      background-color: {{ section_st.step_bg_color | default: '#bd5b28' }} !important;
+      width: 24px !important;
+      border-radius: 12px !important;
     }
   }
 {%- endstyle -%}

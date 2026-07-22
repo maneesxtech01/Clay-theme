@@ -144,12 +144,10 @@
   margin-bottom: 0.4rem;
 }
 
-.expanding-card .text {
-  font-size: 0.95rem;
-  line-height: 1.4;
-}
-
+.expanding-card .text,
 .expanding-card .text p {
+  font-size: 1.125rem;
+  line-height: 1.5;
   margin: 0;
 }
 
@@ -210,9 +208,10 @@
     margin-bottom: 0.5rem;
   }
 
-  .expanding-card .text {
-    font-size: var(--card-desc-size, 1.05rem);
-    line-height: 1.5;
+  .expanding-card .text,
+  .expanding-card .text p {
+    font-size: var(--card-desc-size, 1.25rem) !important;
+    line-height: 1.6;
   }
 }
 
@@ -281,34 +280,38 @@
 
 /* Pagination Dots for Mobile Scroll */
 .expanding-cards-dots {
-  display: flex;
+  display: flex !important;
   justify-content: center;
   align-items: center;
   gap: 0.6rem;
-  margin-top: 1.5rem;
+  margin-top: 1.8rem;
+  position: relative;
+  z-index: 5;
+  width: 100%;
 }
 
 .expanding-cards-dots[hidden] {
-  display: none !important;
+  display: flex !important;
 }
 
 .expanding-cards-dots .keen-dots-dot {
-  display: block;
-  width: 8px;
-  height: 8px;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
-  background: var(--dot-color-inactive, #cccccc);
+  background: var(--dot-color-inactive, #d0d0d0);
   border: none;
   padding: 0;
+  margin: 0;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
 .expanding-cards-dots .keen-dots-dot.active {
-  background: var(--dot-color-active, #222222);
-  transform: scale(1.25);
-  border-radius: 4px;
-  width: 16px;
+  background: var(--dot-color-active, #bd5b28);
+  width: 24px;
+  border-radius: 12px;
+  transform: none;
 }
 
 /* Section Header Split Layout Styling */

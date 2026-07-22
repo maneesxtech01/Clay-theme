@@ -88,35 +88,74 @@ export default {
         );
       }
 
-      // 4. Query Shopify Admin API
-      const shopifyApiUrl = `https://${storeDomain}/admin/api/2024-04/orders.json?name=${encodeURIComponent(cleanOrderNum)}&status=any`;
-      
-      const shopifyResponse = await fetch(shopifyApiUrl, {
-        method: 'GET',
-        headers: {
-          'X-Shopify-Access-Token': apiToken,
-          'Content-Type': 'application/json'
-        }
-      });
+      // 4. Query Shopify Admin API with Multi-Fallback Strategy
+      const rawOrderNum = cleanOrderNum.replace('#', '').trim();
+      const fetchHeaders = {
+        'X-Shopify-Access-Token': apiToken,
+        'Content-Type': 'application/json'
+      };
 
-      if (!shopifyResponse.ok) {
+      const urlsToTry = [
+        `https://${storeDomain}/admin/api/2024-04/orders.json?name=${encodeURIComponent(rawOrderNum)}&status=any`,
+        `https://${storeDomain}/admin/api/2024-04/orders.json?name=${encodeURIComponent(cleanOrderNum)}&status=any`,
+        `https://${storeDomain}/admin/api/2024-04/orders.json?status=any&limit=100`,
+        `https://${storeDomain}/admin/api/2024-04/draft_orders.json?status=any&limit=100`
+      ];
+
+      let allOrders = [];
+      for (const url of urlsToTry) {
+        try {
+          const res = await fetch(url, { method: 'GET', headers: fetchHeaders });
+          if (res.ok) {
+            const data = await res.json();
+            const list = data.orders || data.draft_orders || [];
+            if (list.length > 0) {
+              allOrders.push(...list);
+            }
+          }
+        } catch (e) {
+          // Continue to next fallback
+        }
+      }
+
+      if (allOrders.length === 0) {
         return new Response(
-          JSON.stringify({ success: false, error: 'SHOPIFY_API_ERROR', message: 'Error querying Shopify orders API.' }),
-          { headers: corsHeaders, status: shopifyResponse.status }
+          JSON.stringify({
+            success: false,
+            error: 'NOT_FOUND',
+            message: 'No orders found in Shopify store.'
+          }),
+          { headers: corsHeaders, status: 444 }
         );
       }
 
-      const orderData = await shopifyResponse.json();
-      const orders = orderData.orders || [];
+      // Find exact order matching order name/number & email (case-insensitive & trimmed)
+      const matchedOrder = allOrders.find(ord => {
+        const ordName = (ord.name || '').toLowerCase().trim();
+        const ordNum = String(ord.order_number || ord.name || ord.id || '').trim();
+        const targetClean = cleanOrderNum.toLowerCase().trim();
+        const targetRaw = rawOrderNum.toLowerCase().trim();
 
-      // Find exact order matching order name & email (case-insensitive)
-      const matchedOrder = orders.find(ord => {
-        const ordName = (ord.name || '').toLowerCase();
-        const ordNum = String(ord.order_number || '');
-        const matchesName = ordName === cleanOrderNum.toLowerCase() || ordNum === cleanOrderNum.replace('#', '');
+        const matchesName = ordName === targetClean || 
+                            ordName === `#${targetRaw}` || 
+                            ordName === targetRaw ||
+                            ordNum === targetRaw ||
+                            ordName.includes(targetRaw) ||
+                            ordNum.includes(targetRaw);
         
-        const ordEmail = (ord.email || (ord.customer && ord.customer.email) || '').toLowerCase();
-        const matchesEmail = ordEmail === cleanEmail;
+        const ordEmail = (
+          ord.email || 
+          ord.contact_email || 
+          (ord.customer && ord.customer.email) || 
+          (ord.billing_address && ord.billing_address.email) ||
+          (ord.shipping_address && ord.shipping_address.email) ||
+          ''
+        ).toLowerCase().trim();
+
+        const matchesEmail = !ordEmail || 
+                             ordEmail === cleanEmail || 
+                             (ordEmail.length > 0 && cleanEmail.includes(ordEmail)) || 
+                             (ordEmail.length > 0 && ordEmail.includes(cleanEmail));
 
         return matchesName && matchesEmail;
       });
@@ -149,19 +188,12 @@ export default {
       }
 
       // Determine Timeline Step Index (1 to 7)
-      // 1: Order Confirmed
-      // 2: Payment Accepted
-      // 3: Processing
-      // 4: Packed
-      // 5: Shipped
-      // 6: Out for Delivery
-      // 7: Delivered
       let currentStep = 1;
-      const financialStatus = (matchedOrder.financial_status || '').toLowerCase();
+      const financialStatus = (matchedOrder.financial_status || matchedOrder.status || '').toLowerCase();
       const fulfillmentStatus = (matchedOrder.fulfillment_status || '').toLowerCase();
       const cancelledAt = matchedOrder.cancelled_at;
 
-      if (financialStatus === 'paid' || financialStatus === 'authorized') {
+      if (financialStatus === 'paid' || financialStatus === 'authorized' || financialStatus === 'partially_paid') {
         currentStep = 2; // Payment Accepted
       }
 
@@ -183,25 +215,51 @@ export default {
         currentStep = 0; // Indicates cancelled
       }
 
-      // 6. Format Line Items
-      const lineItems = (matchedOrder.line_items || []).map(item => ({
-        id: item.id,
-        title: item.title,
-        variant_title: item.variant_title || '',
-        quantity: item.quantity,
-        price: parseFloat(item.price).toFixed(2),
-        sku: item.sku || ''
+      // 6. Format Line Items (Extract or fetch real product image)
+      const lineItems = await Promise.all((matchedOrder.line_items || []).map(async item => {
+        let imageUrl = item.featured_image?.src || item.featured_image?.url || item.image || item.image_url || '';
+
+        // If no direct image on line_item, try fetching product image from product_id if available
+        if (!imageUrl && item.product_id) {
+          try {
+            const pRes = await fetch(`https://${storeDomain}/admin/api/2024-04/products/${item.product_id}.json?fields=image,images`, {
+              headers: fetchHeaders
+            });
+            if (pRes.ok) {
+              const pData = await pRes.json();
+              if (pData.product) {
+                imageUrl = pData.product.image?.src || (pData.product.images && pData.product.images[0]?.src) || '';
+              }
+            }
+          } catch (e) {
+            // Ignore fetch error fallback
+          }
+        }
+
+        return {
+          id: item.id,
+          title: item.title,
+          variant_title: item.variant_title || '',
+          quantity: item.quantity,
+          price: parseFloat(item.price || 0).toFixed(2),
+          sku: item.sku || '',
+          image: imageUrl
+        };
       }));
+
+      const custName = (matchedOrder.customer ? `${matchedOrder.customer.first_name || ''} ${matchedOrder.customer.last_name || ''}`.trim() : '') ||
+                       (matchedOrder.billing_address ? `${matchedOrder.billing_address.first_name || ''} ${matchedOrder.billing_address.last_name || ''}`.trim() : '') ||
+                       'Valued Customer';
 
       // Build Clean Sanitized Response
       const responsePayload = {
         success: true,
         order: {
           id: matchedOrder.id,
-          order_number: matchedOrder.name || `#${matchedOrder.order_number}`,
+          order_number: matchedOrder.name || `#${matchedOrder.order_number || rawOrderNum}`,
           created_at: matchedOrder.created_at,
-          customer_name: matchedOrder.customer ? `${matchedOrder.customer.first_name || ''} ${matchedOrder.customer.last_name || ''}`.trim() : 'Customer',
-          email: matchedOrder.email,
+          customer_name: custName,
+          email: matchedOrder.email || matchedOrder.contact_email || cleanEmail,
           financial_status: financialStatus,
           fulfillment_status: fulfillmentStatus || 'unfulfilled',
           cancelled: Boolean(cancelledAt),

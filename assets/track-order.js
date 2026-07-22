@@ -126,11 +126,15 @@ class TrackOrderSection extends HTMLElement {
   renderOrderResult(order) {
     if (!this.resultWrapper) return;
 
-    // 1. Text elements
+    // 1. Text elements & Currency Formatting
     const setElText = (selector, val) => {
       const el = this.resultWrapper.querySelector(selector);
       if (el) el.textContent = val;
     };
+
+    const currencyRaw = (order.totals && order.totals.currency) ? order.totals.currency.trim() : 'PKR';
+    // Clean currency label (avoid dollar signs if PKR or Rs)
+    const currSymbol = (currencyRaw === 'PKR' || currencyRaw === 'Rs') ? 'PKR ' : `${currencyRaw} `;
 
     setElText('[data-bind="customer_name"]', order.customer_name);
     setElText('[data-bind="order_number"]', order.order_number);
@@ -138,11 +142,11 @@ class TrackOrderSection extends HTMLElement {
     setElText('[data-bind="courier"]', order.shipping_info.courier);
     setElText('[data-bind="tracking_number"]', order.shipping_info.tracking_number);
     setElText('[data-bind="estimated_delivery"]', order.shipping_info.estimated_delivery);
-    setElText('[data-bind="subtotal"]', `${order.totals.currency} $${order.totals.subtotal}`);
-    setElText('[data-bind="shipping"]', `${order.totals.currency} $${order.totals.shipping}`);
-    setElText('[data-bind="discount"]', `-$${order.totals.discount}`);
-    setElText('[data-bind="tax"]', `${order.totals.currency} $${order.totals.tax}`);
-    setElText('[data-bind="grand_total"]', `${order.totals.currency} $${order.totals.grand_total}`);
+    setElText('[data-bind="subtotal"]', `${currSymbol}${order.totals.subtotal}`);
+    setElText('[data-bind="shipping"]', `${currSymbol}${order.totals.shipping}`);
+    setElText('[data-bind="discount"]', `-${currSymbol}${order.totals.discount}`);
+    setElText('[data-bind="tax"]', `${currSymbol}${order.totals.tax}`);
+    setElText('[data-bind="grand_total"]', `${currSymbol}${order.totals.grand_total}`);
 
     // 2. Tracking link
     const trackBtn = this.resultWrapper.querySelector('[data-bind="tracking_url"]');
@@ -165,17 +169,58 @@ class TrackOrderSection extends HTMLElement {
     // 5. Line Items List
     const itemsList = this.resultWrapper.querySelector('[data-bind="items_list"]');
     if (itemsList && Array.isArray(order.items)) {
-      itemsList.innerHTML = order.items.map(item => `
-        <div class="track-order__item-row">
-          <img src="${item.image || 'https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-product-1_large.png'}" alt="${item.title}" class="track-order__item-thumb" width="64" height="64" loading="lazy" />
-          <div class="track-order__item-info">
-            <span class="track-order__item-title">${item.title}</span>
-            ${item.variant_title ? `<span class="track-order__item-meta">${item.variant_title}</span>` : ''}
-            <span class="track-order__item-meta">Qty: ${item.quantity}</span>
+      itemsList.innerHTML = order.items.map((item, idx) => {
+        const hasValidImg = item.image && !item.image.includes('placeholder-images-product');
+        const imgSrc = hasValidImg ? item.image : 'https://cdn.shopify.com/s/files/1/0533/2089/files/placeholder-images-product-1_large.png';
+        return `
+          <div class="track-order__item-row">
+            <img src="${imgSrc}" alt="${item.title}" class="track-order__item-thumb" width="64" height="64" loading="lazy" id="track-item-img-${idx}" />
+            <div class="track-order__item-info">
+              <span class="track-order__item-title">${item.title}</span>
+              ${item.variant_title ? `<span class="track-order__item-meta">${item.variant_title}</span>` : ''}
+              <span class="track-order__item-meta">Qty: ${item.quantity}</span>
+            </div>
+            <span class="track-order__item-price">${currSymbol}${item.price}</span>
           </div>
-          <span class="track-order__item-price">$${item.price}</span>
-        </div>
-      `).join('');
+        `;
+      }).join('');
+
+      // Auto-fetch real product images directly from Shopify store if missing
+      order.items.forEach(async (item, idx) => {
+        if (!item.image || item.image.includes('placeholder-images-product')) {
+          const imgEl = this.resultWrapper.querySelector(`#track-item-img-${idx}`);
+          if (!imgEl) return;
+          try {
+            // Try search suggest API first
+            const searchUrl = `/search/suggest.json?q=${encodeURIComponent(item.title)}&resources[type]=product&resources[limit]=1`;
+            const sRes = await fetch(searchUrl);
+            if (sRes.ok) {
+              const sData = await sRes.json();
+              const products = sData.resources?.results?.products;
+              if (products && products.length > 0 && products[0].image) {
+                let realImg = products[0].image;
+                if (realImg.startsWith('//')) realImg = 'https:' + realImg;
+                imgEl.src = realImg;
+                return;
+              }
+            }
+
+            // Fallback to /products/handle.js
+            const handle = item.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+            const pRes = await fetch(`/products/${handle}.js`);
+            if (pRes.ok) {
+              const pData = await pRes.json();
+              let realImg = pData.featured_image || (pData.images && pData.images[0]);
+              if (realImg) {
+                if (realImg.startsWith('//')) realImg = 'https:' + realImg;
+                imgEl.src = realImg;
+              }
+            }
+          } catch (e) {
+            // Keep default placeholder if network fails
+          }
+        }
+      });
     }
 
     this.resultWrapper.style.display = 'block';
