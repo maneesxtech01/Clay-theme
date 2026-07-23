@@ -17,7 +17,7 @@
         "announcement_1": {
           "type": "announcement",
           "settings": {
-            "text": "Summer sale discount off 50%. <strong>Shop Sale</strong>",
+            "text": "Free Delivery on Orders Above Rs. 10,000",
             "text_mobile": "",
             "link": ""
           }
@@ -25,7 +25,7 @@
         "announcement_2": {
           "type": "announcement",
           "settings": {
-            "text": "Sign up for 10% off your first order. <strong>Sign Up</strong>",
+            "text": "Cash on Delivery Available Across Pakistan",
             "text_mobile": "",
             "link": ""
           }
