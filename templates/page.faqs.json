@@ -22,27 +22,21 @@
             "page_title": "Help Center",
             "header_size": "default"
           }
-        },
-        "description_TfxHmk": {
-          "type": "description",
-          "settings": {
-            "description": "<p>Please use the below form. You can also call customer service on +1 (973) 435-3638.</p>"
-          }
         }
       },
       "block_order": [
         "breadcrumb_kg6gTP",
-        "heading_fmyy8C",
-        "description_TfxHmk"
+        "heading_fmyy8C"
       ],
       "settings": {
         "section_width": "container",
         "color_scheme": "",
         "alignment": "center",
-        "overlay_opacity": 0,
-        "height": "adapt",
-        "padding_top": 40,
-        "padding_bottom": 0
+        "background_image": "shopify://shop_images/rbmitti.webp",
+        "overlay_opacity": 50,
+        "height": "based_on_content",
+        "padding_top": 100,
+        "padding_bottom": 100
       }
     },
     "main": {
