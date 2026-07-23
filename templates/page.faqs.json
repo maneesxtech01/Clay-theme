@@ -42,43 +42,36 @@
     "main": {
       "type": "page-faqs",
       "blocks": {
-        "title_fipewL": {
-          "type": "title",
-          "settings": {
-            "title": "Shopping Information"
-          }
-        },
         "faq_ThHtgk": {
           "type": "faq",
           "settings": {
-            "question": "Pellentesque habitant morbi tristique senectus et netus?",
-            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>"
+            "question": "1. How do I place an order on RB Mitti Store?",
+            "answer": "<p>Simply browse our collections, add your favorite items to cart, and proceed to checkout. Fill in your delivery details, and confirm your order — it's that easy</p>"
           }
         },
         "faq_Gicg7X": {
           "type": "faq",
           "settings": {
-            "question": "How much is shipping and how long will it take?",
-            "answer": "<p>The perfect way to enjoy brewing tea on low hanging fruit to identify. Duis autem vel eum iriure dolor in hendrerit vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis. For me, the most important part of improving at photography has been sharing it. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>"
+            "question": "2. How much is shipping and how long will it take?",
+            "answer": "<p>A flat delivery fee of Rs. 220 applies to all orders within Pakistan, with free delivery on orders above Rs. 10,000. Standard delivery takes 4-6 working days, depending on your location.</p>"
           }
         },
         "faq_836jPJ": {
           "type": "faq",
           "settings": {
-            "question": "How long will it take to get my package?",
-            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>"
+            "question": "3. How long will it take to get my package?",
+            "answer": "<p>Most orders arrive within 4-6 working days across Pakistan. Karachi-based customers typically receive their orders faster, within 3-5 working days</p>"
           }
         },
         "faq_ia7ibM": {
           "type": "faq",
           "settings": {
-            "question": "Branding is simply a more efficient way to sell things?",
-            "answer": "<p>Lorem ipsum dolor sit amet conse ctetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore.</p>"
+            "question": "4. Do you offer Cash on Delivery (COD)?",
+            "answer": "<p>Yes, Cash on Delivery is currently our primary payment method, available on all orders across Pakistan.</p>"
           }
         }
       },
       "block_order": [
-        "title_fipewL",
         "faq_ThHtgk",
         "faq_Gicg7X",
         "faq_836jPJ",
