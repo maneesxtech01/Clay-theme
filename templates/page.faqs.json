@@ -69,13 +69,37 @@
             "question": "4. Do you offer Cash on Delivery (COD)?",
             "answer": "<p>Yes, Cash on Delivery is currently our primary payment method, available on all orders across Pakistan.</p>"
           }
+        },
+        "faq_MGGnKg": {
+          "type": "faq",
+          "settings": {
+            "question": "5. What if my item arrives damaged?",
+            "answer": "<p>Please inspect your parcel at the time of delivery. If an item is damaged, report it within 24 hours with photos or a video, and we'll arrange a free replacement or store credit as outlined in our Replacement & Refund Policy.</p>"
+          }
+        },
+        "faq_hzk8XA": {
+          "type": "faq",
+          "settings": {
+            "question": "6. Do you deliver internationally?",
+            "answer": "<p>Currently, we only deliver within Pakistan. We're working on expanding our shipping options in the future.</p>"
+          }
+        },
+        "faq_bbTtjx": {
+          "type": "faq",
+          "settings": {
+            "question": "7. Do you offer wholesale or bulk order pricing?",
+            "answer": "<p><br/>Yes! If you're looking to place a bulk order for resale, gifting, or events, we offer special wholesale pricing. Fill out our Bulk Order form and our team will get in touch with you: <a href=\"https://rbmittistore.myshopify.com/pages/bulk-order\">Bulk Order Inquiry</a></p>"
+          }
         }
       },
       "block_order": [
         "faq_ThHtgk",
         "faq_Gicg7X",
         "faq_836jPJ",
-        "faq_ia7ibM"
+        "faq_ia7ibM",
+        "faq_MGGnKg",
+        "faq_hzk8XA",
+        "faq_bbTtjx"
       ],
       "settings": {
         "section_width": "container",
