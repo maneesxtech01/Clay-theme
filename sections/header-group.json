@@ -19,7 +19,7 @@
           "settings": {
             "text": "Free Delivery on Orders Above Rs. 10,000",
             "text_mobile": "",
-            "link": ""
+            "link": "shopify://collections/frontpage"
           }
         },
         "announcement_2": {
@@ -27,7 +27,7 @@
           "settings": {
             "text": "Cash on Delivery Available Across Pakistan",
             "text_mobile": "",
-            "link": ""
+            "link": "shopify://collections/frontpage"
           }
         }
       },
