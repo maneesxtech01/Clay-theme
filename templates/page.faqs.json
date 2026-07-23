@@ -19,7 +19,7 @@
         "heading_fmyy8C": {
           "type": "heading",
           "settings": {
-            "page_title": "Help Center",
+            "page_title": "{{ page.title }}",
             "header_size": "default"
           }
         }
@@ -30,7 +30,7 @@
       ],
       "settings": {
         "section_width": "container",
-        "color_scheme": "",
+        "color_scheme": "scheme-4faf0e4d-27f4-4d02-bc51-617383bab1a9",
         "alignment": "center",
         "background_image": "shopify://shop_images/rbmitti.webp",
         "overlay_opacity": 50,
