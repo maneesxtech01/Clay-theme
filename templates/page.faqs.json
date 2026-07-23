@@ -112,7 +112,7 @@
       "settings": {
         "section_width": "container",
         "heading": "We're Here to Help",
-        "description": "<p><br/>Couldn't find the answer you were looking for? No problem — reach out to us directly on WhatsApp at +92 3368145851, or fill out our Contact Form and we'll get back to you as soon as possible.<br/><br/></p>",
+        "description": "<p><br/>Couldn't find the answer you were looking for? No problem — reach out to us directly on WhatsApp at <a href=\"https://wa.me/923368145851\">+92 3368145851</a>, or fill out our Contact Form and we'll get back to you as soon as possible.<br/><br/></p>",
         "first_button_label": "Contact Us",
         "first_button_link": "shopify://pages/contact",
         "first_button_type": "primary",
