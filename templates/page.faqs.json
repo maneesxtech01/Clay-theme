@@ -90,6 +90,13 @@
             "question": "7. Do you offer wholesale or bulk order pricing?",
             "answer": "<p>Yes! If you're looking to place a bulk order for resale, gifting, or events, we offer special wholesale pricing. Fill out our Bulk Order form and our team will get in touch with you: <a href=\"https://rbmittistore.myshopify.com/pages/bulk-order\">Bulk Order Inquiry</a></p><p>You're also welcome to visit our workshop in Karachi in person to discuss your requirements and finalize a deal directly with our team.</p>"
           }
+        },
+        "faq_t9wCQX": {
+          "type": "faq",
+          "settings": {
+            "question": "8. Do you offer gift wrapping or packaging for special occasions?",
+            "answer": "<p>Yes, we can arrange special packaging for gifts on request — just mention it in your order notes or message us on WhatsApp before your order ships.</p>"
+          }
         }
       },
       "block_order": [
@@ -99,7 +106,8 @@
         "faq_ia7ibM",
         "faq_MGGnKg",
         "faq_hzk8XA",
-        "faq_bbTtjx"
+        "faq_bbTtjx",
+        "faq_t9wCQX"
       ],
       "settings": {
         "section_width": "container",
