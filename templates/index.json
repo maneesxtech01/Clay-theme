@@ -413,7 +413,13 @@
         "video_waYhH3": {
           "type": "video",
           "settings": {
-            "tiktok_embed_url": ""
+            "tiktok_embed_url": "<iframe width=\"315\" height=\"576\" src=\"https://www.youtube.com/embed/nnXbbMEFnLI\" title=\"From Clay to Masterpiece 🏺 | Handmade Pottery Process #shorts #handmade #art\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>"
+          }
+        },
+        "video_HAzbn3": {
+          "type": "video",
+          "settings": {
+            "tiktok_embed_url": "<iframe width=\"315\" height=\"576\" src=\"https://www.youtube.com/embed/32rb1ORY-NU\" title=\"Har matka mitti se nahi, mehnat aur mohabbat se banta hai 🏺✨ #handmade #pakistan #art #shorts horts\" frameborder=\"0\" allow=\"accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>"
           }
         }
       },
@@ -421,7 +427,8 @@
         "video_6caRNG",
         "video_cwHEXB",
         "video_jDhq3D",
-        "video_waYhH3"
+        "video_waYhH3",
+        "video_HAzbn3"
       ],
       "name": "t:sections.tiktok-video.presets.name",
       "settings": {
