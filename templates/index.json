@@ -475,8 +475,8 @@
           "type": "testimonials_items",
           "settings": {
             "author_rating": 5,
-            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
-            "select_product": "",
+            "author_text": "<p>I run a small dhaba and ordered these kulhad chai cups for our chai counter. Customers love the traditional touch — it actually makes the chai taste better, and everyone asks where we got them from.</p>",
+            "select_product": "clay-kulhad-chai-cup",
             "author_name": "Author's name"
           }
         },
