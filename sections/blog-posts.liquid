@@ -184,6 +184,9 @@
                   column_gap: column_gap,
                   image_ratio: image_ratio,
                   custom_ratio: custom_ratio,
+                  card_bg_color: section_st.card_bg_color,
+                  card_border_color: section_st.card_border_color,
+                  image_fit: section_st.image_fit,
                   indexFor: forloop.index
                 -%}
               </div>
@@ -441,6 +444,34 @@
       "type": "blog",
       "id": "blog",
       "label": "t:sections.blog-post.settings.blog.label"
+    },
+    {
+      "type": "color",
+      "id": "card_bg_color",
+      "label": "Card Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "#e5e7eb"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image Fit Mode",
+      "default": "contain",
+      "options": [
+        {
+          "value": "contain",
+          "label": "Contain (Show full image without cropping)"
+        },
+        {
+          "value": "cover",
+          "label": "Cover (Fill top of card)"
+        }
+      ]
     },
     {
       "type": "select",
