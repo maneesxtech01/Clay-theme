@@ -8,6 +8,17 @@
  * ------------------------------------------------------------
  */
 {
-  "sections": { "main": { "type": "page-default", "settings": {} } },
-  "order": ["main"]
+  "sections": {
+    "main": {
+      "type": "page-default",
+      "settings": {
+        "section_width": "container",
+        "padding_top": 0,
+        "padding_bottom": 0
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
 }
