@@ -82,6 +82,78 @@
     text-align: left !important;
     margin-top: 4px;
   }
+  /* Equal height card layout for product testimonials */
+  .sec__products-carousel .swiper-wrapper {
+    display: flex;
+    align-items: stretch;
+  }
+  .sec__products-carousel .swiper-slide {
+    height: auto;
+    display: flex;
+  }
+  .sec__products-carousel .swiper-slide > motion-element {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+  }
+  .sec__products-carousel .testimonial_wraper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    justify-content: space-between;
+  }
+  .sec__products-carousel .testimonial_info,
+  .testimonial_info.flex.align-center.align-seft-center.w-full {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    flex: 1 1 auto;
+  }
+  @media (min-width: 768px) {
+    .sec__products-carousel .testimonial_info,
+    .testimonial_info.flex.align-center.align-seft-center.w-full {
+      min-height: 500px;
+    }
+  }
+  .sec__products-carousel .testimonial_info > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    flex: 1 1 auto;
+    box-sizing: border-box;
+  }
+  .sec__products-carousel .testimonial-product {
+    margin-top: auto;
+  }
+  /* Read More / Read Less Toggle Styles */
+  read-more-text {
+    display: block;
+  }
+  .read-more-toggle {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin-left: 4px;
+    color: var(--color-heading, #111);
+    font-weight: 600;
+    font-size: 0.9em;
+    text-decoration: underline;
+    cursor: pointer;
+    display: inline-block;
+    line-height: inherit;
+  }
+  .read-more-toggle:hover {
+    opacity: 0.75;
+  }
+  .read-more-less-btn {
+    margin-top: 6px;
+    display: inline-block;
+  }
 {%- endstyle -%}
 {%- capture style_ratio -%}
   {%- liquid
@@ -283,7 +355,9 @@
                     {%- endif %}
                   </div>
                   <div class="testimonials-quote my-15 mx-0 rich__text-m0">
-                    {{ block_st.author_text }}
+                    <read-more-text data-limit="140">
+                      {{ block_st.author_text }}
+                    </read-more-text>
                   </div>
                   <div class="testimonial-product {% if design == "default" %} border-top {% endif %} {% if section_st.show_image and design == "default" %} pt-30 mt-22{% else %} pt-20 mt-12{% endif %}">
                     {% render 'product-item',

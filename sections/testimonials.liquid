@@ -150,7 +150,9 @@
                   </div>
                 {% endif %}
                 <div class="testimonials-quote m-0 rich__text-m0">
-                  {{ block_st.author_text }}
+                  <read-more-text data-limit="140">
+                    {{ block_st.author_text }}
+                  </read-more-text>
                 </div>
               </div>
               {% if section_st.show_author_image

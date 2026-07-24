@@ -280,7 +280,7 @@
 
 /* Pagination Dots for Mobile Scroll */
 .expanding-cards-dots {
-  display: flex !important;
+  display: flex;
   justify-content: center;
   align-items: center;
   gap: 0.6rem;
@@ -290,8 +290,15 @@
   width: 100%;
 }
 
+@media (min-width: 768px) {
+  .expanding-cards-dots,
+  .expanding-cards-container .expanding-cards-dots {
+    display: none !important;
+  }
+}
+
 .expanding-cards-dots[hidden] {
-  display: flex !important;
+  display: none !important;
 }
 
 .expanding-cards-dots .keen-dots-dot {

@@ -1095,3 +1095,78 @@ class CopyButton extends HTMLElement {
   }
 }
 customElements.define("copy-button", CopyButton);
+
+// Read More / Read Less Custom Element for Testimonial Reviews
+class ReadMoreText extends HTMLElement {
+  connectedCallback() {
+    if (this.initialized) return;
+    this.initialized = true;
+
+    const limit = parseInt(this.getAttribute("data-limit") || "140", 10);
+    const originalContent = this.innerHTML.trim();
+
+    const temp = document.createElement("div");
+    temp.innerHTML = originalContent;
+    const text = (temp.textContent || temp.innerText || "").trim();
+
+    if (text.length <= limit) return;
+
+    let truncated = text.substring(0, limit);
+    const lastSpace = truncated.lastIndexOf(" ");
+    if (lastSpace > limit * 0.7) {
+      truncated = truncated.substring(0, lastSpace);
+    }
+
+    const shortDiv = document.createElement("div");
+    shortDiv.className = "read-more-short";
+    shortDiv.innerHTML = `<p>${truncated}... <button type="button" class="read-more-toggle" aria-expanded="false">Read More</button></p>`;
+
+    const fullDiv = document.createElement("div");
+    fullDiv.className = "read-more-full";
+    fullDiv.style.display = "none";
+    fullDiv.innerHTML = originalContent;
+
+    const readLessBtn = document.createElement("button");
+    readLessBtn.type = "button";
+    readLessBtn.className = "read-more-toggle read-more-less-btn";
+    readLessBtn.setAttribute("aria-expanded", "true");
+    readLessBtn.textContent = "Read Less";
+
+    const lastChild = fullDiv.lastElementChild || fullDiv;
+    if (lastChild.tagName === "P") {
+      lastChild.appendChild(document.createTextNode(" "));
+      lastChild.appendChild(readLessBtn);
+    } else {
+      fullDiv.appendChild(readLessBtn);
+    }
+
+    this.innerHTML = "";
+    this.appendChild(shortDiv);
+    this.appendChild(fullDiv);
+
+    const toggles = this.querySelectorAll(".read-more-toggle");
+    toggles.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const isShortVisible = shortDiv.style.display !== "none";
+        if (isShortVisible) {
+          shortDiv.style.display = "none";
+          fullDiv.style.display = "block";
+        } else {
+          shortDiv.style.display = "block";
+          fullDiv.style.display = "none";
+        }
+
+        const swiperEl = this.closest(".swiper");
+        if (swiperEl && swiperEl.swiper && typeof swiperEl.swiper.update === "function") {
+          swiperEl.swiper.update();
+        }
+      });
+    });
+  }
+}
+if (!customElements.get("read-more-text")) {
+  customElements.define("read-more-text", ReadMoreText);
+}
+

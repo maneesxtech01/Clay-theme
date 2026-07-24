@@ -37,7 +37,8 @@ if (!customElements.get("expanding-card")) {
     row.setAttribute("data-expanding-cards-row-initialized", "true");
 
     function setScrollableUi() {
-      var scrollable = scroller.scrollWidth > scroller.clientWidth + 5;
+      var isMobile = window.innerWidth < 768;
+      var scrollable = isMobile && (scroller.scrollWidth > scroller.clientWidth + 5);
       if (dotsWrap) {
         if (scrollable) {
           dotsWrap.removeAttribute("hidden");
