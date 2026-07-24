@@ -105,9 +105,9 @@
           "type": "buy_buttons",
           "settings": {
             "show_dynamic_checkout": true,
-            "show_gift_card_recipient": true,
+            "show_gift_card_recipient": false,
             "show_wishlist": true,
-            "show_compare": true
+            "show_compare": false
           }
         },
         "model_size_XM7z6E": {
@@ -153,7 +153,6 @@
           "type": "trust_badge",
           "settings": {
             "message": "Guarantee Safe Checkout:",
-            "trust_badge_image": "shopify://shop_images/payment.png",
             "image_width": 340
           }
         },
