@@ -554,7 +554,7 @@
         "blog": "resources",
         "card_bg_color": "#ffffff",
         "card_border_color": "#e5e7eb",
-        "image_fit": "contain",
+        "image_fit": "cover",
         "image_ratio": "square",
         "custom_ratio": "",
         "show_category": true,
