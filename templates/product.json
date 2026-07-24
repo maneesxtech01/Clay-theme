@@ -166,20 +166,20 @@
             "open": false
           }
         },
+        "collapsible_row_DA4FUC": {
+          "type": "collapsible_row",
+          "settings": {
+            "heading": "How To Use",
+            "content": "<p>{{ product.metafields.custom.how_to_use | metafield_tag }}</p>",
+            "use_product_description": false,
+            "open": false
+          }
+        },
         "collapsible_row_eLaQpR": {
           "type": "collapsible_row",
           "settings": {
             "heading": "Shipping and Returns",
             "content": "<p>🚚 <strong>Shipping:</strong> Standard delivery takes 3-7 working days across Pakistan. A flat delivery fee of Rs. 220 applies, with free delivery on orders above Rs. 10,000.</p><p>🔄 <strong>Returns & Replacement:</strong> If your item arrives damaged or incorrect, report it within 24 hours with photos/video, and we'll arrange a free replacement or store credit — no hassle. <a href=\"/policies/refund-policy\">Read our full Replacement & Refund Policy</a></p>",
-            "use_product_description": false,
-            "open": false
-          }
-        },
-        "collapsible_row_DA4FUC": {
-          "type": "collapsible_row",
-          "settings": {
-            "heading": "Return Policies",
-            "content": "<p>Provided the conditions in our refund policy have been met, refunds will be processed using the original form of payment. You can return an item purchased online by posting it to us. Please contact customer service for return address. Please note that delivery costs will be excluded from the refund unless goods are returned in accordance with your statutory rights (e.g. they are faulty or not as ordered).</p><ul><li>The items with the original receipt are returned within 30 days of purchase. </li><li>Items must be in the original condition as purchased with all labels/tickets attached.</li></ul><p>Provided the conditions in our refund policy have been met, refunds will be processed using the original form of payment. You can return an item purchased online by posting it to us. Please contact customer service for return address. Please note that delivery costs will be excluded from the refund unless goods are returned in accordance with your statutory rights (e.g. they are faulty or not as ordered).</p>",
             "use_product_description": false,
             "open": false
           }
@@ -206,8 +206,8 @@
         "product_meta_kiKPhW",
         "trust_badge_qKXhpg",
         "collapsible_row_m3g6f8",
-        "collapsible_row_eLaQpR",
-        "collapsible_row_DA4FUC"
+        "collapsible_row_DA4FUC",
+        "collapsible_row_eLaQpR"
       ],
       "settings": {
         "section_width": "container",
