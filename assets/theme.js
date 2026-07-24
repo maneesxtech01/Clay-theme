@@ -8598,14 +8598,14 @@ class HeaderTotalPrice extends HTMLElement {
     super();
   }
   updateTotal(cart) {
-    this.minicart_total = this.querySelector("[data-cart-subtotal-price]");
-    if (!this.minicart_total) return;
+    const minicart_totals = this.querySelectorAll("[data-cart-subtotal-price]");
+    if (!minicart_totals || !minicart_totals.length) return;
     if (cart.total_price == undefined) return;
     const price_format = Shopify.formatMoney(
       cart.total_price,
       cartStrings?.money_format
     );
-    this.minicart_total.innerHTML = price_format;
+    minicart_totals.forEach(el => { el.innerHTML = price_format; });
   }
 }
 customElements.define("header-total-price", HeaderTotalPrice);

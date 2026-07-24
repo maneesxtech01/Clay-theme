@@ -180,55 +180,7 @@
               </button-compare>
             {% endif %}
             {%- if show_dynamic_checkout -%}
-              
-              {%- if settings.show_checkbox_in_product_page and type == 'single' or type == 'main_product' -%}
-              
-                <terms-conditions
-                  class="w-full terms-conditions flex mt-12 mb-10 skeleton-loading"
-                  data-custom-class="term-and-condition"
-                >
-                  <div class="checkbox-group relative">
-                    <input
-                      class="input w-20 h-20 m-0 opacity-0 absolute inset-0 pointer conditions_form_product"
-                      type="checkbox"
-                      name="conditions"
-                      id="conditions_form_product-{{ product_form_id }}"
-                    >
-                    <span class="checkmark relative me-10  pointer-none pointer inline-flex"></span>
-                  </div>
-                  <label
-                    class="label pointer rich__text-m0"
-                    for="conditions_form_product-{{ product_form_id }}"
-                    style="--color-link: var(--color-heading);"
-                  >
-                    {{ settings.text_terms_conditions }}
-                  </label>
-                </terms-conditions>
-              {%- endif -%}
-              {%- if settings.show_check_box_in_quick_view and type == 'quickview' -%}
-                <terms-conditions
-                  class="w-full terms-conditions flex mt-12 mb-10"
-                  data-custom-class="term-and-condition"
-                >
-                  <div class="checkbox-group relative">
-                    <input
-                      class="input w-20 h-20 m-0 opacity-0 absolute inset-0 pointer conditions_form_product"
-                      type="checkbox"
-                      name="conditions"
-                      id="conditions_form_product-{{ product_form_id }}"
-                    >
-                    <span class="checkmark relative me-10  pointer-none pointer inline-flex"></span>
-                  </div>
-                  <label
-                    class="label pointer rich__text-m0"
-                    for="conditions_form_product-{{ product_form_id }}"
-                    style="--color-link: var(--color-heading);"
-                  >
-                    {{ settings.text_terms_conditions }}
-                  </label>
-                </terms-conditions>
-              {%- endif -%}
-              <div class="btn-checkout-dynamic w-full  {% if settings.show_check_box_in_quick_view and type == 'quickview' %} disabled {% elsif  settings.show_checkbox_in_product_page  and type == 'single' or type == 'main_product' %}    disabled{% endif %}">
+              <div class="btn-checkout-dynamic w-full">
                 {{ form | payment_button }}
               </div>
             {%- endif -%}

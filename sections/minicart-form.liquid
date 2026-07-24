@@ -282,26 +282,6 @@
             {% endif %}
           </span>
         </div>
-        {%- if theme_st.show_check_box_in_cart and theme_st.enable_catalog_mode == false -%}
-          <terms-conditions class="terms-conditions flex mt-17 mb-25" data-custom-class="term-and-condition">
-            <div class="checkbox-group relative">
-              <input
-                class="input w-20 h-20 m-0 opacity-0 absolute inset-0 pointer conditions_form_minicart"
-                type="checkbox"
-                name="conditions"
-                id="conditions_form_minicart"
-              >
-              <span class="checkmark relative me-10  pointer-none pointer inline-flex"></span>
-            </div>
-            <label
-              class="label pointer rich__text-m0"
-              for="conditions_form_minicart"
-              style="--color-link: var(--color-heading);"
-            >
-              {{ theme_st.text_terms_conditions }}
-            </label>
-          </terms-conditions>
-        {% endif %}
         {%- if theme_st.enable_catalog_mode == false -%}
           <a
             class="action block mb-10 btn-outline w-full text-center no-underline viewcart"
@@ -314,11 +294,8 @@
             class="btn-primary w-full btn-checkout"
             name="checkout"
             form="minicart"
-            {% if theme_st.show_check_box_in_cart %}
-              disabled
-            {% endif %}
           >
-            <span>{{ 'general.cart.checkout' | t }}</span>
+            <span>{{ 'general.cart.checkout' | t }} &bull; <span data-cart-subtotal-price>{% if show_currency_code %}{{ cart.total_price | money_with_currency }}{% else %}{{ cart.total_price | money }}{% endif %}</span></span>
           </button>
         {% endif %}
       </div>

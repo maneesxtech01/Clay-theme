@@ -2945,6 +2945,9 @@ mobile-navigation-bar > * {
     background-position-x: -150%;
   }
 }
+terms-conditions {
+  display: none !important;
+}
 .terms-conditions label a {
   color: var(--color-heading);
   font-weight: var(--heading-weight);

@@ -829,32 +829,12 @@
               </div>
               {%- if theme_st.enable_catalog_mode == false -%}
                 <div class="cart__ctas mt-25 pt-25 border-top">
-                  {%- if theme_st.show_check_box_in_cart -%}
-                    <terms-conditions class="terms-conditions flex mb-25" data-custom-class="term-and-condition">
-                      <div class="checkbox-group relative">
-                        <input
-                          class="input w-20 h-20 m-0 opacity-0 absolute inset-0 pointer conditions_form_minicart"
-                          type="checkbox"
-                          name="conditions"
-                          id="conditions_form_minicart"
-                        >
-                        <span class="checkmark relative me-10  pointer-none pointer inline-flex"></span>
-                      </div>
-                      <label
-                        class="label pointer rich__text-m0"
-                        for="conditions_form_minicart"
-                        style="--color-link: var(--color-heading);"
-                      >
-                        {{ theme_st.text_terms_conditions }}
-                      </label>
-                    </terms-conditions>
-                  {% endif %}
                   <button
                     type="submit"
                     id="checkout"
                     class="btn-checkout cart__checkout-button button w-full btn-primary"
                     name="checkout"
-                    {% if cart == empty or theme_st.show_check_box_in_cart %}
+                    {% if cart == empty %}
                       disabled
                     {% endif %}
                     form="cart"

@@ -280,14 +280,23 @@
 
 /* Pagination Dots for Mobile Scroll */
 .expanding-cards-dots {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.6rem;
-  margin-top: 1.8rem;
-  position: relative;
-  z-index: 5;
-  width: 100%;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-top: 20px !important;
+  margin-bottom: 10px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  position: relative !important;
+  z-index: 10 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  clear: both !important;
+  left: 0 !important;
+  right: 0 !important;
+  text-align: center !important;
 }
 
 @media (min-width: 768px) {
@@ -302,23 +311,27 @@
 }
 
 .expanding-cards-dots .keen-dots-dot {
-  display: inline-block;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: var(--dot-color-inactive, #d0d0d0);
-  border: none;
-  padding: 0;
-  margin: 0;
-  cursor: pointer;
-  transition: all 0.3s ease;
+  display: inline-block !important;
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  background-color: var(--dot-color-inactive, rgba(0, 0, 0, 0.25)) !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+  outline: none !important;
+  transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1) !important;
+  box-shadow: none !important;
+  vertical-align: middle !important;
 }
 
 .expanding-cards-dots .keen-dots-dot.active {
-  background: var(--dot-color-active, #bd5b28);
-  width: 24px;
-  border-radius: 12px;
-  transform: none;
+  background-color: var(--dot-color-active, #111111) !important;
+  width: 22px !important;
+  height: 8px !important;
+  border-radius: 10px !important;
+  transform: none !important;
 }
 
 /* Section Header Split Layout Styling */
