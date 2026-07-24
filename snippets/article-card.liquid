@@ -16,10 +16,8 @@
 {%- capture style_ratio -%}
   {%- liquid
     assign ratio = ''
-    if image_ratio != 'adapt'
+    if image_ratio != 'adapt' and image_ratio != 'square'
       case image_ratio
-        when 'square'
-          assign ratio = '1/1'
         when 'landscape'
           assign ratio = '4/3'
         when 'portrait'
@@ -32,7 +30,7 @@
           endif
       endcase
     else
-      if article.image != blank
+      if article.image != blank and image_ratio == 'adapt'
         assign ratio = article.image.aspect_ratio
       else
         assign ratio = '16/10'
