@@ -771,7 +771,7 @@ variant-radios-bundle .option-swatch-js.active .product__item-option {
   display: block !important;
 }
 
-/* Wishlist absolute hover transition & persistent active style */
+/* Wishlist button: Default / Unactive style (White bg, Black icon) */
 .product-item__wishlist-btn-absolute,
 button-wishlist.product-item__wishlist-btn-absolute {
   opacity: 1 !important;
@@ -792,15 +792,15 @@ button-wishlist.product-item__wishlist-btn-absolute {
 }
 
 .product-item__wishlist-btn-absolute svg,
-button-wishlist.product-item__wishlist-btn-absolute svg {
+button-wishlist.product-item__wishlist-btn-absolute svg,
+.product-item__wishlist-btn-absolute path,
+button-wishlist.product-item__wishlist-btn-absolute path {
   fill: none !important;
   stroke: #111111 !important;
   color: #111111 !important;
 }
 
-/* Wishlist Hover & Active / Added state: Brown background with white icon */
-.product-item__wishlist-btn-absolute:hover,
-button-wishlist.product-item__wishlist-btn-absolute:hover,
+/* Wishlist Active / Added state ONLY: Brown background (#b85822) with White Heart Icon */
 .product-item__wishlist-btn-absolute.active,
 .product-item__wishlist-btn-absolute.added,
 .product-item__wishlist-btn-absolute[data-action="remove"],
@@ -814,14 +814,18 @@ button-wishlist[data-action="remove"] {
   visibility: visible !important;
 }
 
-.product-item__wishlist-btn-absolute:hover svg,
-button-wishlist.product-item__wishlist-btn-absolute:hover svg,
 .product-item__wishlist-btn-absolute.active svg,
 .product-item__wishlist-btn-absolute.added svg,
 .product-item__wishlist-btn-absolute[data-action="remove"] svg,
 button-wishlist.active svg,
 button-wishlist.added svg,
-button-wishlist[data-action="remove"] svg {
+button-wishlist[data-action="remove"] svg,
+.product-item__wishlist-btn-absolute.active path,
+.product-item__wishlist-btn-absolute.added path,
+.product-item__wishlist-btn-absolute[data-action="remove"] path,
+button-wishlist.active path,
+button-wishlist.added path,
+button-wishlist[data-action="remove"] path {
   fill: #ffffff !important;
   stroke: #ffffff !important;
   color: #ffffff !important;
