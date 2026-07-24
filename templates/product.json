@@ -43,12 +43,6 @@
           "type": "price",
           "settings": {}
         },
-        "short_description_9BGxVm": {
-          "type": "short_description",
-          "settings": {
-            "excerpt_length": 200
-          }
-        },
         "delivery_return_iJHeMD": {
           "type": "delivery_return",
           "settings": {
@@ -190,7 +184,6 @@
         "title_G6tU8U",
         "review_and_sold_AAbJC9",
         "price_VJ4N8m",
-        "short_description_9BGxVm",
         "delivery_return_iJHeMD",
         "live_view_rzDP6G",
         "countdown_timer_QB4Ydn",
