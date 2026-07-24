@@ -93,6 +93,10 @@
                             {{ infomation_meta.value.information_text }}
                           {% elsif infomation_meta.value.information_in_page != blank %}
                             {{ pages[infomation_meta.value.information_in_page].content }}
+                          {% elsif product.metafields.custom.how_to_use != blank %}
+                            <div class="product-how-to-use-tab">
+                              {{ product.metafields.custom.how_to_use.value | default: product.metafields.custom.how_to_use }}
+                            </div>
                           {% endif %}
                       {%- endcase -%}
                   {%- endcase -%}

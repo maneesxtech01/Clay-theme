@@ -178,6 +178,14 @@
                     {{ product.description }}
                   </div>
                 {%- endif -%}
+                {%- if product.metafields.custom.how_to_use != blank -%}
+                  <div class="product-single__how-to-use mb-15 p-15 rounded-8 bg-light">
+                    <h4 class="how-to-use-title font-bold mb-5 fs-15">How to Use</h4>
+                    <div class="how-to-use-content fs-14">
+                      {{ product.metafields.custom.how_to_use.value | default: product.metafields.custom.how_to_use }}
+                    </div>
+                  </div>
+                {%- endif -%}
               {%- else -%}
                 <div class="product-single__description" {{ block.shopify_attributes }}>
                   {{ 'onboarding.default_description' | t }}

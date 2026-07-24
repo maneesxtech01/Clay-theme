@@ -662,6 +662,28 @@
                   {{ product.metafields.custom.short_description | truncate: block_st.excerpt_length }}
                 </div>
               {% endif %}
+              {%- if product.metafields.custom.how_to_use != blank -%}
+                <div
+                  class="product_detail-how-to-use mb-22 p-15 rounded-8 bg-light{% if enable_skeleton_loading %} skeleton-loading{% endif %}"
+                >
+                  <h4 class="how-to-use-heading font-bold mb-8 fs-15">How to Use</h4>
+                  <div class="how-to-use-content fs-14">
+                    {{ product.metafields.custom.how_to_use.value | default: product.metafields.custom.how_to_use }}
+                  </div>
+                </div>
+              {%- endif -%}
+            {%- when 'how_to_use' -%}
+              {%- if product.metafields.custom.how_to_use != blank -%}
+                <div
+                  {{ block.shopify_attributes }}
+                  class="product_detail-how-to-use mb-22 p-15 rounded-8 bg-light{% if enable_skeleton_loading %} skeleton-loading{% endif %}"
+                >
+                  <h4 class="how-to-use-heading font-bold mb-8 fs-15">How to Use</h4>
+                  <div class="how-to-use-content fs-14">
+                    {{ product.metafields.custom.how_to_use.value | default: product.metafields.custom.how_to_use }}
+                  </div>
+                </div>
+              {%- endif -%}
             {%- when 'model_size' -%}
               {%- if product.metafields.custom.model_size -%}
                 <div
