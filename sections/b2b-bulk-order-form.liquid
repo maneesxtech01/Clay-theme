@@ -3,10 +3,7 @@
     <h2 class="b2b-title">B2B / bulk order request</h2>
     <p class="b2b-subtitle">Fill in your business details and we'll get back to you with pricing.</p>
 
-    <form id="b2bForm" method="post" action="/contact#ContactForm" accept-charset="UTF-8" novalidate>
-      <input type="hidden" name="form_type" value="contact">
-      <input type="hidden" name="utf8" value="✓">
-
+    {% form 'contact', id: 'b2bForm', novalidate: 'novalidate' %}
       <div class="b2b-row">
         <div class="b2b-field">
           <label for="b2bBusinessName">Business name <span class="req">*</span></label>
@@ -90,7 +87,7 @@
 
       <button type="submit" class="b2b-submit-btn" id="b2bSubmitBtn">Submit request</button>
       <p class="b2b-error-msg" id="b2bErrorMsg">Please fill in all required fields.</p>
-    </form>
+    {% endform %}
   </div>
 
   <div class="b2b-popup-overlay" id="b2bPopupOverlay">
@@ -240,11 +237,15 @@
     submitBtn.textContent = 'Submitting...';
 
     var formData = new FormData(form);
+    var searchParams = new URLSearchParams(formData);
 
     fetch(form.action, {
       method: 'POST',
-      body: formData,
-      headers: { 'Accept': 'text/html' }
+      body: searchParams,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'text/html'
+      }
     })
       .then(function () {
         overlay.classList.add('active');
