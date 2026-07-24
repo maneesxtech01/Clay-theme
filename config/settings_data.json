@@ -51,7 +51,7 @@
     "show_search_price": true,
     "show_message_when_remove": true,
     "action_after_add_cart": "open_drawer",
-    "free_shipping_minimum": "150",
+    "free_shipping_minimum": "10000",
     "enable_discount_code": true,
     "enable_gift_wrap": true,
     "choose_gift_wrap_product": "digital-gift-card",
