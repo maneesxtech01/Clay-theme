@@ -492,10 +492,10 @@
         "testimonials_items_YmaRiY": {
           "type": "testimonials_items",
           "settings": {
-            "author_rating": 5,
+            "author_rating": 4,
             "author_text": "<p>\"Bought a set for my hotel's reception area to serve chai to guests. Genuine clay quality, and it gives a really authentic, premium feel compared to regular cups. Ordering more soon for the whole setup.\"</p>",
             "select_product": "clay-kulhad-chai-cup",
-            "author_name": "M. Raheem"
+            "author_name": "Owais Tariq"
           }
         }
       },
@@ -509,7 +509,7 @@
       "name": "t:sections.testimonials_product.presets.name",
       "settings": {
         "section_width": "fluid_container",
-        "color_scheme": "",
+        "color_scheme": "scheme-e2434dd4-80ca-43a1-909b-8a9f7b57a7ab",
         "heading": "Testimonials",
         "description": "",
         "header_alignment": "center",
