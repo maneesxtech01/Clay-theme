@@ -477,16 +477,25 @@
             "author_rating": 5,
             "author_text": "<p>I run a small dhaba and ordered these kulhad chai cups for our chai counter. Customers love the traditional touch — it actually makes the chai taste better, and everyone asks where we got them from.</p>",
             "select_product": "clay-kulhad-chai-cup",
-            "author_name": "Author's name"
+            "author_name": "Faizan Sheikh"
           }
         },
         "testimonials_items_PUCYUm": {
           "type": "testimonials_items",
           "settings": {
             "author_rating": 5,
-            "author_text": "<p>You can add text content from press comments, reviews, or testimonials here.</p>",
-            "select_product": "",
-            "author_name": "Author's name"
+            "author_text": "<p>\"What impressed me most wasn't just the product — it was their customer service. One item had a slight color issue on arrival, and the moment I messaged them on WhatsApp, they sorted it out and sent a replacement without any hassle. That's the kind of support that makes you trust a brand.\"</p>",
+            "select_product": "clay-handi-bowl-with-lid",
+            "author_name": "M. Raheem"
+          }
+        },
+        "testimonials_items_YmaRiY": {
+          "type": "testimonials_items",
+          "settings": {
+            "author_rating": 5,
+            "author_text": "<p>\"Bought a set for my hotel's reception area to serve chai to guests. Genuine clay quality, and it gives a really authentic, premium feel compared to regular cups. Ordering more soon for the whole setup.\"</p>",
+            "select_product": "clay-kulhad-chai-cup",
+            "author_name": "M. Raheem"
           }
         }
       },
@@ -494,7 +503,8 @@
         "testimonials_items_kgkwNr",
         "testimonials_items_4KpHbq",
         "testimonials_items_EfCHiT",
-        "testimonials_items_PUCYUm"
+        "testimonials_items_PUCYUm",
+        "testimonials_items_YmaRiY"
       ],
       "name": "t:sections.testimonials_product.presets.name",
       "settings": {
