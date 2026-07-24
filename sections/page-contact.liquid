@@ -301,49 +301,76 @@
   document.addEventListener('DOMContentLoaded', function() {
     var fileInput = document.getElementById('cf_files');
     var form = document.getElementById('contact_form_main');
-    var uploadedFileUrls = [];
+    var submitBtn = document.getElementById('contact-submit-btn');
 
     if (fileInput) {
-      fileInput.addEventListener('change', async function() {
+      fileInput.addEventListener('change', function() {
         var label = document.querySelector('.contact-attach-btn');
-        if (!this.files || this.files.length === 0) return;
-
-        uploadedFileUrls = [];
-        if (label) {
-          label.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> Uploading ' + this.files.length + ' file(s)...';
-        }
-
-        for (var i = 0; i < this.files.length; i++) {
-          var file = this.files[i];
-          try {
-            var formData = new FormData();
-            formData.append('file', file);
-            var response = await fetch('https://tmpfiles.org/api/v1/upload', {
-              method: 'POST',
-              body: formData
-            });
-            var data = await response.json();
-            if (data && data.status === 'success' && data.data && data.data.url) {
-              var directUrl = data.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
-              uploadedFileUrls.push({ name: file.name, url: directUrl });
-            }
-          } catch (e) {
-            console.error('File upload error:', e);
-          }
-        }
-
-        if (label) {
-          if (uploadedFileUrls.length > 0) {
-            label.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#137F24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ' + uploadedFileUrls.length + ' file(s) uploaded & attached!';
-          } else {
-            label.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> ' + this.files.length + ' file(s) selected';
-          }
+        if (label && this.files && this.files.length > 0) {
+          label.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#137F24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ' + this.files.length + ' file(s) attached';
         }
       });
     }
 
+    async function uploadSingleFile(file) {
+      try {
+        var formData = new FormData();
+        formData.append('file', file);
+        var res = await fetch('https://tmpfiles.org/api/v1/upload', {
+          method: 'POST',
+          body: formData
+        });
+        var data = await res.json();
+        if (data && data.status === 'success' && data.data && data.data.url) {
+          return data.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+        }
+      } catch (e) {
+        console.warn('tmpfiles upload failed, trying fallback file.io:', e);
+      }
+
+      try {
+        var formData2 = new FormData();
+        formData2.append('file', file);
+        var res2 = await fetch('https://file.io', {
+          method: 'POST',
+          body: formData2
+        });
+        var data2 = await res2.json();
+        if (data2 && data2.success && data2.link) {
+          return data2.link;
+        }
+      } catch (e2) {
+        console.error('file.io fallback upload failed:', e2);
+      }
+
+      return null;
+    }
+
     if (form) {
-      form.addEventListener('submit', function(e) {
+      form.addEventListener('submit', async function(e) {
+        if (form.dataset.submitting === 'true') return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = 'Uploading file(s) & sending...';
+        }
+
+        var uploadedFiles = [];
+        if (fileInput && fileInput.files && fileInput.files.length > 0) {
+          for (var i = 0; i < fileInput.files.length; i++) {
+            var file = fileInput.files[i];
+            var fileUrl = await uploadSingleFile(file);
+            if (fileUrl) {
+              uploadedFiles.push({ name: file.name, url: fileUrl });
+            } else {
+              uploadedFiles.push({ name: file.name, url: '(Attachment failed to upload)' });
+            }
+          }
+        }
+
         var subjectElem = document.getElementById('cf_subject');
         var messageInput = document.getElementById('cf_message_input');
         var bodyHidden = document.getElementById('cf_body_hidden');
@@ -357,16 +384,19 @@
         }
         formattedBody += 'Message:\n' + messageText;
 
-        if (uploadedFileUrls.length > 0) {
+        if (uploadedFiles.length > 0) {
           formattedBody += '\n\nAttached Files (Click link to view/download):\n';
-          for (var j = 0; j < uploadedFileUrls.length; j++) {
-            formattedBody += '• ' + uploadedFileUrls[j].name + ':\n' + uploadedFileUrls[j].url + '\n';
+          for (var j = 0; j < uploadedFiles.length; j++) {
+            formattedBody += '• ' + uploadedFiles[j].name + ':\n' + uploadedFiles[j].url + '\n';
           }
         }
 
         if (bodyHidden) {
           bodyHidden.value = formattedBody;
         }
+
+        form.dataset.submitting = 'true';
+        form.submit();
       });
     }
   });
