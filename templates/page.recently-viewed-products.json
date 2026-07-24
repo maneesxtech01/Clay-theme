@@ -19,30 +19,24 @@
         "heading_BYBdxq": {
           "type": "heading",
           "settings": {
-            "page_title": "",
+            "page_title": "{{ page.title }}",
             "header_size": "default"
-          }
-        },
-        "description_6w74gE": {
-          "type": "description",
-          "settings": {
-            "description": ""
           }
         }
       },
       "block_order": [
         "breadcrumb_6nAPEU",
-        "heading_BYBdxq",
-        "description_6w74gE"
+        "heading_BYBdxq"
       ],
       "settings": {
-        "section_width": "stretch_width",
-        "color_scheme": "",
+        "section_width": "container",
+        "color_scheme": "scheme-4faf0e4d-27f4-4d02-bc51-617383bab1a9",
         "alignment": "center",
-        "overlay_opacity": 0,
-        "height": "adapt",
-        "padding_top": 80,
-        "padding_bottom": 40
+        "background_image": "shopify://shop_images/rbmitti.webp",
+        "overlay_opacity": 50,
+        "height": "based_on_content",
+        "padding_top": 100,
+        "padding_bottom": 100
       }
     },
     "main": {
