@@ -1355,13 +1355,6 @@ body .swiper-button-prev.swiper-button-disabled {
   height: 100%;
   flex: 1 1 auto;
 }
-@media (min-width: 768px) {
-  .sec__products-carousel .testimonial_info,
-  .sec__testimonials .testimonial_info,
-  .testimonial_info.flex.align-center.align-seft-center.w-full {
-    min-height: 500px;
-  }
-}
 .sec__products-carousel .testimonial_info > div,
 .sec__testimonials .testimonial_info > div {
   display: flex;
