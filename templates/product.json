@@ -153,7 +153,8 @@
           "type": "trust_badge",
           "settings": {
             "message": "Guarantee Safe Checkout:",
-            "image_width": 340
+            "trust_badge_image": "shopify://shop_images/payment-cion.avif",
+            "image_width": 400
           }
         },
         "collapsible_row_m3g6f8": {
