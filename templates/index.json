@@ -510,8 +510,8 @@
       "settings": {
         "section_width": "fluid_container",
         "color_scheme": "scheme-e2434dd4-80ca-43a1-909b-8a9f7b57a7ab",
-        "heading": "Testimonials",
-        "description": "",
+        "heading": "Loved By Families, Trusted By Businesses",
+        "description": "<p>Real reviews from real customers — from home kitchens to local businesses, here's why people keep choosing RB Mitti Store.</p>",
         "header_alignment": "center",
         "header_size": "medium",
         "design": "default",
@@ -532,8 +532,8 @@
         "autorotate_speed": 5,
         "reveal": false,
         "items_per_row_mobile": 1,
-        "padding_top": 80,
-        "padding_bottom": 80,
+        "padding_top": 60,
+        "padding_bottom": 60,
         "reset_spacing": true
       }
     },
