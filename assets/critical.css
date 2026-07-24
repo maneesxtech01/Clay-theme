@@ -3314,3 +3314,11 @@ nav.mobile {
   pointer-events: auto;
   transform: translateY(0);
 }
+
+/* Header Bottom 1px Solid Grey Border */
+.section-header,
+header.header,
+.section-header header.header,
+.header__inner#header-sticky {
+  border-bottom: 1px solid #e5e7eb !important;
+}
