@@ -280,6 +280,7 @@
         "scrolling_text_dEP8jr",
         "scrolling_text_bPAypi"
       ],
+      "disabled": true,
       "custom_css": [],
       "settings": {
         "section_width": "full_width",
@@ -331,7 +332,7 @@
         "items_to_show": 4,
         "items_per_row": 4,
         "column_gap": 30,
-        "items_per_row_mobile": 2,
+        "items_per_row_mobile": 1,
         "padding_top": 0,
         "padding_bottom": 0,
         "reset_spacing": false
@@ -364,7 +365,7 @@
         "autoplay": false,
         "autorotate_speed": 5,
         "reveal": false,
-        "items_per_row_mobile": 2,
+        "items_per_row_mobile": 1,
         "padding_top": 0,
         "padding_bottom": 0,
         "reset_spacing": false
