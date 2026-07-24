@@ -427,7 +427,7 @@
       ],
       "name": "t:sections.shopable-video.name",
       "settings": {
-        "section_width": "fluid_container",
+        "section_width": "container",
         "color_scheme": "scheme-2b5c6c91-201d-4fb1-aba3-e6d562656976",
         "heading": "The Community",
         "description": "",
@@ -508,7 +508,7 @@
       ],
       "name": "t:sections.testimonials_product.presets.name",
       "settings": {
-        "section_width": "fluid_container",
+        "section_width": "container",
         "color_scheme": "scheme-e2434dd4-80ca-43a1-909b-8a9f7b57a7ab",
         "heading": "Loved By Families, Trusted By Businesses",
         "description": "<p>Real reviews from real customers — from home kitchens to local businesses, here's why people keep choosing RB Mitti Store.</p>",
