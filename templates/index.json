@@ -582,7 +582,7 @@
             "icon_svg": "free_shipping",
             "custom_svg": "",
             "heading": "Free Shipping",
-            "description": "<p>Enjoy free worldwide shipping and returns, with customs and duties taxes included.</p>"
+            "description": "<p>Enjoy free delivery on all orders above Rs. 10,000, anywhere in Pakistan. A flat Rs. 220 delivery fee applies on smaller orders.</p>"
           }
         },
         "icon_box_hDGKNH": {
@@ -590,7 +590,7 @@
           "settings": {
             "icon_svg": "check_badge",
             "custom_svg": "",
-            "heading": "Free Returns",
+            "heading": "Easy Replacement",
             "description": "<p>Free returns within 15 days, please make sure the itemsare in undamaged condition.</p>"
           }
         },
@@ -600,7 +600,7 @@
             "icon_svg": "message_communications",
             "custom_svg": "",
             "heading": "Support Online",
-            "description": "<p>We support customers 24/7, send questions we willsolve for you immediately.</p>"
+            "description": "<p>Have a question? Message us anytime on WhatsApp — real answers from our team, usually within a few hours</p>"
           }
         }
       },
