@@ -176,17 +176,17 @@
             </div>
 
             <div class="contact-field-wrap contact-field-wrap--full">
-              <label class="contact-field-label" for="cf_phone">{{ field_phone }} <span class="required-star">*</span></label>
+              <label class="contact-field-label" for="cf_phone">{{ field_phone }}</label>
               <input type="tel" id="cf_phone" class="contact-field-input" name="contact[phone]"
                 {% if form.phone %}value="{{ form.phone }}"{% elsif customer %}value="{{ customer.phone }}"{% endif %}
-                placeholder="" required>
+                placeholder="">
             </div>
 
             {%- if show_subject -%}
               <div class="contact-field-wrap contact-field-wrap--full">
                 <label class="contact-field-label" for="cf_subject">{{ field_subject }} <span class="required-star">*</span></label>
                 <div class="contact-select-wrap">
-                  <select id="cf_subject" class="contact-field-input contact-field-select" name="contact[subject]" required>
+                  <select id="cf_subject" class="contact-field-input contact-field-select" name="contact[Subject]" required>
                     <option value="" disabled selected>Select a subject</option>
                     <option value="Track order">Track order</option>
                     <option value="Return order">Return order</option>
