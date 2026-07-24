@@ -306,33 +306,18 @@
       try {
         var formData = new FormData();
         formData.append('file', file);
-        var res = await fetch('https://tmpfiles.org/api/v1/upload', {
+        formData.append('upload_preset', 'rbmitti_contact');
+        var res = await fetch('https://api.cloudinary.com/v1_1/sg9dgkzc/auto/upload', {
           method: 'POST',
           body: formData
         });
         var data = await res.json();
-        if (data && data.status === 'success' && data.data && data.data.url) {
-          return data.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+        if (data && data.secure_url) {
+          return data.secure_url;
         }
       } catch (e) {
-        console.warn('tmpfiles upload failed, trying fallback file.io:', e);
+        console.error('Cloudinary upload error:', e);
       }
-
-      try {
-        var formData2 = new FormData();
-        formData2.append('file', file);
-        var res2 = await fetch('https://file.io', {
-          method: 'POST',
-          body: formData2
-        });
-        var data2 = await res2.json();
-        if (data2 && data2.success && data2.link) {
-          return data2.link;
-        }
-      } catch (e2) {
-        console.error('file.io fallback upload failed:', e2);
-      }
-
       return null;
     }
 
