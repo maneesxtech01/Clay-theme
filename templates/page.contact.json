@@ -62,8 +62,8 @@
             "call_label": "Call Us",
             "phone": "+92 3368145851",
             "email": "rbmittistore@gmail.com",
-            "address": "V2G4+763 Essa, Taj Mohammad Khan Rd, Kumhar Wara Noorani Colony, Karachi",
-            "map_iframe": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d50941.0851952626!2d-95.78197131269138!3d37.06182424549097!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x87b778b9da9b5b1f%3A0x3df3aefa017361ac!2sFawn%20Creek%20Township%2C%20KS%2C%20USA!5e0!3m2!1sen!2s!4v1666059952368!5m2!1sen!2s\" height=\"350\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>"
+            "address": "Taj Mohammad Khan Rd, Kumhar Wara Noorani Colony, Karachi",
+            "map_iframe": "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3619.6611177160194!2d67.00303827446199!3d24.875421244660544!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3eb33f0016307a31%3A0x4955a89f971ef4c5!2sShakoor%20Matke%20wala!5e0!3m2!1sen!2s!4v1784931191058!5m2!1sen!2s\" width=\"600\" height=\"550\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"strict-origin-when-cross-origin\"></iframe>"
           }
         }
       },
@@ -78,7 +78,7 @@
         "icon_bg_color": "#b1552b",
         "icon_hover_color": "#ffffff",
         "icon_hover_bg_color": "#111827",
-        "button_bg_color": "#B1552B",
+        "button_bg_color": "#b1552b",
         "button_text_color": "#ffffff",
         "button_hover_bg_color": "#76310f",
         "input_border_radius": 8,
