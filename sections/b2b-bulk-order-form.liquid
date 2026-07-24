@@ -86,7 +86,13 @@
       </div>
 
       <button type="submit" class="b2b-submit-btn" id="b2bSubmitBtn">Submit request</button>
-      <p class="b2b-error-msg" id="b2bErrorMsg">Please fill in all required fields.</p>
+      {% if form.errors %}
+        <p class="b2b-error-msg" id="b2bErrorMsg" style="display: block;">
+          {{ form.errors | default_errors }}
+        </p>
+      {% else %}
+        <p class="b2b-error-msg" id="b2bErrorMsg">Please fill in all required fields.</p>
+      {% endif %}
     {% endform %}
   </div>
 
