@@ -336,7 +336,7 @@
         "collection_4VfYMk": {
           "type": "collection",
           "settings": {
-            "collection": "kids-toys",
+            "collection": "kids-collection",
             "collection_image": "shopify://shop_images/kids_clay_toys.webp",
             "collection_title": "Kids Collection"
           }
