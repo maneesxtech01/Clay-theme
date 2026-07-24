@@ -389,61 +389,57 @@
         "reset_spacing": true
       }
     },
-    "shopable_video_BjwdnD": {
-      "type": "shopable-video",
+    "tiktok_video_JUYFND": {
+      "type": "tiktok-video",
       "blocks": {
-        "video_jKPtyL": {
+        "video_6caRNG": {
           "type": "video",
           "settings": {
-            "product": "5-piece-premium-wooden-kitchen-spoon-set",
-            "poster_image": "shopify://shop_images/Clay_Plate.webp",
-            "local_video": "shopify://files/videos/watermark-removed-RB_Mitti_Store.mp4"
+            "tiktok_embed_url": ""
           }
         },
-        "video_fhrA4B": {
+        "video_cwHEXB": {
           "type": "video",
           "settings": {
-            "product": ""
+            "tiktok_embed_url": ""
           }
         },
-        "video_DfiBTj": {
+        "video_jDhq3D": {
           "type": "video",
           "settings": {
-            "product": ""
+            "tiktok_embed_url": ""
           }
         },
-        "video_7cCcGp": {
+        "video_waYhH3": {
           "type": "video",
           "settings": {
-            "product": ""
+            "tiktok_embed_url": ""
           }
         }
       },
       "block_order": [
-        "video_jKPtyL",
-        "video_fhrA4B",
-        "video_DfiBTj",
-        "video_7cCcGp"
+        "video_6caRNG",
+        "video_cwHEXB",
+        "video_jDhq3D",
+        "video_waYhH3"
       ],
-      "name": "t:sections.shopable-video.name",
+      "name": "t:sections.tiktok-video.presets.name",
       "settings": {
         "section_width": "container",
         "color_scheme": "scheme-2b5c6c91-201d-4fb1-aba3-e6d562656976",
-        "heading": "The Community",
+        "heading": "RB Mitti Community",
         "description": "",
         "header_size": "medium",
-        "header_alignment": "left",
-        "image_ratio": "adapt",
-        "custom_ratio": "",
-        "video_autoplay": true,
+        "header_alignment": "center",
+        "tiktok_handle": "<p>@yourTiktokHandle</p>",
         "items_per_row": 4,
         "column_gap": 20,
-        "show_arrow": true,
+        "show_arrow": false,
         "carousel_pagination": "disable",
         "infinite": true,
         "autoplay": true,
         "autorotate_speed": 5,
-        "reveal": true,
+        "reveal": false,
         "items_per_row_mobile": 1,
         "padding_top": 80,
         "padding_bottom": 80,
@@ -642,7 +638,7 @@
     "collection_tab_AMweAV",
     "expanding_cards_8MFKpi",
     "collection_list_xmGiTx",
-    "shopable_video_BjwdnD",
+    "tiktok_video_JUYFND",
     "product_testimonials_6p7NRB",
     "blog_posts_ixmmRL",
     "icon_box_VbRbAN"
