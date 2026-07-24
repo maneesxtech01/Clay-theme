@@ -748,10 +748,10 @@ variant-radios-bundle .option-swatch-js.active .product__item-option {
 }
 
 .product-item__atc-btn:hover {
-  background-color: #9c481a !important;
-  background: #9c481a !important;
+  background-color: #111111 !important;
+  background: #111111 !important;
   color: #ffffff !important;
-  border-color: #9c481a !important;
+  border-color: #111111 !important;
 }
 
 /* Loading spinner animation for ATC button */
@@ -783,6 +783,7 @@ button-wishlist.product-item__wishlist-btn-absolute {
   height: 35px !important;
   border-radius: 50% !important;
   background-color: #ffffff !important;
+  background: #ffffff !important;
   color: #111111 !important;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12) !important;
   border: none !important;
@@ -790,14 +791,16 @@ button-wishlist.product-item__wishlist-btn-absolute {
   z-index: 10 !important;
 }
 
-.product-item__wishlist-btn-absolute:hover,
-button-wishlist.product-item__wishlist-btn-absolute:hover {
-  background-color: #b85822 !important;
-  background: #b85822 !important;
-  color: #ffffff !important;
+.product-item__wishlist-btn-absolute svg,
+button-wishlist.product-item__wishlist-btn-absolute svg {
+  fill: none !important;
+  stroke: #111111 !important;
+  color: #111111 !important;
 }
 
-/* Active / Added wishlist state */
+/* Wishlist Hover & Active / Added state: Brown background with white icon */
+.product-item__wishlist-btn-absolute:hover,
+button-wishlist.product-item__wishlist-btn-absolute:hover,
 .product-item__wishlist-btn-absolute.active,
 .product-item__wishlist-btn-absolute.added,
 .product-item__wishlist-btn-absolute[data-action="remove"],
@@ -811,6 +814,8 @@ button-wishlist[data-action="remove"] {
   visibility: visible !important;
 }
 
+.product-item__wishlist-btn-absolute:hover svg,
+button-wishlist.product-item__wishlist-btn-absolute:hover svg,
 .product-item__wishlist-btn-absolute.active svg,
 .product-item__wishlist-btn-absolute.added svg,
 .product-item__wishlist-btn-absolute[data-action="remove"] svg,
@@ -819,6 +824,7 @@ button-wishlist.added svg,
 button-wishlist[data-action="remove"] svg {
   fill: #ffffff !important;
   stroke: #ffffff !important;
+  color: #ffffff !important;
 }
 
 /* Adjust secondary image rendering or transition overrides if needed */
