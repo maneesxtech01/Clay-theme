@@ -59,9 +59,15 @@
     "minicart_type": "show_beside",
     "show_on_cart_page": true,
     "select_product_recommendations": [
-      "balloon-sleeve-blouse-square-neck",
-      "cotton-long-sleeve-striped-t-shirt",
-      "plain-cotton-undershirt-wide-neck"
+      "5l-clay-water-cooler-matka-with-tap",
+      "clay-handi-bowl-with-lid",
+      "clay-kulhad-chai-cup",
+      "kids-clay-toy-set",
+      "marble-mortar-pestle-set-stone-spice-grinder",
+      "handmade-clay-handi-bowl",
+      "premium-10l-clay-water-cooler-handcrafted-matka",
+      "premium-clay-drink-set",
+      "5-piece-premium-wooden-kitchen-spoon-set"
     ],
     "show_estimate_shipping_rates": false,
     "show_delivery_day": false,
