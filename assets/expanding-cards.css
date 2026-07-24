@@ -347,10 +347,10 @@
 }
 
 .expanding-cards-container .header-desc p {
-  margin: 0;
-  font-size: 1.1rem;
+  margin: 0px;
+  font-size: 1.1em;
   line-height: 1.5;
-  color: var(--color-text-secondary, #666666);
+  color: #000000;
 }
 
 .expanding-cards-container .header-btn {
