@@ -771,109 +771,98 @@ variant-radios-bundle .option-swatch-js.active .product__item-option {
   display: block !important;
 }
 
-/* Wishlist button: Default / Unactive style (White bg, Black icon) */
+/* Wishlist button: Default / Unactive style (Black bg, White heart icon) */
 .product-item__wishlist-btn-absolute,
 button-wishlist.product-item__wishlist-btn-absolute,
-button-wishlist.product-item__button-wishlist,
-.product-item__button-wishlist {
+.product-item__button-wishlist,
+button-wishlist.product-item__button-wishlist {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  width: 35px !important;
+  height: 35px !important;
   border-radius: 50% !important;
-  background-color: #ffffff !important;
-  background: #ffffff !important;
-  color: #000000 !important;
+  background-color: #000000 !important;
+  background: #000000 !important;
+  color: #ffffff !important;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12) !important;
   border: none !important;
-  transition: all 0.3s ease !important;
+  transition: opacity 0.3s ease, visibility 0.3s ease, background-color 0.3s ease, color 0.3s ease !important;
   z-index: 10 !important;
 }
 
 .product-item__wishlist-btn-absolute svg,
 button-wishlist.product-item__wishlist-btn-absolute svg,
-button-wishlist.product-item__button-wishlist svg,
 .product-item__button-wishlist svg,
+button-wishlist.product-item__button-wishlist svg,
 .product-item__wishlist-btn-absolute path,
 button-wishlist.product-item__wishlist-btn-absolute path,
-button-wishlist.product-item__button-wishlist path,
 .product-item__button-wishlist path,
-.product-item__wishlist-btn-absolute use,
-button-wishlist.product-item__wishlist-btn-absolute use,
-button-wishlist.product-item__button-wishlist use,
-.product-item__button-wishlist use {
-  fill: none !important;
-  stroke: #000000 !important;
-  color: #000000 !important;
+button-wishlist.product-item__button-wishlist path {
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
+  color: #ffffff !important;
 }
 
-/* Desktop Hover behavior: Wishlist button hidden by default on desktop, shown on card hover */
-@media (min-width: 1025px) {
-  .product-item__wishlist-btn-absolute:not(.active):not(.added):not([data-action="remove"]),
-  button-wishlist.product-item__wishlist-btn-absolute:not(.active):not(.added):not([data-action="remove"]),
-  button-wishlist.product-item__button-wishlist:not(.active):not(.added):not([data-action="remove"]),
-  .product-item__button-wishlist:not(.active):not(.added):not([data-action="remove"]) {
-    opacity: 0 !important;
-    visibility: hidden !important;
-    pointer-events: none !important;
-    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background 0.3s ease !important;
-  }
-
-  :is(.product-item__wrapper, .product-item, .product-grid, .product-item__inner, .card, .product-card):hover :is(.product-item__wishlist-btn-absolute, button-wishlist.product-item__wishlist-btn-absolute, button-wishlist.product-item__button-wishlist, .product-item__button-wishlist) {
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: auto !important;
-  }
-}
-
-/* Wishlist Active / Added state ONLY: Brown background (#b85822) with White Heart Icon */
-/* ALWAYS visible on card even without hover */
+/* Wishlist Active / Added state ONLY: Brand Accent background (#b85822) with White Heart Icon */
 .product-item__wishlist-btn-absolute.active,
 .product-item__wishlist-btn-absolute.added,
 .product-item__wishlist-btn-absolute[data-action="remove"],
-button-wishlist.active,
-button-wishlist.added,
-button-wishlist[data-action="remove"],
 .product-item__button-wishlist.active,
 .product-item__button-wishlist.added,
-.product-item__button-wishlist[data-action="remove"] {
+.product-item__button-wishlist[data-action="remove"],
+button-wishlist.active,
+button-wishlist.added,
+button-wishlist[data-action="remove"] {
   background-color: #b85822 !important;
   background: #b85822 !important;
   color: #ffffff !important;
   opacity: 1 !important;
   visibility: visible !important;
-  pointer-events: auto !important;
 }
 
 .product-item__wishlist-btn-absolute.active svg,
 .product-item__wishlist-btn-absolute.added svg,
 .product-item__wishlist-btn-absolute[data-action="remove"] svg,
-button-wishlist.active svg,
-button-wishlist.added svg,
-button-wishlist[data-action="remove"] svg,
 .product-item__button-wishlist.active svg,
 .product-item__button-wishlist.added svg,
 .product-item__button-wishlist[data-action="remove"] svg,
+button-wishlist.active svg,
+button-wishlist.added svg,
+button-wishlist[data-action="remove"] svg,
 .product-item__wishlist-btn-absolute.active path,
 .product-item__wishlist-btn-absolute.added path,
 .product-item__wishlist-btn-absolute[data-action="remove"] path,
-button-wishlist.active path,
-button-wishlist.added path,
-button-wishlist[data-action="remove"] path,
 .product-item__button-wishlist.active path,
 .product-item__button-wishlist.added path,
 .product-item__button-wishlist[data-action="remove"] path,
-.product-item__wishlist-btn-absolute.active use,
-.product-item__wishlist-btn-absolute.added use,
-.product-item__wishlist-btn-absolute[data-action="remove"] use,
-button-wishlist.active use,
-button-wishlist.added use,
-button-wishlist[data-action="remove"] use,
-.product-item__button-wishlist.active use,
-.product-item__button-wishlist.added use,
-.product-item__button-wishlist[data-action="remove"] use {
+button-wishlist.active path,
+button-wishlist.added path,
+button-wishlist[data-action="remove"] path {
   fill: #ffffff !important;
   stroke: #ffffff !important;
   color: #ffffff !important;
+}
+
+/* Desktop Hover Behavior: Hidden by default on desktop, shown on product card hover. Active icons remain visible. */
+@media (min-width: 1025px) {
+  :is(.product-item, .product-card, .product-item__wrapper, .product-item__inner):not(:hover) :is(.product-item__wishlist-btn-absolute, .product-item__button-wishlist, button-wishlist):not(.active):not(.added):not([data-action="remove"]) {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+  }
+
+  :is(.product-item, .product-card, .product-item__wrapper, .product-item__inner):hover :is(.product-item__wishlist-btn-absolute, .product-item__button-wishlist, button-wishlist) {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
+
+  :is(.product-item__wishlist-btn-absolute, .product-item__button-wishlist, button-wishlist):is(.active, .added, [data-action="remove"]) {
+    opacity: 1 !important;
+    visibility: visible !important;
+    pointer-events: auto !important;
+  }
 }
 
 /* Adjust secondary image rendering or transition overrides if needed */
