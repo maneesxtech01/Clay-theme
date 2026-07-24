@@ -25,17 +25,7 @@
         </div>
         <div class="b2b-field">
           <label for="b2bPhone">WhatsApp / phone <span class="req">*</span></label>
-          <div class="b2b-phone-group">
-            <select id="b2bPhoneCode" name="contact[Phone Code]">
-              <option value="+92">🇵🇰 PK +92</option>
-              <option value="+91">🇮🇳 IN +91</option>
-              <option value="+971">🇦🇪 UAE +971</option>
-              <option value="+966">🇸🇦 KSA +966</option>
-              <option value="+1">🇺🇸 US +1</option>
-              <option value="+44">🇬🇧 UK +44</option>
-            </select>
-            <input type="tel" id="b2bPhone" name="contact[phone]" placeholder="300 1234567" required>
-          </div>
+          <input type="tel" id="b2bPhone" name="contact[phone]" placeholder="e.g. 0300 1234567" required>
         </div>
       </div>
 
@@ -68,7 +58,10 @@
           <label><input type="checkbox" name="contact[Products][]" value="Water bottles"> Water bottles</label>
           <label><input type="checkbox" name="contact[Products][]" value="Dinner sets"> Dinner sets</label>
           <label><input type="checkbox" name="contact[Products][]" value="Kitchen tools"> Kitchen tools</label>
-          <label><input type="checkbox" name="contact[Products][]" value="Others"> Others</label>
+          <label><input type="checkbox" name="contact[Products][]" value="Others" id="b2bOthersCheckbox"> Others</label>
+        </div>
+        <div id="b2bOtherProductWrap" style="display: none; margin-top: 10px;">
+          <input type="text" id="b2bOtherProduct" name="contact[Please Specify Other Product]" placeholder="Please specify the product you're looking for">
         </div>
       </div>
 
@@ -137,9 +130,6 @@
   border-color: #d85a30;
   background: #fff;
 }
-.b2b-phone-group { display: flex; gap: 8px; }
-.b2b-phone-group select { width: 110px; flex-shrink: 0; }
-.b2b-phone-group input { flex: 1; }
 .b2b-checkbox-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; font-size: 13px; color: #444; }
 .b2b-checkbox-grid label, .b2b-radio-group label { display: flex; align-items: center; gap: 6px; cursor: pointer; }
 .b2b-radio-group { display: flex; gap: 20px; font-size: 13px; color: #444; }
@@ -215,6 +205,20 @@
   var overlay = document.getElementById('b2bPopupOverlay');
   var closeBtn = document.getElementById('b2bPopupClose');
   var productsGrid = document.getElementById('b2bProductsGrid');
+  var othersCheckbox = document.getElementById('b2bOthersCheckbox');
+  var otherProductWrap = document.getElementById('b2bOtherProductWrap');
+  var otherProductInput = document.getElementById('b2bOtherProduct');
+
+  if (othersCheckbox && otherProductWrap && otherProductInput) {
+    othersCheckbox.addEventListener('change', function () {
+      if (this.checked) {
+        otherProductWrap.style.display = 'block';
+      } else {
+        otherProductWrap.style.display = 'none';
+        otherProductInput.value = '';
+      }
+    });
+  }
 
   function productChecked() {
     return productsGrid.querySelectorAll('input[type="checkbox"]:checked').length > 0;
