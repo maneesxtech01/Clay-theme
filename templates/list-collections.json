@@ -36,7 +36,7 @@
         "description_tLPCVn"
       ],
       "settings": {
-        "section_width": "fluid_container",
+        "section_width": "container",
         "color_scheme": "scheme-4faf0e4d-27f4-4d02-bc51-617383bab1a9",
         "alignment": "center",
         "background_image": "shopify://shop_images/rbmitti.webp",
@@ -101,7 +101,7 @@
         "collection_ACrmpU"
       ],
       "settings": {
-        "section_width": "fluid_container",
+        "section_width": "container",
         "color_scheme": "default",
         "type": "all",
         "sort_collections": "alphabetical",
