@@ -513,7 +513,7 @@
         "img_width": 30,
         "framed": true,
         "rate_color": "#ff9c05",
-        "items_per_row": 2,
+        "items_per_row": 3,
         "column_gap": 20,
         "show_arrow": false,
         "carousel_pagination": "disable",
