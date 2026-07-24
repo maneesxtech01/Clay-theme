@@ -634,7 +634,7 @@
         "heading_spacing_bottom": 10,
         "des_font_size": 14,
         "des_font_weight": "body_weight",
-        "carousel_on_mobile": false,
+        "carousel_on_mobile": true,
         "items_per_row_mobile": "1",
         "padding_top": 60,
         "padding_bottom": 60,
