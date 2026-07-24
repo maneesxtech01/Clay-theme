@@ -42,7 +42,7 @@
     "main": {
       "type": "page-recently-viewed",
       "settings": {
-        "section_width": "fluid_container",
+        "section_width": "container",
         "padding_top": 0,
         "padding_bottom": 0
       }
