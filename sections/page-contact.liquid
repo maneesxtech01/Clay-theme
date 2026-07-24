@@ -186,7 +186,7 @@
               <div class="contact-field-wrap contact-field-wrap--full">
                 <label class="contact-field-label" for="cf_subject">{{ field_subject }} <span class="required-star">*</span></label>
                 <div class="contact-select-wrap">
-                  <select id="cf_subject" class="contact-field-input contact-field-select" name="contact[Subject]" required>
+                  <select id="cf_subject" class="contact-field-input contact-field-select" name="contact[Order Subject]" required>
                     <option value="" disabled selected>Select a subject</option>
                     <option value="Track order">Track order</option>
                     <option value="Return order">Return order</option>
@@ -299,11 +299,52 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var fileInput = document.getElementById('cf_files');
+    var form = document.getElementById('contact_form_main');
+    var fileLinksContainer = document.createElement('div');
+    fileLinksContainer.id = 'cf_file_links_container';
+    if (form) form.appendChild(fileLinksContainer);
+
     if (fileInput) {
-      fileInput.addEventListener('change', function() {
+      fileInput.addEventListener('change', async function() {
         var label = document.querySelector('.contact-attach-btn');
-        if (label && this.files.length > 0) {
-          label.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> ' + this.files.length + ' file(s) selected';
+        if (!this.files || this.files.length === 0) return;
+
+        fileLinksContainer.innerHTML = '';
+        if (label) {
+          label.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> Uploading ' + this.files.length + ' file(s)...';
+        }
+
+        var uploadedCount = 0;
+        for (var i = 0; i < this.files.length; i++) {
+          var file = this.files[i];
+          try {
+            var formData = new FormData();
+            formData.append('file', file);
+            var response = await fetch('https://tmpfiles.org/api/v1/upload', {
+              method: 'POST',
+              body: formData
+            });
+            var data = await response.json();
+            if (data && data.status === 'success' && data.data && data.data.url) {
+              var directUrl = data.data.url.replace('tmpfiles.org/', 'tmpfiles.org/dl/');
+              var hiddenInput = document.createElement('input');
+              hiddenInput.type = 'hidden';
+              hiddenInput.name = 'contact[Download File ' + (i + 1) + ']';
+              hiddenInput.value = directUrl + ' (' + file.name + ')';
+              fileLinksContainer.appendChild(hiddenInput);
+              uploadedCount++;
+            }
+          } catch (e) {
+            console.error('File upload error:', e);
+          }
+        }
+
+        if (label) {
+          if (uploadedCount > 0) {
+            label.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#137F24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ' + uploadedCount + ' file(s) uploaded & attached!';
+          } else {
+            label.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> ' + this.files.length + ' file(s) selected';
+          }
         }
       });
     }
