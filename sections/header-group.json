@@ -36,9 +36,9 @@
         "announcement_2"
       ],
       "settings": {
-        "announcement_bg": "#111111",
+        "announcement_bg": "#A24C24",
         "announcement_text_color": "#ffffff",
-        "font_size": 13,
+        "font_size": 14,
         "auto_rotate": true,
         "change_slides_speed": 5,
         "padding_top": 10,
