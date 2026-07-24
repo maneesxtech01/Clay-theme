@@ -222,10 +222,10 @@
   }
 
   form.addEventListener('submit', function (e) {
+    e.preventDefault();
     errorMsg.style.display = 'none';
 
     if (!form.checkValidity() || !productChecked()) {
-      e.preventDefault();
       errorMsg.textContent = !productChecked()
         ? 'Please select at least one product.'
         : 'Please fill in all required fields.';
@@ -233,10 +233,41 @@
       return;
     }
 
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Submitting...';
-    }
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Submitting...';
+
+    var formData = new FormData(form);
+
+    fetch(form.action, {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Accept': 'text/html'
+      }
+    })
+      .then(async function (response) {
+        var responseText = await response.text();
+        if (response.ok && !responseText.includes('form-single-error') && !responseText.includes('errors')) {
+          overlay.classList.add('active');
+          form.reset();
+          if (otherProductWrap) {
+            otherProductWrap.style.display = 'none';
+          }
+        } else {
+          console.error('Shopify form submission error:', response.status, response.statusText, responseText);
+          errorMsg.textContent = 'Something went wrong. Please try again or contact us directly.';
+          errorMsg.style.display = 'block';
+        }
+      })
+      .catch(function (err) {
+        console.error('Fetch submission network error:', err);
+        errorMsg.textContent = 'Something went wrong. Please try again or contact us directly.';
+        errorMsg.style.display = 'block';
+      })
+      .finally(function () {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Submit request';
+      });
   });
 
   closeBtn.addEventListener('click', function () {
