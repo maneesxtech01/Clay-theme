@@ -47,16 +47,17 @@
       <div class="b2b-field">
         <label>Products you're interested in <span class="req">*</span></label>
         <div class="b2b-checkbox-grid" id="b2bProductsGrid">
-          <label><input type="checkbox" name="contact[Products][]" value="All products"> All products</label>
-          <label><input type="checkbox" name="contact[Products][]" value="Clay handi"> Clay handi</label>
-          <label><input type="checkbox" name="contact[Products][]" value="Tawa"> Tawa</label>
-          <label><input type="checkbox" name="contact[Products][]" value="Cups"> Cups</label>
-          <label><input type="checkbox" name="contact[Products][]" value="Sauce pan"> Sauce pan</label>
-          <label><input type="checkbox" name="contact[Products][]" value="Water bottles"> Water bottles</label>
-          <label><input type="checkbox" name="contact[Products][]" value="Dinner sets"> Dinner sets</label>
-          <label><input type="checkbox" name="contact[Products][]" value="Kitchen tools"> Kitchen tools</label>
-          <label><input type="checkbox" name="contact[Products][]" value="Others" id="b2bOthersCheckbox"> Others</label>
+          <label><input type="checkbox" value="All products"> All products</label>
+          <label><input type="checkbox" value="Clay handi"> Clay handi</label>
+          <label><input type="checkbox" value="Tawa"> Tawa</label>
+          <label><input type="checkbox" value="Cups"> Cups</label>
+          <label><input type="checkbox" value="Sauce pan"> Sauce pan</label>
+          <label><input type="checkbox" value="Water bottles"> Water bottles</label>
+          <label><input type="checkbox" value="Dinner sets"> Dinner sets</label>
+          <label><input type="checkbox" value="Kitchen tools"> Kitchen tools</label>
+          <label><input type="checkbox" value="Others" id="b2bOthersCheckbox"> Others</label>
         </div>
+        <input type="hidden" id="b2bProductsCombined" name="contact[Products Interested In]" value="">
         <div id="b2bOtherProductWrap" style="display: none; margin-top: 10px;">
           <input type="text" id="b2bOtherProduct" name="contact[Please Specify Other Product]" placeholder="Please specify the product you're looking for">
         </div>
@@ -230,9 +231,20 @@
   form.addEventListener('submit', function (e) {
     errorMsg.style.display = 'none';
 
-    if (!form.checkValidity() || !productChecked()) {
+    var checkedBoxes = productsGrid.querySelectorAll('input[type="checkbox"]:checked');
+    var selectedProducts = [];
+    checkedBoxes.forEach(function(box) {
+      selectedProducts.push(box.value);
+    });
+
+    var combinedHidden = document.getElementById('b2bProductsCombined');
+    if (combinedHidden) {
+      combinedHidden.value = selectedProducts.join(', ');
+    }
+
+    if (!form.checkValidity() || selectedProducts.length === 0) {
       e.preventDefault();
-      errorMsg.textContent = !productChecked()
+      errorMsg.textContent = selectedProducts.length === 0
         ? 'Please select at least one product.'
         : 'Please fill in all required fields.';
       errorMsg.style.display = 'block';
