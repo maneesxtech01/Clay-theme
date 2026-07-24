@@ -1,0 +1,123 @@
+{%- comment -%}
+  GSAP Lightweight Custom Cursor for Desktop
+{%- endcomment -%}
+<div class="custom-cursor-wrap" id="custom-cursor-wrap" aria-hidden="true">
+  <div class="custom-cursor-dot" id="custom-cursor-dot"></div>
+  <div class="custom-cursor-ring" id="custom-cursor-ring"></div>
+</div>
+
+<script>
+  (function() {
+    // Only run on desktop devices
+    if (window.innerWidth < 992 || matchMedia('(pointer: coarse)').matches) return;
+
+    function initCustomCursor() {
+      const wrap = document.getElementById('custom-cursor-wrap');
+      const dot = document.getElementById('custom-cursor-dot');
+      const ring = document.getElementById('custom-cursor-ring');
+
+      if (!wrap || !dot || !ring) return;
+
+      document.body.classList.add('has-custom-cursor');
+
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let isVisible = false;
+
+      // GSAP setup or fallback
+      let dotX, dotY, ringX, ringY;
+
+      if (window.gsap) {
+        dotX = gsap.quickTo(dot, "x", { duration: 0.08, ease: "power2.out" });
+        dotY = gsap.quickTo(dot, "y", { duration: 0.08, ease: "power2.out" });
+        ringX = gsap.quickTo(ring, "x", { duration: 0.35, ease: "power2.out" });
+        ringY = gsap.quickTo(ring, "y", { duration: 0.35, ease: "power2.out" });
+      } else {
+        // Fallback LERP loop if GSAP isn't loaded yet
+        let rx = mouseX, ry = mouseY;
+        function renderFallback() {
+          rx += (mouseX - rx) * 0.18;
+          ry += (mouseY - ry) * 0.18;
+          dot.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0)`;
+          ring.style.transform = `translate3d(${rx}px, ${ry}px, 0)`;
+          requestAnimationFrame(renderFallback);
+        }
+        renderFallback();
+      }
+
+      window.addEventListener('mousemove', function(e) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+
+        if (!isVisible) {
+          isVisible = true;
+          wrap.classList.add('is-visible');
+        }
+
+        if (window.gsap && dotX) {
+          dotX(mouseX);
+          dotY(mouseY);
+          ringX(mouseX);
+          ringY(mouseY);
+        }
+      }, { passive: true });
+
+      window.addEventListener('mouseleave', function() {
+        isVisible = false;
+        wrap.classList.remove('is-visible');
+      });
+
+      // Hover state management
+      const interactiveSelector = 'a, button, input, textarea, select, label, [role="button"], .article-card-inner, .btn, .hover-effect';
+
+      document.addEventListener('mouseover', function(e) {
+        if (e.target.closest && e.target.closest(interactiveSelector)) {
+          wrap.classList.add('is-hovering');
+        }
+      });
+
+      document.addEventListener('mouseout', function(e) {
+        if (e.target.closest && e.target.closest(interactiveSelector)) {
+          wrap.classList.remove('is-hovering');
+        }
+      });
+
+      document.addEventListener('mousedown', function() {
+        wrap.classList.add('is-active');
+      });
+
+      document.addEventListener('mouseup', function() {
+        wrap.classList.remove('is-active');
+      });
+    }
+
+    // Load GSAP dynamically if not present
+    if (typeof gsap === 'undefined') {
+      const script = document.createElement('script');
+      script.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js';
+      script.async = true;
+      script.onload = function() {
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initCustomCursor);
+        } else {
+          initCustomCursor();
+        }
+      };
+      script.onerror = function() {
+        // Run fallback if CDN fails
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', initCustomCursor);
+        } else {
+          initCustomCursor();
+        }
+      };
+      document.head.appendChild(script);
+    } else {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initCustomCursor);
+      } else {
+        initCustomCursor();
+      }
+    }
+  })();
+</script>

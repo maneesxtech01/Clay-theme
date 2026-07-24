@@ -186,6 +186,7 @@
     <noscript><link rel="stylesheet" href="{{ 'theme.css' | asset_url }}"></noscript>
     <link rel="stylesheet" href="{{ 'popup.css' | asset_url }}" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="{{ 'popup.css' | asset_url }}"></noscript>
+    {{ 'custom-cursor.css' | asset_url | stylesheet_tag }}
     <script src="{{ 'swiper-bundle.min.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'motion.min.js' | asset_url }}" type="module" defer="defer"></script>
     <script src="{{ 'utils.js' | asset_url }}" defer="defer"></script>
@@ -221,5 +222,6 @@
     {%- render 'scripts-tag' -%}
     {%- render 'sprite-svg' -%}
     {%- render 'content-bottom' -%}
+    {%- render 'custom-cursor' -%}
   </body>
 </html>

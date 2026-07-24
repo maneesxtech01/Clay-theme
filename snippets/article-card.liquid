@@ -86,28 +86,24 @@
     </div>
 
     <div class="blog-posts-info article-card-body text-{{ content_alignment }}{% if layout == 'list' %} col-md-remaining{% endif %}">
-      {%- if show_category != false -%}
-        <div class="blog-posts-category mb-10 text-{{ content_alignment }}">
-          <a
-            href="{{ blog.url | default: '#' }}"
-            aria-label="{{ category_label }}"
-            class="article-card-badge inline-flex no-underline"
-          >
-            <span>{{ category_label }}</span>
-          </a>
-        </div>
-      {%- endif -%}
-
       {%- if article.title != blank -%}
-        <h3 class="blog-posts-title article-card-title mt-0 mb-10 heading-letter-spacing">
+        <h3 class="blog-posts-title article-card-title mt-0 mb-6 heading-letter-spacing">
           <a href="{{ article.url }}" aria-label="{{ article.title }}" class="no-underline heading-color">
             {{ article.title }}
           </a>
         </h3>
       {%- endif -%}
 
+      {%- if show_date != false -%}
+        <div class="blog-posts-date article-card-date mb-12">
+          <span>
+            {{ article.published_at | date: '%B %-d, %Y' }}
+          </span>
+        </div>
+      {%- endif -%}
+
       {%- if show_excerpt != false -%}
-        <div class="blog-posts-content article-card-excerpt mb-16 word-break">
+        <div class="blog-posts-content article-card-excerpt mb-20 word-break">
           {%- if article.excerpt != blank -%}
             {{ article.excerpt | strip_html | truncatewords: 22, '...' }}
           {%- else -%}
@@ -116,40 +112,15 @@
         </div>
       {%- endif -%}
 
-      <div class="blog-posts-bottom article-card-footer flex gap-10 flex-wrap justify-content-{{ content_alignment }}">
-        {%- if show_date or show_author -%}
-          {%- if show_author -%}
-            <div class="blog-posts-author fs-13">
-              <span>
-                {{- 'blog_post.post_by' | t }}
-                <span class="primary-color heading_weight">{{ article.author }}</span>
-              </span>
-            </div>
-          {%- endif -%}
-          {%- if show_date -%}
-            <div class="blog-posts-date fs-13">
-              <span>
-                {{ article.published_at | date: '%b %d %Y' }}
-              </span>
-            </div>
-          {%- endif -%}
-        {%- endif -%}
-        {%- if show_comment_count -%}
-          <div class="article-card__footer fs-13">
-            {%- if blog.comments_enabled? -%}
-              <span>{{ 'blogs.article.comments' | t: count: article.comments_count }}</span>
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-      </div>
-
-      {%- if show_readmore -%}
-        <a
-          class="mt-20 inline-flex blog-posts-readmore article-card-readmore no-underline btn-{{ readmore_type }}"
-          href="{{ article.url }}"
-        >
-          {{- 'blog_post.read_more' | t -}}
-        </a>
+      {%- if show_readmore != false -%}
+        <div class="article-card-action">
+          <a
+            class="inline-flex blog-posts-readmore article-card-readmore no-underline btn-solid-teal"
+            href="{{ article.url }}"
+          >
+            {{- 'blog_post.read_more' | t -}}
+          </a>
+        </div>
       {%- endif -%}
     </div>
   </div>
