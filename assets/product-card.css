@@ -785,3 +785,79 @@ variant-radios-bundle .option-swatch-js.active .product__item-option {
   border-radius: 12px !important;
   overflow: hidden !important;
 }
+
+/* Single Product Price Alignment to Left */
+.product-detail__price,
+.product-detail__price .card-product-price,
+.product-detail__information .card-product-price,
+.product-detail__information .price-regular {
+  justify-content: flex-start !important;
+  text-align: left !important;
+}
+
+/* Single Product Buy Buttons: Add to Cart (Brown), Buy it now (Black) */
+.product-form__buttons .product-form__submit,
+.product-form__submit.btn-primary {
+  background-color: #b85822 !important;
+  background: #b85822 !important;
+  border-color: #b85822 !important;
+  color: #ffffff !important;
+  border-radius: 50px !important;
+}
+
+.product-form__buttons .product-form__submit:hover,
+.product-form__submit.btn-primary:hover {
+  background-color: #9c481a !important;
+  background: #9c481a !important;
+  border-color: #9c481a !important;
+  color: #ffffff !important;
+}
+
+.btn-checkout-dynamic .shopify-payment-button__button--unbranded,
+body .shopify-payment-button__button--unbranded {
+  background-color: #111111 !important;
+  background: #111111 !important;
+  border-color: #111111 !important;
+  color: #ffffff !important;
+  border-radius: 50px !important;
+  transition: background-color 0.25s ease, border-color 0.25s ease !important;
+}
+
+body .shopify-payment-button__button--unbranded:hover:not([disabled]) {
+  background-color: #222222 !important;
+  background: #222222 !important;
+  border-color: #222222 !important;
+  color: #ffffff !important;
+}
+
+/* Minicart Buttons Styling */
+.minicart__bottom .btn-checkout,
+.bls__drawer-bottom .btn-checkout {
+  background-color: #b85822 !important;
+  background: #b85822 !important;
+  border-color: #b85822 !important;
+  color: #ffffff !important;
+  border-radius: 50px !important;
+}
+
+.minicart__bottom .btn-checkout:hover,
+.bls__drawer-bottom .btn-checkout:hover {
+  background-color: #9c481a !important;
+  background: #9c481a !important;
+  border-color: #9c481a !important;
+}
+
+.minicart__bottom .viewcart,
+.bls__drawer-bottom .viewcart {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  border: 1.5px solid #111111 !important;
+  color: #111111 !important;
+  border-radius: 50px !important;
+}
+
+.minicart__bottom .viewcart:hover,
+.bls__drawer-bottom .viewcart:hover {
+  background-color: #f5f5f5 !important;
+  color: #111111 !important;
+}
