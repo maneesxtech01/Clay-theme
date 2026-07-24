@@ -1698,3 +1698,40 @@ mini-cart-remove-button.loading .remove-icon {
 .title-placholder {
   --color-link: #000;
 }
+
+/* Search bar drawer & list item left alignment */
+.product-item__information.type-list,
+.type-list.product-item__information,
+#search-results-list .product-item__information,
+.search-results-list .product-item__information,
+.predictive-search .product-item__information,
+.search___drawer .product-item__information,
+.search-modal__content .product-item__information {
+  text-align: left !important;
+  align-items: flex-start !important;
+}
+
+.product-item__information.type-list .product-item__name,
+#search-results-list .product-item__name,
+.search-results-list .product-item__name,
+.predictive-search .product-item__name,
+.search___drawer .product-item__name,
+.search-modal__content .product-item__name {
+  text-align: left !important;
+}
+
+.product-item__information.type-list .product-item__price,
+.product-item__information.type-list .card-product-price,
+#search-results-list .product-item__price,
+#search-results-list .card-product-price,
+.search-results-list .product-item__price,
+.search-results-list .card-product-price,
+.predictive-search .product-item__price,
+.predictive-search .card-product-price,
+.search___drawer .product-item__price,
+.search___drawer .card-product-price,
+.search-modal__content .product-item__price,
+.search-modal__content .card-product-price {
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
+}

@@ -634,7 +634,7 @@ variant-radios-bundle .option-swatch-js.active .product__item-option {
   display: flex !important;
   flex-direction: column !important;
   justify-content: flex-start !important;
-  text-align: center !important;
+  text-align: center;
   margin-top: 15px !important;
 }
 
@@ -642,7 +642,7 @@ variant-radios-bundle .option-swatch-js.active .product__item-option {
 .product-item__name {
   font-weight: 700 !important;
   color: #111111 !important;
-  text-align: center !important;
+  text-align: center;
   margin-top: 10px !important;
   margin-bottom: 8px !important;
   font-size: 15px !important;
@@ -652,13 +652,50 @@ variant-radios-bundle .option-swatch-js.active .product__item-option {
 /* Price alignment */
 .product-item__price,
 .card-product-price {
-  justify-content: center !important;
-  align-items: center !important;
+  justify-content: center;
+  align-items: center;
   display: flex !important;
   flex-wrap: wrap !important;
   gap: 5px !important;
   margin-top: 5px !important;
   margin-bottom: 10px !important;
+}
+
+/* Search bar drawer & list item left alignment */
+.product-item__information.type-list,
+.type-list.product-item__information,
+#search-results-list .product-item__information,
+.search-results-list .product-item__information,
+.predictive-search .product-item__information,
+.search___drawer .product-item__information,
+.search-modal__content .product-item__information {
+  text-align: left !important;
+  align-items: flex-start !important;
+}
+
+.product-item__information.type-list .product-item__name,
+#search-results-list .product-item__name,
+.search-results-list .product-item__name,
+.predictive-search .product-item__name,
+.search___drawer .product-item__name,
+.search-modal__content .product-item__name {
+  text-align: left !important;
+}
+
+.product-item__information.type-list .product-item__price,
+.product-item__information.type-list .card-product-price,
+#search-results-list .product-item__price,
+#search-results-list .card-product-price,
+.search-results-list .product-item__price,
+.search-results-list .card-product-price,
+.predictive-search .product-item__price,
+.predictive-search .card-product-price,
+.search___drawer .product-item__price,
+.search___drawer .card-product-price,
+.search-modal__content .product-item__price,
+.search-modal__content .card-product-price {
+  justify-content: flex-start !important;
+  align-items: flex-start !important;
 }
 
 /* Star rating alignment */
