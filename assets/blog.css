@@ -58,46 +58,59 @@ blockquote .light-dark-grey {
 /* ==========================================================================
    Redesigned Blog Post Card Component
    ========================================================================== */
-.article-card-component {
-  height: 100%;
-  box-sizing: border-box;
+.blog-articles,
+.blog-posts-list,
+.grid-cols {
+  align-items: stretch !important;
+}
+
+.article-card-component,
+.blog-posts-item {
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  box-sizing: border-box !important;
 }
 
 .article-card-inner {
-  background-color: var(--card-bg, #f3f4f6);
+  transform: none !important;
+  transition: box-shadow 0.4s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+  position: relative !important;
+  overflow: hidden !important;
+  background: #ffffff !important;
+  border-radius: 12px !important;
   border: 1px solid var(--card-border, #e5e7eb);
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
-  transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-  box-sizing: border-box;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .article-card-inner:hover,
 .blog-posts-item:hover .article-card-inner {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.09);
+  transform: none !important;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12) !important;
 }
 
 .article-card-media-wrap {
   width: 100%;
-  border-radius: 8px 8px 0 0;
+  border-radius: 12px 12px 0 0;
   overflow: hidden;
-  background-color: var(--blog-img-bg, #e5e7eb);
+  background-color: var(--blog-img-bg, #f8f9fa);
   position: relative;
 }
 
+a.article-card-media-link.block,
 .article-card-media-link {
   display: block;
   width: 100%;
   position: relative;
-  border-radius: 8px 8px 0 0;
+  border-radius: 12px 12px 0 0 !important;
   overflow: hidden;
-  background-color: var(--blog-img-bg, #e5e7eb);
+  background-color: var(--blog-img-bg, #f8f9fa);
+  aspect-ratio: var(--aspect-ratio, 16/10) !important;
 }
 
 .article-card-media-wrap img,
@@ -108,7 +121,7 @@ blockquote .light-dark-grey {
   object-fit: cover !important;
   object-position: center !important;
   transition: transform 0.5s ease !important;
-  border-radius: 8px 8px 0 0 !important;
+  border-radius: 12px 12px 0 0 !important;
 }
 
 .article-card-inner:hover .article-card-media-wrap img {
@@ -117,11 +130,11 @@ blockquote .light-dark-grey {
 
 .article-card-body {
   padding: 24px 22px;
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
   box-sizing: border-box;
-  background-color: #f3f4f6;
+  background-color: #ffffff;
 }
 
 .article-card-title {
@@ -155,11 +168,11 @@ blockquote .light-dark-grey {
   line-height: 1.55;
   color: #4b5563;
   margin-bottom: 20px;
-  flex-grow: 1;
+  flex-grow: 1 !important;
 }
 
 .article-card-action {
-  margin-top: auto;
+  margin-top: auto !important;
 }
 
 .article-card-readmore,
@@ -173,6 +186,7 @@ blockquote .light-dark-grey {
   display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
+  gap: 8px !important;
   text-decoration: none !important;
   line-height: 1.4 !important;
   transition: background-color 0.25s ease, transform 0.2s ease !important;
@@ -180,9 +194,20 @@ blockquote .light-dark-grey {
   cursor: pointer !important;
 }
 
+.article-card-readmore .btn-arrow-icon,
+.btn-solid-teal .btn-arrow-icon {
+  margin-left: 4px;
+  transition: transform 0.25s ease !important;
+  display: inline-block;
+}
+
 .article-card-readmore:hover,
 .btn-solid-teal:hover {
   background-color: #284d58 !important;
   color: #ffffff !important;
-  transform: translateY(-1px) !important;
+}
+
+.article-card-readmore:hover .btn-arrow-icon,
+.btn-solid-teal:hover .btn-arrow-icon {
+  transform: translateX(4px) !important;
 }
