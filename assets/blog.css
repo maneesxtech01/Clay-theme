@@ -110,19 +110,17 @@ a.article-card-media-link.block,
   aspect-ratio: var(--aspect-ratio, 16/10) !important;
 }
 
-.article-card-media-wrap img,
-.article-card-media-wrap .responsive-image img,
-.article-card-media-link img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  object-position: center !important;
-  transition: transform 0.5s ease !important;
-  border-radius: 12px 12px 0 0 !important;
+.article-card-media-wrap img, .article-card-media-wrap .responsive-image img, .article-card-media-link img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: inherit;
+    object-position: center !important;
+    transition: transform .5s ease !important;
+    border-radius: 12px 12px 0px 0px !important;
 }
 
 .article-card-inner:hover .article-card-media-wrap img {
-  transform: scale(1.03) !important;
+  transform: none !important;
 }
 
 .article-card-body {
@@ -173,35 +171,24 @@ a.article-card-media-link.block,
 }
 
 .article-card-readmore {
-  background-color: transparent !important;
-  color: #333333 !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
+  background-color: var(--btn-primary-bg-color, #386674) !important;
+  color: var(--btn-primary-color, #ffffff) !important;
+  padding: 10px 24px !important;
+  border-radius: 50px !important;
   font-size: 14px !important;
   font-weight: 600 !important;
   display: inline-flex !important;
   align-items: center !important;
-  justify-content: flex-start !important;
-  gap: 6px !important;
+  justify-content: center !important;
   text-decoration: none !important;
   line-height: 1.4 !important;
-  transition: color 0.2s ease !important;
+  transition: background-color 0.25s ease, opacity 0.2s ease !important;
   border: none !important;
   cursor: pointer !important;
 }
 
-.article-card-readmore .btn-arrow-icon {
-  margin-left: 2px;
-  transition: transform 0.25s ease !important;
-  display: inline-block;
-  color: #333333;
-}
-
 .article-card-readmore:hover {
-  color: #000000 !important;
-}
-
-.article-card-readmore:hover .btn-arrow-icon {
-  transform: translateX(5px) !important;
-  color: #000000;
+  background-color: var(--btn-primary-hover-bg-color, #284d58) !important;
+  color: var(--btn-primary-hover-color, #ffffff) !important;
+  transform: none !important;
 }
