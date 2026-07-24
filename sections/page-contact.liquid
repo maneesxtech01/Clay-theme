@@ -186,7 +186,7 @@
               <div class="contact-field-wrap contact-field-wrap--full">
                 <label class="contact-field-label" for="cf_subject">{{ field_subject }} <span class="required-star">*</span></label>
                 <div class="contact-select-wrap">
-                  <select id="cf_subject" class="contact-field-input contact-field-select" required>
+                  <select id="cf_subject" class="contact-field-input contact-field-select" name="contact[Subject]" required>
                     <option value="" disabled selected>Select a subject</option>
                     <option value="Track order">Track order</option>
                     <option value="Return order">Return order</option>
@@ -203,8 +203,7 @@
 
             <div class="contact-field-wrap contact-field-wrap--full">
               <label class="contact-field-label" for="cf_message">{{ field_message }} <span class="required-star">*</span></label>
-              <textarea id="cf_message_input" class="contact-field-input contact-field-textarea" placeholder="" required></textarea>
-              <input type="hidden" id="cf_body_hidden" name="contact[body]" value="">
+              <textarea id="cf_message" class="contact-field-input contact-field-textarea" name="contact[body]" placeholder="" required></textarea>
             </div>
 
             {%- if show_attach -%}
@@ -214,6 +213,7 @@
                   Attach Files
                 </label>
                 <input type="file" id="cf_files" multiple accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" style="display:none">
+                <div id="cf_file_inputs_container"></div>
                 <p class="contact-attach-hint">Attach up to 10 files. The maximum allowed size per file is 10 MB.</p>
               </div>
             {%- endif -%}
@@ -300,17 +300,7 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var fileInput = document.getElementById('cf_files');
-    var form = document.getElementById('contact_form_main');
-    var submitBtn = document.getElementById('contact-submit-btn');
-
-    if (fileInput) {
-      fileInput.addEventListener('change', function() {
-        var label = document.querySelector('.contact-attach-btn');
-        if (label && this.files && this.files.length > 0) {
-          label.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#137F24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ' + this.files.length + ' file(s) attached';
-        }
-      });
-    }
+    var container = document.getElementById('cf_file_inputs_container');
 
     async function uploadSingleFile(file) {
       try {
@@ -346,57 +336,37 @@
       return null;
     }
 
-    if (form) {
-      form.addEventListener('submit', async function(e) {
-        if (form.dataset.submitting === 'true') return;
+    if (fileInput) {
+      fileInput.addEventListener('change', async function() {
+        var label = document.querySelector('.contact-attach-btn');
+        if (!this.files || this.files.length === 0) return;
 
-        e.preventDefault();
-        e.stopPropagation();
-
-        if (submitBtn) {
-          submitBtn.disabled = true;
-          submitBtn.innerHTML = 'Uploading file(s) & sending...';
+        if (container) container.innerHTML = '';
+        if (label) {
+          label.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> Uploading ' + this.files.length + ' file(s)...';
         }
 
-        var uploadedFiles = [];
-        if (fileInput && fileInput.files && fileInput.files.length > 0) {
-          for (var i = 0; i < fileInput.files.length; i++) {
-            var file = fileInput.files[i];
-            var fileUrl = await uploadSingleFile(file);
-            if (fileUrl) {
-              uploadedFiles.push({ name: file.name, url: fileUrl });
-            } else {
-              uploadedFiles.push({ name: file.name, url: '(Attachment failed to upload)' });
-            }
+        var successCount = 0;
+        for (var i = 0; i < this.files.length; i++) {
+          var file = this.files[i];
+          var url = await uploadSingleFile(file);
+          if (url && container) {
+            var hiddenInput = document.createElement('input');
+            hiddenInput.type = 'hidden';
+            hiddenInput.name = 'contact[Attachment ' + (i + 1) + ']';
+            hiddenInput.value = url + ' (' + file.name + ')';
+            container.appendChild(hiddenInput);
+            successCount++;
           }
         }
 
-        var subjectElem = document.getElementById('cf_subject');
-        var messageInput = document.getElementById('cf_message_input');
-        var bodyHidden = document.getElementById('cf_body_hidden');
-
-        var subjectText = subjectElem ? subjectElem.value : '';
-        var messageText = messageInput ? messageInput.value : '';
-
-        var formattedBody = '';
-        if (subjectText) {
-          formattedBody += 'Subject: ' + subjectText + '\n\n';
-        }
-        formattedBody += 'Message:\n' + messageText;
-
-        if (uploadedFiles.length > 0) {
-          formattedBody += '\n\nAttached Files (Click link to view/download):\n';
-          for (var j = 0; j < uploadedFiles.length; j++) {
-            formattedBody += '• ' + uploadedFiles[j].name + ':\n' + uploadedFiles[j].url + '\n';
+        if (label) {
+          if (successCount > 0) {
+            label.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#137F24" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> ' + successCount + ' file(s) attached & ready!';
+          } else {
+            label.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg> ' + this.files.length + ' file(s) selected';
           }
         }
-
-        if (bodyHidden) {
-          bodyHidden.value = formattedBody;
-        }
-
-        form.dataset.submitting = 'true';
-        form.submit();
       });
     }
   });
