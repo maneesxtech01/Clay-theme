@@ -90,7 +90,7 @@
     {% endform %}
   </div>
 
-  <div class="b2b-popup-overlay" id="b2bPopupOverlay">
+  <div class="b2b-popup-overlay {% if form.posted_successfully? %}active{% endif %}" id="b2bPopupOverlay">
     <div class="b2b-popup-box">
       <div class="b2b-popup-icon">✓</div>
       <h3>Thank you!</h3>
@@ -222,10 +222,10 @@
   }
 
   form.addEventListener('submit', function (e) {
-    e.preventDefault();
     errorMsg.style.display = 'none';
 
     if (!form.checkValidity() || !productChecked()) {
+      e.preventDefault();
       errorMsg.textContent = !productChecked()
         ? 'Please select at least one product.'
         : 'Please fill in all required fields.';
@@ -233,32 +233,10 @@
       return;
     }
 
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Submitting...';
-
-    var formData = new FormData(form);
-    var searchParams = new URLSearchParams(formData);
-
-    fetch(form.action, {
-      method: 'POST',
-      body: searchParams,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Accept': 'text/html'
-      }
-    })
-      .then(function () {
-        overlay.classList.add('active');
-        form.reset();
-      })
-      .catch(function () {
-        overlay.classList.add('active');
-        form.reset();
-      })
-      .finally(function () {
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Submit request';
-      });
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Submitting...';
+    }
   });
 
   closeBtn.addEventListener('click', function () {
