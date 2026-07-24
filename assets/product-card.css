@@ -807,13 +807,10 @@ button-wishlist.product-item__button-wishlist path {
 /* Wishlist Active / Added state ONLY: Brand Accent background (#b85822) with White Heart Icon */
 .product-item__wishlist-btn-absolute.active,
 .product-item__wishlist-btn-absolute.added,
-.product-item__wishlist-btn-absolute[data-action="remove"],
 .product-item__button-wishlist.active,
 .product-item__button-wishlist.added,
-.product-item__button-wishlist[data-action="remove"],
 button-wishlist.active,
-button-wishlist.added,
-button-wishlist[data-action="remove"] {
+button-wishlist.added {
   background-color: #b85822 !important;
   background: #b85822 !important;
   color: #ffffff !important;
@@ -823,22 +820,16 @@ button-wishlist[data-action="remove"] {
 
 .product-item__wishlist-btn-absolute.active svg,
 .product-item__wishlist-btn-absolute.added svg,
-.product-item__wishlist-btn-absolute[data-action="remove"] svg,
 .product-item__button-wishlist.active svg,
 .product-item__button-wishlist.added svg,
-.product-item__button-wishlist[data-action="remove"] svg,
 button-wishlist.active svg,
 button-wishlist.added svg,
-button-wishlist[data-action="remove"] svg,
 .product-item__wishlist-btn-absolute.active path,
 .product-item__wishlist-btn-absolute.added path,
-.product-item__wishlist-btn-absolute[data-action="remove"] path,
 .product-item__button-wishlist.active path,
 .product-item__button-wishlist.added path,
-.product-item__button-wishlist[data-action="remove"] path,
 button-wishlist.active path,
-button-wishlist.added path,
-button-wishlist[data-action="remove"] path {
+button-wishlist.added path {
   fill: #ffffff !important;
   stroke: #ffffff !important;
   color: #ffffff !important;
@@ -846,7 +837,7 @@ button-wishlist[data-action="remove"] path {
 
 /* Desktop Hover Behavior: Hidden by default on desktop for product card grids, shown on product card hover. Active icons & Single Product Page icons remain visible. */
 @media (min-width: 1025px) {
-  :is(.product-item, .product-card, .product-item__wrapper, .product-item__inner):not(.product-detail):not(:hover) :is(.product-item__wishlist-btn-absolute, .product-item__button-wishlist, button-wishlist):not(.active):not(.added):not([data-action="remove"]) {
+  :is(.product-item, .product-card, .product-item__wrapper, .product-item__inner):not(.product-detail):not(:hover) :is(.product-item__wishlist-btn-absolute, .product-item__button-wishlist, button-wishlist):not(.active):not(.added) {
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
@@ -860,7 +851,7 @@ button-wishlist[data-action="remove"] path {
 
   /* Single product page & active wishlist buttons are always visible */
   :is(.product-detail, .product-detail__information, .product-detail__media, .product-form, .product-form__buttons, .product-single-layout, .main-product-section) button-wishlist,
-  :is(.product-item__wishlist-btn-absolute, .product-item__button-wishlist, button-wishlist):is(.active, .added, [data-action="remove"]) {
+  :is(.product-item__wishlist-btn-absolute, .product-item__button-wishlist, button-wishlist):is(.active, .added) {
     opacity: 1 !important;
     visibility: visible !important;
     pointer-events: auto !important;
