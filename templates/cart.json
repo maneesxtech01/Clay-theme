@@ -19,54 +19,47 @@
         "heading_f6yAbL": {
           "type": "heading",
           "settings": {
-            "page_title": "",
+            "page_title": "Your Cart",
             "header_size": "default"
-          }
-        },
-        "description_Uyfq9Y": {
-          "type": "description",
-          "settings": {
-            "description": "<p>Review your selected items before purchase. Enjoy a seamless shopping experience!</p>"
           }
         }
       },
       "block_order": [
         "breadcrumb_fkLpBa",
-        "heading_f6yAbL",
-        "description_Uyfq9Y"
+        "heading_f6yAbL"
       ],
       "settings": {
-        "section_width": "stretch_width",
-        "color_scheme": "",
+        "section_width": "container",
+        "color_scheme": "scheme-4faf0e4d-27f4-4d02-bc51-617383bab1a9",
         "alignment": "center",
-        "overlay_opacity": 0,
-        "height": "adapt",
-        "padding_top": 80,
-        "padding_bottom": 0
+        "background_image": "shopify://shop_images/rbmitti.webp",
+        "overlay_opacity": 50,
+        "height": "based_on_content",
+        "padding_top": 100,
+        "padding_bottom": 100
       }
     },
     "cart-items": {
       "type": "main-cart-items",
       "settings": {
-        "section_width": "fluid_container",
+        "section_width": "container",
         "enable_cart_note": true,
         "enable_discount_code": true,
         "show_estimate_shipping": false,
-        "icon_svg_1": "question",
-        "heading_1": "Have Questions?",
-        "description_1": "<p>Our experts are here to help! Call us free.</p>",
-        "icon_svg_2": "secure",
-        "heading_2": "Secure Shopping",
-        "description_2": "<p>All transactions are protected by SSL technology.</p>",
-        "icon_svg_3": "protection",
-        "heading_3": "Privacy Protection",
-        "description_3": "<p>Your privacy is always our top priority.</p>",
-        "heading_delivery": "Delivery Information",
-        "description_delivery": "<p>Free returns within 15 days, please make sure the items are in undamaged condition.</p>",
-        "heading_guarantee": "Up to 30-Day Guarantee",
-        "description_guarantee": "<p>Bad luck with your tights? Simply contact us within 30 days of receiving your order and we will replace them for free!</p>",
-        "heading_payment": "Payment Support",
-        "payment_image": "shopify://shop_images/trust_payment.jpg",
+        "icon_svg_1": "none",
+        "heading_1": "",
+        "description_1": "",
+        "icon_svg_2": "none",
+        "heading_2": "",
+        "description_2": "",
+        "icon_svg_3": "none",
+        "heading_3": "",
+        "description_3": "",
+        "heading_delivery": "",
+        "description_delivery": "",
+        "heading_guarantee": "",
+        "description_guarantee": "",
+        "heading_payment": "",
         "payment_width": 340,
         "padding_top": 0,
         "padding_bottom": 0
