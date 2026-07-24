@@ -267,7 +267,7 @@
       ],
       "name": "Expanding Cards",
       "settings": {
-        "section_width": "fluid_container",
+        "section_width": "container",
         "heading": "Discover What Everyone's Buying",
         "heading_alignment": "left",
         "header_layout": "standard",
@@ -328,7 +328,7 @@
         "collection_xMd3n6": {
           "type": "collection",
           "settings": {
-            "collection": "wooden-tools",
+            "collection": "wooden-collection",
             "collection_image": "shopify://shop_images/Wooden_Spatula_Set_3_Pieces.webp",
             "collection_title": "Wooden Collection"
           }
@@ -353,7 +353,7 @@
       "custom_css": [],
       "name": "t:sections.collection-list.name",
       "settings": {
-        "section_width": "fluid_container",
+        "section_width": "container",
         "color_scheme": "default",
         "heading": "",
         "description": "",
