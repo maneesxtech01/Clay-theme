@@ -54,11 +54,11 @@
           "settings": {
             "delivery_design": "vertical",
             "delivery_content_icon": "truck",
-            "delivery_content": "<p>Estimate delivery times:<strong> 3-5 days International.</strong></p>",
-            "discount_content_icon": "discount",
-            "discount_content": "<p>Use code \"<strong>WELCOME15</strong>\" for discount 15% on your first order.</p>",
+            "delivery_content": "<p><strong>Estimate delivery time:</strong>Delivery within<strong>3–7 working days.</strong>You'll be updated along the way.</p>",
+            "discount_content_icon": "none",
+            "discount_content": "",
             "return_content_icon": "free_shipping",
-            "return_content": "<p>Free shipping & returns: <strong>On all orders over $150.</strong></p>"
+            "return_content": "<p><strong>Free shipping:</strong> On all orders above Rs. 10,000. Flat Rs. 220 delivery fee on smaller orders.</p>"
           }
         },
         "live_view_rzDP6G": {
