@@ -28,7 +28,7 @@
         "heading_6nj4md": {
           "type": "heading",
           "settings": {
-            "heading": "Oops...That link is broken.",
+            "heading": "Oops — This Page Isn't Here",
             "font_size": 36,
             "font_weight": "heading_weight",
             "uppercase": false,
@@ -38,7 +38,7 @@
         "subheading_yFdKEQ": {
           "type": "subheading",
           "settings": {
-            "subheading": "Sorry for the inconvenience. Go to our homepage or check out our latest collections.",
+            "subheading": "We couldn't find what you were looking for. But don't worry, our handcrafted collections are just a click away.",
             "font_size": 15,
             "font_weight": "body_weight",
             "uppercase": false,
