@@ -56,10 +56,14 @@
 {%- endcapture -%}
 {%- style -%}
   .collection-tab__tab-content {
+    display: none !important;
+    opacity: 0;
+    visibility: hidden;
     transform: translateY(30px);
     -webkit-transform: translateY(30px);
   }
   .collection-tab__tab-content.active {
+    display: block !important;
     opacity: 1;
     visibility: visible;
     position: relative;
