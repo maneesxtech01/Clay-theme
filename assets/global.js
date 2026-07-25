@@ -374,6 +374,9 @@ class SlideSection extends HTMLElement {
       watchSlidesProgress: true,
       watchSlidesVisibility: true,
       grabCursor: true,
+      observer: true,
+      observeParents: true,
+      observeSlideChildren: true,
       grid: {
         rows: row,
         fill: "row",

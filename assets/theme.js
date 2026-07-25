@@ -7836,6 +7836,23 @@ class TabItems extends HTMLElement {
         motion_element.forEach((motion) => {
           Motion.refreshAnimation();
         });
+
+        const refreshSwiper = () => {
+          const swiperElements = content.querySelectorAll("slide-section, grid-custom, .swiper");
+          swiperElements.forEach((el) => {
+            if (el.globalSlide && typeof el.globalSlide.update === "function") {
+              el.globalSlide.update();
+              if (typeof el.globalSlide.updateSize === "function") el.globalSlide.updateSize();
+              if (typeof el.globalSlide.updateSlides === "function") el.globalSlide.updateSlides();
+            } else if (el.swiper && typeof el.swiper.update === "function") {
+              el.swiper.update();
+            }
+          });
+        };
+        refreshSwiper();
+        setTimeout(refreshSwiper, 50);
+        setTimeout(refreshSwiper, 150);
+        setTimeout(refreshSwiper, 350);
       } else {
         content.classList.remove("active");
       }
