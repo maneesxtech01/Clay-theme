@@ -7810,7 +7810,7 @@ class TabItems extends HTMLElement {
     }
   }
   onClick(tab) {
-    const blockId = tab.dataset.blockId;
+    const blockId = tab.dataset.blockId || tab.getAttribute("data-block-id") || tab.getAttribute("data-id");
     this.showContent(blockId);
     this.tabs.forEach((t) => {
       t.classList.remove("active");
@@ -7825,13 +7825,22 @@ class TabItems extends HTMLElement {
       `<svg class="icon-down transition active-rotated" width="10" height="6">
     <use href="#icon-arrow-down"></use>
   </svg>`;
-    this.showContent(selectedBlockId.dataset.id);
+    const blockId = selectedBlockId.dataset.id || selectedBlockId.getAttribute("data-id") || selectedBlockId.getAttribute("data-block-id");
+    this.showContent(blockId);
   }
 
   showContent(blockId) {
+    if (!blockId) return;
     this.content.forEach((content) => {
-      if (content.dataset.blockId === blockId) {
+      const contentBlockId = content.dataset.blockId || content.getAttribute("data-block-id");
+      if (contentBlockId === blockId) {
         content.classList.add("active");
+        content.style.setProperty("display", "block", "important");
+        content.style.setProperty("opacity", "1", "important");
+        content.style.setProperty("visibility", "visible", "important");
+        content.style.setProperty("position", "relative", "important");
+        content.style.setProperty("pointer-events", "auto", "important");
+
         let motion_element = content.querySelectorAll("motion-element");
         motion_element.forEach((motion) => {
           Motion.refreshAnimation();
@@ -7855,6 +7864,11 @@ class TabItems extends HTMLElement {
         setTimeout(refreshSwiper, 350);
       } else {
         content.classList.remove("active");
+        content.style.setProperty("display", "none", "important");
+        content.style.setProperty("opacity", "0", "important");
+        content.style.setProperty("visibility", "hidden", "important");
+        content.style.setProperty("position", "absolute", "important");
+        content.style.setProperty("pointer-events", "none", "important");
       }
     });
   }
