@@ -477,16 +477,20 @@
             {% for block in section.blocks %}
               {% liquid
                 assign block_st = block.settings
+                assign collection = collections[block_st.collection]
+                if collection == blank or collection.products == blank
+                  assign collection = block_st.collection
+                endif
                 assign all_products_to_show = 0
-                if block_st.collection.products.size >= items_to_show
+                if collection.products.size >= items_to_show
                   assign all_products_to_show = items_to_show
                 else
-                  assign all_products_to_show = block_st.collection.products.size
+                  assign all_products_to_show = collection.products.size
                 endif
                 assign all_product_visible = rows | times: items_per_row
               %}
-              {% if block_st.collection.products.size > 0 %}
-                {%- paginate block_st.collection.products by all_product_visible -%}
+              {% if collection.products.size > 0 %}
+                {%- paginate collection.products by all_product_visible -%}
                   <div
                     class="collection-tab__tab-content absolute invisible inset-0 transition pointer-none{% if forloop.first %} active{% endif %}"
                     data-block-id="{{ block.id }}"
@@ -516,7 +520,7 @@
                         {%- render 'swiper-navigation' -%}
                       {% endif %}
                       <div class="swiper-wrapper">
-                        {% for product in block_st.collection.products %}
+                        {% for product in collection.products %}
                           {% render 'product-item',
                             card_product: product,
                             section_id: section.id,
