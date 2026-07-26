@@ -363,6 +363,24 @@
         "padding_bottom": 0,
         "reset_spacing": false
       }
+    },
+    "17850528430766e77c": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_MmEDbm": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "review_data": "sample_data",
+            "max_width": 1050,
+            "show_shop_reviews": false,
+            "empty_state": "empty_widget"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_MmEDbm"
+      ],
+      "settings": {}
     }
   },
   "order": [
@@ -376,6 +394,7 @@
     "divider_TKLM6L",
     "related_products",
     "divider_HtLXd3",
-    "products_recently_viewed_GdCNUL"
+    "products_recently_viewed_GdCNUL",
+    "17850528430766e77c"
   ]
 }
