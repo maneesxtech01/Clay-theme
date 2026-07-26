@@ -79,7 +79,7 @@
       ],
       "name": "Custom Our Story",
       "settings": {
-        "section_width": "fluid_container",
+        "section_width": "container",
         "color_scheme": "default",
         "layout_desktop": "image_left",
         "max_width": 1200,
@@ -152,7 +152,7 @@
       ],
       "name": "Custom Our Story",
       "settings": {
-        "section_width": "fluid_container",
+        "section_width": "container",
         "color_scheme": "default",
         "layout_desktop": "image_right",
         "max_width": 1200,
@@ -215,7 +215,7 @@
       ],
       "name": "Custom Brand Values",
       "settings": {
-        "section_width": "fluid_container",
+        "section_width": "container",
         "color_scheme": "scheme-e2434dd4-80ca-43a1-909b-8a9f7b57a7ab",
         "max_width": 1200,
         "bg_color": "#ffffff",
@@ -347,7 +347,7 @@
       ],
       "name": "Custom Our Story",
       "settings": {
-        "section_width": "fluid_container",
+        "section_width": "container",
         "color_scheme": "",
         "layout_desktop": "image_left",
         "max_width": 1200,
