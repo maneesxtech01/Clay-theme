@@ -246,7 +246,7 @@
           "type": "step",
           "settings": {
             "title": "Sourcing the Clay",
-            "image": "shopify://shop_images/Clay_Serving_Bowl.webp",
+            "image": "shopify://shop_images/clay_sourcing.webp",
             "show_checkmark": true
           }
         },
@@ -254,7 +254,7 @@
           "type": "step",
           "settings": {
             "title": "Shaped by Hand",
-            "image": "shopify://shop_images/Clay_Water_Glass_set_77575f5a-8f24-49d9-ab0f-b24bf8c5afbd.jpg",
+            "image": "shopify://shop_images/making_Clay.webp",
             "show_checkmark": true
           }
         },
@@ -262,15 +262,15 @@
           "type": "step",
           "settings": {
             "title": "Dried & Fired",
-            "image": "shopify://shop_images/matka10_liter.webp",
+            "image": "shopify://shop_images/fired_clay.png",
             "show_checkmark": true
           }
         },
         "step_YyQiAV": {
           "type": "step",
           "settings": {
-            "title": "Finished & Quality Checked",
-            "image": "shopify://shop_images/matka10_liter.webp",
+            "title": "Quality Checked",
+            "image": "shopify://shop_images/RB_Mitti_Store.webp",
             "show_checkmark": true
           }
         }
