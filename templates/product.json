@@ -136,7 +136,7 @@
           "type": "product_meta",
           "settings": {
             "show_barcode": false,
-            "show_sku": true,
+            "show_sku": false,
             "show_available": true,
             "show_tags": false,
             "show_type": true,
@@ -173,7 +173,7 @@
           "type": "collapsible_row",
           "settings": {
             "heading": "Shipping and Returns",
-            "content": "<p>🚚 <strong>Shipping:</strong> Standard delivery takes 3-7 working days across Pakistan. A flat delivery fee of Rs. 220 applies, with free delivery on orders above Rs. 10,000.</p><p>🔄 <strong>Returns & Replacement:</strong> If your item arrives damaged or incorrect, report it within 24 hours with photos/video, and we'll arrange a free replacement or store credit — no hassle. <a href=\"/policies/refund-policy\">Read our full Replacement & Refund Policy</a></p>",
+            "content": "<p>🚚 <strong>Shipping:</strong> Standard delivery takes 3-7 working days across Pakistan. A flat delivery fee of Rs. 199 applies, with free delivery on orders above Rs. 3,000.</p><p>🔄 <strong>Returns & Replacement:</strong> If your item arrives damaged or incorrect, report it within 24 hours with photos/video, and we'll arrange a free replacement or store credit — no hassle. <a href=\"/policies/refund-policy\">Read our full Replacement & Refund Policy</a></p>",
             "use_product_description": false,
             "open": false
           }
