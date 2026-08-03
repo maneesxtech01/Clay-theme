@@ -52,7 +52,7 @@
             "discount_content_icon": "none",
             "discount_content": "",
             "return_content_icon": "free_shipping",
-            "return_content": "<p><strong>Free shipping:</strong> On all orders above Rs. 10,000. Flat Rs. 220 delivery fee on smaller orders.</p>"
+            "return_content": "<p><strong>Free shipping:</strong> On all orders above Rs. <br/>3,000. Flat Rs. 199 delivery fee on smaller orders.</p>"
           }
         },
         "live_view_rzDP6G": {
