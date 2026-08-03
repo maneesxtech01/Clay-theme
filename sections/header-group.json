@@ -17,7 +17,7 @@
         "announcement_1": {
           "type": "announcement",
           "settings": {
-            "text": "Free Delivery on Orders Above Rs. 10,000",
+            "text": "Free Delivery on Orders Above Rs. 3,000",
             "text_mobile": "",
             "link": "shopify://collections/frontpage"
           }
@@ -36,7 +36,7 @@
         "announcement_2"
       ],
       "settings": {
-        "announcement_bg": "#A24C24",
+        "announcement_bg": "#a24c24",
         "announcement_text_color": "#ffffff",
         "font_size": 14,
         "auto_rotate": true,
